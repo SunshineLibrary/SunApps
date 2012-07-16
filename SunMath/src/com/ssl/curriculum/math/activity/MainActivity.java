@@ -12,7 +12,7 @@ import com.ssl.curriculum.math.R;
 
 public class MainActivity extends Activity {
 
-    private ViewFlipper viewFlipper = null;
+    private ViewFlipper viewFlipper;
     private ImageButton leftBtn;
     private ImageButton rightBtn;
     private Button naviBtn;
