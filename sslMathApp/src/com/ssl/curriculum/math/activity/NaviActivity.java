@@ -9,7 +9,11 @@ public class NaviActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navi);
+        initUI();
     }
-    
+
+    private void initUI() {
+        setContentView(R.layout.navigation_layout);
+    }
+
 }
