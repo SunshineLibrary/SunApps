@@ -1,7 +1,9 @@
-package com.example.test;
+package com.ssl.curriculum.math.activity;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
+import com.ssl.curriculum.math.R;
+
 public class NaviActivity extends Activity {
 
     @Override
