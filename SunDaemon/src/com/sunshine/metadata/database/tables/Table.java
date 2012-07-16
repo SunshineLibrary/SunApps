@@ -2,7 +2,10 @@ package com.sunshine.metadata.database.tables;
 
 import com.sunshine.metadata.database.MetadataDBHandler;
 
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 
 /**
  * @author Bowen Sun
@@ -67,5 +70,29 @@ public abstract class Table {
 
 	private void dropTable(SQLiteDatabase db) {
 		db.execSQL("DROP TABLE " + this.getTableName() + ";");
+	}
+
+	/*
+	 * Proxy methods for the content provider to individual tables in the
+	 * database.
+	 */
+	public Cursor query(Uri uri, String[] projection, String selection,
+			String[] selectionArgs, String sortOrder) {
+		return dbHandler.getWritableDatabase().query(getTableName(),
+				projection, selection, selectionArgs, null, null, sortOrder);
+	}
+
+	public Uri insert(Uri uri, ContentValues values) {
+		long id = dbHandler.getWritableDatabase().insert(getTableName(), null, values);
+		return uri.buildUpon().appendPath("" + id).build();
+	}
+
+	public int delete(Uri uri, String selection, String[] selectionArgs) {
+		return dbHandler.getWritableDatabase().delete(getTableName(), selection, selectionArgs);
+	}
+
+	public int update(Uri uri, ContentValues values, String selection,
+			String[] selectionArgs) {
+		return dbHandler.getWritableDatabase().update(getTableName(), values, selection, selectionArgs);
 	}
 }

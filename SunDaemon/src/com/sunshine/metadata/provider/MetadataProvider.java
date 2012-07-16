@@ -87,8 +87,6 @@ public class MetadataProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) { 
-		long id;
-		SQLiteDatabase db = dbHandler.getWritableDatabase();
 		return null;
 	}
 

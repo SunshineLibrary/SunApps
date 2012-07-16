@@ -1,8 +1,6 @@
 package com.sunshine.metadata.database;
 
-import java.util.LinkedList;
-import java.util.List;
-
+import com.sunshine.metadata.database.tables.BookTable;
 import com.sunshine.metadata.database.tables.PackageTable;
 import com.sunshine.metadata.database.tables.Table;
 
@@ -20,19 +18,32 @@ public class MetadataDBHandler extends SQLiteOpenHelper {
 
 	private static final int DB_VERSION = 1;
 	private static final String DB_NAME = "metadb";
-	private static List<Table> tableManagers;
+	private Table tableManagers[] = new Table[2];
+	
+	public static enum TableType {
+		PACKAGE_TABLE,
+		BOOK_TABLE
+	}
 
 	/**
 	 * @param context
 	 */
 	public MetadataDBHandler(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
-		initTableManagers();
+		initTables();
 	}
 	
-	private void initTableManagers(){
-		tableManagers = new LinkedList<Table>();
-		tableManagers.add(new PackageTable(this));
+	private void initTables(){
+		setTableManager(TableType.PACKAGE_TABLE, new PackageTable(this));
+		setTableManager(TableType.BOOK_TABLE, new BookTable(this));
+	}
+	
+	private void setTableManager(TableType tableType, Table tableManager) {
+		tableManagers[tableType.ordinal()] = tableManager;
+	}
+	
+	public Table getTableManager(TableType tableType){
+		return tableManagers[tableType.ordinal()];
 	}
 
 	@Override
@@ -50,5 +61,4 @@ public class MetadataDBHandler extends SQLiteOpenHelper {
 		}
 
 	}
-
 }

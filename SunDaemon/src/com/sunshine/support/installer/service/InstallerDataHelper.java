@@ -2,9 +2,6 @@ package com.sunshine.support.installer.service;
 
 import java.io.Closeable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

@@ -98,7 +98,7 @@ public final class MetadataContract {
 		}
 		
 		static {
-			CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_collections").build();
+			CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("audio_collections").build();
 		}
 	}
 
@@ -120,10 +120,10 @@ public final class MetadataContract {
 	public static final class Books extends Downloadable {
 
 		public static final String _ID = BaseColumns._ID;
-		public static final String _NAME = "";
-		public static final String _AUTHOR = "";
-		public static final String _DESCRIPTION = "";
-		public static final String _PROGRESS = "";
+		public static final String _TITLE = "title";
+		public static final String _AUTHOR = "author";
+		public static final String _DESCRIPTION = "description";
+		public static final String _PROGRESS = "progress";
 		public static final Uri CONTENT_URI;
 
 		static {
@@ -161,7 +161,7 @@ public final class MetadataContract {
 		}
 	}
 	
-	public static final class Tag {
+	public static final class Tags {
 
 		public static final String _ID = BaseColumns._ID;
 		public static final String _NAME = "";
@@ -189,7 +189,7 @@ public final class MetadataContract {
 		}
 		
 		static {
-			CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("books").build();
+			CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("tags").build();
 		}
 	}
 

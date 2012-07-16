@@ -2,12 +2,9 @@ package com.sunshine.support.installer;
 
 import com.sunshine.support.installer.service.InstallerService;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.widget.Toast;
 
 public class InstallerClient {
 

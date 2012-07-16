@@ -1,5 +1,7 @@
 package com.sunshine.support;
 
+import com.sunshine.support.R;
+
 import android.app.Activity;
 import android.os.Bundle;
 

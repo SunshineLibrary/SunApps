@@ -3,8 +3,6 @@ package com.sunshine.support.installer.service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
 
 public class InstallerReceiver extends BroadcastReceiver {
 

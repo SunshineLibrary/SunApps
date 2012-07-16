@@ -1,7 +1,8 @@
 package com.sunshine.test.suites;
 
 import com.sunshine.metadata.database.DatabaseHandlerTest;
-import com.sunshine.support.metadata.database.tables.PackageTableTest;
+import com.sunshine.metadata.database.tables.BookTableTest;
+import com.sunshine.metadata.database.tables.PackageTableTest;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -14,6 +15,8 @@ public class DatabaseTests extends TestCase {
 		
 		suite.addTest(new TestSuite(DatabaseHandlerTest.class));
 		suite.addTest(new TestSuite(PackageTableTest.class));
+		suite.addTest(new TestSuite(BookTableTest.class));
+
 		
 		return suite; 
 	}
