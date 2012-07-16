@@ -1,8 +1,8 @@
 package com.sunshine.metadata.provider;
 
-import junit.framework.TestCase;
+import android.test.AndroidTestCase;
 
-public class MetadataContractTest extends TestCase {
+public class MetadataContractTest extends AndroidTestCase {
 	
 	public void testAuthorityUri(){
 		String expected = "content://com.sunshine.metadata.provider";

@@ -1,13 +1,12 @@
 package com.sunshine.metadata.provider;
 
 import com.sunshine.metadata.database.MetadataDBHandler;
-import com.sunshine.metadata.database.tables.PackageTable;
+import com.sunshine.metadata.database.MetadataDBHandler.TableType;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 public class MetadataProvider extends ContentProvider {
@@ -41,8 +40,6 @@ public class MetadataProvider extends ContentProvider {
 
 	private MetadataDBHandler dbHandler;
 
-	private SQLiteDatabase db;
-
 	@Override
 	public boolean onCreate() {
 		dbHandler = new MetadataDBHandler(getContext());
@@ -52,24 +49,15 @@ public class MetadataProvider extends ContentProvider {
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
-		db = dbHandler.getReadableDatabase();
-		
-		String tableName, groupBy, having;
-		groupBy = having = null;
-		
 		switch (sUriMatcher.match(uri)) {
 		case PACKAGES:
-			tableName = PackageTable.TABLE_NAME;
-			break;
+			return dbHandler.getTableManager(TableType.PACKAGE_TABLE).query(uri, projection, selection, selectionArgs, sortOrder);
 		case PACKAGES_ID:
 			selection = selection + " " + MetadataContract.Packages._ID + " = " + uri.getLastPathSegment();
-			tableName = PackageTable.TABLE_NAME;
-			break;
+			return dbHandler.getTableManager(TableType.PACKAGE_TABLE).query(uri, projection, selection, selectionArgs, sortOrder);
 		default:
 			throw new IllegalArgumentException();
 		}
-		
-		return db.query(tableName, projection, selection, selectionArgs, groupBy, having, sortOrder);
 	}
 
 	@Override
@@ -85,21 +73,34 @@ public class MetadataProvider extends ContentProvider {
 	}
 
 	@Override
-	public Uri insert(Uri uri, ContentValues values) { 
-		return null;
+	public Uri insert(Uri uri, ContentValues values) {
+		switch(sUriMatcher.match(uri)){
+		case PACKAGES:
+			return dbHandler.getTableManager(TableType.PACKAGE_TABLE).insert(uri, values);
+		default:
+			throw new IllegalArgumentException();
+		}
 	}
 
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
-		// TODO Auto-generated method stub
-		return 0;
+		switch(sUriMatcher.match(uri)){
+		case PACKAGES:
+			return dbHandler.getTableManager(TableType.PACKAGE_TABLE).delete(uri, selection, selectionArgs);
+		default:
+			throw new IllegalArgumentException();
+		}
 	}
 
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
-		// TODO Auto-generated method stub
-		return 0;
+		switch(sUriMatcher.match(uri)){
+		case PACKAGES:
+			return dbHandler.getTableManager(TableType.PACKAGE_TABLE).update(uri, values, selection, selectionArgs);
+		default:
+			throw new IllegalArgumentException();
+		}
 	}
 
 }

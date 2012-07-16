@@ -6,10 +6,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+import android.test.AndroidTestCase;
 import android.test.mock.MockContext;
-import junit.framework.TestCase;
 
-public class DatabaseTestCase extends TestCase {
+public class DatabaseTestCase extends AndroidTestCase {
 
 	public static MetadataDBHandler dbHandler;
 	public static SQLiteDatabase db;
