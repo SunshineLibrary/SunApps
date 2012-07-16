@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">test</string>
-    <string name="main_activity_navi_btn_text">Navi</string>
-    <string name="title_main_activity">MainActivity</string>
-    <string name="title_navi_activity">NaviActivity</string>
-</resources>
