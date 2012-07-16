@@ -52,7 +52,6 @@ public class MetadataProvider extends ContentProvider {
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
-		//TODO: query need to be made thread-safe
 		db = dbHandler.getReadableDatabase();
 		
 		String tableName, groupBy, having;
