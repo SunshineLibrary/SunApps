@@ -4,3 +4,6 @@ out
 .idea
 *.iml
 local.properties
+.classpath
+.project
+.settings
