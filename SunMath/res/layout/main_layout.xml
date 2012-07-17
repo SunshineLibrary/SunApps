@@ -4,44 +4,72 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
 
-    <RelativeLayout android:layout_width="wrap_content"
+    <RelativeLayout android:layout_width="0dp"
                     android:layout_height="fill_parent"
-                    android:layout_weight="1">
-        <Button android:id="@+id/main_activity_navi_btn"
-                android:text="@string/main_activity_navi_btn_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"/>
+                    android:layout_weight="1"
+                    android:background="@drawable/main_activity_navi_background">
+        <ImageButton android:id="@+id/main_activity_navi_btn"
+                     android:src="@drawable/ic_main_activity_navi"
+                     android:background="@android:color/transparent"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentTop="true"
+                     android:layout_alignParentLeft="true"/>
         <ImageButton
                 android:id="@+id/main_activity_left_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:background="@drawable/ic_launcher">
+                android:background="@android:color/transparent"
+                android:src="@drawable/main_activity_show_previous_selector">
         </ImageButton>
+
+
+        <ImageView android:id="@+id/main_activity_flipper_left_shadow"
+                   android:layout_height="fill_parent"
+                   android:layout_width="6dp"
+                   android:layout_alignParentRight="true"
+                   android:scaleType="fitXY" android:background="@drawable/left_gradient"/>
 
     </RelativeLayout>
 
     <ViewFlipper android:id="@+id/main_activity_view_flipper"
-                 android:layout_width="wrap_content"
+                 android:layout_width="0dp"
                  android:layout_height="fill_parent"
                  android:layout_weight="5"
-                 android:gravity="center_vertical">
+                 android:gravity="center_vertical"
+                 android:background="@color/main_activity_view_flipper_bg">
         <include android:id="@+id/layout1" layout="@layout/layout1"/>
         <include android:id="@+id/layout2" layout="@layout/layout2"/>
     </ViewFlipper>
 
-    <RelativeLayout android:layout_width="wrap_content"
+    <RelativeLayout android:layout_width="0dp"
                     android:layout_height="fill_parent"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:background="@drawable/main_activity_navi_background">
+
+        <ImageView android:id="@+id/main_activity_flipper_left_shadow"
+                   android:layout_height="fill_parent"
+                   android:layout_width="6dp"
+                   android:layout_alignParentLeft="true"
+                   android:scaleType="fitXY" android:background="@drawable/right_gradient"/>
+
+        <ImageButton android:id="@+id/main_activity_stat_btn"
+                     android:src="@drawable/ic_main_activity_stat"
+                     android:background="@android:color/transparent"
+                     android:layout_alignParentTop="true"
+                     android:layout_alignParentRight="true"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"/>
 
         <ImageButton android:id="@+id/main_activity_right_btn"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_centerInParent="true"
-                     android:background="@drawable/ic_launcher">
+                     android:background="@android:color/transparent"
+                     android:src="@drawable/main_activity_show_next_selector">
         </ImageButton>
+
 
     </RelativeLayout>
 
