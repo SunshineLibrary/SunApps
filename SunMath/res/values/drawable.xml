@@ -2,7 +2,7 @@
     <color name="main_activity_navi_bg">#323232</color>
     <color name="main_activity_view_flipper_bg">#F6F1F1</color>
     <color name="gradient_start_color">#000000</color>
-    <color name="gradient_end_color">#3C3C3C</color>
+    <color name="gradient_end_color">#383838</color>
     <color name="blue">#0E940E</color>
     <color name="green">#0236FE</color>
 </resources>
