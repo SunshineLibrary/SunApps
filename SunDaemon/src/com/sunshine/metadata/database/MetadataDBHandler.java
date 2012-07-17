@@ -1,5 +1,6 @@
 package com.sunshine.metadata.database;
 
+import com.sunshine.metadata.database.tables.APISyncStateTable;
 import com.sunshine.metadata.database.tables.BookTable;
 import com.sunshine.metadata.database.tables.PackageTable;
 import com.sunshine.metadata.database.tables.Table;
@@ -18,9 +19,10 @@ public class MetadataDBHandler extends SQLiteOpenHelper {
 
 	private static final int DB_VERSION = 1;
 	private static final String DB_NAME = "metadb";
-	private Table tableManagers[] = new Table[2];
+	private Table tableManagers[] = new Table[3];
 	
 	public static enum TableType {
+		API_SYNC_STATE_TABLE,
 		PACKAGE_TABLE,
 		BOOK_TABLE
 	}
@@ -34,6 +36,7 @@ public class MetadataDBHandler extends SQLiteOpenHelper {
 	}
 	
 	private void initTables(){
+		setTableManager(TableType.API_SYNC_STATE_TABLE, new APISyncStateTable(this));
 		setTableManager(TableType.PACKAGE_TABLE, new PackageTable(this));
 		setTableManager(TableType.BOOK_TABLE, new BookTable(this));
 	}
