@@ -26,11 +26,10 @@ private ArrayList<String> ListDescriptors = new ArrayList<String>();
 
     private void initUI() {
         setContentView(R.layout.navigation_layout);
-
-        ListDescriptors.add("返回");
-        ListDescriptors.add("一元二次方程");
-        ListDescriptors.add("方程组");
-        
+        /*
+        ListDescriptors.add("Return");
+        ListDescriptors.add("Test1");
+        ListDescriptors.add("Test2");
         ListView leftNav = (ListView) findViewById(R.id.nav_left);
         leftNav.setOnItemClickListener(new AdapterView.OnItemClickListener() {
         	public void onItemClick(AdapterView<?> arg0, View arg1, int pos,long id) {
@@ -38,6 +37,7 @@ private ArrayList<String> ListDescriptors = new ArrayList<String>();
 			}
 		});
         createListFromData(ListDescriptors,leftNav);
+        */
     }
 
 }

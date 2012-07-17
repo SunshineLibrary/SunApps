@@ -1,21 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:baselineAligned="false"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="horizontal" >
+    <LinearLayout
+        android:layout_width="180dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
+        <Button
+            android:id="@+id/button_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
 
-    <ListView
-        android:id="@+id/nav_left"
-        android:layout_height="fill_parent" android:clickable="true" android:fadingEdge="vertical" android:fitsSystemWindows="true" android:scrollbars="none" android:layout_width="170dp">
+        <ListView
+            android:id="@+id/nav_left"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content" >
+        </ListView>
+    </LinearLayout>
 
-    </ListView>
+    <LinearLayout
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="300dp"
+            android:background="@color/black" >
+        </RelativeLayout>
 
-    <ListView
-        android:id="@+id/nav_right"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
-    </ListView>
+        <LinearLayout
+            android:id="@+id/navigation_screen_bottom_buttons_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:text="" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="167dp"
+                android:text="" />
+        </LinearLayout>
+
+        <Gallery
+            android:id="@+id/gallery"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+             />
+    </LinearLayout>
 
 </LinearLayout>
