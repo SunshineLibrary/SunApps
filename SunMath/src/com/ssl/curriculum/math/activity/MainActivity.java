@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ViewFlipper;
+import com.ssl.curriculum.math.R;
 
 public class MainActivity extends Activity {
 
