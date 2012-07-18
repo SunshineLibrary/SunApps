@@ -15,8 +15,10 @@
                 android:text="back button"/>
 
         <com.ssl.curriculum.math.component.NavigationListView android:id="@+id/navi_list_view"
-                  android:layout_width="fill_parent"
-                  android:layout_height="wrap_content" />
+                                                              android:layout_width="fill_parent"
+                                                              android:layout_height="wrap_content"
+                                                              android:divider="@android:color/transparent"
+                                                              android:dividerHeight="5dp"/>
 
     </LinearLayout>
 </LinearLayout>
