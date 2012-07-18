@@ -198,6 +198,8 @@ public final class MetadataContract {
 		public static final String _DOWNLOAD_STATUS = "download_status";
 
 		public static final String _DOWNLOAD_PROGRESS = "download_progress";
+		
+		public static final String _FILE_LOCATION = "file_location";
 
 		public static enum STATUS {
 			NOT_DOWNLOADED, QUEUED, DOWNLOADING, DOWNLOADED, MARK_DELETE

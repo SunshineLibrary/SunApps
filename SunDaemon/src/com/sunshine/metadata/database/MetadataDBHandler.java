@@ -1,5 +1,7 @@
 package com.sunshine.metadata.database;
 
+import java.util.HashMap;
+
 import com.sunshine.metadata.database.tables.APISyncStateTable;
 import com.sunshine.metadata.database.tables.BookTable;
 import com.sunshine.metadata.database.tables.PackageTable;
@@ -19,39 +21,34 @@ public class MetadataDBHandler extends SQLiteOpenHelper {
 
 	private static final int DB_VERSION = 1;
 	private static final String DB_NAME = "metadb";
-	private Table tableManagers[] = new Table[3];
+	private HashMap<String, Table> tableManagers;
 	
-	public static enum TableType {
-		API_SYNC_STATE_TABLE,
-		PACKAGE_TABLE,
-		BOOK_TABLE
-	}
-
 	/**
 	 * @param context
 	 */
 	public MetadataDBHandler(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
+		tableManagers = new HashMap<String, Table>();
 		initTables();
 	}
 	
 	private void initTables(){
-		setTableManager(TableType.API_SYNC_STATE_TABLE, new APISyncStateTable(this));
-		setTableManager(TableType.PACKAGE_TABLE, new PackageTable(this));
-		setTableManager(TableType.BOOK_TABLE, new BookTable(this));
+		setTableManager(APISyncStateTable.TABLE_NAME, new APISyncStateTable(this));
+		setTableManager(PackageTable.TABLE_NAME, new PackageTable(this));
+		setTableManager(BookTable.TABLE_NAME, new BookTable(this));
 	}
 	
-	private void setTableManager(TableType tableType, Table tableManager) {
-		tableManagers[tableType.ordinal()] = tableManager;
+	private void setTableManager(String tableName, Table table) {
+		tableManagers.put(tableName, table);
 	}
 	
-	public Table getTableManager(TableType tableType){
-		return tableManagers[tableType.ordinal()];
+	public Table getTableManager(String tableName){
+		return tableManagers.get(tableName);
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		for (Table table: tableManagers) {
+		for (Table table: tableManagers.values()) {
 			table.createTable(db);
 		}
 	}
@@ -59,9 +56,8 @@ public class MetadataDBHandler extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO Auto-generated method stub
-		for (Table table: tableManagers) {
+		for (Table table: tableManagers.values()) {
 			table.upgradeTable(db, oldVersion, newVersion);
 		}
-
 	}
 }

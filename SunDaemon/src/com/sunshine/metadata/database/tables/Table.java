@@ -39,6 +39,11 @@ public abstract class Table {
 	 * @return an array of column name and column definition pairs
 	 */
 	public abstract String[][] getColumnDefinitions();
+	
+	/**
+	 * @return an array of all column names
+	 */
+	public abstract String[] getColumns();
 
 	/**
 	 * Create the database to be managed. Calls getColumnDefinitions() to
@@ -84,7 +89,11 @@ public abstract class Table {
 
 	public Uri insert(Uri uri, ContentValues values) {
 		long id = dbHandler.getWritableDatabase().insert(getTableName(), null, values);
-		return uri.buildUpon().appendPath("" + id).build();
+		if (uri != null) {
+			return uri.buildUpon().appendPath("" + id).build();
+		} else {
+			return null;
+		}
 	}
 
 	public int delete(Uri uri, String selection, String[] selectionArgs) {

@@ -1,7 +1,7 @@
 package com.sunshine.metadata.provider;
 
 import com.sunshine.metadata.database.MetadataDBHandler;
-import com.sunshine.metadata.database.MetadataDBHandler.TableType;
+import com.sunshine.metadata.database.tables.PackageTable;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -53,10 +53,10 @@ public class MetadataProvider extends ContentProvider {
 			String[] selectionArgs, String sortOrder) {
 		switch (sUriMatcher.match(uri)) {
 		case PACKAGES:
-			return dbHandler.getTableManager(TableType.PACKAGE_TABLE).query(
+			return dbHandler.getTableManager(PackageTable.TABLE_NAME).query(
 					uri, projection, selection, selectionArgs, sortOrder);
 		case PACKAGES_ID:
-			return dbHandler.getTableManager(TableType.PACKAGE_TABLE).query(
+			return dbHandler.getTableManager(PackageTable.TABLE_NAME).query(
 					uri, projection, MetadataContract.Packages._ID + " = ?",
 					new String[] { uri.getLastPathSegment() }, sortOrder);
 		default:
@@ -80,7 +80,7 @@ public class MetadataProvider extends ContentProvider {
 	public Uri insert(Uri uri, ContentValues values) {
 		switch (sUriMatcher.match(uri)) {
 		case PACKAGES:
-			return dbHandler.getTableManager(TableType.PACKAGE_TABLE).insert(
+			return dbHandler.getTableManager(PackageTable.TABLE_NAME).insert(
 					uri, values);
 		default:
 			throw new IllegalArgumentException();
@@ -91,10 +91,10 @@ public class MetadataProvider extends ContentProvider {
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		switch (sUriMatcher.match(uri)) {
 		case PACKAGES:
-			return dbHandler.getTableManager(TableType.PACKAGE_TABLE).delete(
+			return dbHandler.getTableManager(PackageTable.TABLE_NAME).delete(
 					uri, selection, selectionArgs);
 		case PACKAGES_ID:
-			return dbHandler.getTableManager(TableType.PACKAGE_TABLE).delete(
+			return dbHandler.getTableManager(PackageTable.TABLE_NAME).delete(
 					uri, selection, selectionArgs);
 		default:
 			throw new IllegalArgumentException();
@@ -106,10 +106,10 @@ public class MetadataProvider extends ContentProvider {
 			String[] selectionArgs) {
 		switch (sUriMatcher.match(uri)) {
 		case PACKAGES:
-			return dbHandler.getTableManager(TableType.PACKAGE_TABLE).update(
+			return dbHandler.getTableManager(PackageTable.TABLE_NAME).update(
 					uri, values, selection, selectionArgs);
 		case PACKAGES_ID:
-			return dbHandler.getTableManager(TableType.PACKAGE_TABLE).update(
+			return dbHandler.getTableManager(PackageTable.TABLE_NAME).update(
 					uri, values, MetadataContract.Packages._ID + "=?",
 					new String[] { uri.getLastPathSegment() });
 		default:

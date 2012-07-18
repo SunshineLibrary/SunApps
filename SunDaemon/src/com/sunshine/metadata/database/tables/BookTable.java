@@ -40,4 +40,9 @@ public class BookTable extends Table {
 	public String[][] getColumnDefinitions() {
 		return COLUMN_DEFINITIONS;
 	}
+
+	@Override
+	public String[] getColumns() {
+		return ALL_COLUMNS;
+	}
 }
