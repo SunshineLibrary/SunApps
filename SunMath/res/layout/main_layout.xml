@@ -8,22 +8,19 @@
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:background="@drawable/main_activity_navi_background">
-        <ImageButton android:id="@+id/main_activity_navi_btn"
-                     android:src="@drawable/ic_main_activity_navi"
-                     android:background="@android:color/transparent"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_marginTop="5dp"
-                     android:layout_alignParentTop="true"
-                     android:layout_alignParentLeft="true"/>
-        <ImageButton
+        <ImageView android:id="@+id/main_activity_navi_btn"
+                   android:src="@drawable/ic_main_activity_navi"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="5dp"
+                   android:layout_alignParentTop="true"
+                   android:layout_alignParentLeft="true"/>
+        <ImageView
                 android:id="@+id/main_activity_left_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:background="@android:color/transparent"
-                android:src="@drawable/main_activity_show_previous_selector">
-        </ImageButton>
+                android:src="@drawable/main_activity_show_previous_selector"/>
 
         <ImageView android:id="@+id/main_activity_flipper_left_shadow"
                    android:layout_height="fill_parent"
@@ -41,7 +38,8 @@
                  android:background="@color/main_activity_view_flipper_bg">
         <include android:id="@+id/layout1" layout="@layout/layout1"/>
         <include android:id="@+id/layout2" layout="@layout/layout2"/>
-        <com.ssl.curriculum.math.page.GalleryPage android:layout_height="fill_parent" android:layout_width="fill_parent" />
+        <com.ssl.curriculum.math.page.GalleryPage android:layout_height="fill_parent"
+                                                  android:layout_width="fill_parent"/>
     </ViewFlipper>
 
     <RelativeLayout android:layout_width="0dp"
@@ -54,22 +52,19 @@
                    android:layout_alignParentLeft="true"
                    android:scaleType="fitXY" android:src="@drawable/right_gradient"/>
 
-        <ImageButton android:id="@+id/main_activity_stat_btn"
+        <ImageView android:id="@+id/main_activity_stat_btn"
                      android:src="@drawable/ic_main_activity_stat"
-                     android:background="@android:color/transparent"
                      android:layout_alignParentTop="true"
                      android:layout_alignParentRight="true"
                      android:layout_marginTop="5dp"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"/>
 
-        <ImageButton android:id="@+id/main_activity_right_btn"
+        <ImageView android:id="@+id/main_activity_right_btn"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_centerInParent="true"
-                     android:background="@android:color/transparent"
-                     android:src="@drawable/main_activity_show_next_selector">
-        </ImageButton>
+                     android:src="@drawable/main_activity_show_next_selector" />
 
 
     </RelativeLayout>

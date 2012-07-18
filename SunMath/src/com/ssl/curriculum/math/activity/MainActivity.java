@@ -7,16 +7,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.R;
 
 public class MainActivity extends Activity {
 
     private ViewFlipper viewFlipper;
-    private ImageButton leftBtn;
-    private ImageButton rightBtn;
-    private ImageButton naviBtn;
+    private ImageView leftBtn;
+    private ImageView rightBtn;
+    private ImageView naviBtn;
     private Animation animFlipInFromRight;
     private Animation animFlipInFromLeft;
     private Animation animFlipOutToRight;
@@ -33,9 +33,9 @@ public class MainActivity extends Activity {
     private void initUI() {
         setContentView(R.layout.main_layout);
         viewFlipper = (ViewFlipper) this.findViewById(R.id.main_activity_view_flipper);
-        this.leftBtn = (ImageButton) this.findViewById(R.id.main_activity_left_btn);
-        this.rightBtn = (ImageButton) this.findViewById(R.id.main_activity_right_btn);
-        this.naviBtn = (ImageButton) this.findViewById(R.id.main_activity_navi_btn);
+        this.leftBtn = (ImageView) this.findViewById(R.id.main_activity_left_btn);
+        this.rightBtn = (ImageView) this.findViewById(R.id.main_activity_right_btn);
+        this.naviBtn = (ImageView) this.findViewById(R.id.main_activity_navi_btn);
     }
 
     private void initListeners() {
