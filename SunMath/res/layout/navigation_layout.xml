@@ -1,70 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:baselineAligned="false"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="horizontal" >
-    <LinearLayout
-        android:layout_width="180dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/button_back"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="" />
+    <LinearLayout android:layout_width="180dp"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:background="@drawable/bg_main_activity_navi">
 
-        <ListView
-            android:id="@+id/nav_left"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content" >
-        </ListView>
+        <Button android:id="@+id/back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="back button"/>
+
+        <com.ssl.curriculum.math.component.NavigationListView android:id="@+id/navi_list_view"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content" />
+
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dip"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical" >
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="300dp"
-            android:background="@color/black" >
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/navigation_screen_bottom_buttons_container"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="" />
-
-            <Button
-                android:id="@+id/button1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="0dp"
-                android:text="" />
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="167dp"
-                android:text="" />
-        </LinearLayout>
-
-        <Gallery
-            android:id="@+id/gallery"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-             />
-    </LinearLayout>
-
 </LinearLayout>

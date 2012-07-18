@@ -1,43 +1,36 @@
 package com.ssl.curriculum.math.activity;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
 import com.ssl.curriculum.math.R;
+import com.ssl.curriculum.math.component.NavigationListView;
+import com.ssl.curriculum.math.presenter.NavigationPresenter;
 
 public class NaviActivity extends Activity {
-private ArrayList<String> ListDescriptors = new ArrayList<String>();
-	
-	/** Creates a listView from custom dataObject **/
-	private void createListFromData(ArrayList<String> data, ListView lv){
-		lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data));
-	}
+
+    private NavigationListView navigationListView;
+    private NavigationPresenter presenter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initUI();
+        initComponent();
+        loadData();
     }
 
     private void initUI() {
         setContentView(R.layout.navigation_layout);
-        /*
-        ListDescriptors.add("Return");
-        ListDescriptors.add("Test1");
-        ListDescriptors.add("Test2");
-        ListView leftNav = (ListView) findViewById(R.id.nav_left);
-        leftNav.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-        	public void onItemClick(AdapterView<?> arg0, View arg1, int pos,long id) {
-				System.out.println("POS: " + pos + " ID: " + id);
-			}
-		});
-        createListFromData(ListDescriptors,leftNav);
-        */
+        navigationListView = (NavigationListView) findViewById(R.id.navi_list_view);
+    }
+
+    private void initComponent() {
+        presenter = new NavigationPresenter(navigationListView);
+        navigationListView.initAdapter(presenter);
+    }
+
+    private void loadData() {
+        presenter.loadData();
     }
 
 }
