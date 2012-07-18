@@ -5,4 +5,5 @@
     <color name="gradient_end_color">#383838</color>
     <color name="blue">#0E940E</color>
     <color name="green">#0236FE</color>
+    <color name="white">#FFFFFF</color>
 </resources>
