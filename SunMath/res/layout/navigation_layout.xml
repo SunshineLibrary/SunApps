@@ -4,21 +4,43 @@
               android:layout_height="fill_parent"
               android:orientation="horizontal">
 
-    <LinearLayout android:layout_width="180dp"
-                  android:layout_height="match_parent"
-                  android:orientation="vertical"
-                  android:background="@drawable/bg_main_activity_navi">
+    <RelativeLayout android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_main_activity_navi">
 
-        <Button android:id="@+id/back_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="back button"/>
+        <RelativeLayout android:id="@+id/navi_activity_top_container"
+                        android:layout_width="fill_parent" android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:paddingTop="4dp" android:paddingBottom="8dp"
+                        android:paddingLeft="4dp">
+
+            <TextView android:id="@+id/back_text" android:layout_centerInParent="true"
+                      android:textColor="@color/navi_activity_navi_list_view_text"
+                      android:layout_height="wrap_content" android:text="Back" android:textSize="20sp"
+                      android:layout_width="wrap_content"/>
+
+            <ImageView android:layout_alignParentLeft="true" android:src="@drawable/ic_side_list_back"
+                       android:layout_height="wrap_content" android:layout_centerInParent="true"
+                       android:layout_width="wrap_content"/>
+
+        </RelativeLayout>
 
         <com.ssl.curriculum.math.component.NavigationListView android:id="@+id/navi_list_view"
                                                               android:layout_width="fill_parent"
                                                               android:layout_height="wrap_content"
+                                                              android:layout_below="@id/navi_activity_top_container"
                                                               android:divider="@android:color/transparent"
-                                                              android:dividerHeight="5dp"/>
+                                                              android:cacheColorHint="#00000000"
+                                                              android:fadingEdge="none"
+                                                              android:dividerHeight="2dp"/>
 
-    </LinearLayout>
+        <ImageView android:layout_width="wrap_content"
+                   android:layout_height="fill_parent"
+                   android:scaleType="fitXY"
+                   android:layout_alignParentRight="true"
+                   android:src="@drawable/ic_side_shadow"/>
+
+
+    </RelativeLayout>
+
 </LinearLayout>

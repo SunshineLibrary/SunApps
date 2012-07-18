@@ -18,7 +18,7 @@ public class NavigationPresenter {
     }
 
     public void loadData() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 4; i++) {
             HashMap<String, String> hashMap = new HashMap<String, String>();
             hashMap.put(Constants.NAVIGATION_ITEM_LABEL, "Lession_" + i);
             navigationCategory.add(hashMap);

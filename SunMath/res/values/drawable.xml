@@ -1,10 +1,11 @@
 <resources>
     <color name="main_activity_navi_bg">#323232</color>
     <color name="main_activity_view_flipper_bg">#F6F1F1</color>
-    <color name="navi_activity_navi_list_view_bg">#EECF45</color>
+    <color name="navi_activity_navi_list_view_text">#65C28F</color>
     <color name="gradient_start_color">#000000</color>
     <color name="gradient_end_color">#383838</color>
     <color name="blue">#0E940E</color>
     <color name="green">#0236FE</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 </resources>
