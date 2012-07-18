@@ -7,3 +7,6 @@ local.properties
 .classpath
 .project
 .settings
+tmp
+reports
+reports/**/*
