@@ -11,14 +11,15 @@ public class NavigationListView extends ListView {
 
     public NavigationListView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initAdapter();
     }
 
-    public void initAdapter() {
+    private void initAdapter() {
         navigationMenuListAdapter = new NavigationMenuListAdapter(getContext(), Menu.createMenuWithoutParent("Empty"));
         setAdapter(navigationMenuListAdapter);
     }
 
-    public void updateView(Menu currentMenu) {
+    public void updateMenuList(Menu currentMenu) {
         navigationMenuListAdapter.updateMenuData(currentMenu);
     }
 }

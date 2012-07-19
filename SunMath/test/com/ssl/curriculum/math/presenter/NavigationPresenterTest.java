@@ -28,8 +28,8 @@ public class NavigationPresenterTest {
     @Test
     public void test_should_load_data_and_update_view() {
         ArgumentCaptor<Menu> captor = new ArgumentCaptor<Menu>();
-        presenter.setMenuData(Menu.createMenuWithoutParent("test"));
-        verify(navigationListView).updateView(captor.capture());
+        presenter.updateNavigationMenuData(Menu.createMenuWithoutParent("test"));
+        verify(navigationListView).updateMenuList(captor.capture());
         assertThat(captor.getValue().getChildren().size(), is(0));
     }
 }

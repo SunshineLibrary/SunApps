@@ -3,9 +3,10 @@ package com.ssl.curriculum.math.service;
 import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.model.menu.MenuItem;
 
-public class LoadMenuDataService {
+public class NavigationMenuContentProvider implements NavigationMenuProvider {
 
-    public Menu loadService() {
+    @Override
+    public Menu loadNavigationMenu() {
         Menu menu = Menu.createMenuWithoutParent("Courses");
         Menu course1 = Menu.createMenuAddedToParent("Course1", menu);
         Menu course2 = Menu.createMenuAddedToParent("Course2", menu);
@@ -24,4 +25,5 @@ public class LoadMenuDataService {
         chapter4.addChild(new MenuItem("Lession7"));
         return menu;
     }
+
 }

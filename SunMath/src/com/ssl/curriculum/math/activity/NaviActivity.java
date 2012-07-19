@@ -16,7 +16,12 @@ public class NaviActivity extends Activity {
         super.onCreate(savedInstanceState);
         initUI();
         initComponent();
-        loadData();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        presenter.loadMenuData();
     }
 
     private void initUI() {
@@ -26,11 +31,5 @@ public class NaviActivity extends Activity {
 
     private void initComponent() {
         presenter = new NavigationPresenter(navigationListView);
-        navigationListView.initAdapter();
     }
-
-    private void loadData() {
-        presenter.loadData();
-    }
-
 }
