@@ -2,15 +2,14 @@ package com.ssl.curriculum.math.presenter;
 
 import com.ssl.curriculum.math.component.NavigationListView;
 import com.ssl.curriculum.math.framework.SunMathTestRunner;
+import com.ssl.curriculum.math.model.menu.Menu;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.List;
-import java.util.Map;
+import org.mockito.ArgumentCaptor;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -28,9 +27,9 @@ public class NavigationPresenterTest {
 
     @Test
     public void test_should_load_data_and_update_view() {
-        presenter.loadData();
-        verify(navigationListView).updateView();
-        List<? extends Map<String, ?>> navigationCategory = presenter.getNavigationCategory();
-        assertThat(navigationCategory.size(), greaterThan(0));
+        ArgumentCaptor<Menu> captor = new ArgumentCaptor<Menu>();
+        presenter.setMenuData(Menu.createMenuWithoutParent("test"));
+        verify(navigationListView).updateView(captor.capture());
+        assertThat(captor.getValue().getChildren().size(), is(0));
     }
 }

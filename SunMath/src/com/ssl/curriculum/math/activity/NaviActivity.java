@@ -26,7 +26,7 @@ public class NaviActivity extends Activity {
 
     private void initComponent() {
         presenter = new NavigationPresenter(navigationListView);
-        navigationListView.initAdapter(presenter);
+        navigationListView.initAdapter();
     }
 
     private void loadData() {

@@ -1,33 +1,26 @@
 package com.ssl.curriculum.math.presenter;
 
 import com.ssl.curriculum.math.component.NavigationListView;
-import com.ssl.curriculum.math.util.Constants;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.ssl.curriculum.math.model.menu.Menu;
+import com.ssl.curriculum.math.service.LoadMenuDataService;
+import com.ssl.curriculum.math.task.FetchNavigationCategoryTask;
 
 public class NavigationPresenter {
     private NavigationListView navigationListView;
 
-    private List<HashMap<String, String>> navigationCategory = new ArrayList<HashMap<String, String>>();
+    private Menu menu;
 
     public NavigationPresenter(NavigationListView navigationListView) {
         this.navigationListView = navigationListView;
     }
 
     public void loadData() {
-        for (int i = 0; i < 4; i++) {
-            HashMap<String, String> hashMap = new HashMap<String, String>();
-            hashMap.put(Constants.NAVIGATION_ITEM_LABEL, "Lession_" + i);
-            navigationCategory.add(hashMap);
-        }
-        navigationListView.updateView();
+        FetchNavigationCategoryTask task = new FetchNavigationCategoryTask(this, new LoadMenuDataService());
+        task.execute();
     }
 
-    public List<? extends Map<String, ?>> getNavigationCategory() {
-        return navigationCategory;
+    public void setMenuData(Menu menu) {
+        this.menu = menu;
+        navigationListView.updateView(menu);
     }
-
 }
