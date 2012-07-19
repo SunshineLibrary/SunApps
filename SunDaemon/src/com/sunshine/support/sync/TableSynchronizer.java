@@ -58,7 +58,7 @@ public class TableSynchronizer {
 		}
 	}
 
-	public void sync() {
+	public boolean sync() {
 		boolean isInSync = false;
 		int retryCount = 0;
 		while (!isInSync && retryCount <= MAX_RETRY_COUNT) {
@@ -80,6 +80,7 @@ public class TableSynchronizer {
 				break;
 			}
 		}
+		return retryCount > MAX_RETRY_COUNT;
 	}
 
 	protected String getRequestURI() {
