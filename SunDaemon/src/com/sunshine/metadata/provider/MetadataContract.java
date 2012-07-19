@@ -14,6 +14,30 @@ public final class MetadataContract {
 				.authority(AUTHORITY).build();
 	}
 
+    public static final class Courses {
+        public static final String _ID = BaseColumns._ID;
+        public static final String _NAME = "name";
+    }
+
+    public static final class Chapters {
+        public static final String _ID = BaseColumns._ID;
+        public static final String _PARENT_ID = "parent_id";
+        public static final String _NAME = "name";
+    }
+
+    public static final class Lessons {
+        public static final String _ID = BaseColumns._ID;
+        public static final String _PARENT_ID = "parent_id";
+        public static final String _NAME = "name";
+    }
+
+    public static final class Sections {
+        public static final String _ID = BaseColumns._ID;
+        public static final String _PARENT_ID = "parent_id";
+        public static final String _NAME = "name";
+    }
+
+
 	public static final class Packages extends Downloadable {
 		public static final String _ID = BaseColumns._ID;
 		public static final String _NAME = "name";
