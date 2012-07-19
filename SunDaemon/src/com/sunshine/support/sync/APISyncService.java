@@ -1,27 +1,69 @@
 package com.sunshine.support.sync;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.os.Handler;
 import android.os.IBinder;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
-
 public class APISyncService extends Service {
+
+	private boolean syncInProgress;
+	private APISyncTask syncTask;
+	private static final String IP = "127.0.0.1";
+	private static final long MIN_DELAY = 1200000;
+	private ConnectivityManager cm;
+
+	private static long lastSuccessfulSync;
 	
-	private MetadataDBHandler dbHandler;
+	public static final String SERVICE_ACTION = "com.sunshine.support.action.sync";
 
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
 	}
-	
+
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-        return START_STICKY;
+		if (!syncInProgress
+				&& System.currentTimeMillis() > MIN_DELAY + lastSuccessfulSync) {
+			syncTask.execute();
+			syncInProgress = true;
+		}
+		return START_STICKY;
 	}
-	
+
 	@Override
 	public void onCreate() {
-		dbHandler = new MetadataDBHandler(getBaseContext());
+		cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		syncInProgress = false;
+		syncTask = new APISyncTask(this, IP) {
+			@Override
+			protected void onPostExecute(Integer result) {
+				if (result.intValue() == SYNC_SUCCESS) {
+					lastSuccessfulSync = System.currentTimeMillis();
+				}
+				stopSelf();
+			}
+		};
+	}
+
+	@Override
+	public void onDestroy() {
+		if (isConnected()) {
+			Handler handler = new Handler();
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					Intent intent = new Intent(SERVICE_ACTION);
+					getBaseContext().startService(intent);
+				}
+			}, (long) Math.floor(Math.random() * MIN_DELAY + MIN_DELAY));
+		}
+	}
+
+	protected boolean isConnected() {
+		return cm.getActiveNetworkInfo().isConnected();
 	}
 }

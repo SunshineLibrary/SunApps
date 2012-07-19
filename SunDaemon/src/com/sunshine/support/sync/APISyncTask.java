@@ -3,9 +3,6 @@ package com.sunshine.support.sync;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 
@@ -17,20 +14,21 @@ import com.sunshine.metadata.database.tables.Table;
 public class APISyncTask extends AsyncTask<String, String, Integer> {
 
 	private Uri root_uri;
-	private boolean isConnected;
 	private Table syncTable;
 	private HttpClient httpClient;
 	private MetadataDBHandler dbHandler;
-	private Context context;
+	private APISyncService context;
 
 	private static final String[] SYNCED_TABLES = { PackageTable.TABLE_NAME, };
 
-	public APISyncTask(Context context, String ip) {
+	public static final int SYNC_SUCCESS = 0;
+	public static final int SYNC_FAILURE = -1;
+	
+	public APISyncTask(APISyncService context, String ip) {
 		this.context = context;
 		this.root_uri = new Uri.Builder().scheme("http").authority(ip).build();
 
 		httpClient = new DefaultHttpClient();
-		isConnected = getConnectionStatus();
 
 		dbHandler = new MetadataDBHandler(context);
 		syncTable = dbHandler.getTableManager(APISyncStateTable.TABLE_NAME);
@@ -38,22 +36,22 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
 
 	@Override
 	protected Integer doInBackground(String... params) {
-		while (isConnected) {
+		int status = SYNC_SUCCESS;
+		if (isConnected()) {
+			//TODO: should check for changed tables before sync.
 			for (String tableName: SYNCED_TABLES) {
 				Table table = dbHandler.getTableManager(tableName);
 				TableSynchronizer synchronizer = new TableSynchronizer(table, syncTable, httpClient, root_uri);
-				if (!synchronizer.sync()) {
-					isConnected = false;
+				if (!synchronizer.sync() ) {
+					status = SYNC_FAILURE;
 					break;
 				}
 			}
  		}
-		return null;
+		return status;
 	}
 	
-	protected boolean getConnectionStatus() {
-		ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-		return activeNetwork.isConnectedOrConnecting();
+	protected boolean isConnected() {
+		return context.isConnected();
 	}
 }
