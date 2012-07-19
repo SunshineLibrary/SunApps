@@ -2,15 +2,15 @@ package com.ssl.curriculum.math.task;
 
 import android.os.AsyncTask;
 import com.ssl.curriculum.math.model.menu.Menu;
-import com.ssl.curriculum.math.presenter.NavigationPresenter;
+import com.ssl.curriculum.math.presenter.NavigationMenuPresenter;
 import com.ssl.curriculum.math.service.NavigationMenuProvider;
 
 public class FetchNavigationMenuTask extends AsyncTask<Void, Void, Menu> {
-    private NavigationPresenter presenter;
+    private NavigationMenuPresenter menuPresenter;
     private NavigationMenuProvider provider;
 
-    public FetchNavigationMenuTask(NavigationPresenter presenter, NavigationMenuProvider provider) {
-        this.presenter = presenter;
+    public FetchNavigationMenuTask(NavigationMenuPresenter menuPresenter, NavigationMenuProvider provider) {
+        this.menuPresenter = menuPresenter;
         this.provider = provider;
     }
 
@@ -21,6 +21,6 @@ public class FetchNavigationMenuTask extends AsyncTask<Void, Void, Menu> {
 
     @Override
     protected void onPostExecute(Menu menu) {
-        presenter.updateNavigationMenuData(menu);
+        menuPresenter.initNavigationMenu(menu);
     }
 }

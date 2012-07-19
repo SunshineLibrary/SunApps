@@ -5,19 +5,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import com.ssl.curriculum.math.component.NavigationMenuItem;
+import com.ssl.curriculum.math.listener.NextLevelMenuChangedListener;
 import com.ssl.curriculum.math.model.menu.Menu;
 
 public class NavigationMenuListAdapter extends BaseAdapter {
     private Context context;
     private Menu menu;
+    private NextLevelMenuChangedListener nextLevelMenuChangedListener;
 
     public NavigationMenuListAdapter(Context context, Menu menu) {
         this.context = context;
         this.menu = menu;
     }
 
-    public void updateMenuData(Menu menu) {
-        this.menu = menu;
+    public void updateMenu(Menu currentMenu) {
+        this.menu = currentMenu;
         notifyDataSetChanged();
     }
 
@@ -36,7 +38,7 @@ public class NavigationMenuListAdapter extends BaseAdapter {
 
     public View getView(int position, View view, ViewGroup viewGroup) {
         String menuName = (String) getItem(position);
-        if(view == null || !(view instanceof NavigationMenuItem)) {
+        if (view == null || !(view instanceof NavigationMenuItem)) {
             return createNewMenuItem(menuName);
         }
         return updateMenuItem((NavigationMenuItem) view, menuName);
@@ -47,9 +49,14 @@ public class NavigationMenuListAdapter extends BaseAdapter {
         return menuItem;
     }
 
-    private NavigationMenuItem createNewMenuItem(String menuName) {
+    private NavigationMenuItem createNewMenuItem(final String menuName) {
         NavigationMenuItem menuItem = new NavigationMenuItem(context);
         menuItem.setMenuName(menuName);
+        menuItem.setNextLevelChangedListener(nextLevelMenuChangedListener);
         return menuItem;
+    }
+
+    public void setNextLevelMenuChangedListener(NextLevelMenuChangedListener nextLevelMenuChangedListener) {
+        this.nextLevelMenuChangedListener = nextLevelMenuChangedListener;
     }
 }

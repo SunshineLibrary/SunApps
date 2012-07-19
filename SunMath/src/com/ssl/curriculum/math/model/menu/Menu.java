@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Menu extends MenuItem {
     private List<MenuItem> children = new ArrayList<MenuItem>();
-
     private Menu parent;
 
     public static Menu createMenuWithoutParent(String name) {
@@ -34,5 +33,10 @@ public class Menu extends MenuItem {
 
     public void addChild(MenuItem menuItem) {
         children.add(menuItem);
+    }
+
+    @Override
+    public boolean isMenuGroup() {
+        return true;
     }
 }

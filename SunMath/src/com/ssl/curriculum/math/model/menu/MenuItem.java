@@ -10,4 +10,8 @@ public class MenuItem {
     public String getName() {
         return name;
     }
+
+    public boolean isMenuGroup() {
+        return false;
+    }
 }

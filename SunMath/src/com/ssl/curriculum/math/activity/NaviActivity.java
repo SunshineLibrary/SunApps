@@ -2,14 +2,19 @@ package com.ssl.curriculum.math.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.NavigationListView;
-import com.ssl.curriculum.math.presenter.NavigationPresenter;
+import com.ssl.curriculum.math.presenter.NavigationMenuPresenter;
 
 public class NaviActivity extends Activity {
 
     private NavigationListView navigationListView;
-    private NavigationPresenter presenter;
+    private NavigationMenuPresenter menuPresenter;
+    private TextView menuTitle;
+    private ImageView backImageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -21,15 +26,24 @@ public class NaviActivity extends Activity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        presenter.loadMenuData();
+        menuPresenter.loadMenuData();
     }
 
     private void initUI() {
         setContentView(R.layout.navigation_layout);
         navigationListView = (NavigationListView) findViewById(R.id.navi_list_view);
+        menuTitle = (TextView) findViewById(R.id.navigation_menu_title);
+        backImageView =  (ImageView) findViewById(R.id.navigation_menu_back_btn);
     }
 
     private void initComponent() {
-        presenter = new NavigationPresenter(navigationListView);
+        menuPresenter = new NavigationMenuPresenter(navigationListView, menuTitle);
+        navigationListView.setNextLevelMenuChangedListener(menuPresenter);
+        backImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menuPresenter.menuBack();
+            }
+        });
     }
 }

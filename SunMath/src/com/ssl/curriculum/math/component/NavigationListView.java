@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ListView;
 import com.ssl.curriculum.math.adapter.NavigationMenuListAdapter;
+import com.ssl.curriculum.math.listener.NextLevelMenuChangedListener;
 import com.ssl.curriculum.math.model.menu.Menu;
 
 public class NavigationListView extends ListView {
@@ -19,7 +20,11 @@ public class NavigationListView extends ListView {
         setAdapter(navigationMenuListAdapter);
     }
 
-    public void updateMenuList(Menu currentMenu) {
-        navigationMenuListAdapter.updateMenuData(currentMenu);
+    public void setNextLevelMenuChangedListener(NextLevelMenuChangedListener nextLevelMenuChangedListener) {
+        navigationMenuListAdapter.setNextLevelMenuChangedListener(nextLevelMenuChangedListener);
+    }
+
+    public void updateMenu(Menu currentMenu) {
+        navigationMenuListAdapter.updateMenu(currentMenu);
     }
 }
