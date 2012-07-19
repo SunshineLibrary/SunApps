@@ -27,4 +27,14 @@ public class NavigationListView extends ListView {
     public void updateMenu(Menu currentMenu) {
         navigationMenuListAdapter.updateMenu(currentMenu);
     }
+
+    public void activeMenuItem(int index) {
+        ((NavigationMenuItem) getChildAt(index)).active();
+    }
+
+    public void deActiveAllMenuItems() {
+        for (int index = 0; index < getChildCount(); index++) {
+            ((NavigationMenuItem) getChildAt(index)).deActive();
+        }
+    }
 }

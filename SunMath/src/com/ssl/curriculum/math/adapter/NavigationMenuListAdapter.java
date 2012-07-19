@@ -38,10 +38,18 @@ public class NavigationMenuListAdapter extends BaseAdapter {
 
     public View getView(int position, View view, ViewGroup viewGroup) {
         String menuName = (String) getItem(position);
+        return getMenuItem(view, menuName);
+    }
+
+    private NavigationMenuItem getMenuItem(View view, String menuName) {
+        NavigationMenuItem item;
         if (view == null || !(view instanceof NavigationMenuItem)) {
-            return createNewMenuItem(menuName);
+            item = createNewMenuItem(menuName);
+        } else {
+            item = updateMenuItem((NavigationMenuItem) view, menuName);
+            item.deActive();
         }
-        return updateMenuItem((NavigationMenuItem) view, menuName);
+        return item;
     }
 
     private NavigationMenuItem updateMenuItem(NavigationMenuItem menuItem, String menuName) {

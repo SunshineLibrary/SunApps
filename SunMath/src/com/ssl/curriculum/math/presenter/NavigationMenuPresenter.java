@@ -9,6 +9,8 @@ import com.ssl.curriculum.math.service.NavigationMenuContentProvider;
 import com.ssl.curriculum.math.service.NavigationMenuProvider;
 import com.ssl.curriculum.math.task.FetchNavigationMenuTask;
 
+import java.util.List;
+
 public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
     private NavigationListView navigationListView;
     private TextView menuTitle;
@@ -34,13 +36,23 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 
     @Override
     public void onNextLevelMenu(String currentMenuItemName) {
-        for (MenuItem item : currentMenu.getChildren()) {
+        List<MenuItem> children = currentMenu.getChildren();
+        for (int index = 0; index < children.size(); index++) {
+            MenuItem item = children.get(index);
             if (item.getName().equalsIgnoreCase(currentMenuItemName)) {
-                if (!item.isMenuGroup()) return;
-                currentMenu = (Menu) item;
-                updateMenu();
+                handleMenuItem(item, index);
             }
         }
+    }
+
+    private void handleMenuItem(MenuItem item, int index) {
+        if (!item.isMenuGroup()) {
+            navigationListView.deActiveAllMenuItems();
+            navigationListView.activeMenuItem(index);
+            return;
+        }
+        currentMenu = (Menu) item;
+        updateMenu();
     }
 
     public void menuBack() {

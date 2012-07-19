@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.listener.NextLevelMenuChangedListener;
@@ -13,6 +14,7 @@ public class NavigationMenuItem extends FrameLayout {
 
     private TextView menuItemLabel;
     private NextLevelMenuChangedListener nextLevelChangedListener;
+    private ImageView bgImageView;
 
     public NavigationMenuItem(Context context) {
         super(context);
@@ -25,6 +27,7 @@ public class NavigationMenuItem extends FrameLayout {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.navigation_item, this, false);
         this.addView(viewGroup);
         menuItemLabel = (TextView) findViewById(R.id.navigation_menu_item_name);
+        bgImageView = (ImageView) findViewById(R.id.navdeck_item_bg_image);
     }
 
     private void initListener() {
@@ -44,5 +47,13 @@ public class NavigationMenuItem extends FrameLayout {
 
     public void setNextLevelChangedListener(NextLevelMenuChangedListener nextLevelChangedListener) {
         this.nextLevelChangedListener = nextLevelChangedListener;
+    }
+
+    public void active() {
+        bgImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_side_list_selected));
+    }
+
+    public void deActive() {
+        bgImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_side_list_not_selected));
     }
 }
