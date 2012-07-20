@@ -37,7 +37,7 @@ public class NaviActivity extends Activity {
     }
 
     private void initComponent() {
-        menuPresenter = new NavigationMenuPresenter(navigationListView, menuTitle);
+        menuPresenter = new NavigationMenuPresenter(getApplicationContext(), navigationListView, menuTitle);
         navigationListView.setNextLevelMenuChangedListener(menuPresenter);
         backImageView.setOnClickListener(new View.OnClickListener() {
             @Override

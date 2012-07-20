@@ -1,5 +1,6 @@
 package com.ssl.curriculum.math.presenter;
 
+import android.content.Context;
 import android.widget.TextView;
 import com.ssl.curriculum.math.component.NavigationListView;
 import com.ssl.curriculum.math.listener.NextLevelMenuChangedListener;
@@ -17,11 +18,11 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
     private NavigationMenuProvider provider;
     private Menu currentMenu;
 
-    public NavigationMenuPresenter(NavigationListView navigationListView, TextView menuTitle) {
+    public NavigationMenuPresenter(Context context, NavigationListView navigationListView, TextView menuTitle) {
         this.navigationListView = navigationListView;
         this.menuTitle = menuTitle;
         this.navigationListView.setNextLevelMenuChangedListener(this);
-        provider = new NavigationMenuContentProvider();
+        provider = new NavigationMenuContentProvider(context);
     }
 
     public void loadMenuData() {

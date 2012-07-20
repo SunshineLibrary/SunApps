@@ -24,8 +24,9 @@ public class NavigationMenuPresenterTest {
     @Before
     public void setUp() throws Exception {
         navigationListView = new NavigationListViewStub(null);
-        menuTitle = new TextView(new Activity());
-        menuPresenter = new NavigationMenuPresenter(navigationListView, menuTitle);
+        Activity context = new Activity();
+        menuTitle = new TextView(context);
+        menuPresenter = new NavigationMenuPresenter(context, navigationListView, menuTitle);
         menu = mockData();
         menuPresenter.initNavigationMenu(menu);
     }

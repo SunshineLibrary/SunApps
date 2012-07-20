@@ -19,4 +19,14 @@ public class NavigationListViewStub extends NavigationListView{
     public void updateMenu(Menu currentMenu) {
         this.currentMenu = currentMenu;
     }
+
+    @Override
+    public void activeMenuItem(int index) {
+
+    }
+
+    @Override
+    public void deActiveAllMenuItems() {
+
+    }
 }
