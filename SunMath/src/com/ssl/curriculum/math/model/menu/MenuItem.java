@@ -14,4 +14,8 @@ public class MenuItem {
     public boolean isMenuGroup() {
         return false;
     }
+
+    public static void createItemAddedToParent(String name, Menu parentMenu) {
+        parentMenu.addChild(new MenuItem(name));
+    }
 }
