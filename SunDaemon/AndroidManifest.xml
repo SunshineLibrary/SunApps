@@ -37,13 +37,19 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name="com.sunshine.support.sync.APISyncService"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="com.sunshine.support.action.sync" />
+            </intent-filter>
+        </service>
+
         <receiver android:name="com.sunshine.support.sync.APISyncReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        
     </application>
-
 </manifest>
