@@ -1,0 +1,13 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+		CREATE TABLE android_metadata (locale TEXT);
+		INSERT INTO "android_metadata" VALUES('en_US');
+		CREATE TABLE books(_id INTEGER PRIMARY KEY , title TEXT , description TEXT , author TEXT , progress INTEGER);
+		CREATE TABLE sections(_id INTEGER PRIMARY KEY , name TEXT , parent_id INTEGER NOT NULL , FOREIGN KEY (parent_id) REFERENCES lessons(_id));
+		CREATE TABLE lessons(_id INTEGER PRIMARY KEY , name TEXT , parent_id INTEGER NOT NULL , FOREIGN KEY (parent_id) REFERENCES chapters(_id));
+		CREATE TABLE courses(_id INTEGER PRIMARY KEY , name TEXT);
+		CREATE TABLE packages(_id INTEGER PRIMARY KEY , name TEXT , version INTEGER);
+		INSERT INTO "packages" VALUES(1,'package1',1);
+		CREATE TABLE api_sync_states(_id INTEGER PRIMARY KEY , table_name TEXT , last_update INTEGER);
+		CREATE TABLE chapters(_id INTEGER PRIMARY KEY , name TEXT , parent_id INTEGER NOT NULL , FOREIGN KEY (parent_id) REFERENCES courses(_id));
+		COMMIT;
