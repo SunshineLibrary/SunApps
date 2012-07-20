@@ -55,7 +55,7 @@ public abstract class Table {
 		db.execSQL(this.getCreateQuery());
 	}
 
-	private String getCreateQuery() {
+	protected String getCreateQuery() {
 		String query = "CREATE TABLE " + this.getTableName() + "(";
 		for (String[] pair : getColumnDefinitions()) {
 			query += pair[0] + " " + pair[1] + " , ";

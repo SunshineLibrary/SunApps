@@ -3,27 +3,38 @@ package com.ssl.curriculum.math.component;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ListView;
-import com.ssl.curriculum.math.R;
-import com.ssl.curriculum.math.adapter.NavigationListAdapter;
-import com.ssl.curriculum.math.presenter.NavigationPresenter;
-
-import static com.ssl.curriculum.math.util.Constants.NAVIGATION_ITEM_LABEL;
+import com.ssl.curriculum.math.adapter.NavigationMenuListAdapter;
+import com.ssl.curriculum.math.listener.NextLevelMenuChangedListener;
+import com.ssl.curriculum.math.model.menu.Menu;
 
 public class NavigationListView extends ListView {
-    private static int[] NAVIGATION_ITEM_ID_LIST = new int[]{R.id.navigation_label};
-    private static String[] NAVIGATION_ITEM_LABEL_LIST = new String[]{NAVIGATION_ITEM_LABEL};
-    private NavigationListAdapter navigationListAdapter;
+    private NavigationMenuListAdapter navigationMenuListAdapter;
 
     public NavigationListView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initAdapter();
     }
 
-    public void initAdapter(NavigationPresenter presenter) {
-        navigationListAdapter = new NavigationListAdapter(getContext(), presenter.getNavigationCategory(), R.layout.navigation_item, NAVIGATION_ITEM_LABEL_LIST, NAVIGATION_ITEM_ID_LIST);
-        setAdapter(navigationListAdapter);
+    private void initAdapter() {
+        navigationMenuListAdapter = new NavigationMenuListAdapter(getContext(), Menu.createMenuWithoutParent("Empty"));
+        setAdapter(navigationMenuListAdapter);
     }
 
-    public void updateView() {
-        navigationListAdapter.notifyDataSetChanged();
+    public void setNextLevelMenuChangedListener(NextLevelMenuChangedListener nextLevelMenuChangedListener) {
+        navigationMenuListAdapter.setNextLevelMenuChangedListener(nextLevelMenuChangedListener);
+    }
+
+    public void updateMenu(Menu currentMenu) {
+        navigationMenuListAdapter.updateMenu(currentMenu);
+    }
+
+    public void activeMenuItem(int index) {
+        ((NavigationMenuItem) getChildAt(index)).active();
+    }
+
+    public void deActiveAllMenuItems() {
+        for (int index = 0; index < getChildCount(); index++) {
+            ((NavigationMenuItem) getChildAt(index)).deActive();
+        }
     }
 }

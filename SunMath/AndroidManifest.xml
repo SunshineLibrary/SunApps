@@ -18,7 +18,7 @@
                   android:screenOrientation="landscape">
         </activity>
     </application>
-
+    <uses-permission android:name="com.sunshine.metadata.provider.READ_WRITE_PERMISSION"/>
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="15"/>
 
 </manifest>

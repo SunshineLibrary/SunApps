@@ -14,12 +14,12 @@
                         android:paddingTop="4dp" android:paddingBottom="8dp"
                         android:paddingLeft="4dp">
 
-            <TextView android:id="@+id/back_text" android:layout_centerInParent="true"
+            <TextView android:id="@+id/navigation_menu_title" android:layout_centerInParent="true"
                       android:textColor="@color/navi_activity_navi_list_view_text"
                       android:layout_height="wrap_content" android:text="Back" android:textSize="20sp"
                       android:layout_width="wrap_content"/>
 
-            <ImageView android:layout_alignParentLeft="true" android:src="@drawable/ic_side_list_back"
+            <ImageView android:id="@+id/navigation_menu_back_btn" android:layout_alignParentLeft="true" android:src="@drawable/ic_side_list_back"
                        android:layout_height="wrap_content" android:layout_centerInParent="true"
                        android:layout_width="wrap_content"/>
 

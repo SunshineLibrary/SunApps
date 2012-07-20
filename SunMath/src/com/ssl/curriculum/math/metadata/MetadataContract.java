@@ -1,4 +1,4 @@
-package com.sunshine.metadata.provider;
+package com.ssl.curriculum.math.metadata;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
