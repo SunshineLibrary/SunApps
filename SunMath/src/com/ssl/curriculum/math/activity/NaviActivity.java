@@ -45,5 +45,6 @@ public class NaviActivity extends Activity {
                 menuPresenter.menuBack();
             }
         });
+
     }
 }

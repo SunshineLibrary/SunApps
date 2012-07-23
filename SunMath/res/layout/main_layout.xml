@@ -38,7 +38,7 @@
                  android:background="@color/main_activity_view_flipper_bg">
         <include android:id="@+id/layout1" layout="@layout/layout1"/>
         <include android:id="@+id/layout2" layout="@layout/layout2"/>
-        <com.ssl.curriculum.math.page.GalleryPage android:layout_height="fill_parent"
+        <com.ssl.curriculum.math.page.GalleryPage android:id="@+id/gallery_page" android:layout_height="fill_parent"
                                                   android:layout_width="fill_parent"/>
     </ViewFlipper>
 
@@ -53,18 +53,18 @@
                    android:scaleType="fitXY" android:src="@drawable/right_gradient"/>
 
         <ImageView android:id="@+id/main_activity_stat_btn"
-                     android:src="@drawable/ic_main_activity_stat"
-                     android:layout_alignParentTop="true"
-                     android:layout_alignParentRight="true"
-                     android:layout_marginTop="5dp"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"/>
+                   android:src="@drawable/ic_main_activity_stat"
+                   android:layout_alignParentTop="true"
+                   android:layout_alignParentRight="true"
+                   android:layout_marginTop="5dp"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
 
         <ImageView android:id="@+id/main_activity_right_btn"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_centerInParent="true"
-                     android:src="@drawable/main_activity_show_next_selector" />
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_centerInParent="true"
+                   android:src="@drawable/main_activity_show_next_selector"/>
 
 
     </RelativeLayout>
