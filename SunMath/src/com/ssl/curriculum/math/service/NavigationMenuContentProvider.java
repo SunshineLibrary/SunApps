@@ -9,7 +9,7 @@ import com.ssl.curriculum.math.model.menu.MenuItem;
 
 import java.util.HashMap;
 
-import static com.ssl.curriculum.math.metadata.MetadataContract.*;
+import static com.ssl.curriculum.math.model.MetadataContract.*;
 
 public class NavigationMenuContentProvider implements NavigationMenuProvider {
     private static final String ROOT_MENU_NAME = "Courses";

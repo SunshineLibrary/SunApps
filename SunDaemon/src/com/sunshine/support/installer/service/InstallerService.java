@@ -1,22 +1,20 @@
 package com.sunshine.support.installer.service;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.sunshine.support.concurrent.ListenableFuture;
-import com.sunshine.support.concurrent.Listener;
-import com.sunshine.support.downloader.DownloadClient;
-
 import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
+import com.sunshine.support.concurrent.ListenableFuture;
+import com.sunshine.support.concurrent.Listener;
+import com.sunshine.support.downloader.DownloadClient;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class InstallerService extends Service {
 
@@ -71,7 +69,7 @@ public class InstallerService extends Service {
 								data.close();
 							}
 						}
-						Toast.makeText(thisInstallerService, name+"("+version+")Éý¼¶×¼±¸¾ÍÐ÷£¬ÏÂ´ÎËøÆÁÊ±»á½øÐÐÈí¼þÉý¼¶¡£", Toast.LENGTH_LONG).show();
+//						Toast.makeText(thisInstallerService, name+"("+version+")ï¿½ï¿½×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", Toast.LENGTH_LONG).show();
 						downloading.remove(name);
 					}					
 				});

@@ -14,10 +14,9 @@
     <application
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name">
-        <provider
-                android:name="com.sunshine.metadata.provider.MetadataProvider"
-                android:authorities="com.sunshine.metadata.provider"
-                android:permission="com.sunshine.metadata.provider.READ_WRITE_PERMISSION"/>
+        <provider android:name="com.sunshine.metadata.provider.MetadataProvider"
+                  android:authorities="com.sunshine.metadata.provider"
+                  android:permission="com.sunshine.metadata.provider.READ_WRITE_PERMISSION"/>
 
         <activity
                 android:name=".SupportServiceActivity"
@@ -38,14 +37,14 @@
         </service>
 
         <service
-            android:name="com.sunshine.support.sync.APISyncService"
-            android:enabled="true" >
+                android:name="com.sunshine.support.sync.APISyncService"
+                android:enabled="true">
             <intent-filter>
-                <action android:name="com.sunshine.support.action.sync" />
+                <action android:name="com.sunshine.support.action.sync"/>
             </intent-filter>
         </service>
 
-        <receiver android:name="com.sunshine.support.sync.APISyncReceiver" >
+        <receiver android:name="com.sunshine.support.sync.APISyncReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
@@ -55,5 +54,7 @@
     </application>
 
     <permission android:protectionLevel="normal" android:name="com.sunshine.metadata.provider.READ_WRITE_PERMISSION"/>
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
 
 </manifest>

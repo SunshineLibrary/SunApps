@@ -1,13 +1,14 @@
 package com.sunshine.support.installer.service;
 
-import java.io.Closeable;
-import java.util.ArrayList;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.io.Closeable;
+import java.util.ArrayList;
 
 public class InstallerDataHelper extends SQLiteOpenHelper implements Closeable {
 	
@@ -90,7 +91,6 @@ public class InstallerDataHelper extends SQLiteOpenHelper implements Closeable {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO 更改数据库版本的操作
 	}
 
 	@Override

@@ -1,15 +1,14 @@
 package com.sunshine.support.installer.service;
 
+import android.net.Uri;
+import android.util.Log;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import android.net.Uri;
-import android.util.Log;
-
 public class InstallerImpl {
 
-	//静默安装方法
 	public boolean doActualInstall(Uri apkFile){
 		//apkName="AndroidTest111.apk";  
         

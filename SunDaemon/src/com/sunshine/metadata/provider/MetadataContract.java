@@ -14,6 +14,15 @@ public final class MetadataContract {
                 .authority(AUTHORITY).build();
     }
 
+    public static final class Gallery {
+        public static final String _ID = BaseColumns._ID;
+        public static final String _THUMBNAIL_PATH = "thumbnail";
+        public static final String _IMAGE_PATH = "image";
+        public static final String _DESCRIPTION = "description";
+
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("gallery").build();
+    }
+
     public static final class Courses {
         public static final String _ID = BaseColumns._ID;
         public static final String _NAME = "name";

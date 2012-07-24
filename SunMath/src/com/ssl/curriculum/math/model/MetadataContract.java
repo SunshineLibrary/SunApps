@@ -1,4 +1,4 @@
-package com.ssl.curriculum.math.metadata;
+package com.ssl.curriculum.math.model;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -12,6 +12,15 @@ public final class MetadataContract {
     static {
         AUTHORITY_URI = new Uri.Builder().scheme("content")
                 .authority(AUTHORITY).build();
+    }
+
+    public static final class Gallery {
+        public static final String _ID = BaseColumns._ID;
+        public static final String _THUMBNAIL_PATH = "thumbnail";
+        public static final String _IMAGE_PATH = "image";
+        public static final String _DESCRIPTION = "description";
+
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("gallery").build();
     }
 
     public static final class Courses {

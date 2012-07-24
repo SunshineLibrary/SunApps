@@ -5,11 +5,13 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import com.sunshine.metadata.database.MetadataDBHandler;
-import com.sunshine.metadata.database.tables.ChapterTable;
-import com.sunshine.metadata.database.tables.CourseTable;
-import com.sunshine.metadata.database.tables.LessonTable;
-import com.sunshine.metadata.database.tables.PackageTable;
+import com.sunshine.metadata.database.tables.*;
+import com.sunshine.utils.FileLog;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class MetadataProvider extends ContentProvider {
 
@@ -26,6 +28,9 @@ public class MetadataProvider extends ContentProvider {
     private static final int COURSES = 3;
     private static final int CHAPTERS = 4;
     private static final int LESSONS = 5;
+    private static final int GALLERY = 6;
+    private static final int GALLERY_IMAGE = 7;
+    private static final int GALLERY_THUMBNAIL = 8;
 
     static {
         sUriMatcher.addURI(AUTHORITY, "packages", PACKAGES);
@@ -33,6 +38,9 @@ public class MetadataProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, "courses", COURSES);
         sUriMatcher.addURI(AUTHORITY, "chapters", CHAPTERS);
         sUriMatcher.addURI(AUTHORITY, "lessons", LESSONS);
+        sUriMatcher.addURI(AUTHORITY, "gallery", GALLERY);
+        sUriMatcher.addURI(AUTHORITY, "gallery/image/*", GALLERY_IMAGE);
+        sUriMatcher.addURI(AUTHORITY, "gallery/thumbnail/*", GALLERY_THUMBNAIL);
     }
 
     /*
@@ -45,14 +53,24 @@ public class MetadataProvider extends ContentProvider {
 
     private static final String METADATA_MIME_TYPE = DIR_MIME_TYPE
             + ".metadata";
+
     private static final String METADATA_ID_MIME_TYPE = ITEM_MIME_TYPE
             + ".metadata";
 
+    private static final String GALLERY_IMAGE_MIME_TYPE = DIR_MIME_TYPE
+            + ".image";
+
+    private static final String GALLERY_THUMBNAIL_MIME_TYPE = DIR_MIME_TYPE
+            + ".thumbnail";
+
+
     private MetadataDBHandler dbHandler;
+    private FileLog log;
 
     @Override
     public boolean onCreate() {
         dbHandler = new MetadataDBHandler(getContext());
+        log = FileLog.setupLogFile();
         return true;
     }
 
@@ -76,6 +94,9 @@ public class MetadataProvider extends ContentProvider {
             case LESSONS:
                 return dbHandler.getTableManager(LessonTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
+            case GALLERY:
+                return dbHandler.getTableManager(GalleryTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
             default:
                 throw new IllegalArgumentException();
         }
@@ -94,6 +115,10 @@ public class MetadataProvider extends ContentProvider {
                 return METADATA_MIME_TYPE;
             case LESSONS:
                 return METADATA_MIME_TYPE;
+            case GALLERY_IMAGE:
+                return GALLERY_IMAGE_MIME_TYPE;
+            case GALLERY_THUMBNAIL:
+                return GALLERY_THUMBNAIL_MIME_TYPE;
             default:
                 return null;
         }
@@ -140,4 +165,39 @@ public class MetadataProvider extends ContentProvider {
         }
     }
 
+
+    @Override
+    public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
+        log.log(getContext(), "openFile Uri:" + uri.toString());
+        switch (sUriMatcher.match(uri)) {
+            case GALLERY_IMAGE:
+                return readGalleryImageFile(uri);
+            case GALLERY_THUMBNAIL:
+                break;
+        }
+        return null;
+    }
+
+    private ParcelFileDescriptor readGalleryImageFile(Uri uri) {
+        String path = uri.getPath();
+        log.log(getContext(), "uri path=" + uri.getPath());
+        String imagePath = null;
+        if (path.startsWith(File.separator)) {
+            imagePath = path.substring(path.indexOf(File.separator));
+        }
+
+        File imageFile = new File(getContext().getFilesDir(), imagePath);
+
+        if (imageFile.exists()) {
+            ParcelFileDescriptor open = null;
+            try {
+                open = ParcelFileDescriptor.open(imageFile, ParcelFileDescriptor.MODE_READ_ONLY);
+            } catch (Exception e) {
+                log.log(getContext(), "open parce file error.");
+            }
+            return open;
+        }
+        log.log(getContext(), "can not file, path=" + path);
+        return null;
+    }
 }

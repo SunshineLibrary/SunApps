@@ -1,28 +1,27 @@
 package com.sunshine.support.webclient;
 
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.List;
-import java.util.Vector;
-
-import java.net.URI;
-
 import com.sunshine.support.concurrent.ListenableFuture;
 import com.sunshine.support.pkgmgr.Package;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.util.List;
+import java.util.Vector;
 
 
 public class WebClient {
 	private final String list = "http://";
-	private final String url = "http://";
+	private  String url = "http://";
 	
 	public WebClient(){
 	}
@@ -54,6 +53,7 @@ public class WebClient {
 			e.printStackTrace();
 		}
 		finally{
+			//TODO:Async is not implemented yet...
 			return null;
 		}
 	}
@@ -82,7 +82,6 @@ public class WebClient {
 		}
 		finally{
 			//TODO:Async is not implemented yet...
-			//return ret;
 			return null;
 		}
 	}
