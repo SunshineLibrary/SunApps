@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import com.ssl.curriculum.math.model.GalleryItem;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class GalleryAdapter extends BaseAdapter {
         try {
             if (imageView != null) updateImageView(imageView, position);
             else imageView = createNewImageView(position);
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return imageView;
@@ -54,12 +55,13 @@ public class GalleryAdapter extends BaseAdapter {
         imageView.setImageBitmap(bitmap);
     }
 
-    private ImageView createNewImageView(int position) throws FileNotFoundException {
+    private ImageView createNewImageView(int position) throws IOException {
         ImageView imageView = new ImageView(context);
         ParcelFileDescriptor pfdInput = context.getContentResolver().openFileDescriptor(Uri.parse(galleryItemList.get(position).getThumbnailUri()), "r");
         if (pfdInput == null) return imageView;
         Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null);
         imageView.setImageBitmap(bitmap);
+        pfdInput.close();
         return imageView;
     }
 
