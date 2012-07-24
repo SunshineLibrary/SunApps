@@ -4,19 +4,21 @@
               android:layout_width="fill_parent" android:orientation="vertical"
               android:layout_height="fill_parent" android:background="@color/white">
 
-    <TextView android:id="@+id/gallery_page_title" android:layout_height="wrap_content" android:layout_width="wrap_content"
-              android:text="@string/gallery_page_title" android:layout_marginBottom="10dp"/>
-    
+    <TextView android:id="@+id/gallery_page_title" android:layout_height="wrap_content"
+              android:layout_width="wrap_content" android:textSize="23sp"
+              android:layout_marginTop="15dp"
+              android:text="@string/gallery_page_title" android:layout_marginLeft="36dp"/>
+
     <GridView android:id="@+id/image_viewer_grid_view"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:layout_marginBottom="30dp"
               android:layout_marginLeft="30dp"
               android:layout_marginRight="30dp"
-              android:layout_marginTop="60dp"
-              android:columnWidth="200dp"
+              android:layout_marginTop="10dp"
+              android:columnWidth="210dp"
+              android:horizontalSpacing="10dp"
               android:gravity="center"
-              android:horizontalSpacing="30dp"
               android:numColumns="3"
               android:stretchMode="columnWidth"
               android:verticalSpacing="30dp"/>

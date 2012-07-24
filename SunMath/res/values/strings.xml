@@ -4,5 +4,5 @@
     <string name="main_activity_stat_btn_text">Stat</string>
     <string name="title_main_activity">MainActivity</string>
     <string name="title_navi_activity">NaviActivity</string>
-    <string name="gallery_page_title">Gallery Images</string>
+    <string name="gallery_page_title">故宫图片集</string>
 </resources>

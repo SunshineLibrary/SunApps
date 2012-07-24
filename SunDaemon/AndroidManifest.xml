@@ -54,7 +54,6 @@
     </application>
 
     <permission android:protectionLevel="normal" android:name="com.sunshine.metadata.provider.READ_WRITE_PERMISSION"/>
-    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>
