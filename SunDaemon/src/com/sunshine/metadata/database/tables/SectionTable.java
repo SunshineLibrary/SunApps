@@ -1,6 +1,7 @@
 package com.sunshine.metadata.database.tables;
 
 import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.provider.MetadataContract;
 
 import static com.sunshine.metadata.provider.MetadataContract.Lessons;
 import static com.sunshine.metadata.provider.MetadataContract.Sections;
@@ -48,4 +49,9 @@ public class SectionTable extends MenuWithForeignKeyTable {
     public String[] getColumns() {
         return ALL_COLUMNS;
     }
+
+	@Override
+	protected String getForeignKeyColumn() {
+		return MetadataContract.Sections._PARENT_ID;
+	}
 }

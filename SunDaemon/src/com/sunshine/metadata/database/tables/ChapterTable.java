@@ -1,6 +1,7 @@
 package com.sunshine.metadata.database.tables;
 
 import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.provider.MetadataContract;
 
 import static com.sunshine.metadata.provider.MetadataContract.Chapters;
 import static com.sunshine.metadata.provider.MetadataContract.Courses;
@@ -49,4 +50,9 @@ public class ChapterTable extends MenuWithForeignKeyTable {
     public String[] getColumns() {
         return ALL_COLUMNS;
     }
+
+	@Override
+	protected String getForeignKeyColumn() {
+		return MetadataContract.Chapters._PARENT_ID;
+	}
 }

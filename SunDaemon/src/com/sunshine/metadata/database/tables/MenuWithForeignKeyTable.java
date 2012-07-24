@@ -14,11 +14,13 @@ public abstract class MenuWithForeignKeyTable extends Table {
         for (String[] pair : getColumnDefinitions()) {
             query += pair[0] + " " + pair[1] + " , ";
         }
-        query += "FOREIGN KEY (" + MetadataContract.Chapters._PARENT_ID + ") REFERENCES " + getParentTableName() + "(" + getForeignKey() + "));";
+        query += "FOREIGN KEY (" + getForeignKeyColumn() + ") REFERENCES " + getParentTableName() + "(" + getForeignKey() + "));";
         return query;
     }
 
     protected abstract String getForeignKey();
 
     protected abstract String getParentTableName();
+    
+    protected abstract String getForeignKeyColumn();
 }

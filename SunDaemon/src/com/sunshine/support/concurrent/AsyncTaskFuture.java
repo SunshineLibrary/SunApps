@@ -14,7 +14,6 @@ public abstract class AsyncTaskFuture<Params, Progress, V> extends AsyncTask<Par
 		this.listeners = new Vector<Listener<V>>();
 	}		
 	
-	@Override
 	public void addListener(Listener<V> listener) {
 		listeners.add(listener);
 	}
@@ -26,7 +25,6 @@ public abstract class AsyncTaskFuture<Params, Progress, V> extends AsyncTask<Par
 		}
 	}
 	
-	@Override
 	public void start(){
 		execute(params);
 	}

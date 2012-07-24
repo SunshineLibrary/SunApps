@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -25,6 +29,8 @@ public class TableSynchronizer {
 
 	private static final int MAX_RETRY_COUNT = 3;
 	private static final int BATCH_SIZE = 100;
+	private static final DateFormat TIME_FORMAT = new SimpleDateFormat(
+			"yyyy-MM-dd'T'HH:mm:ssZ");
 
 	private Table syncStateTable;
 	private Uri root_uri;
@@ -65,26 +71,30 @@ public class TableSynchronizer {
 			String requestURI = getRequestURI();
 			try {
 				HttpGet request = new HttpGet(requestURI);
+				Log.i(this.getClassName(), requestURI);
 				HttpResponse response = httpClient.execute(request);
 				InputStream result = response.getEntity().getContent();
-	
+
 				JSONArray jsonArr = getJsonArrayFromInputStream(result);
 				isInSync = processJsonArray(jsonArr);
 				updateLastUpdateTime(lastUpdateTime);
-	
+
 			} catch (IOException e) {
 				Log.e(getClassName(), "Failed to get " + requestURI, e);
 				retryCount++;
 			} catch (JSONException e) {
 				Log.e(getClassName(), "Failed to parse response", e);
 				break;
+			} catch (ParseException e) {
+				Log.e(getClassName(), "Failed to parse update time", e);
+				break;
 			}
 		}
-		return retryCount > MAX_RETRY_COUNT;
+		return retryCount <= MAX_RETRY_COUNT;
 	}
 
 	protected String getRequestURI() {
-		return root_uri.buildUpon().appendPath(table.getTableName())
+		return root_uri.buildUpon().appendPath(table.getTableName() + ".json")
 				.appendQueryParameter("timestamp", "" + lastUpdateTime).build()
 				.toString();
 	}
@@ -94,7 +104,7 @@ public class TableSynchronizer {
 		StringBuilder builder = new StringBuilder();
 		BufferedReader reader = new BufferedReader(
 				new InputStreamReader(result));
-	
+
 		int bufferSize = 1024;
 		int readCount, totalReadCount = 0;
 		char[] buffer = new char[bufferSize];
@@ -109,16 +119,17 @@ public class TableSynchronizer {
 		if (totalReadCount > 0) {
 			builder.append(buffer, 0, totalReadCount);
 		}
-	
+
 		return new JSONArray(builder.toString());
 	}
 
-	protected boolean processJsonArray(JSONArray jsonArr) throws JSONException {
+	protected boolean processJsonArray(JSONArray jsonArr) throws JSONException,
+			ParseException {
 		for (int i = 0; i < jsonArr.length(); i++) {
 			JSONObject row = jsonArr.getJSONObject(i);
 			insertOrUpdateRow(row);
-			lastUpdateTime = Math
-					.max(lastUpdateTime, row.getLong("updated_at"));
+			lastUpdateTime = Math.max(lastUpdateTime,
+					TIME_FORMAT.parse(row.getString("updated_at")).getTime());
 		}
 		return jsonArr.length() < BATCH_SIZE;
 	}

@@ -54,13 +54,12 @@ public class WebClient {
 			e.printStackTrace();
 		}
 		finally{
-			//TODO:Async is not implemented yet...
-			return ret;
+			return null;
 		}
 	}
 	
 	public ListenableFuture<URI> getPackageUrl(String id){
-		url = url + "/" + "apk/" + id; 
+		String url = this.url + "/" + "apk/" + id; 
 		HttpGet get = new HttpGet(url);
 		URI ret = null;
 		HttpClient client = new DefaultHttpClient();
@@ -83,7 +82,8 @@ public class WebClient {
 		}
 		finally{
 			//TODO:Async is not implemented yet...
-			return ret;
+			//return ret;
+			return null;
 		}
 	}
 	
