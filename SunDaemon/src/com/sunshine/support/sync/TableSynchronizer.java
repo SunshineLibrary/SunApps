@@ -52,16 +52,18 @@ public class TableSynchronizer {
 	}
 
 	private long getLastUpdateTimeFromDB() {
+		long lastUpdate = 0;
 		Cursor cursor = syncStateTable.query(null, syncStateTable.getColumns(),
 				APISyncState._TABLE_NAME + "=?",
 				new String[] { table.getTableName() }, null);
 		if (cursor.moveToFirst()) {
-			return cursor.getLong(cursor
+			lastUpdate = cursor.getLong(cursor
 					.getColumnIndex(APISyncState._LAST_UPDATE));
 		} else {
 			updateLastUpdateTime(0);
-			return 0;
 		}
+		cursor.close();
+		return lastUpdate;
 	}
 
 	public boolean sync() {
