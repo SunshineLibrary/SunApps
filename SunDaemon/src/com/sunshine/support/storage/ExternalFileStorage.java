@@ -12,7 +12,6 @@ public class ExternalFileStorage implements FileStorage{
         externalStorageRoot = Environment.getExternalStorageDirectory();
     }
 
-    @Override
     public File mkdir(String directory) {
         String[] directories = directory.split("/");
         if(directories == null || directories.length == 0) return externalStorageRoot;
@@ -28,7 +27,6 @@ public class ExternalFileStorage implements FileStorage{
         return file;
     }
 
-    @Override
     public File createFile(File dir, String fileName) throws IOException {
         File file = new File(dir, fileName);
         if (!file.exists() || file.isDirectory()) {
@@ -37,7 +35,6 @@ public class ExternalFileStorage implements FileStorage{
         return file;
     }
 
-    @Override
     public File readFile(String filePath) {
         return new File(externalStorageRoot, filePath);
     }

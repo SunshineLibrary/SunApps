@@ -32,7 +32,7 @@ public final class MetadataContract {
 
     public static final class Chapters {
         public static final String _ID = BaseColumns._ID;
-        public static final String _PARENT_ID = "parent_id";
+        public static final String _PARENT_ID = "course_id";
         public static final String _NAME = "name";
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("chapters").build();
@@ -40,7 +40,7 @@ public final class MetadataContract {
 
     public static final class Lessons {
         public static final String _ID = BaseColumns._ID;
-        public static final String _PARENT_ID = "parent_id";
+        public static final String _PARENT_ID = "chapter_id";
         public static final String _NAME = "name";
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("lessons").build();
@@ -48,7 +48,7 @@ public final class MetadataContract {
 
     public static final class Sections {
         public static final String _ID = BaseColumns._ID;
-        public static final String _PARENT_ID = "parent_id";
+        public static final String _PARENT_ID = "lesson_id";
         public static final String _NAME = "name";
     }
 
