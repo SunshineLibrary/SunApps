@@ -48,8 +48,8 @@ public class MainActivity extends Activity {
         String imageContentUri = null;
         Cursor cursor = contentResolver.query(MetadataContract.Gallery.CONTENT_URI, columns, null, null, null);
         if (cursor.moveToFirst()) {
-            int thumbnailImageIndex = cursor.getColumnIndex(MetadataContract.Gallery._THUMBNAIL_PATH);
-            imageContentUri = cursor.getString(thumbnailImageIndex);
+            int imageIndex = cursor.getColumnIndex(MetadataContract.Gallery._IMAGE_PATH);
+            imageContentUri = cursor.getString(imageIndex);
         }
         cursor.close();
 

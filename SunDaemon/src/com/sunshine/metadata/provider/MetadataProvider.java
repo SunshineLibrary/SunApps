@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import com.sunshine.metadata.database.MetadataDBHandler;
 import com.sunshine.metadata.database.tables.*;
+import com.sunshine.support.storage.FileStorage;
+import com.sunshine.support.storage.FileStorageManager;
 import com.sunshine.utils.FileLog;
 
 import java.io.File;
@@ -66,11 +68,13 @@ public class MetadataProvider extends ContentProvider {
 
     private MetadataDBHandler dbHandler;
     private FileLog log;
+    private FileStorage fileStorage;
 
     @Override
     public boolean onCreate() {
         dbHandler = new MetadataDBHandler(getContext());
         log = FileLog.setupLogFile();
+        fileStorage = FileStorageManager.getInstance().getReadableFileStorage();
         return true;
     }
 
@@ -130,6 +134,9 @@ public class MetadataProvider extends ContentProvider {
             case PACKAGES:
                 return dbHandler.getTableManager(PackageTable.TABLE_NAME).insert(
                         uri, values);
+            case GALLERY:
+                return dbHandler.getTableManager(GalleryTable.TABLE_NAME).insert(
+                        uri, values);
             default:
                 throw new IllegalArgumentException();
         }
@@ -186,7 +193,7 @@ public class MetadataProvider extends ContentProvider {
             imagePath = path.substring(path.indexOf(File.separator));
         }
 
-        File imageFile = new File(getContext().getFilesDir(), imagePath);
+        File imageFile = fileStorage.readFile(imagePath);
 
         if (imageFile.exists()) {
             ParcelFileDescriptor open = null;
