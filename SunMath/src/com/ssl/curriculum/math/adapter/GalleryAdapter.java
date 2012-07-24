@@ -1,23 +1,31 @@
 package com.ssl.curriculum.math.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Gallery;
 import android.widget.ImageView;
-import com.ssl.curriculum.math.R;
+import com.ssl.curriculum.math.model.GalleryItem;
+
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GalleryAdapter extends BaseAdapter {
-    private int drawableArray[] = new int[]{R.drawable.ic_main_activity_show_next_disable, R.drawable.ic_main_activity_show_next_enable, R.drawable.ic_main_activity_show_previous_disable};
     private Context context;
+    private List<GalleryItem> galleryItemList;
 
     public GalleryAdapter(Context context) {
         this.context = context;
+        galleryItemList = new ArrayList<GalleryItem>();
     }
 
     public int getCount() {
-        return Integer.MAX_VALUE;
+        return galleryItemList.size();
     }
 
     public Object getItem(int position) {
@@ -30,17 +38,33 @@ public class GalleryAdapter extends BaseAdapter {
 
     public View getView(int position, View view, ViewGroup viewGroup) {
         ImageView imageView = (ImageView) view;
-        if(imageView != null) return imageView;
-        imageView = createNewImageView(position);
+        try {
+            if (imageView != null) updateImageView(imageView, position);
+            else imageView = createNewImageView(position);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         return imageView;
-
     }
 
-    private ImageView createNewImageView(int position) {
+    private void updateImageView(ImageView imageView, int position) throws FileNotFoundException {
+        ParcelFileDescriptor pfdInput = context.getContentResolver().openFileDescriptor(Uri.parse(galleryItemList.get(position).getThumbnailUri()), "r");
+        if (pfdInput == null) return;
+        Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null);
+        imageView.setImageBitmap(bitmap);
+    }
+
+    private ImageView createNewImageView(int position) throws FileNotFoundException {
         ImageView imageView = new ImageView(context);
-        imageView.setImageResource(drawableArray[position % drawableArray.length]);
-        imageView.setLayoutParams(new Gallery.LayoutParams(Gallery.LayoutParams.FILL_PARENT, Gallery.LayoutParams.FILL_PARENT));
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        ParcelFileDescriptor pfdInput = context.getContentResolver().openFileDescriptor(Uri.parse(galleryItemList.get(position).getThumbnailUri()), "r");
+        if (pfdInput == null) return imageView;
+        Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null);
+        imageView.setImageBitmap(bitmap);
         return imageView;
+    }
+
+    public void setGalleryData(List<GalleryItem> galleryItemList) {
+        this.galleryItemList = galleryItemList;
+        notifyDataSetChanged();
     }
 }

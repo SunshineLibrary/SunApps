@@ -178,23 +178,18 @@ public class MetadataProvider extends ContentProvider {
         log.log(getContext(), "openFile Uri:" + uri.toString());
         switch (sUriMatcher.match(uri)) {
             case GALLERY_IMAGE:
-                return readGalleryImageFile(uri);
             case GALLERY_THUMBNAIL:
-                break;
+                return readImageFile(uri);
+            default:
+                return null;
         }
-        return null;
     }
 
-    private ParcelFileDescriptor readGalleryImageFile(Uri uri) {
+    private ParcelFileDescriptor readImageFile(Uri uri) {
         String path = uri.getPath();
         log.log(getContext(), "uri path=" + uri.getPath());
-        String imagePath = null;
-        if (path.startsWith(File.separator)) {
-            imagePath = path.substring(path.indexOf(File.separator));
-        }
-
+        String imagePath = trimPreviousSlash(path);
         File imageFile = fileStorage.readFile(imagePath);
-
         if (imageFile.exists()) {
             ParcelFileDescriptor open = null;
             try {
@@ -206,5 +201,13 @@ public class MetadataProvider extends ContentProvider {
         }
         log.log(getContext(), "can not file, path=" + path);
         return null;
+    }
+
+    private String trimPreviousSlash(String path) {
+        String thumbnailPath = null;
+        if (path.startsWith(File.separator)) {
+            thumbnailPath = path.substring(path.indexOf(File.separator));
+        }
+        return thumbnailPath;
     }
 }

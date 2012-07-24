@@ -1,14 +1,8 @@
 package com.ssl.curriculum.math.activity;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -16,10 +10,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.R;
-import com.ssl.curriculum.math.model.MetadataContract;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import com.ssl.curriculum.math.page.GalleryThumbnailPage;
+import com.ssl.curriculum.math.service.GalleryContentProvider;
+import com.ssl.curriculum.math.task.FetchGalleryContentTask;
 
 public class MainActivity extends Activity {
 
@@ -31,7 +24,8 @@ public class MainActivity extends Activity {
     private Animation animFlipInFromLeft;
     private Animation animFlipOutToRight;
     private Animation animFlipOutToLeft;
-    private ImageView contentProviderImageView;
+    private GalleryThumbnailPage galleryThumbnailPage;
+    private GalleryContentProvider galleryContentProvider;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,33 +33,18 @@ public class MainActivity extends Activity {
         initUI();
         initListeners();
         loadAnimation();
-        loadData();
     }
 
-    private void loadData() {
-        ContentResolver contentResolver = this.getContentResolver();
-        String[] columns = {MetadataContract.Gallery._ID, MetadataContract.Gallery._IMAGE_PATH, MetadataContract.Gallery._THUMBNAIL_PATH, MetadataContract.Gallery._DESCRIPTION};
-        String imageContentUri = null;
-        Cursor cursor = contentResolver.query(MetadataContract.Gallery.CONTENT_URI, columns, null, null, null);
-        if (cursor.moveToFirst()) {
-            int imageIndex = cursor.getColumnIndex(MetadataContract.Gallery._IMAGE_PATH);
-            imageContentUri = cursor.getString(imageIndex);
-        }
-        cursor.close();
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        loadGalleryContent();
+    }
 
-        if (imageContentUri == null) return;
-        System.out.println("-------------------------------imageContentUri = " + imageContentUri);
-        try {
-            ParcelFileDescriptor pfdInput = contentResolver.openFileDescriptor(Uri.parse(imageContentUri), "r");
-            System.out.println("---------------------pfdInput = " + pfdInput);
-            if(pfdInput == null) return;
-            Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null);
-            contentProviderImageView.setImageBitmap(bitmap);
-        } catch (FileNotFoundException e) {
-            System.out.println("-------------------e = " + e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void loadGalleryContent() {
+        galleryContentProvider = new GalleryContentProvider(this);
+        FetchGalleryContentTask fetchGalleryContentTask = new FetchGalleryContentTask(galleryContentProvider, galleryThumbnailPage);
+        fetchGalleryContentTask.execute();
     }
 
     private void initUI() {
@@ -74,7 +53,7 @@ public class MainActivity extends Activity {
         this.leftBtn = (ImageView) this.findViewById(R.id.main_activity_left_btn);
         this.rightBtn = (ImageView) this.findViewById(R.id.main_activity_right_btn);
         this.naviBtn = (ImageView) this.findViewById(R.id.main_activity_navi_btn);
-        contentProviderImageView = (ImageView) this.findViewById(R.id.content_provider_image_view);
+        galleryThumbnailPage = (GalleryThumbnailPage) findViewById(R.id.gallery_thumbnail_page);
     }
 
     private void initListeners() {

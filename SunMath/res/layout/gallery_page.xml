@@ -8,8 +8,8 @@
               android:text="@string/gallery_page_title" android:layout_marginBottom="10dp"/>
     
     <GridView android:id="@+id/image_viewer_grid_view"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
               android:layout_marginBottom="30dp"
               android:layout_marginLeft="30dp"
               android:layout_marginRight="30dp"
