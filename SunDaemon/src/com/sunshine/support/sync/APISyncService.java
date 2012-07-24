@@ -11,7 +11,7 @@ public class APISyncService extends Service {
 
 	private boolean syncInProgress;
 	private APISyncTask syncTask;
-	private static final String IP = "127.0.0.1";
+	private static final String IP = "42.121.65.247";
 	private static final long MIN_DELAY = 1200000;
 	private ConnectivityManager cm;
 
@@ -54,7 +54,6 @@ public class APISyncService extends Service {
 		if (isConnected()) {
 			Handler handler = new Handler();
 			handler.postDelayed(new Runnable() {
-				@Override
 				public void run() {
 					Intent intent = new Intent(SERVICE_ACTION);
 					getBaseContext().startService(intent);

@@ -4,7 +4,13 @@ public class Package {
 	
 	String name;
 	String version;
+	String id;
 	
+	public Package(String name, String version, String id) {
+		this.name = name;
+		this.version = version;
+		this.id = id;
+	}
 	
 	public String getName() {
 		return name;
@@ -18,6 +24,15 @@ public class Package {
 	public void setVersion(String version) {
 		this.version = version;
 	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -48,4 +48,9 @@ public class LessonTable extends MenuWithForeignKeyTable {
     public String[] getColumns() {
         return ALL_COLUMNS;
     }
+
+	@Override
+	protected String getForeignKeyColumn() {
+		return MetadataContract.Lessons._PARENT_ID;
+	}
 }
