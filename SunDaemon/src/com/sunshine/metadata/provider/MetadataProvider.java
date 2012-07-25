@@ -1,6 +1,7 @@
 package com.sunshine.metadata.provider;
 
 import android.content.ContentProvider;
+
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
