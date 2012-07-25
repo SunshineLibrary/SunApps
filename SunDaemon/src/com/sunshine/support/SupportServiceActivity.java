@@ -26,7 +26,7 @@ public class SupportServiceActivity extends Activity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        initFileStorage();
+//        initFileStorage();
     }
 
     private void initFileStorage() {
