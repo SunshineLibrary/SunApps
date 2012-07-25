@@ -17,9 +17,12 @@
         <activity android:name=".activity.NaviActivity" android:label="@string/title_navi_activity"
                   android:screenOrientation="landscape">
         </activity>
+
+        <activity android:name=".activity.GalleryFlipperActivity" android:label="@string/gallery_flipper_activity_title"
+                  android:screenOrientation="landscape">
+        </activity>
     </application>
     <uses-permission android:name="com.sunshine.metadata.provider.READ_WRITE_PERMISSION"/>
-    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="15"/>
 

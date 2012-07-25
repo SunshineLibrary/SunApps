@@ -14,6 +14,7 @@ import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.videoview.SunLibMediaController;
 import com.ssl.curriculum.math.component.videoview.SunLibVideoView;
+import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
 import com.ssl.curriculum.math.page.GalleryThumbnailPage;
 import com.ssl.curriculum.math.service.GalleryContentProvider;
 import com.ssl.curriculum.math.task.FetchGalleryContentTask;
@@ -48,7 +49,7 @@ public class MainActivity extends Activity {
 
     private void loadGalleryContent() {
         galleryContentProvider = new GalleryContentProvider(this);
-        FetchGalleryContentTask fetchGalleryContentTask = new FetchGalleryContentTask(galleryContentProvider, galleryThumbnailPage);
+        FetchGalleryContentTask fetchGalleryContentTask = new FetchGalleryContentTask(galleryContentProvider);
         fetchGalleryContentTask.execute();
     }
 
@@ -111,10 +112,19 @@ public class MainActivity extends Activity {
         });
         this.naviBtn.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), NaviActivity.class);
+                Intent intent = new Intent(MainActivity.this, NaviActivity.class);
                 startActivity(intent);
             }
         });
+
+        galleryThumbnailPage.setGalleryItemClickedListener(new GalleryItemClickedListener() {
+            @Override
+            public void onGalleryItemClicked(int position) {
+                Intent intent = new Intent(MainActivity.this, GalleryFlipperActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void loadAnimation() {

@@ -4,8 +4,7 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;  
   
 public class ImageViewerGestureListener extends SimpleOnGestureListener {
-      
-    private OnFlingListener mOnFlingListener;  
+    private OnFlingListener mOnFlingListener;
   
     public OnFlingListener getOnFlingListener() {  
         return mOnFlingListener;  

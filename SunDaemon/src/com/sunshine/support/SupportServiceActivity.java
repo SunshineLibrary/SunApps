@@ -33,7 +33,8 @@ public class SupportServiceActivity extends Activity {
     }
 
     private void initFileStorage() {
-        imageTestData = new ImageTestData(getResources(), getContentResolver());
+        if (imageTestData.hasPreparedData()) return;
+        imageTestData = new ImageTestData(this);
         imageTestData.prepareDataForGallery("image01.jpeg", "thumbnail01.jpg", R.drawable.image01, R.drawable.thumbnail01, "test 01");
         imageTestData.prepareDataForGallery("image02.jpeg", "thumbnail02.jpg", R.drawable.image02, R.drawable.thumbnail02, "test 02");
         imageTestData.prepareDataForGallery("image03.jpeg", "thumbnail03.jpg", R.drawable.image03, R.drawable.thumbnail03, "test 03");
@@ -45,6 +46,7 @@ public class SupportServiceActivity extends Activity {
         imageTestData.prepareDataForGallery("image09.jpeg", "thumbnail09.jpg", R.drawable.image04, R.drawable.thumbnail04, "test 09");
         imageTestData.prepareDataForGallery("image10.jpeg", "thumbnail10.jpg", R.drawable.image04, R.drawable.thumbnail04, "test 09");
         imageTestData.prepareDataForGallery("image11.jpeg", "thumbnail11.jpg", R.drawable.image04, R.drawable.thumbnail04, "test 09");
+        imageTestData.setHasPreparedData(true);
     }
 
 

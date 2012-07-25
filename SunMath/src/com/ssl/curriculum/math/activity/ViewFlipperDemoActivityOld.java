@@ -14,7 +14,7 @@ import com.ssl.curriculum.math.component.ImageViewerFlipper;
 import com.ssl.curriculum.math.listener.OnViewFlipperListener;
 
 
-public class ViewFlipperDemoActivity extends Activity implements OnViewFlipperListener {
+public class ViewFlipperDemoActivityOld extends Activity implements OnViewFlipperListener {
 
     private ImageViewerFlipper imageViewerFlipper;
     private int currentNumber;

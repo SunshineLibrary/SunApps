@@ -9,4 +9,6 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="video_frame_background">#EBE8E0</color>
+    <color name="gallery_flipper_text_bg">#1E1E1E</color>
+    <color name="gallery_flipper_text">#A0A0A0</color>
 </resources>
