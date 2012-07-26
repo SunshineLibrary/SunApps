@@ -7,13 +7,12 @@ public final class MetadataContract {
 
     public static final String AUTHORITY = "com.sunshine.metadata.provider";
 
-    public static final Uri AUTHORITY_URI;
+    public static final Uri AUTHORITY_URI = new Uri.Builder().scheme("content")
+            .authority(AUTHORITY).build();
 
-    static {
-        AUTHORITY_URI = new Uri.Builder().scheme("content")
-                .authority(AUTHORITY).build();
-    }
-
+    /*
+    *  课内内容
+    */
     public static final class Gallery {
         public static final String _ID = BaseColumns._ID;
         public static final String _THUMBNAIL_PATH = "thumbnail";
@@ -52,20 +51,30 @@ public final class MetadataContract {
         public static final String _NAME = "name";
     }
 
-
-    public static final class Packages extends Downloadable {
+    public static final class Activities extends Downloadable {
         public static final String _ID = BaseColumns._ID;
+        public static final String _SECTION_ID = "section_id";
+        public static final String _PROVIDER_ID = "provider_id";
+        public static final String _TYPE = "activity_type";
+        public static final String _SEQUENCE = "seq";
         public static final String _NAME = "name";
-        public static final String _VERSION = "version";
+        public static final String _LENGTH = "length";
+        public static final String _NOTES = "notes";
+        public static final String _DIFFICULTY = "difficulty";
 
-        public static final Uri CONTENT_URI;
-
-        static {
-            CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("packages")
-                    .build();
+        public static enum Types {
+            TEXT,
+            AUDIO,
+            VIDEO,
+            GALLERY,
+            QUIZ,
+            HTML
         }
     }
 
+    /*
+     *  课外内容
+     */
     public static final class BookCollections {
 
         public static final String _ID = BaseColumns._ID;
@@ -232,13 +241,27 @@ public final class MetadataContract {
         }
     }
 
+    /*
+     * 其他内容
+     */
+    public static final class Packages extends Downloadable {
+        public static final String _ID = BaseColumns._ID;
+        public static final String _NAME = "name";
+        public static final String _VERSION = "version";
+
+        public static final Uri CONTENT_URI;
+
+        static {
+            CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("packages")
+                    .build();
+        }
+    }
+
     public static class Downloadable {
 
         public static final String _DOWNLOAD_STATUS = "download_status";
 
         public static final String _DOWNLOAD_PROGRESS = "download_progress";
-
-        public static final String _FILE_LOCATION = "file_location";
 
         public static enum STATUS {
             NOT_DOWNLOADED, QUEUED, DOWNLOADING, DOWNLOADED, MARK_DELETE

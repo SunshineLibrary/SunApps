@@ -34,6 +34,9 @@ public class MetadataProvider extends ContentProvider {
     private static final int GALLERY = 6;
     private static final int GALLERY_IMAGE = 7;
     private static final int GALLERY_THUMBNAIL = 8;
+    private static final int ACTIVITIES = 9;
+    private static final int ACTIVITIES_THUMBNAIL = 10;
+    private static final int ACTIVITIES_FILE = 11;
 
     static {
         sUriMatcher.addURI(AUTHORITY, "packages", PACKAGES);
@@ -44,6 +47,9 @@ public class MetadataProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, "gallery", GALLERY);
         sUriMatcher.addURI(AUTHORITY, "gallery/image/*", GALLERY_IMAGE);
         sUriMatcher.addURI(AUTHORITY, "gallery/thumbnail/*", GALLERY_THUMBNAIL);
+        sUriMatcher.addURI(AUTHORITY, "activities", ACTIVITIES);
+        sUriMatcher.addURI(AUTHORITY, "activities/thumbnail/#", ACTIVITIES_THUMBNAIL);
+        sUriMatcher.addURI(AUTHORITY, "activities/file/#", ACTIVITIES_FILE);
     }
 
     /*

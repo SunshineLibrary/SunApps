@@ -35,6 +35,7 @@ public class MetadataDBHandler extends SQLiteOpenHelper {
         setTableManager(ChapterTable.TABLE_NAME, new ChapterTable(this));
         setTableManager(LessonTable.TABLE_NAME, new LessonTable(this));
         setTableManager(SectionTable.TABLE_NAME, new SectionTable(this));
+        setTableManager(ActivityTable.TABLE_NAME, new ActivityTable(this));
         setTableManager(GalleryTable.TABLE_NAME, new GalleryTable(this));
     }
 

@@ -29,8 +29,7 @@ public class TableSynchronizer {
 
 	private static final int MAX_RETRY_COUNT = 3;
 	private static final int BATCH_SIZE = 100;
-	private static final DateFormat TIME_FORMAT = new SimpleDateFormat(
-			"yyyy-MM-dd'T'HH:mm:ssZ");
+    private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
 	private Table syncStateTable;
 	private Uri root_uri;
@@ -59,8 +58,6 @@ public class TableSynchronizer {
 		if (cursor.moveToFirst()) {
 			lastUpdate = cursor.getLong(cursor
 					.getColumnIndex(APISyncState._LAST_UPDATE));
-		} else {
-			updateLastUpdateTime(0);
 		}
 		cursor.close();
 		return lastUpdate;
@@ -130,13 +127,16 @@ public class TableSynchronizer {
 		for (int i = 0; i < jsonArr.length(); i++) {
 			JSONObject row = jsonArr.getJSONObject(i);
 			insertOrUpdateRow(row);
-			lastUpdateTime = Math.max(lastUpdateTime,
-					TIME_FORMAT.parse(row.getString("updated_at")).getTime());
+            lastUpdateTime = Math.max(lastUpdateTime, parseTime(row.getString("updated_at")));
 		}
 		return jsonArr.length() < BATCH_SIZE;
 	}
 
-	protected ContentValues getContentValuesFromRow(JSONObject row) {
+    private long parseTime(String updated_at) throws ParseException, JSONException {
+        return TIME_FORMAT.parse(updated_at).getTime();
+    }
+
+    protected ContentValues getContentValuesFromRow(JSONObject row) {
 		ContentValues values = new ContentValues();
 		for (String column : table.getColumns()) {
 			try {

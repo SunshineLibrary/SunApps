@@ -11,7 +11,7 @@ public class APISyncService extends Service {
 
 	private boolean syncInProgress;
 	private APISyncTask syncTask;
-	private static final String IP = "42.121.65.247";
+	private static final String IP = "ssl-mock.herokuapp.com";
 	private static final long MIN_DELAY = 1200000;
 	private ConnectivityManager cm;
 

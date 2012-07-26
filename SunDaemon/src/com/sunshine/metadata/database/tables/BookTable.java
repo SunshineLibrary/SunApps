@@ -7,7 +7,7 @@ import com.sunshine.metadata.provider.MetadataContract.Books;
  * @author Bowen Sun
  *
  */
-public class BookTable extends Table {
+public class BookTable extends DownloadableTable {
 	
 	public static final String TABLE_NAME = "books";
 	

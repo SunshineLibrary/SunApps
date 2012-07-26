@@ -1,5 +1,6 @@
 package com.sunshine.support.sync;
 
+import com.sunshine.metadata.database.tables.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -7,13 +8,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 import com.sunshine.metadata.database.MetadataDBHandler;
-import com.sunshine.metadata.database.tables.APISyncStateTable;
-import com.sunshine.metadata.database.tables.ChapterTable;
-import com.sunshine.metadata.database.tables.CourseTable;
-import com.sunshine.metadata.database.tables.LessonTable;
-import com.sunshine.metadata.database.tables.PackageTable;
-import com.sunshine.metadata.database.tables.SectionTable;
-import com.sunshine.metadata.database.tables.Table;
 
 public class APISyncTask extends AsyncTask<String, String, Integer> {
 
@@ -23,12 +17,13 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
 	private MetadataDBHandler dbHandler;
 	private APISyncService context;
 
-	private static final String[] SYNCED_TABLES = { 
-		CourseTable.TABLE_NAME,
-		ChapterTable.TABLE_NAME,
-		LessonTable.TABLE_NAME,
-		SectionTable.TABLE_NAME,
-	};
+	private static final String[] SYNCED_TABLES = {
+            CourseTable.TABLE_NAME,
+            ChapterTable.TABLE_NAME,
+            LessonTable.TABLE_NAME,
+            SectionTable.TABLE_NAME,
+            ActivityTable.TABLE_NAME,
+    };
 
 	public static final int SYNC_SUCCESS = 0;
 	public static final int SYNC_FAILURE = -1;
