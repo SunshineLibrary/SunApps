@@ -8,9 +8,7 @@ import android.net.Uri;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.View;
+import android.view.*;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -20,11 +18,10 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         MediaPlayer.OnPreparedListener, SurfaceHolder.Callback {
 
     private static final String TAG = "VideoPlayer";
-    private ImageButton playButton;
     private long lastActionTime = 0L;
     private View controlPanel;
     private ProgressBar timeline;
-    private ImageButton media;
+    private ImageButton playButton;
     private TappableSurfaceView surface;
     private SurfaceHolder holder;
     private MediaPlayer player;
@@ -34,6 +31,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     private Context context;
     private Uri uri;
     private boolean isPaused;
+    private ViewGroup content;
 
     public VideoPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -46,20 +44,25 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     }
 
     private void initUI() {
-//        surface = (TappableSurfaceView) findViewById(R.id.video_player_surface);
-//        surface.addTapListener(onTap);
-//        holder = surface.getHolder();
-//        holder.addCallback(this);
-//        holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-//
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        content = (ViewGroup) inflater.inflate(R.layout.video_player, null);
+
+        this.addView(content);
+
+        surface = (TappableSurfaceView) findViewById(R.id.video_player_surface);
+        surface.addTapListener(onTap);
+        holder = surface.getHolder();
+        holder.addCallback(this);
+        holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
         controlPanel = findViewById(R.id.video_player_control_panel);
         timeline = (ProgressBar) findViewById(R.id.video_player_time_line);
 
-        media = (ImageButton) findViewById(R.id.video_player_media);
+        playButton = (ImageButton) findViewById(R.id.video_player_media);
     }
 
     private void initListener() {
-        media.setOnClickListener(new OnClickListener() {
+        playButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 lastActionTime = SystemClock.elapsedRealtime();
 
@@ -72,12 +75,12 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
             }
 
             private void pause() {
-                media.setImageResource(R.drawable.ic_media_play);
+                playButton.setImageResource(R.drawable.ic_media_play);
                 player.pause();
             }
 
             private void start() {
-                media.setImageResource(R.drawable.ic_media_pause);
+                playButton.setImageResource(R.drawable.ic_media_pause);
                 player.start();
             }
         });
@@ -89,50 +92,50 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
 
     public void start() {
         if (uri == null) return;
+
         playVideo(uri.toString());
         clearPanels();
     }
 
     protected void onResume() {
-        isPaused=false;
+        isPaused = false;
         surface.postDelayed(onEverySecond, 1000);
     }
 
-    final private Runnable onEverySecond=new Runnable() {
-		public void run() {
-			if (lastActionTime>0 &&
-					SystemClock.elapsedRealtime()-lastActionTime>3000) {
-				clearPanels();
-			}
+    final private Runnable onEverySecond = new Runnable() {
+        public void run() {
+            if (lastActionTime > 0 &&
+                    SystemClock.elapsedRealtime() - lastActionTime > 3000) {
+                clearPanels();
+            }
 
-			if (player!=null) {
-				timeline.setProgress(player.getCurrentPosition());
-			}
+            if (player != null) {
+                timeline.setProgress(player.getCurrentPosition());
+            }
 
-			if (!isPaused) {
-				surface.postDelayed(onEverySecond, 1000);
-			}
-		}
-	};
+            if (!isPaused) {
+                surface.postDelayed(onEverySecond, 1000);
+            }
+        }
+    };
 
     protected void onPause() {
-        isPaused=true;
+        isPaused = true;
     }
 
     protected void onDestroy() {
-        if (player!=null) {
+        if (player != null) {
             player.release();
-            player=null;
+            player = null;
         }
 
         surface.removeTapListener(onTap);
     }
 
 
-
     private void playVideo(String url) {
         try {
-            media.setEnabled(false);
+            playButton.setEnabled(false);
 
             if (player == null) {
                 player = new MediaPlayer();
@@ -142,7 +145,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
                 player.reset();
             }
 
-            player.setDataSource(url);
+            player.setDataSource(this.context, uri);
             player.setDisplay(holder);
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.setOnPreparedListener(this);
@@ -166,6 +169,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
                     lastActionTime = SystemClock.elapsedRealtime();
 
                     controlPanel.setVisibility(View.VISIBLE);
+                    VideoPlayer.this.start();
                 }
             };
 
