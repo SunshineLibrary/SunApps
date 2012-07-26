@@ -7,7 +7,7 @@
     <RelativeLayout android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/main_activity_navi_background">
+                    android:background="@drawable/main_activity_background">
         <ImageView android:id="@+id/main_activity_navi_btn"
                    android:src="@drawable/ic_main_activity_navi"
                    android:layout_width="wrap_content"
@@ -46,7 +46,7 @@
     <RelativeLayout android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/main_activity_navi_background">
+                    android:background="@drawable/main_activity_background">
 
         <ImageView android:layout_height="fill_parent"
                    android:layout_width="6dp"

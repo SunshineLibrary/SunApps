@@ -2,10 +2,6 @@ package com.ssl.curriculum.math.model.menu;
 
 import org.junit.Test;
 
-import static junit.framework.Assert.assertNull;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-
 public class MenuItemTest {
 
     @Test

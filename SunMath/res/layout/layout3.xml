@@ -15,8 +15,7 @@
         <com.ssl.curriculum.math.component.videoview.SunLibVideoView android:id="@+id/content_screen_video_field"
                    android:layout_width="655dp"
                    android:layout_height="437dp"
-                   android:layout_gravi
-                   ty="center"/>
+                   android:layout_gravity="center"/>
     </RelativeLayout>
     <TextView android:layout_height="wrap_content"
               android:layout_width="fill_parent"
