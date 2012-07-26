@@ -37,11 +37,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-<<<<<<< HEAD
         //loadGalleryContent();
-=======
-//        loadGalleryContent();
->>>>>>> 6fc2aef781741152d81dcc148ef3d4e624c938ec
     }
 
     private void loadGalleryContent() {
