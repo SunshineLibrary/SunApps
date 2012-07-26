@@ -26,7 +26,8 @@ public class NavigationMenuContentProvider implements NavigationMenuProvider {
         Menu rootMenu = Menu.createMenuWithoutParent(ROOT_MENU_NAME);
         HashMap<Integer, Menu> coursesMap = fetchCoursesMap(rootMenu);
         HashMap<Integer, Menu> chapterMap = fetchChildMenu(coursesMap, Chapters.CONTENT_URI, Chapters._ID, Chapters._PARENT_ID, Chapters._NAME);
-        fetchChildMenuItem(chapterMap, Lessons.CONTENT_URI, Lessons._PARENT_ID, Lessons._NAME);
+        HashMap<Integer, Menu> lessonMap = fetchChildMenu(chapterMap, Lessons.CONTENT_URI,Lessons._ID , Lessons._PARENT_ID, Lessons._NAME);
+        fetchChildMenuItem(lessonMap, Sections.CONTENT_URI, Sections._PARENT_ID, Sections._NAME);
         return rootMenu;
     }
 

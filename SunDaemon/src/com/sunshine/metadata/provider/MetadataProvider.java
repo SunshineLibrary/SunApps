@@ -31,12 +31,13 @@ public class MetadataProvider extends ContentProvider {
     private static final int COURSES = 3;
     private static final int CHAPTERS = 4;
     private static final int LESSONS = 5;
-    private static final int GALLERY = 6;
-    private static final int GALLERY_IMAGE = 7;
-    private static final int GALLERY_THUMBNAIL = 8;
-    private static final int ACTIVITIES = 9;
-    private static final int ACTIVITIES_THUMBNAIL = 10;
-    private static final int ACTIVITIES_FILE = 11;
+    private static final int SECTIONS = 6;
+    private static final int GALLERY = 7;
+    private static final int GALLERY_IMAGE = 8;
+    private static final int GALLERY_THUMBNAIL = 9;
+    private static final int ACTIVITIES = 10;
+    private static final int ACTIVITIES_THUMBNAIL = 11;
+    private static final int ACTIVITIES_FILE = 12;
 
     static {
         sUriMatcher.addURI(AUTHORITY, "packages", PACKAGES);
@@ -44,6 +45,7 @@ public class MetadataProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, "courses", COURSES);
         sUriMatcher.addURI(AUTHORITY, "chapters", CHAPTERS);
         sUriMatcher.addURI(AUTHORITY, "lessons", LESSONS);
+        sUriMatcher.addURI(AUTHORITY, "sections", SECTIONS);
         sUriMatcher.addURI(AUTHORITY, "gallery", GALLERY);
         sUriMatcher.addURI(AUTHORITY, "gallery/image/*", GALLERY_IMAGE);
         sUriMatcher.addURI(AUTHORITY, "gallery/thumbnail/*", GALLERY_THUMBNAIL);
@@ -105,6 +107,9 @@ public class MetadataProvider extends ContentProvider {
             case LESSONS:
                 return dbHandler.getTableManager(LessonTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
+            case SECTIONS:
+                return dbHandler.getTableManager(SectionTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
             case GALLERY:
                 return dbHandler.getTableManager(GalleryTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
@@ -125,6 +130,8 @@ public class MetadataProvider extends ContentProvider {
             case CHAPTERS:
                 return METADATA_MIME_TYPE;
             case LESSONS:
+                return METADATA_MIME_TYPE;
+            case SECTIONS:
                 return METADATA_MIME_TYPE;
             case GALLERY_IMAGE:
                 return GALLERY_IMAGE_MIME_TYPE;
