@@ -7,4 +7,5 @@ import java.util.List;
 public interface GalleryContentChangedListener {
 
     void onContentChanged(List<GalleryItem> galleryItems);
+
 }

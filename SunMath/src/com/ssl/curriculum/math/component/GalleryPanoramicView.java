@@ -22,7 +22,6 @@ public class GalleryPanoramicView extends RelativeLayout implements GestureDetec
         initUI();
         initListener();
         initFlipData();
-        flipAnimationManager = FlipAnimationManager.getInstance(getContext());
     }
 
     private void initFlipData() {
@@ -53,6 +52,7 @@ public class GalleryPanoramicView extends RelativeLayout implements GestureDetec
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float v, float v1) {
+        flipAnimationManager = FlipAnimationManager.getInstance(getContext());
         if (isShowNext(e1, e2)) {
             panoramicViewerFlipper.setInAnimation(flipAnimationManager.getFlipInFromRightAnimation());
             panoramicViewerFlipper.setOutAnimation(flipAnimationManager.getFlipOutToLeftAnimation());

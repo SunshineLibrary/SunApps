@@ -34,7 +34,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         initUI();
         initListeners();
-        flipAnimationManager = FlipAnimationManager.getInstance(this);
     }
 
     @Override
@@ -90,6 +89,7 @@ public class MainActivity extends Activity {
 //    }
 
     private void initListeners() {
+        flipAnimationManager = FlipAnimationManager.getInstance(this);
         this.leftBtn.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 viewFlipper.setInAnimation(flipAnimationManager.getFlipInFromRightAnimation());
@@ -113,7 +113,6 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
-
         galleryThumbnailPage.setGalleryItemClickedListener(new GalleryItemClickedListener() {
             @Override
             public void onGalleryItemClicked(int position) {
@@ -121,7 +120,6 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
-
     }
 
 }

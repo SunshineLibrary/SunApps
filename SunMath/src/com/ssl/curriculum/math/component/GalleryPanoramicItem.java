@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 import com.ssl.curriculum.math.R;
 
 public class GalleryPanoramicItem extends RelativeLayout {
-
     private ImageView itemImageView;
 
     public GalleryPanoramicItem(Context context) {
@@ -23,7 +22,6 @@ public class GalleryPanoramicItem extends RelativeLayout {
         this.addView(viewGroup);
         itemImageView = (ImageView) findViewById(R.id.gallery_panoramic_item_image);
     }
-
 
     public void setItemImageBitmap(Bitmap bitmap) {
         itemImageView.setImageBitmap(bitmap);
