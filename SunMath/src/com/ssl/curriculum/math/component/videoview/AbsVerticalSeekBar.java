@@ -186,14 +186,14 @@ public class AbsVerticalSeekBar extends VerticalProgressBar{
                 setThumbPos(h, thumb, scale, gapForCenteringTrack * -1);
             }
             if (d != null) {
-                // Canvas will be translated by the padding, so 0,0 is where we start drawing
+                // Canvas will be translated by the padding, so 0,0 is where we startVideo drawing
                 d.setBounds(gapForCenteringTrack, 0,
                         w - mPaddingRight - mPaddingLeft - gapForCenteringTrack,
                         h - mPaddingBottom - mPaddingTop);
             }
         } else {
             if (d != null) {
-                // Canvas will be translated by the padding, so 0,0 is where we start drawing
+                // Canvas will be translated by the padding, so 0,0 is where we startVideo drawing
                 d.setBounds(0, 0, w - mPaddingRight - mPaddingLeft, h - mPaddingBottom - mPaddingTop);
             }
             int gap = (trackWidth - thumbWidth) / 2;
@@ -225,7 +225,7 @@ public class AbsVerticalSeekBar extends VerticalProgressBar{
             rightBound = gap + thumbWidth;
         }
 
-        // Canvas will be translated, so 0,0 is where we start drawing
+        // Canvas will be translated, so 0,0 is where we startVideo drawing
         thumb.setBounds(leftBound, thumbPos, rightBound, thumbPos + thumbHeight);
     }
 

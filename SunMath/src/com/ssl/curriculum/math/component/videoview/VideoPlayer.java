@@ -37,10 +37,10 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         super(context, attrs);
         this.context = context;
 
-//        Thread.setDefaultUncaughtExceptionHandler(onBlooey);
+        Thread.setDefaultUncaughtExceptionHandler(onBlooey);
 
         initUI();
-//        initListener();
+        initListener();
     }
 
     private void initUI() {
@@ -66,7 +66,10 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
             public void onClick(View v) {
                 lastActionTime = SystemClock.elapsedRealtime();
 
-                if (player == null) return;
+                if (player == null) {
+                    startVideo();
+                    return;
+                }
 
                 if (player.isPlaying())
                     pause();
@@ -90,10 +93,10 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         this.uri = uri;
     }
 
-    public void start() {
+    public void startVideo() {
         if (uri == null) return;
 
-        playVideo(uri.toString());
+        playVideo(uri);
         clearPanels();
     }
 
@@ -133,7 +136,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     }
 
 
-    private void playVideo(String url) {
+    private void playVideo(Uri uri) {
         try {
             playButton.setEnabled(false);
 
@@ -169,7 +172,6 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
                     lastActionTime = SystemClock.elapsedRealtime();
 
                     controlPanel.setVisibility(View.VISIBLE);
-                    VideoPlayer.this.start();
                 }
             };
 
