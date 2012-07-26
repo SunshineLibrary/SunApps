@@ -36,20 +36,19 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
     }
 
     @Override
-    public void onNextLevelMenu(String currentMenuItemName) {
+    public void onNextLevelMenu(int currentMenuId) {
         List<MenuItem> children = currentMenu.getChildren();
         for (int index = 0; index < children.size(); index++) {
             MenuItem item = children.get(index);
-            if (item.getName().equalsIgnoreCase(currentMenuItemName)) {
-                handleMenuItem(item, index);
+            if (item.getId() == currentMenuId) {
+                handleMenuItem(item, item.getId());
             }
         }
     }
 
     private void handleMenuItem(MenuItem item, int index) {
         if (!item.isMenuGroup()) {
-            navigationListView.deActiveAllMenuItems();
-            navigationListView.activeMenuItem(index);
+            navigationListView.activateMenuItem(index);
             return;
         }
         currentMenu = (Menu) item;

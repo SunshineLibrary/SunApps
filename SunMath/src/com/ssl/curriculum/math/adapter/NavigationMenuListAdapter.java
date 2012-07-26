@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import com.ssl.curriculum.math.component.NavigationMenuItem;
 import com.ssl.curriculum.math.listener.NextLevelMenuChangedListener;
 import com.ssl.curriculum.math.model.menu.Menu;
+import com.ssl.curriculum.math.model.menu.MenuItem;
 
 public class NavigationMenuListAdapter extends BaseAdapter {
     private Context context;
@@ -29,7 +30,7 @@ public class NavigationMenuListAdapter extends BaseAdapter {
 
     public Object getItem(int position) {
         if (position >= menu.getChildren().size()) return null;
-        return menu.getChildren().get(position).getName();
+        return menu.getChildren().get(position);
     }
 
     public long getItemId(int position) {
@@ -37,29 +38,31 @@ public class NavigationMenuListAdapter extends BaseAdapter {
     }
 
     public View getView(int position, View view, ViewGroup viewGroup) {
-        String menuName = (String) getItem(position);
-        return getMenuItem(view, menuName);
+        MenuItem item = (MenuItem)getItem(position);
+        return getMenuItem(view, item);
     }
 
-    private NavigationMenuItem getMenuItem(View view, String menuName) {
+    private NavigationMenuItem getMenuItem(View view, MenuItem menuItem) {
         NavigationMenuItem item;
         if (view == null || !(view instanceof NavigationMenuItem)) {
-            item = createNewMenuItem(menuName);
+            item = createNewMenuItem(menuItem.getName(), menuItem.getId());
         } else {
-            item = updateMenuItem((NavigationMenuItem) view, menuName);
+            item = updateMenuItem((NavigationMenuItem) view, menuItem.getName(), menuItem.getId());
             item.deActive();
         }
         return item;
     }
 
-    private NavigationMenuItem updateMenuItem(NavigationMenuItem menuItem, String menuName) {
+    private NavigationMenuItem updateMenuItem(NavigationMenuItem menuItem, String menuName, int id) {
         menuItem.setMenuName(menuName);
+        menuItem.setUniqueId(id);
         return menuItem;
     }
 
-    private NavigationMenuItem createNewMenuItem(final String menuName) {
+    private NavigationMenuItem createNewMenuItem(final String menuName, final int menuId) {
         NavigationMenuItem menuItem = new NavigationMenuItem(context);
         menuItem.setMenuName(menuName);
+        menuItem.setUniqueId(menuId);
         menuItem.setNextLevelChangedListener(nextLevelMenuChangedListener);
         return menuItem;
     }
