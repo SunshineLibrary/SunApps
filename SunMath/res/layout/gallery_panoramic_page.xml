@@ -10,7 +10,7 @@
               android:paddingRight="10dp" android:textColor="@color/gallery_flipper_text"
               android:background="@color/gallery_flipper_text_bg" android:text="desciption"/>
 
-    <com.ssl.curriculum.math.component.ImageViewerFlipper
+    <com.ssl.curriculum.math.component.GalleryPanoramicFlipper
             android:id="@+id/gallery_panoramic_flipper"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

@@ -6,14 +6,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.videoview.SunLibMediaController;
 import com.ssl.curriculum.math.component.videoview.SunLibVideoView;
+import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
 import com.ssl.curriculum.math.page.GalleryThumbnailPage;
 import com.ssl.curriculum.math.service.GalleryContentProvider;
@@ -25,20 +24,17 @@ public class MainActivity extends Activity {
     private ImageView leftBtn;
     private ImageView rightBtn;
     private ImageView naviBtn;
-    private Animation animFlipInFromRight;
-    private Animation animFlipInFromLeft;
-    private Animation animFlipOutToRight;
-    private Animation animFlipOutToLeft;
     private GalleryThumbnailPage galleryThumbnailPage;
     private GalleryContentProvider galleryContentProvider;
     private SunLibVideoView videoPlayer;
+    private FlipAnimationManager flipAnimationManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initUI();
         initListeners();
-        loadAnimation();
+        flipAnimationManager = FlipAnimationManager.getInstance(this);
     }
 
     @Override
@@ -96,15 +92,16 @@ public class MainActivity extends Activity {
     private void initListeners() {
         this.leftBtn.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                viewFlipper.setInAnimation(animFlipInFromRight);
-                viewFlipper.setOutAnimation(animFlipOutToLeft);
+                viewFlipper.setInAnimation(flipAnimationManager.getFlipInFromRightAnimation());
+                viewFlipper.setOutAnimation(flipAnimationManager.getFlipOutToLeftAnimation());
                 viewFlipper.showPrevious();
             }
         });
         this.rightBtn.setOnClickListener(new OnClickListener() {
+
             public void onClick(View v) {
-                viewFlipper.setInAnimation(animFlipInFromLeft);
-                viewFlipper.setOutAnimation(animFlipOutToRight);
+                viewFlipper.setInAnimation(flipAnimationManager.getFlipInFromLeftAnimation());
+                viewFlipper.setOutAnimation(flipAnimationManager.getFlipOutToRightAnimation());
                 viewFlipper.showNext();
 
 
@@ -127,10 +124,4 @@ public class MainActivity extends Activity {
 
     }
 
-    private void loadAnimation() {
-        animFlipInFromLeft = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.flip_in_from_left);
-        animFlipInFromRight = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.flip_in_from_right);
-        animFlipOutToRight = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.flip_out_to_right);
-        animFlipOutToLeft = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.flip_out_to_left);
-    }
 }

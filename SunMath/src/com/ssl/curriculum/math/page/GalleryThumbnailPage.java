@@ -63,8 +63,7 @@ public class GalleryThumbnailPage extends LinearLayout implements GalleryContent
 
     @Override
     public void onContentChanged(List<GalleryItem> galleryItems) {
-        System.out.println("--------------------------galleryItems = " + galleryItems.size());
-//        adapter.setGalleryData(galleryItems);
+        adapter.setGalleryData(galleryItems);
     }
 
 
