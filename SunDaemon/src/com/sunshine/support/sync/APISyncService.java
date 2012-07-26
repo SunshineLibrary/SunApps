@@ -38,7 +38,7 @@ public class APISyncService extends Service {
 	public void onCreate() {
 		cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		syncInProgress = false;
-		syncTask = new APISyncTask(this, IP) {
+		syncTask = new APISyncTask(this) {
 			@Override
 			protected void onPostExecute(Integer result) {
 				if (result.intValue() == SYNC_SUCCESS) {

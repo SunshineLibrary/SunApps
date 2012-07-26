@@ -9,11 +9,8 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import com.sunshine.metadata.database.MetadataDBHandler;
 import com.sunshine.metadata.database.tables.*;
-import com.sunshine.support.storage.FileStorage;
-import com.sunshine.support.storage.FileStorageManager;
-import com.sunshine.utils.FileLog;
+import com.sunshine.support.storage.SharedStorageProvider;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 public class MetadataProvider extends ContentProvider {
@@ -32,11 +29,7 @@ public class MetadataProvider extends ContentProvider {
     private static final int CHAPTERS = 4;
     private static final int LESSONS = 5;
     private static final int GALLERY = 6;
-    private static final int GALLERY_IMAGE = 7;
-    private static final int GALLERY_THUMBNAIL = 8;
-    private static final int ACTIVITIES = 9;
-    private static final int ACTIVITIES_THUMBNAIL = 10;
-    private static final int ACTIVITIES_FILE = 11;
+    private static final int ACTIVITIES = 7;
 
     static {
         sUriMatcher.addURI(AUTHORITY, "packages", PACKAGES);
@@ -45,19 +38,15 @@ public class MetadataProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, "chapters", CHAPTERS);
         sUriMatcher.addURI(AUTHORITY, "lessons", LESSONS);
         sUriMatcher.addURI(AUTHORITY, "gallery", GALLERY);
-        sUriMatcher.addURI(AUTHORITY, "gallery/image/*", GALLERY_IMAGE);
-        sUriMatcher.addURI(AUTHORITY, "gallery/thumbnail/*", GALLERY_THUMBNAIL);
         sUriMatcher.addURI(AUTHORITY, "activities", ACTIVITIES);
-        sUriMatcher.addURI(AUTHORITY, "activities/thumbnail/#", ACTIVITIES_THUMBNAIL);
-        sUriMatcher.addURI(AUTHORITY, "activities/file/#", ACTIVITIES_FILE);
     }
 
     /*
       * Constants for handling MIME_TYPE
       */
-    private static final String DIR_MIME_TYPE = "vnd.android.cursor.dir/vnd."
+    public static final String DIR_MIME_TYPE = "vnd.android.cursor.dir/vnd."
             + AUTHORITY;
-    private static final String ITEM_MIME_TYPE = "vnd.android.cursor.item/vnd."
+    public static final String ITEM_MIME_TYPE = "vnd.android.cursor.item/vnd."
             + AUTHORITY;
 
     private static final String METADATA_MIME_TYPE = DIR_MIME_TYPE
@@ -74,14 +63,12 @@ public class MetadataProvider extends ContentProvider {
 
 
     private MetadataDBHandler dbHandler;
-    private FileLog log;
-    private FileStorage fileStorage;
+    private SharedStorageProvider sharedStorageMananger;
 
     @Override
     public boolean onCreate() {
         dbHandler = new MetadataDBHandler(getContext());
-        log = FileLog.setupLogFile();
-        fileStorage = FileStorageManager.getInstance().getReadableFileStorage();
+        sharedStorageMananger = new SharedStorageProvider(getContext());
         return true;
     }
 
@@ -126,12 +113,8 @@ public class MetadataProvider extends ContentProvider {
                 return METADATA_MIME_TYPE;
             case LESSONS:
                 return METADATA_MIME_TYPE;
-            case GALLERY_IMAGE:
-                return GALLERY_IMAGE_MIME_TYPE;
-            case GALLERY_THUMBNAIL:
-                return GALLERY_THUMBNAIL_MIME_TYPE;
             default:
-                return null;
+                return sharedStorageMananger.getType(uri);
         }
     }
 
@@ -182,39 +165,7 @@ public class MetadataProvider extends ContentProvider {
 
     @Override
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
-        log.log(getContext(), "openFile Uri:" + uri.toString());
-        switch (sUriMatcher.match(uri)) {
-            case GALLERY_IMAGE:
-            case GALLERY_THUMBNAIL:
-                return readImageFile(uri);
-            default:
-                return null;
-        }
+        return sharedStorageMananger.openFile(uri, mode);
     }
 
-    private ParcelFileDescriptor readImageFile(Uri uri) {
-        String path = uri.getPath();
-        log.log(getContext(), "uri path=" + uri.getPath());
-        String imagePath = trimPreviousSlash(path);
-        File imageFile = fileStorage.readFile(imagePath);
-        if (imageFile.exists()) {
-            ParcelFileDescriptor open = null;
-            try {
-                open = ParcelFileDescriptor.open(imageFile, ParcelFileDescriptor.MODE_READ_ONLY);
-            } catch (Exception e) {
-                log.log(getContext(), "open parce file error.");
-            }
-            return open;
-        }
-        log.log(getContext(), "can not file, path=" + path);
-        return null;
-    }
-
-    private String trimPreviousSlash(String path) {
-        String thumbnailPath = null;
-        if (path.startsWith(File.separator)) {
-            thumbnailPath = path.substring(path.indexOf(File.separator));
-        }
-        return thumbnailPath;
-    }
 }

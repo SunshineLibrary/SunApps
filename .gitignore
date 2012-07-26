@@ -11,3 +11,4 @@ tmp
 reports
 reports/**/*
 .gitignore
+.DS_Store
