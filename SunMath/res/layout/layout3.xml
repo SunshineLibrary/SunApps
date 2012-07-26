@@ -21,7 +21,7 @@
         android:layout_height="437dp"
         android:layout_gravity="center_horizontal" >
 
-        <com.ssl.curriculum.math.component.videoview.SunLibVideoView
+        <com.ssl.curriculum.math.component.videoview.VideoPlayer
             android:id="@+id/content_screen_video_field"
             android:layout_width="655dp"
             android:layout_height="437dp"
