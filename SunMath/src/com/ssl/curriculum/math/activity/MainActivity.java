@@ -9,9 +9,11 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.R;
-import com.ssl.curriculum.math.component.videoview.VideoPlayer;
+import com.ssl.curriculum.math.component.videoview.SunLibMediaController;
+import com.ssl.curriculum.math.component.videoview.SunLibVideoView;
 import com.ssl.curriculum.math.page.GalleryThumbnailPage;
 import com.ssl.curriculum.math.service.GalleryContentProvider;
 import com.ssl.curriculum.math.task.FetchGalleryContentTask;
@@ -28,7 +30,7 @@ public class MainActivity extends Activity {
     private Animation animFlipOutToLeft;
     private GalleryThumbnailPage galleryThumbnailPage;
     private GalleryContentProvider galleryContentProvider;
-    private VideoPlayer videoPlayer;
+    private SunLibVideoView videoPlayer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,11 +61,13 @@ public class MainActivity extends Activity {
         galleryThumbnailPage = (GalleryThumbnailPage) findViewById(R.id.gallery_thumbnail_page);
         
 //        getWindow().setFormat(PixelFormat.TRANSLUCENT);
-//        RelativeLayout videoFrame = (RelativeLayout) findViewById(R.id.content_screen_video_frame);
-        videoPlayer = (VideoPlayer) findViewById(R.id.content_screen_video_field);
+        RelativeLayout videoFrame = (RelativeLayout) findViewById(R.id.content_screen_video_frame);
+        videoPlayer = (SunLibVideoView) findViewById(R.id.content_screen_video_field);
         Uri video = Uri.parse("android.resource://" + getPackageName() + "/"
                 + R.raw.speaking);
+        videoPlayer.setMediaController(new SunLibMediaController(this));
         videoPlayer.setVideoURI(video);
+        videoPlayer.setDimensions(655, 437);
 
 //        videoPlayer.start();
 
