@@ -68,6 +68,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
 
                 if (player == null) {
                     startVideo();
+                    onStart();
                     return;
                 }
 
@@ -100,12 +101,12 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         clearPanels();
     }
 
-    protected void onResume() {
+    public void onStart() {
         isPaused = false;
         surface.postDelayed(onEverySecond, 1000);
     }
 
-    final private Runnable onEverySecond = new Runnable() {
+    private Runnable onEverySecond = new Runnable() {
         public void run() {
             if (lastActionTime > 0 &&
                     SystemClock.elapsedRealtime() - lastActionTime > 3000) {
@@ -171,7 +172,10 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
                 public void onTap(MotionEvent event) {
                     lastActionTime = SystemClock.elapsedRealtime();
 
-                    controlPanel.setVisibility(View.VISIBLE);
+                    if (controlPanel.getVisibility() == View.GONE)
+                        controlPanel.setVisibility(View.VISIBLE);
+                    else
+                        controlPanel.setVisibility(View.GONE);
                 }
             };
 

@@ -9,8 +9,8 @@
               android:text="[Title]"
               android:textSize="20pt"/>
     <RelativeLayout android:id="@+id/content_screen_video_frame"
-                    android:layout_width="255dp"
-                    android:layout_height="237dp"
+                    android:layout_width="655dp"
+                    android:layout_height="437dp"
                     android:layout_gravity="center_horizontal">
         <com.ssl.curriculum.math.component.videoview.VideoPlayer android:id="@+id/content_screen_video_field"
                    android:layout_width="match_parent"

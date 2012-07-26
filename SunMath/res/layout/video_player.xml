@@ -11,25 +11,44 @@
             android:layout_gravity="center"/>
     <RelativeLayout android:id="@+id/video_player_control_panel"
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal"
                     android:background="#40808080"
                     android:visibility="visible"
                     android:layout_alignParentBottom="true">
-        <ProgressBar android:id="@+id/video_player_time_line"
-                     style="?android:attr/progressBarStyleHorizontal"
-                     android:layout_width="0px"
-                     android:layout_weight="1"
-                     android:layout_height="wrap_content"
-                     android:layout_gravity="center"
-                     android:paddingLeft="2px"
-                />
         <ImageButton android:id="@+id/video_player_media"
                      style="@style/MediaButton"
                      android:layout_height="wrap_content"
                      android:layout_width="wrap_content"
                      android:src="@drawable/ic_media_pause"
                      android:enabled="false"
+                     android:layout_alignParentLeft="true"
+                     android:layout_centerVertical="true"
                 />
+        <RelativeLayout android:id="@+id/video_player_progress_bar_and_full_screen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/video_player_media"
+                        android:layout_centerVertical="true">
+            <ImageButton android:id="@+id/video_player_media"
+                         style="@style/MediaButton"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                         android:src="@drawable/ic_full_screen"
+                         android:enabled="false"
+                         android:layout_alignParentRight="true"
+                         android:layout_centerVertical="true"
+                    />
+            <ProgressBar android:id="@+id/video_player_time_line"
+                         style="?android:attr/progressBarStyleHorizontal"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center"
+                         android:layout_centerHorizontal="true"
+                         android:paddingLeft="2px"
+                         android:layout_toLeftOf="@id/video_player_media"
+                         android:layout_centerVertical="true"
+                    />
+        </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>
