@@ -1,7 +1,6 @@
 package com.sunshine.support;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import com.sunshine.support.mock.ImageTestData;
@@ -22,7 +21,6 @@ public class SupportServiceActivity extends Activity {
 //        localPackageManager = this.getPackageManager();
 //        serverClient = new WebClient();
         setContentView(R.layout.main);
-        initFileStorage();
     }
 
     @Override
