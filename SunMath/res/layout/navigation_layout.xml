@@ -4,7 +4,7 @@
               android:layout_height="fill_parent"
               android:orientation="horizontal">
 
-    <RelativeLayout android:layout_width="180dp"
+    <RelativeLayout android:layout_width="300dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/bg_main_activity_navi">
 

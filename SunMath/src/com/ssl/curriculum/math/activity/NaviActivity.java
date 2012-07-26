@@ -45,10 +45,13 @@ public class NaviActivity extends Activity {
         menuPresenter.setNavigationMenmItemSelectedListener(detailsPresenter);
         
         navigationListView.setNextLevelMenuChangedListener(menuPresenter);
+        final Activity _self = this;
         backImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                menuPresenter.menuBack();
+                if(!menuPresenter.menuBack()){
+                	_self.onBackPressed();
+                }
             }
         });
 

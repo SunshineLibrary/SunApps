@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        loadGalleryContent();
+        //loadGalleryContent();
     }
 
     private void loadGalleryContent() {
