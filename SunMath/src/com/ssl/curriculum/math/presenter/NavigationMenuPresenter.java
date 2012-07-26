@@ -3,6 +3,7 @@ package com.ssl.curriculum.math.presenter;
 import android.content.Context;
 import android.widget.TextView;
 import com.ssl.curriculum.math.component.NavigationListView;
+import com.ssl.curriculum.math.listener.NavigationMenuItemSelectedListener;
 import com.ssl.curriculum.math.listener.NextLevelMenuChangedListener;
 import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.model.menu.MenuItem;
@@ -17,6 +18,7 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
     private TextView menuTitle;
     private NavigationMenuProvider provider;
     private Menu currentMenu;
+    private NavigationMenuItemSelectedListener menuItemSelectedListener;
 
     public NavigationMenuPresenter(Context context, NavigationListView navigationListView, TextView menuTitle) {
         this.navigationListView = navigationListView;
@@ -34,22 +36,28 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
         currentMenu = menu;
         updateMenu();
     }
-
+    
+    public void setNavigationMenmItemSelectedListener(NavigationMenuItemSelectedListener listener){
+    	this.menuItemSelectedListener = listener;
+    }
+    
     @Override
-    public void onNextLevelMenu(String currentMenuItemName) {
+    public void onNextLevelMenu(int currentMenuId) {
         List<MenuItem> children = currentMenu.getChildren();
         for (int index = 0; index < children.size(); index++) {
             MenuItem item = children.get(index);
-            if (item.getName().equalsIgnoreCase(currentMenuItemName)) {
-                handleMenuItem(item, index);
+            if (item.getId() == currentMenuId) {
+                handleMenuItem(item, item.getId());
             }
         }
     }
 
     private void handleMenuItem(MenuItem item, int index) {
         if (!item.isMenuGroup()) {
-            navigationListView.deActiveAllMenuItems();
-            navigationListView.activeMenuItem(index);
+        	if(this.menuItemSelectedListener != null){
+        		this.menuItemSelectedListener.onItemSelected(index);
+        	}
+            navigationListView.activateMenuItem(index);
             return;
         }
         currentMenu = (Menu) item;

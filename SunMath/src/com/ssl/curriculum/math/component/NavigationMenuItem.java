@@ -13,6 +13,7 @@ import com.ssl.curriculum.math.listener.NextLevelMenuChangedListener;
 public class NavigationMenuItem extends FrameLayout {
 
     private TextView menuItemLabel;
+    private int uniqueId = 0;
     private NextLevelMenuChangedListener nextLevelChangedListener;
     private ImageView bgImageView;
 
@@ -35,7 +36,7 @@ public class NavigationMenuItem extends FrameLayout {
             @Override
             public void onClick(View view) {
                 if (nextLevelChangedListener != null) {
-                    nextLevelChangedListener.onNextLevelMenu(menuItemLabel.getText().toString());
+                    nextLevelChangedListener.onNextLevelMenu(getUniqueId());
                 }
             }
         });
@@ -44,7 +45,15 @@ public class NavigationMenuItem extends FrameLayout {
     public void setMenuName(String name) {
         menuItemLabel.setText(name);
     }
-
+    
+    public void setUniqueId(int id){
+    	this.uniqueId = id;
+    }
+    
+    public int getUniqueId(){
+    	return this.uniqueId;
+    }
+    
     public void setNextLevelChangedListener(NextLevelMenuChangedListener nextLevelChangedListener) {
         this.nextLevelChangedListener = nextLevelChangedListener;
     }

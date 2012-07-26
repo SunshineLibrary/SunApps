@@ -16,7 +16,7 @@ public class NavigationListView extends ListView {
     }
 
     private void initAdapter() {
-        navigationMenuListAdapter = new NavigationMenuListAdapter(getContext(), Menu.createMenuWithoutParent("Empty"));
+        navigationMenuListAdapter = new NavigationMenuListAdapter(getContext(), Menu.createMenuWithoutParent("Empty",0));
         setAdapter(navigationMenuListAdapter);
     }
 
@@ -28,11 +28,18 @@ public class NavigationListView extends ListView {
         navigationMenuListAdapter.updateMenu(currentMenu);
     }
 
-    public void activeMenuItem(int index) {
-        ((NavigationMenuItem) getChildAt(index)).active();
+    public void activateMenuItem(int index) {
+    	for (int i = 0; i < getChildCount(); i++) {
+    		NavigationMenuItem item = (NavigationMenuItem) getChildAt(i);
+    		if(item.getUniqueId() == index){
+    			item.active();
+    		}else{
+    			item.deActive();
+    		}
+        }
     }
 
-    public void deActiveAllMenuItems() {
+    public void deactivateAllMenuItems() {
         for (int index = 0; index < getChildCount(); index++) {
             ((NavigationMenuItem) getChildAt(index)).deActive();
         }

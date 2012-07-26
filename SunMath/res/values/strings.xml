@@ -5,4 +5,7 @@
     <string name="title_main_activity">MainActivity</string>
     <string name="title_navi_activity">NaviActivity</string>
     <string name="gallery_page_title">故宫图片集</string>
+
+    <string name="go">Go!</string>
+    <string name="url">URL to streaming video</string>
 </resources>

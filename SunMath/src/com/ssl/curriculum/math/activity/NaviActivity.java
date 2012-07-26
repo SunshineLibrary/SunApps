@@ -7,12 +7,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.NavigationListView;
+import com.ssl.curriculum.math.presenter.DetailsPagePresenter;
 import com.ssl.curriculum.math.presenter.NavigationMenuPresenter;
 
 public class NaviActivity extends Activity {
 
     private NavigationListView navigationListView;
     private NavigationMenuPresenter menuPresenter;
+    private DetailsPagePresenter detailsPresenter;
     private TextView menuTitle;
     private ImageView backImageView;
 
@@ -38,6 +40,10 @@ public class NaviActivity extends Activity {
 
     private void initComponent() {
         menuPresenter = new NavigationMenuPresenter(this, navigationListView, menuTitle);
+        detailsPresenter = new DetailsPagePresenter();
+        
+        menuPresenter.setNavigationMenmItemSelectedListener(detailsPresenter);
+        
         navigationListView.setNextLevelMenuChangedListener(menuPresenter);
         backImageView.setOnClickListener(new View.OnClickListener() {
             @Override

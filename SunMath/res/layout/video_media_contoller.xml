@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/relativeLayout" 
+				xmlns:android="http://schemas.android.com/apk/res/android"
+				android:layout_width="match_parent" 
+				android:layout_height="match_parent" 
+				>
+    <ImageButton android:id="@+id/pause"
+    			 style="@style/BigMediaButton.Play" 
+    			 android:layout_centerInParent="true"
+    ></ImageButton>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="30dip"
+        android:paddingRight="30dip"
+        android:paddingBottom="30dip"
+        android:layout_alignParentBottom="true">
+
+        <SeekBar
+            android:id="@+id/mediacontroller_progress"
+            style="@style/SeekBarHorizontal"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:layout_height="62dip"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true" />
+
+    </LinearLayout>
+    <LinearLayout android:id="@+id/leftButtons" 
+    			  android:layout_alignParentLeft="true" 
+    			  android:layout_centerInParent="true" 
+    			  android:layout_width="wrap_content" 
+    			  android:layout_height="wrap_content"
+    			  android:orientation="vertical"
+    			  android:paddingLeft="15dip">
+		
+    <ImageButton android:id="@+id/brightness"
+    			 android:layout_width="wrap_content" 
+    			 android:layout_height="wrap_content"
+    			 android:layout_centerInParent="true"
+    ></ImageButton>
+
+    <ImageButton android:id="@+id/volume"
+    			 android:layout_width="wrap_content" 
+    			 android:layout_height="wrap_content"
+    			 android:layout_centerInParent="true"
+    ></ImageButton>
+		    			  
+    </LinearLayout>
+    
+   	<ViewFlipper android:id="@+id/rightButtons" 
+    			  android:layout_alignParentRight="true" 
+    			  android:layout_centerInParent="true"
+    			  android:paddingRight="15dip" 
+   				  android:layout_height="wrap_content" 
+   				  android:layout_width="wrap_content">
+ 
+    <LinearLayout android:id="@+id/volumeView" 
+    			  android:layout_width="match_parent" 
+    			  android:layout_height="match_parent"
+    			  android:orientation="vertical">
+		
+   	<com.ssl.curriculum.math.component.videoview.VerticalSeekBar
+		android:id="@+id/volumeBar"
+    	android:layout_gravity="center_horizontal"
+        style="@style/SeekBarVertical"
+    	android:layout_width="93dip" android:layout_height="wrap_content"
+    	android:layout_weight="5" />
+    	
+    <ImageButton android:id="@+id/mute"
+    			 android:layout_width="wrap_content" 
+    			 android:layout_height="wrap_content" 
+    			 android:layout_centerInParent="true"
+    android:layout_gravity="center_horizontal"></ImageButton>
+		    			  
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/brightnessView" 
+    			  android:layout_width="match_parent" 
+    			  android:layout_height="match_parent"
+    			  android:orientation="vertical">
+		
+   	<com.ssl.curriculum.math.component.videoview.VerticalSeekBar
+		android:id="@+id/brightnessBar"
+        style="@style/SeekBarVertical"
+    	android:layout_height="300dip"
+    	android:layout_gravity="center_horizontal"
+    	android:layout_width="93dip" />
+    	
+    </LinearLayout>
+
+   	</ViewFlipper>
+</RelativeLayout>

@@ -28,8 +28,9 @@ public class MetadataProvider extends ContentProvider {
     private static final int COURSES = 3;
     private static final int CHAPTERS = 4;
     private static final int LESSONS = 5;
-    private static final int GALLERY = 6;
-    private static final int ACTIVITIES = 7;
+    private static final int SECTIONS = 6;
+    private static final int GALLERY = 7;
+    private static final int ACTIVITIES = 8;
 
     static {
         sUriMatcher.addURI(AUTHORITY, "packages", PACKAGES);
@@ -37,6 +38,7 @@ public class MetadataProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, "courses", COURSES);
         sUriMatcher.addURI(AUTHORITY, "chapters", CHAPTERS);
         sUriMatcher.addURI(AUTHORITY, "lessons", LESSONS);
+        sUriMatcher.addURI(AUTHORITY, "sections", SECTIONS);
         sUriMatcher.addURI(AUTHORITY, "gallery", GALLERY);
         sUriMatcher.addURI(AUTHORITY, "activities", ACTIVITIES);
     }
@@ -92,6 +94,9 @@ public class MetadataProvider extends ContentProvider {
             case LESSONS:
                 return dbHandler.getTableManager(LessonTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
+            case SECTIONS:
+                return dbHandler.getTableManager(SectionTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
             case GALLERY:
                 return dbHandler.getTableManager(GalleryTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
@@ -112,6 +117,8 @@ public class MetadataProvider extends ContentProvider {
             case CHAPTERS:
                 return METADATA_MIME_TYPE;
             case LESSONS:
+                return METADATA_MIME_TYPE;
+            case SECTIONS:
                 return METADATA_MIME_TYPE;
             default:
                 return sharedStorageMananger.getType(uri);
