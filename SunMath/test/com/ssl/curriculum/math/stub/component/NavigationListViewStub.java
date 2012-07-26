@@ -20,13 +20,4 @@ public class NavigationListViewStub extends NavigationListView{
         this.currentMenu = currentMenu;
     }
 
-    @Override
-    public void activeMenuItem(int index) {
-
-    }
-
-    @Override
-    public void deActiveAllMenuItems() {
-
-    }
 }
