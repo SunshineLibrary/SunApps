@@ -2,6 +2,7 @@ package com.ssl.curriculum.math.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.R;
+import com.ssl.curriculum.math.component.videoview.VideoPlayer;
 import com.ssl.curriculum.math.page.GalleryThumbnailPage;
 import com.ssl.curriculum.math.service.GalleryContentProvider;
 import com.ssl.curriculum.math.task.FetchGalleryContentTask;
@@ -26,6 +28,7 @@ public class MainActivity extends Activity {
     private Animation animFlipOutToLeft;
     private GalleryThumbnailPage galleryThumbnailPage;
     private GalleryContentProvider galleryContentProvider;
+    private VideoPlayer videoPlayer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +57,36 @@ public class MainActivity extends Activity {
         this.rightBtn = (ImageView) this.findViewById(R.id.main_activity_right_btn);
         this.naviBtn = (ImageView) this.findViewById(R.id.main_activity_navi_btn);
         galleryThumbnailPage = (GalleryThumbnailPage) findViewById(R.id.gallery_thumbnail_page);
+        
+//        getWindow().setFormat(PixelFormat.TRANSLUCENT);
+//        RelativeLayout videoFrame = (RelativeLayout) findViewById(R.id.content_screen_video_frame);
+        videoPlayer = (VideoPlayer) findViewById(R.id.content_screen_video_field);
+        Uri video = Uri.parse("android.resource://" + getPackageName() + "/"
+                + R.raw.speaking);
+        videoPlayer.setVideoURI(video);
+
+//        videoPlayer.start();
+
     }
+
+//    @Override
+//    public void onConfigurationChanged(Configuration newConfig) {
+//        super.onConfigurationChanged(newConfig);
+//
+//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//
+//            videoPlayer.setDimensions(displayHeight, displayWidth);
+//            videoPlayer.getHolder().setFixedSize(displayHeight, displayWidth);
+//
+//        } else {
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+//
+//            videoPlayer.setDimensions(displayWidth, smallHeight);
+//            videoPlayer.getHolder().setFixedSize(displayWidth, smallHeight);
+//        }
+//    }
 
     private void initListeners() {
         this.leftBtn.setOnClickListener(new OnClickListener() {
@@ -69,6 +101,8 @@ public class MainActivity extends Activity {
                 viewFlipper.setInAnimation(animFlipInFromLeft);
                 viewFlipper.setOutAnimation(animFlipOutToRight);
                 viewFlipper.showNext();
+
+
             }
         });
         this.naviBtn.setOnClickListener(new OnClickListener() {

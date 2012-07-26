@@ -8,4 +8,5 @@
     <color name="green">#0236FE</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="video_frame_background">#EBE8E0</color>
 </resources>
