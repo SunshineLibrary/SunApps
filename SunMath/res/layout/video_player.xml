@@ -20,7 +20,7 @@
                      style="@style/MediaButton"
                      android:layout_height="wrap_content"
                      android:layout_width="wrap_content"
-                     android:src="@drawable/ic_media_pause"
+                     android:src="@drawable/ic_media_play"
                      android:enabled="false"
                      android:layout_alignParentLeft="true"
                      android:layout_centerVertical="true"
@@ -30,8 +30,7 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/video_player_media"
                         android:layout_centerVertical="true">
-            <ImageButton android:id="@+id/video_player_media"
-                         style="@style/MediaButton"
+            <ImageButton android:id="@+id/video_player_full_screen"
                          android:layout_height="wrap_content"
                          android:layout_width="wrap_content"
                          android:src="@drawable/ic_full_screen"
@@ -46,7 +45,7 @@
                          android:layout_gravity="center"
                          android:layout_centerHorizontal="true"
                          android:paddingLeft="2px"
-                         android:layout_toLeftOf="@id/video_player_media"
+                         android:layout_toLeftOf="@id/video_player_full_screen"
                          android:layout_centerVertical="true"
                     />
         </RelativeLayout>

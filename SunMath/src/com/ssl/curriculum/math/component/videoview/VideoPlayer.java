@@ -1,5 +1,6 @@
 package com.ssl.curriculum.math.component.videoview;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.media.AudioManager;
@@ -9,6 +10,7 @@ import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.*;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -32,6 +34,10 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     private Uri uri;
     private boolean isPaused;
     private ViewGroup content;
+    private ViewGroup mFullScreenLayout;
+    private View savedContentView;
+    private ImageButton fullScreenButton;
+    private boolean isFullScreen = false;
 
     public VideoPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -47,6 +53,9 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         content = (ViewGroup) inflater.inflate(R.layout.video_player, null);
 
+//        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mFullScreenLayout = (ViewGroup) inflater.inflate(R.layout.video_player_full_screen, null);
+
         this.addView(content);
 
         surface = (TappableSurfaceView) findViewById(R.id.video_player_surface);
@@ -59,6 +68,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         timeline = (ProgressBar) findViewById(R.id.video_player_time_line);
 
         playButton = (ImageButton) findViewById(R.id.video_player_media);
+        fullScreenButton = (ImageButton) findViewById(R.id.video_player_full_screen);
     }
 
     private void initListener() {
@@ -86,6 +96,14 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
             private void start() {
                 playButton.setImageResource(R.drawable.ic_media_pause);
                 player.start();
+            }
+        });
+
+        fullScreenButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isFullScreen = !isFullScreen;
+                setFullscreen(isFullScreen);
             }
         });
     }
@@ -159,6 +177,46 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         } catch (Throwable t) {
             Log.e(TAG, "Exception in media prep", t);
             goBlooey(t);
+        }
+    }
+
+    public void setFullscreen(boolean fullscreen) {
+        boolean isOnPause = false;
+        Activity activity = (Activity) getContext();
+
+        if (fullscreen) {
+            activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+            if (player!=null && player.isPlaying()) {
+                player.pause();
+                isOnPause = true;
+            }
+
+            savedContentView = ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
+            ViewGroup container = (ViewGroup) getParent();
+            container.removeView(this);
+            activity.setContentView(mFullScreenLayout);
+
+            container = (FrameLayout) activity.findViewById(R.id.video_player_full_screen_container);
+            container.addView(this);
+
+            if(isOnPause) player.start();
+        } else {
+            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+            if (player!=null && player.isPlaying()) {
+                player.pause();
+                isOnPause = true;
+            }
+
+            ViewGroup container = (ViewGroup) getParent();
+            container.removeView(this);
+            activity.setContentView(savedContentView);
+            container = (RelativeLayout) activity.findViewById(R.id.content_screen_video_frame);
+            container.addView(this);
+
+            if(isOnPause) player.start();
         }
     }
 

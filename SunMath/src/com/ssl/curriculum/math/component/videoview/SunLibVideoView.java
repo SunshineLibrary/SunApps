@@ -34,7 +34,7 @@ public class SunLibVideoView extends VideoView implements MediaPlayerControl {
 
     private void initVideoView() {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mFullScreenLayout = (ViewGroup) inflater.inflate(R.layout.video_full_screen, null);
+        mFullScreenLayout = (ViewGroup) inflater.inflate(R.layout.video_player_full_screen, null);
     }
 
     public void setMediaController(SunLibMediaController controller) {
@@ -96,7 +96,7 @@ public class SunLibVideoView extends VideoView implements MediaPlayerControl {
             container.removeView(this);
             activity.setContentView(mFullScreenLayout);
 
-            container = (FrameLayout) activity.findViewById(R.id.videoContainer);
+            container = (FrameLayout) activity.findViewById(R.id.video_player_full_screen_container);
             container.addView(this);
 
             resume();
@@ -109,7 +109,7 @@ public class SunLibVideoView extends VideoView implements MediaPlayerControl {
             ViewGroup container = (ViewGroup) getParent();
             container.removeView(this);
             activity.setContentView(savedContentView);
-            container = (FrameLayout) activity.findViewById(R.id.videoContainer);
+            container = (FrameLayout) activity.findViewById(R.id.video_player_full_screen_container);
             container.addView(this);
 
             resume();
