@@ -3,6 +3,7 @@ package com.ssl.curriculum.math.presenter;
 import android.content.Context;
 import android.widget.TextView;
 import com.ssl.curriculum.math.component.NavigationListView;
+import com.ssl.curriculum.math.listener.NavigationMenuItemSelectedListener;
 import com.ssl.curriculum.math.listener.NextLevelMenuChangedListener;
 import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.model.menu.MenuItem;
@@ -17,6 +18,7 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
     private TextView menuTitle;
     private NavigationMenuProvider provider;
     private Menu currentMenu;
+    private NavigationMenuItemSelectedListener menuItemSelectedListener;
 
     public NavigationMenuPresenter(Context context, NavigationListView navigationListView, TextView menuTitle) {
         this.navigationListView = navigationListView;
@@ -34,7 +36,11 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
         currentMenu = menu;
         updateMenu();
     }
-
+    
+    public void setNavigationMenmItemSelectedListener(NavigationMenuItemSelectedListener listener){
+    	this.menuItemSelectedListener = listener;
+    }
+    
     @Override
     public void onNextLevelMenu(int currentMenuId) {
         List<MenuItem> children = currentMenu.getChildren();
@@ -48,6 +54,9 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 
     private void handleMenuItem(MenuItem item, int index) {
         if (!item.isMenuGroup()) {
+        	if(this.menuItemSelectedListener != null){
+        		this.menuItemSelectedListener.onItemSelected(index);
+        	}
             navigationListView.activateMenuItem(index);
             return;
         }
