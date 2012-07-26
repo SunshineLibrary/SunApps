@@ -21,7 +21,7 @@
                 android:layout_height="fill_parent"
                 android:layout_centerInParent="true"/>
 
-        <com.ssl.curriculum.math.component.GalleryFloatingPanel android:layout_height="wrap_content"
+        <com.ssl.curriculum.math.component.GalleryFloatingPanel android:id="@+id/gallery_panoramic_panel" android:layout_height="wrap_content"
                                                                 android:layout_width="wrap_content"
                                                                 android:layout_alignParentRight="true"
                                                                 android:layout_centerVertical="true"/>

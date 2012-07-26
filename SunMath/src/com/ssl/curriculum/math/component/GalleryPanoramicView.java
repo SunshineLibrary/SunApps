@@ -16,6 +16,7 @@ public class GalleryPanoramicView extends RelativeLayout implements GestureDetec
     private GalleryPanoramicFlipper panoramicViewerFlipper;
     private GestureDetector gestureDetector;
     private FlipAnimationManager flipAnimationManager;
+    private GalleryFloatingPanel galleryFloatingPanel;
 
     public GalleryPanoramicView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -32,6 +33,7 @@ public class GalleryPanoramicView extends RelativeLayout implements GestureDetec
 
         panoramicViewerFlipper.addView(item01, 0);
         panoramicViewerFlipper.addView(item02, 1);
+        panoramicViewerFlipper.setDisplayedChild(0);
     }
 
     private void initUI() {
@@ -39,10 +41,16 @@ public class GalleryPanoramicView extends RelativeLayout implements GestureDetec
         ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.gallery_panoramic_page, this, false);
         addView(viewGroup);
         panoramicViewerFlipper = (GalleryPanoramicFlipper) findViewById(R.id.gallery_panoramic_flipper);
+        galleryFloatingPanel = (GalleryFloatingPanel) findViewById(R.id.gallery_panoramic_panel);
     }
 
     private void initListener() {
         gestureDetector = new GestureDetector(this);
+        galleryFloatingPanel.setPanelControlListener(panoramicViewerFlipper);
+    }
+
+    private void showFloatingPanel() {
+        galleryFloatingPanel.startFloating();
     }
 
     @Override
@@ -78,6 +86,7 @@ public class GalleryPanoramicView extends RelativeLayout implements GestureDetec
 
     @Override
     public boolean onDown(MotionEvent event) {
+        showFloatingPanel();
         return true;
     }
 
