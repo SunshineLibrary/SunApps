@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:background="@color/blue">
     <com.ssl.curriculum.math.component.videoview.TappableSurfaceView
             android:id="@+id/video_player_surface"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_gravity="center"/>
     <RelativeLayout android:id="@+id/video_player_control_panel"
                     android:layout_width="match_parent"
                     android:layout_height="180dp"

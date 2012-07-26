@@ -7,12 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.R;
-import com.ssl.curriculum.math.component.videoview.SunLibMediaController;
-import com.ssl.curriculum.math.component.videoview.SunLibVideoView;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
+import com.ssl.curriculum.math.component.videoview.VideoPlayer;
 import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
 import com.ssl.curriculum.math.page.GalleryThumbnailPage;
 import com.ssl.curriculum.math.service.GalleryContentProvider;
@@ -26,7 +24,7 @@ public class MainActivity extends Activity {
     private ImageView naviBtn;
     private GalleryThumbnailPage galleryThumbnailPage;
     private GalleryContentProvider galleryContentProvider;
-    private SunLibVideoView videoPlayer;
+    private VideoPlayer videoPlayer;
     private FlipAnimationManager flipAnimationManager;
 
     @Override
@@ -39,7 +37,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        loadGalleryContent();
+//        loadGalleryContent();
     }
 
     private void loadGalleryContent() {
@@ -55,18 +53,10 @@ public class MainActivity extends Activity {
         this.rightBtn = (ImageView) this.findViewById(R.id.main_activity_right_btn);
         this.naviBtn = (ImageView) this.findViewById(R.id.main_activity_navi_btn);
         galleryThumbnailPage = (GalleryThumbnailPage) findViewById(R.id.gallery_thumbnail_page);
-        
-//        getWindow().setFormat(PixelFormat.TRANSLUCENT);
-        RelativeLayout videoFrame = (RelativeLayout) findViewById(R.id.content_screen_video_frame);
-        videoPlayer = (SunLibVideoView) findViewById(R.id.content_screen_video_field);
-        Uri video = Uri.parse("android.resource://" + getPackageName() + "/"
-                + R.raw.speaking);
-        videoPlayer.setMediaController(new SunLibMediaController(this));
+
+        videoPlayer = (VideoPlayer) findViewById(R.id.content_screen_video_field);
+        Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.speaking);
         videoPlayer.setVideoURI(video);
-        videoPlayer.setDimensions(655, 437);
-
-//        videoPlayer.start();
-
     }
 
 //    @Override
