@@ -42,9 +42,9 @@ public final class MetadataContract {
         public static final String _ID = BaseColumns._ID;
         public static final String _PARENT_ID = "chapter_id";
         public static final String _NAME = "name";
-
-        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("lessons").build();
-    }
+        public static final Uri CONTENT_URI;
+        static {CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("lessons").build();
+        }}
 
     public static final class Sections {
         public static final String _ID = BaseColumns._ID;
@@ -52,6 +52,10 @@ public final class MetadataContract {
         public static final String _NAME = "name";
     }
 
+    
+    
+    
+    
 
     public static final class Packages extends Downloadable {
         public static final String _ID = BaseColumns._ID;
