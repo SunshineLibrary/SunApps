@@ -20,6 +20,7 @@ public class EdgeContentProvider {
 
     public ArrayList<Edge> fetchMatchedEdges(int curActivityId, int curSectionId) {
     	ArrayList<Edge> fetchedEdges = new ArrayList<Edge>();
+    	/*
         String[] columns = {Edges._FROM_ID, Edges._TO_ID, Edges._CONDITION};
         Cursor cursor = contentResolver.query(Edges.CONTENT_URI, columns, 
         		"SECTION_ID = "+curSectionId+" AND "+"_FROM_ID = "+curActivityId, null, null);
@@ -34,7 +35,9 @@ public class EdgeContentProvider {
         		fetchedEdges.add(new Edge(from_id, to_id, condition));
         	} while(cursor.moveToNext());
         }
-        cursor.close();
+        cursor.close();*/
+    	fetchedEdges.add(new Edge(1,2,"Cond"));
+    	fetchedEdges.add(new Edge(1,2,"Cond"));
         return fetchedEdges;
     }
 }

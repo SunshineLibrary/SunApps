@@ -7,6 +7,7 @@ public class VideoActivityData extends ActivityData{
 	private String videoDescription = "";
 	private long videoDuration = 0; //Video Duration in .001s
 	
+	
 	public VideoActivityData(){
 		super(Activities.Types.VIDEO.ordinal());
 	}

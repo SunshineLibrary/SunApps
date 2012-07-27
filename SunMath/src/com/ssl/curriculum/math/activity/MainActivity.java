@@ -12,6 +12,7 @@ import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.component.videoview.VideoPlayer;
 import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
+import com.ssl.curriculum.math.logic.PageFlipper;
 import com.ssl.curriculum.math.page.GalleryThumbnailPage;
 import com.ssl.curriculum.math.presenter.MainActivityPresenter;
 import com.ssl.curriculum.math.service.GalleryContentProvider;
@@ -20,6 +21,7 @@ import com.ssl.curriculum.math.task.FetchGalleryContentTask;
 public class MainActivity extends Activity {
 	
     private MainActivityPresenter presenter;
+    private PageFlipper flipper;
     private GalleryThumbnailPage galleryThumbnailPage;
     private GalleryContentProvider galleryContentProvider;
     private VideoPlayer videoPlayer;
@@ -49,6 +51,8 @@ public class MainActivity extends Activity {
     private void initUI() {
         setContentView(R.layout.main_layout);
         presenter = new MainActivityPresenter(this);
+        flipper = new PageFlipper(presenter);
+        flipper.init(1);
         
         presenter.bindUIElement(MainActivityPresenter.BTN_LEFT, this.findViewById(R.id.main_activity_left_btn));
         presenter.bindUIElement(MainActivityPresenter.BTN_RIGHT, this.findViewById(R.id.main_activity_right_btn));
