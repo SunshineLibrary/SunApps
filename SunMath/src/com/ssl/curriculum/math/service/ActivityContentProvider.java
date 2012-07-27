@@ -1,5 +1,7 @@
 package com.ssl.curriculum.math.service;
 
+import java.util.concurrent.Callable;
+
 import com.sunshine.metadata.provider.MetadataContract.Activities;
 
 import android.content.ContentResolver;
@@ -12,8 +14,8 @@ public class ActivityContentProvider {
 		this.context = context;
 	}
 	
-	private Cursor query(String[] columns){
+	protected Cursor query(String[] columns, String queryString){
 		ContentResolver cr = context.getContentResolver();
-		return cr.query(Activities.CONTENT_URI, columns, null,null,null);
+		return cr.query(Activities.CONTENT_URI, columns, queryString,null,null);
 	}
 }
