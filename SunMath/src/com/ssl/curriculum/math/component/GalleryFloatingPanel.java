@@ -33,7 +33,6 @@ public class GalleryFloatingPanel extends LinearLayout {
         this.addView(group);
         zoomInImageView = (ImageView) findViewById(R.id.gallery_floating_panel_zoom_in);
         zoomOutImageView = (ImageView) findViewById(R.id.gallery_floating_panel_zoom_out);
-        setVisibility(View.GONE);
     }
 
     private void initFloatingTask() {

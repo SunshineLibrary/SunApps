@@ -15,7 +15,7 @@
                     android:paddingTop="10dp" android:paddingBottom="10dp"
                     android:background="@drawable/main_activity_background">
 
-        <com.ssl.curriculum.math.component.GalleryPanoramicFlipper
+        <ViewFlipper
                 android:id="@+id/gallery_panoramic_flipper"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"

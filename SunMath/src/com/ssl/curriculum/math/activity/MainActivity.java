@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
     private void loadGalleryContent() {
         galleryContentProvider = new GalleryContentProvider(this);
         FetchGalleryContentTask fetchGalleryContentTask = new FetchGalleryContentTask(galleryContentProvider);
-        fetchGalleryContentTask.execute();
+//        fetchGalleryContentTask.execute();
     }
 
     private void initUI() {
