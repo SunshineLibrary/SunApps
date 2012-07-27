@@ -9,7 +9,7 @@ public class VideoActivityData extends ActivityData{
 	
 	
 	public VideoActivityData(){
-		super(Activities.Types.VIDEO.ordinal());
+		super(Activities.TYPE_VIDEO);
 	}
 	
 	public void initVideoMetadata(String title, String desc, long dur){

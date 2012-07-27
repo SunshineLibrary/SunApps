@@ -1,10 +1,23 @@
 package com.sunshine.support;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
+import com.sunshine.metadata.database.tables.ActivityTable;
+import com.sunshine.metadata.provider.MetadataContract;
+import com.sunshine.support.api.ApiClient;
 import com.sunshine.support.mock.ImageTestData;
+import com.sunshine.support.storage.FileDownloadTask;
+import com.sunshine.support.sync.APISyncReceiver;
 import com.sunshine.support.webclient.WebClient;
+
+import java.io.FileNotFoundException;
+
+import static com.sunshine.metadata.provider.MetadataContract.*;
 
 public class SupportServiceActivity extends Activity {
     private PackageManager localPackageManager;
@@ -28,7 +41,25 @@ public class SupportServiceActivity extends Activity {
         super.onPostCreate(savedInstanceState);
 //        startService(new Intent("com.sunshine.support.action.sync"));
 //        initFileStorage();
+        prepareData(1, Activities.TYPE_VIDEO);
+        prepareData(2, Activities.TYPE_GALLERY);
+        ContentValues values = new ContentValues();
+        values.put(Downloadable._DOWNLOAD_STATUS, Downloadable.STATUS.QUEUED.ordinal());
+        getContentResolver().update(Activities.getActivityUri(1), values, null, null);
+        getContentResolver().update(Activities.getActivityUri(2), values, null, null);
     }
+
+    private void prepareData(int id, int type) {
+        ContentValues values = new ContentValues();
+        values.put(Activities._ID, id);
+        values.put(Activities._TYPE, type);
+        if (!getContentResolver().query(Activities.getActivityUri(id),
+                ActivityTable.ALL_COLUMNS, null, null, null).moveToFirst()) {
+            getContentResolver().insert(Activities.CONTENT_URI, values);
+
+        }
+    }
+
 
     private void initFileStorage() {
         if (imageTestData.hasPreparedData()) return;

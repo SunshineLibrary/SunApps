@@ -19,13 +19,13 @@ public class GalleryContentProvider {
     public List<GalleryItem> loadGalleryContent() {
         List<GalleryItem> list = new ArrayList<GalleryItem>();
         ContentResolver contentResolver = context.getContentResolver();
-        String[] columns = {MetadataContract.Gallery._ID, MetadataContract.Gallery._IMAGE_PATH, MetadataContract.Gallery._THUMBNAIL_PATH, MetadataContract.Gallery._DESCRIPTION};
-        Cursor cursor = contentResolver.query(MetadataContract.Gallery.CONTENT_URI, columns, null, null, null);
+        String[] columns = {MetadataContract.GalleryImages._ID, MetadataContract.GalleryImages._IMAGE_PATH, MetadataContract.GalleryImages._THUMBNAIL_PATH, MetadataContract.GalleryImages._DESCRIPTION};
+        Cursor cursor = contentResolver.query(MetadataContract.GalleryImages.CONTENT_URI, columns, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                int imageIndex = cursor.getColumnIndex(MetadataContract.Gallery._IMAGE_PATH);
-                int thumbnailIndex = cursor.getColumnIndex(MetadataContract.Gallery._THUMBNAIL_PATH);
-                int descriptionIndex = cursor.getColumnIndex(MetadataContract.Gallery._DESCRIPTION);
+                int imageIndex = cursor.getColumnIndex(MetadataContract.GalleryImages._IMAGE_PATH);
+                int thumbnailIndex = cursor.getColumnIndex(MetadataContract.GalleryImages._THUMBNAIL_PATH);
+                int descriptionIndex = cursor.getColumnIndex(MetadataContract.GalleryImages._DESCRIPTION);
                 GalleryItem item = new GalleryItem();
                 item.setImageUri(cursor.getString(imageIndex));
                 item.setThumbnailUri(cursor.getString(thumbnailIndex));
