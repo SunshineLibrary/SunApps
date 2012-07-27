@@ -2,10 +2,8 @@ package com.ssl.curriculum.math.activity;
 
 import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +17,8 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.NavigationListView;
-import com.ssl.curriculum.math.model.MetadataContract.Lessons;
+import com.sunshine.metadata.provider.MetadataContract.Lessons;
+import com.ssl.curriculum.math.presenter.DetailsPagePresenter;
 import com.ssl.curriculum.math.presenter.NavigationMenuPresenter;
 
 public class NaviActivity extends Activity {
@@ -143,4 +142,5 @@ public class NaviActivity extends Activity {
 		});
 
 	}
+
 }

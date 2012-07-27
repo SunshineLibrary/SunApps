@@ -1,5 +1,6 @@
 package com.ssl.curriculum.math.component.videoview;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.media.AudioManager;
@@ -8,9 +9,8 @@ import android.net.Uri;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.View;
+import android.view.*;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -20,11 +20,10 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         MediaPlayer.OnPreparedListener, SurfaceHolder.Callback {
 
     private static final String TAG = "VideoPlayer";
-    private ImageButton playButton;
     private long lastActionTime = 0L;
     private View controlPanel;
     private ProgressBar timeline;
-    private ImageButton media;
+    private ImageButton playButton;
     private TappableSurfaceView surface;
     private SurfaceHolder holder;
     private MediaPlayer player;
@@ -34,36 +33,54 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     private Context context;
     private Uri uri;
     private boolean isPaused;
+    private ViewGroup content;
+    private ViewGroup mFullScreenLayout;
+    private View savedContentView;
+    private ImageButton fullScreenButton;
+    private boolean isFullScreen = false;
 
     public VideoPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
 
-//        Thread.setDefaultUncaughtExceptionHandler(onBlooey);
+        Thread.setDefaultUncaughtExceptionHandler(onBlooey);
 
         initUI();
-//        initListener();
+        initListener();
     }
 
     private void initUI() {
-//        surface = (TappableSurfaceView) findViewById(R.id.video_player_surface);
-//        surface.addTapListener(onTap);
-//        holder = surface.getHolder();
-//        holder.addCallback(this);
-//        holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-//
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        content = (ViewGroup) inflater.inflate(R.layout.video_player, null);
+
+//        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mFullScreenLayout = (ViewGroup) inflater.inflate(R.layout.video_player_full_screen, null);
+
+        this.addView(content);
+
+        surface = (TappableSurfaceView) findViewById(R.id.video_player_surface);
+        surface.addTapListener(onTap);
+        holder = surface.getHolder();
+        holder.addCallback(this);
+        holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
         controlPanel = findViewById(R.id.video_player_control_panel);
         timeline = (ProgressBar) findViewById(R.id.video_player_time_line);
 
-        media = (ImageButton) findViewById(R.id.video_player_media);
+        playButton = (ImageButton) findViewById(R.id.video_player_media);
+        fullScreenButton = (ImageButton) findViewById(R.id.video_player_full_screen);
     }
 
     private void initListener() {
-        media.setOnClickListener(new OnClickListener() {
+        playButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 lastActionTime = SystemClock.elapsedRealtime();
 
-                if (player == null) return;
+                if (player == null) {
+                    startVideo();
+                    onStart();
+                    return;
+                }
 
                 if (player.isPlaying())
                     pause();
@@ -72,13 +89,21 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
             }
 
             private void pause() {
-                media.setImageResource(R.drawable.ic_media_play);
+                playButton.setImageResource(R.drawable.ic_media_play);
                 player.pause();
             }
 
             private void start() {
-                media.setImageResource(R.drawable.ic_media_pause);
+                playButton.setImageResource(R.drawable.ic_media_pause);
                 player.start();
+            }
+        });
+
+        fullScreenButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isFullScreen = !isFullScreen;
+                setFullscreen(isFullScreen);
             }
         });
     }
@@ -87,52 +112,52 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         this.uri = uri;
     }
 
-    public void start() {
+    public void startVideo() {
         if (uri == null) return;
-        playVideo(uri.toString());
+
+        playVideo(uri);
         clearPanels();
     }
 
-    protected void onResume() {
-        isPaused=false;
+    public void onStart() {
+        isPaused = false;
         surface.postDelayed(onEverySecond, 1000);
     }
 
-    final private Runnable onEverySecond=new Runnable() {
-		public void run() {
-			if (lastActionTime>0 &&
-					SystemClock.elapsedRealtime()-lastActionTime>3000) {
-				clearPanels();
-			}
+    private Runnable onEverySecond = new Runnable() {
+        public void run() {
+            if (lastActionTime > 0 &&
+                    SystemClock.elapsedRealtime() - lastActionTime > 3000) {
+                clearPanels();
+            }
 
-			if (player!=null) {
-				timeline.setProgress(player.getCurrentPosition());
-			}
+            if (player != null) {
+                timeline.setProgress(player.getCurrentPosition());
+            }
 
-			if (!isPaused) {
-				surface.postDelayed(onEverySecond, 1000);
-			}
-		}
-	};
+            if (!isPaused) {
+                surface.postDelayed(onEverySecond, 1000);
+            }
+        }
+    };
 
     protected void onPause() {
-        isPaused=true;
+        isPaused = true;
     }
 
     protected void onDestroy() {
-        if (player!=null) {
+        if (player != null) {
             player.release();
-            player=null;
+            player = null;
         }
 
         surface.removeTapListener(onTap);
     }
 
 
-
-    private void playVideo(String url) {
+    private void playVideo(Uri uri) {
         try {
-            media.setEnabled(false);
+            playButton.setEnabled(false);
 
             if (player == null) {
                 player = new MediaPlayer();
@@ -142,7 +167,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
                 player.reset();
             }
 
-            player.setDataSource(url);
+            player.setDataSource(this.context, uri);
             player.setDisplay(holder);
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.setOnPreparedListener(this);
@@ -152,6 +177,46 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         } catch (Throwable t) {
             Log.e(TAG, "Exception in media prep", t);
             goBlooey(t);
+        }
+    }
+
+    public void setFullscreen(boolean fullscreen) {
+        boolean isOnPause = false;
+        Activity activity = (Activity) getContext();
+
+        if (fullscreen) {
+            activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+            if (player!=null && player.isPlaying()) {
+                player.pause();
+                isOnPause = true;
+            }
+
+            savedContentView = ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
+            ViewGroup container = (ViewGroup) getParent();
+            container.removeView(this);
+            activity.setContentView(mFullScreenLayout);
+
+            container = (FrameLayout) activity.findViewById(R.id.video_player_full_screen_container);
+            container.addView(this);
+
+            if(isOnPause) player.start();
+        } else {
+            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+            if (player!=null && player.isPlaying()) {
+                player.pause();
+                isOnPause = true;
+            }
+
+            ViewGroup container = (ViewGroup) getParent();
+            container.removeView(this);
+            activity.setContentView(savedContentView);
+            container = (RelativeLayout) activity.findViewById(R.id.content_screen_video_frame);
+            container.addView(this);
+
+            if(isOnPause) player.start();
         }
     }
 
@@ -165,7 +230,10 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
                 public void onTap(MotionEvent event) {
                     lastActionTime = SystemClock.elapsedRealtime();
 
-                    controlPanel.setVisibility(View.VISIBLE);
+                    if (controlPanel.getVisibility() == View.GONE)
+                        controlPanel.setVisibility(View.VISIBLE);
+                    else
+                        controlPanel.setVisibility(View.GONE);
                 }
             };
 

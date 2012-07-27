@@ -7,9 +7,8 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
-import org.apache.http.HttpResponse;
+import com.sunshine.support.api.ApiClient;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.json.JSONArray;
@@ -18,31 +17,25 @@ import org.json.JSONObject;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.net.Uri;
 import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.sunshine.metadata.database.tables.APISyncStateTable.APISyncState;
 import com.sunshine.metadata.database.tables.Table;
 
-public class TableSynchronizer {
+public class TableSyncManager {
 
 	private static final int MAX_RETRY_COUNT = 3;
 	private static final int BATCH_SIZE = 100;
     private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
 	private Table syncStateTable;
-	private Uri root_uri;
 	private Table table;
-	private HttpClient httpClient;
 	private long lastUpdateTime;
 
-	public TableSynchronizer(Table table, Table syncStatesTable,
-			HttpClient httpClient, Uri root_uri) {
-		this.root_uri = root_uri;
+	public TableSyncManager(Table table, Table syncStatesTable) {
 		this.table = table;
 		this.syncStateTable = syncStatesTable;
-		this.httpClient = httpClient;
 		lastUpdateTime = getLastUpdateTimeFromDB();
 	}
 
@@ -66,14 +59,15 @@ public class TableSynchronizer {
 	public boolean sync() {
 		boolean isInSync = false;
 		int retryCount = 0;
+        HttpClient httpClient = ApiClient.newHttpClient();
 		while (!isInSync && retryCount <= MAX_RETRY_COUNT) {
 			String requestURI = getRequestURI();
-			try {
-				HttpGet request = new HttpGet(requestURI);
-				Log.i(this.getClassName(), requestURI);
-				HttpResponse response = httpClient.execute(request);
-				InputStream result = response.getEntity().getContent();
+            Log.i(this.getClassName(), requestURI);
 
+            HttpGet request = new HttpGet(requestURI);
+            InputStream result = null;
+			try {
+				result = httpClient.execute(request).getEntity().getContent();
 				JSONArray jsonArr = getJsonArrayFromInputStream(result);
 				isInSync = processJsonArray(jsonArr);
 				updateLastUpdateTime(lastUpdateTime);
@@ -87,15 +81,25 @@ public class TableSynchronizer {
 			} catch (ParseException e) {
 				Log.e(getClassName(), "Failed to parse update time", e);
 				break;
-			}
+			} finally {
+                closeConnection(result);
+            }
 		}
 		return retryCount <= MAX_RETRY_COUNT;
 	}
 
-	protected String getRequestURI() {
-		return root_uri.buildUpon().appendPath(table.getTableName() + ".json")
-				.appendQueryParameter("timestamp", "" + lastUpdateTime).build()
-				.toString();
+    private void closeConnection(InputStream result) {
+        if (result != null) {
+            try {
+                result.close();
+            } catch (IOException e) {
+                Log.e(getClassName(), "Error closing connection.", e);
+            }
+        }
+    }
+
+    protected String getRequestURI() {
+		return ApiClient.getSyncRequestUrl(table.getTableName(), lastUpdateTime);
 	}
 
 	protected JSONArray getJsonArrayFromInputStream(InputStream result)

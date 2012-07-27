@@ -14,7 +14,7 @@ public abstract class DownloadableTable extends Table {
 
     private static final String[] DOWNLOADABLE_COLUMNS = {
             Downloadable._DOWNLOAD_PROGRESS,
-            Downloadable._DOWNLOAD_STATUS
+            Downloadable._DOWNLOAD_STATUS,
     };
 
     public DownloadableTable(MetadataDBHandler handler) {

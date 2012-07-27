@@ -6,10 +6,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.model.menu.MenuItem;
+import com.sunshine.metadata.provider.MetadataContract.*;
 
 import java.util.HashMap;
-
-import static com.ssl.curriculum.math.model.MetadataContract.*;
 
 public class NavigationMenuContentProvider implements NavigationMenuProvider {
     private static final String ROOT_MENU_NAME = "Courses";
@@ -23,23 +22,27 @@ public class NavigationMenuContentProvider implements NavigationMenuProvider {
 
     @Override
     public Menu loadNavigationMenu() {
-        Menu rootMenu = Menu.createMenuWithoutParent(ROOT_MENU_NAME);
+        Menu rootMenu = Menu.createMenuWithoutParent(ROOT_MENU_NAME, 0);
         HashMap<Integer, Menu> coursesMap = fetchCoursesMap(rootMenu);
         HashMap<Integer, Menu> chapterMap = fetchChildMenu(coursesMap, Chapters.CONTENT_URI, Chapters._ID, Chapters._PARENT_ID, Chapters._NAME);
-        fetchChildMenuItem(chapterMap, Lessons.CONTENT_URI, Lessons._PARENT_ID, Lessons._NAME);
+        HashMap<Integer, Menu> lessonMap = fetchChildMenu(chapterMap, Lessons.CONTENT_URI,Lessons._ID , Lessons._PARENT_ID, Lessons._NAME);
+        fetchChildMenuItem(lessonMap, Sections.CONTENT_URI, Sections._PARENT_ID, Sections._NAME, Sections._ID);
         return rootMenu;
     }
 
-    private void fetchChildMenuItem(HashMap<Integer, Menu> parentMenu, Uri childContentUri, String parentIdColumnName, String nameColumnName) {
-        String[] columns = {parentIdColumnName, nameColumnName};
+    private void fetchChildMenuItem(HashMap<Integer, Menu> parentMenu, Uri childContentUri, String parentIdColumnName, String nameColumnName, String idColumnName) {
+        String[] columns = {idColumnName, parentIdColumnName, nameColumnName};
         Cursor cursor = contentResolver.query(childContentUri, columns, null, null, null);
         if (cursor.moveToFirst()) {
             int parentIdIndex = cursor.getColumnIndex(parentIdColumnName);
             int nameIndex = cursor.getColumnIndex(nameColumnName);
+            int idIndex = cursor.getColumnIndex(idColumnName);
             do {
                 String name = cursor.getString(nameIndex);
                 int parentId = cursor.getInt(parentIdIndex);
-                MenuItem.createItemAddedToParent(name, parentMenu.get(parentId));
+                int currentId = cursor.getInt(idIndex);
+                MenuItem.createItemAddedToParent(name, currentId, parentMenu.get(parentId));
+                
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -57,7 +60,7 @@ public class NavigationMenuContentProvider implements NavigationMenuProvider {
                 String name = cursor.getString(nameIndex);
                 int id = cursor.getInt(idIndex);
                 int parentId = cursor.getInt(parentIdIndex);
-                Menu course = Menu.createMenuAddedToParent(name, parentMenu.get(parentId));
+                Menu course = Menu.createMenuAddedToParent(name, id, parentMenu.get(parentId));
                 map.put(id, course);
             } while (cursor.moveToNext());
         }
@@ -75,7 +78,7 @@ public class NavigationMenuContentProvider implements NavigationMenuProvider {
             do {
                 String name = cursor.getString(nameIndex);
                 int id = cursor.getInt(idIndex);
-                Menu course = Menu.createMenuAddedToParent(name, rootMenu);
+                Menu course = Menu.createMenuAddedToParent(name, id, rootMenu);
                 map.put(id, course);
             } while (cursor.moveToNext());
         }

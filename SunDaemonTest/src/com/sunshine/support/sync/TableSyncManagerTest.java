@@ -20,7 +20,7 @@ import com.sunshine.metadata.database.tables.APISyncStateTable.APISyncState;
 import com.sunshine.metadata.database.tables.PackageTable;
 import com.sunshine.metadata.database.tables.Table;
 
-public class TableSynchronizerTest extends DatabaseTestCase {
+public class TableSyncManagerTest extends DatabaseTestCase {
 
 	private TableSynchronizer synchronizer;
 	private Table syncStateTable;
