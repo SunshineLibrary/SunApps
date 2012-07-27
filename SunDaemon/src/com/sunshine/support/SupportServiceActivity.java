@@ -4,8 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
+import com.sunshine.metadata.provider.MetadataContract;
+import com.sunshine.support.api.ApiClient;
 import com.sunshine.support.mock.ImageTestData;
+import com.sunshine.support.storage.FileDownloadTask;
+import com.sunshine.support.sync.APISyncReceiver;
 import com.sunshine.support.webclient.WebClient;
+
+import java.io.FileNotFoundException;
 
 public class SupportServiceActivity extends Activity {
     private PackageManager localPackageManager;
@@ -22,7 +29,7 @@ public class SupportServiceActivity extends Activity {
 //        localPackageManager = this.getPackageManager();
 //        serverClient = new WebClient();
         setContentView(R.layout.main);
-        initFileStorage();
+//        initFileStorage();
     }
 
     @Override
@@ -30,6 +37,8 @@ public class SupportServiceActivity extends Activity {
         super.onPostCreate(savedInstanceState);
 //        startService(new Intent("com.sunshine.support.action.sync"));
 //        initFileStorage();
+        new FileDownloadTask(getBaseContext(), ApiClient.getDownloadUri("video_activity", 1), MetadataContract.Activities.getActivityVideoUri(1)).execute();
+        new FileDownloadTask(getBaseContext(), ApiClient.getDownloadUri("gallery_activity", 2), MetadataContract.Activities.getActivityGalleryUri(2)).execute();
     }
 
     private void initFileStorage() {

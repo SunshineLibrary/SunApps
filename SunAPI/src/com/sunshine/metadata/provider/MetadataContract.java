@@ -13,13 +13,14 @@ public final class MetadataContract {
     /*
     *  课内内容
     */
-    public static final class Gallery {
+    public static final class GalleryImages {
         public static final String _ID = BaseColumns._ID;
+        public static final String _GALLERY_ID = "gallery_id";
         public static final String _THUMBNAIL_PATH = "thumbnail";
         public static final String _IMAGE_PATH = "image";
         public static final String _DESCRIPTION = "description";
 
-        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("gallery").build();
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("gallery_images").build();
     }
 
     public static final class Courses {
@@ -62,6 +63,8 @@ public final class MetadataContract {
         public static final String _NOTES = "notes";
         public static final String _DIFFICULTY = "difficulty";
 
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("activities").build();
+
         public static enum Types {
             TEXT,
             AUDIO,
@@ -70,7 +73,20 @@ public final class MetadataContract {
             QUIZ,
             HTML
         }
+
+        public static Uri getActivityVideoUri(long id) {
+            return CONTENT_URI.buildUpon().appendPath("video").appendPath(String.valueOf(id)).build();
+        }
+
+        public static Uri getActivityGalleryUri(long id) {
+            return CONTENT_URI.buildUpon().appendPath("gallery").appendPath(String.valueOf(id)).build();
+        }
+
+        public static Uri getActivityThumbnailUri(long id) {
+            return CONTENT_URI.buildUpon().appendPath("thumbnail").appendPath(String.valueOf(id)).build();
+        }
     }
+
 
     /*
      *  课外内容

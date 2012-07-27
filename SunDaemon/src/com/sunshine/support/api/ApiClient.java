@@ -19,7 +19,7 @@ public class ApiClient {
     private static final String HOST = "ssl-mock.herokuapp.com";
 
 
-	private static final Map<String, String> apiMap;
+    private static final Map<String, String> apiMap;
 
     static {
         ROOT_URI = new Uri.Builder().scheme("http").authority(HOST).build();
@@ -52,5 +52,14 @@ public class ApiClient {
 
     private static String getApiPath(String tableName) {
         return apiMap.get(tableName);
+    }
+
+    public static Uri getRootUri() {
+        return ROOT_URI;
+    }
+
+    public static Uri getDownloadUri(String type, long id) {
+        return ROOT_URI.buildUpon().appendPath("download")
+                .appendQueryParameter("type", type).appendQueryParameter("id", String.valueOf(id)).build();
     }
 }

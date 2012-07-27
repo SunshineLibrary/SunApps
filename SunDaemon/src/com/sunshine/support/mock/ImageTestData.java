@@ -48,10 +48,10 @@ public class ImageTestData {
 
     private void writeImageFileUriToDB(String imageFileName, String thumbnailFileName, String description) {
         ContentValues values = new ContentValues();
-        values.put(MetadataContract.Gallery._IMAGE_PATH, Uri.decode(MetadataContract.AUTHORITY_URI.buildUpon().appendPath(IMAGE_DIR_PATH).appendPath(imageFileName).build().toString()));
-        values.put(MetadataContract.Gallery._THUMBNAIL_PATH, Uri.decode(MetadataContract.AUTHORITY_URI.buildUpon().appendPath(THUMBNAIL_DIR_PATH).appendPath(thumbnailFileName).build().toString()));
-        values.put(MetadataContract.Gallery._DESCRIPTION, description);
-        contentResolver.insert(MetadataContract.Gallery.CONTENT_URI, values);
+        values.put(MetadataContract.GalleryImages._IMAGE_PATH, Uri.decode(MetadataContract.AUTHORITY_URI.buildUpon().appendPath(IMAGE_DIR_PATH).appendPath(imageFileName).build().toString()));
+        values.put(MetadataContract.GalleryImages._THUMBNAIL_PATH, Uri.decode(MetadataContract.AUTHORITY_URI.buildUpon().appendPath(THUMBNAIL_DIR_PATH).appendPath(thumbnailFileName).build().toString()));
+        values.put(MetadataContract.GalleryImages._DESCRIPTION, description);
+        contentResolver.insert(MetadataContract.GalleryImages.CONTENT_URI, values);
     }
 
     private void writeResourceToFile(File imageDir, String imageFileName, int imageResource) throws IOException {

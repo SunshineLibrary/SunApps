@@ -1,29 +1,34 @@
 package com.sunshine.support.storage;
 
 import android.os.Environment;
+import com.sunshine.metadata.provider.MetadataContract;
 
 import java.io.File;
 import java.io.IOException;
 
 public class ExternalFileStorage implements FileStorage{
     private final File externalStorageRoot;
+    private static final String BASE_PATH = ".contents";
 
     public ExternalFileStorage() {
-        externalStorageRoot = Environment.getExternalStorageDirectory();
+        externalStorageRoot = new File(Environment.getExternalStorageDirectory(), BASE_PATH);
+        externalStorageRoot.mkdirs();
     }
 
     public File mkdir(String directory) {
-        String[] directories = directory.split("/");
-        if(directories == null || directories.length == 0) return externalStorageRoot;
-        File parentDir = externalStorageRoot;
-        File file = null;
-        for (String directoryName : directories) {
-            file = new File(parentDir, directoryName);
-            if (!file.exists() || !file.isDirectory()) {
-                file.mkdir();
-            }
-            parentDir = file;
+        if (directory.length() == 0) {
+            return externalStorageRoot;
         }
+
+        if (directory.charAt(0) == '/') {
+            directory = directory.substring(1,directory.length());
+        }
+
+        File file = new File(externalStorageRoot, directory);
+        if (!file.exists() || !file.isDirectory()) {
+            file.mkdirs();
+        }
+
         return file;
     }
 

@@ -7,17 +7,19 @@ public class GalleryTable extends Table {
     public static final String TABLE_NAME = "gallery";
 
     private static final String[] ALL_COLUMNS = {
-            MetadataContract.Gallery._ID,
-            MetadataContract.Gallery._THUMBNAIL_PATH,
-            MetadataContract.Gallery._IMAGE_PATH,
-            MetadataContract.Gallery._DESCRIPTION
+            MetadataContract.GalleryImages._ID,
+            MetadataContract.GalleryImages._GALLERY_ID,
+            MetadataContract.GalleryImages._THUMBNAIL_PATH,
+            MetadataContract.GalleryImages._IMAGE_PATH,
+            MetadataContract.GalleryImages._DESCRIPTION
     };
 
     private static final String[][] COLUMN_DEFINITIONS = {
-            {MetadataContract.Gallery._ID, "INTEGER PRIMARY KEY"},
-            {MetadataContract.Gallery._THUMBNAIL_PATH, "TEXT"},
-            {MetadataContract.Gallery._IMAGE_PATH, "TEXT"},
-            {MetadataContract.Gallery._DESCRIPTION, "TEXT"}
+            {MetadataContract.GalleryImages._ID, "INTEGER PRIMARY KEY"},
+            {MetadataContract.GalleryImages._GALLERY_ID, "INTEGER"},
+            {MetadataContract.GalleryImages._THUMBNAIL_PATH, "TEXT"},
+            {MetadataContract.GalleryImages._IMAGE_PATH, "TEXT"},
+            {MetadataContract.GalleryImages._DESCRIPTION, "TEXT"}
     };
 
     public GalleryTable(MetadataDBHandler handler) {

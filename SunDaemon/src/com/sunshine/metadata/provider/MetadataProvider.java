@@ -24,23 +24,21 @@ public class MetadataProvider extends ContentProvider {
             UriMatcher.NO_MATCH);
 
     private static final int PACKAGES = 1;
-    private static final int PACKAGES_ID = 2;
     private static final int COURSES = 3;
     private static final int CHAPTERS = 4;
     private static final int LESSONS = 5;
     private static final int SECTIONS = 6;
-    private static final int GALLERY = 7;
+    private static final int GALLERY_IMAGES_ID = 7;
     private static final int ACTIVITIES = 8;
 
     static {
         sUriMatcher.addURI(AUTHORITY, "packages", PACKAGES);
-        sUriMatcher.addURI(AUTHORITY, "packages/#", PACKAGES_ID);
         sUriMatcher.addURI(AUTHORITY, "courses", COURSES);
         sUriMatcher.addURI(AUTHORITY, "chapters", CHAPTERS);
         sUriMatcher.addURI(AUTHORITY, "lessons", LESSONS);
         sUriMatcher.addURI(AUTHORITY, "sections", SECTIONS);
-        sUriMatcher.addURI(AUTHORITY, "gallery", GALLERY);
         sUriMatcher.addURI(AUTHORITY, "activities", ACTIVITIES);
+        sUriMatcher.addURI(AUTHORITY, "gallery_images/#", GALLERY_IMAGES_ID);
     }
 
     /*
@@ -57,20 +55,17 @@ public class MetadataProvider extends ContentProvider {
     private static final String METADATA_ID_MIME_TYPE = ITEM_MIME_TYPE
             + ".metadata";
 
-    private static final String GALLERY_IMAGE_MIME_TYPE = DIR_MIME_TYPE
-            + ".image";
-
-    private static final String GALLERY_THUMBNAIL_MIME_TYPE = DIR_MIME_TYPE
-            + ".thumbnail";
+    private static final String GALLERY_IMAGES_MIME_TYPE = MetadataProvider.DIR_MIME_TYPE
+            + ".images";
 
 
     private MetadataDBHandler dbHandler;
-    private SharedStorageProvider sharedStorageMananger;
+    private SharedStorageProvider sharedStorageManager;
 
     @Override
     public boolean onCreate() {
         dbHandler = new MetadataDBHandler(getContext());
-        sharedStorageMananger = new SharedStorageProvider(getContext());
+        sharedStorageManager = new SharedStorageProvider(getContext());
         return true;
     }
 
@@ -81,10 +76,6 @@ public class MetadataProvider extends ContentProvider {
             case PACKAGES:
                 return dbHandler.getTableManager(PackageTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
-            case PACKAGES_ID:
-                return dbHandler.getTableManager(PackageTable.TABLE_NAME).query(
-                        uri, projection, MetadataContract.Packages._ID + " = ?",
-                        new String[]{uri.getLastPathSegment()}, sortOrder);
             case COURSES:
                 return dbHandler.getTableManager(CourseTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
@@ -97,7 +88,7 @@ public class MetadataProvider extends ContentProvider {
             case SECTIONS:
                 return dbHandler.getTableManager(SectionTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
-            case GALLERY:
+            case GALLERY_IMAGES_ID:
                 return dbHandler.getTableManager(GalleryTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
             default:
@@ -110,8 +101,6 @@ public class MetadataProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
             case PACKAGES:
                 return METADATA_MIME_TYPE;
-            case PACKAGES_ID:
-                return METADATA_ID_MIME_TYPE;
             case COURSES:
                 return METADATA_MIME_TYPE;
             case CHAPTERS:
@@ -120,8 +109,10 @@ public class MetadataProvider extends ContentProvider {
                 return METADATA_MIME_TYPE;
             case SECTIONS:
                 return METADATA_MIME_TYPE;
+            case GALLERY_IMAGES_ID:
+                return GALLERY_IMAGES_MIME_TYPE;
             default:
-                return sharedStorageMananger.getType(uri);
+                return null;
         }
     }
 
@@ -131,7 +122,7 @@ public class MetadataProvider extends ContentProvider {
             case PACKAGES:
                 return dbHandler.getTableManager(PackageTable.TABLE_NAME).insert(
                         uri, values);
-            case GALLERY:
+            case GALLERY_IMAGES_ID:
                 return dbHandler.getTableManager(GalleryTable.TABLE_NAME).insert(
                         uri, values);
             default:
@@ -143,9 +134,6 @@ public class MetadataProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         switch (sUriMatcher.match(uri)) {
             case PACKAGES:
-                return dbHandler.getTableManager(PackageTable.TABLE_NAME).delete(
-                        uri, selection, selectionArgs);
-            case PACKAGES_ID:
                 return dbHandler.getTableManager(PackageTable.TABLE_NAME).delete(
                         uri, selection, selectionArgs);
             default:
@@ -160,19 +148,17 @@ public class MetadataProvider extends ContentProvider {
             case PACKAGES:
                 return dbHandler.getTableManager(PackageTable.TABLE_NAME).update(
                         uri, values, selection, selectionArgs);
-            case PACKAGES_ID:
-                return dbHandler.getTableManager(PackageTable.TABLE_NAME).update(
-                        uri, values, MetadataContract.Packages._ID + "=?",
-                        new String[]{uri.getLastPathSegment()});
+            case ACTIVITIES:
+                if (values.get(MetadataContract.Downloadable._DOWNLOAD_STATUS).equals(MetadataContract.Downloadable.STATUS.QUEUED.ordinal())) {
+                }
             default:
                 throw new IllegalArgumentException();
         }
     }
 
-
     @Override
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
-        return sharedStorageMananger.openFile(uri, mode);
+        return sharedStorageManager.openFile(uri, mode);
     }
 
 }
