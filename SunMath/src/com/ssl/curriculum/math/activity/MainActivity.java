@@ -40,6 +40,9 @@ public class MainActivity extends Activity {
 //        loadGalleryContent();
     }
 
+    public void loadActivityById(int id){
+    }
+    
     private void loadGalleryContent() {
         galleryContentProvider = new GalleryContentProvider(this);
         FetchGalleryContentTask fetchGalleryContentTask = new FetchGalleryContentTask(galleryContentProvider);
