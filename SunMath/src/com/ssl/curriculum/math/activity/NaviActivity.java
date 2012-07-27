@@ -39,6 +39,7 @@ public class NaviActivity extends Activity {
     }
 
     private void initComponent() {
+    	final Activity self = this;
         menuPresenter = new NavigationMenuPresenter(this, navigationListView, menuTitle);
         detailsPresenter = new DetailsPagePresenter();
         
@@ -48,7 +49,9 @@ public class NaviActivity extends Activity {
         backImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                menuPresenter.menuBack();
+            	if(!menuPresenter.menuBack()){
+            		self.onBackPressed();
+            	}
             }
         });
 

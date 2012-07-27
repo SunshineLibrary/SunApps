@@ -64,10 +64,11 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
         updateMenu();
     }
 
-    public void menuBack() {
-        if (currentMenu.getParent() == null) return;
+    public boolean menuBack() {
+        if (currentMenu.getParent() == null) return false;
         currentMenu = currentMenu.getParent();
         updateMenu();
+        return true;
     }
 
     private void updateMenu() {

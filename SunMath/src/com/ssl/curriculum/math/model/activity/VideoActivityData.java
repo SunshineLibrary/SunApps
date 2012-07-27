@@ -1,27 +1,20 @@
 package com.ssl.curriculum.math.model.activity;
 
-public class VideoActivityData {
+import com.sunshine.metadata.provider.MetadataContract.Activities;
+
+public class VideoActivityData extends ActivityData{
 	private String videoTitle = "";
 	private String videoDescription = "";
 	private long videoDuration = 0; //Video Duration in .001s
-	private int dbid = 0;
 	
 	public VideoActivityData(){
-		
+		super(Activities.Types.VIDEO.ordinal());
 	}
 	
 	public void initVideoMetadata(String title, String desc, long dur){
 		this.videoTitle = title;
 		this.videoDescription = desc;
 		this.videoDuration = dur;
-	}
-	
-	public void setUniqueId(int id){
-		this.dbid = id;
-	}
-	
-	public int getUniqueId(){
-		return this.dbid;
 	}
 	
 	public String getTitle(){
