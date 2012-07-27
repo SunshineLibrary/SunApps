@@ -15,7 +15,7 @@ public class VideoActivityContentProvider extends ActivityContentProvider {
 	public VideoActivityData fetchVideoData(int id){
 		VideoActivityData vad = new VideoActivityData();
 		Cursor cursor = this.query(new String[] {Activities._ID, Activities._NAME, Activities._NOTES, Activities._LENGTH}, 
-				Activities._TYPE + " = " + Activities.Types.VIDEO.ordinal() + " AND " + Activities._ID + " = " + id);
+				Activities._TYPE + " = " + Activities.TYPE_VIDEO + " AND " + Activities._ID + " = " + id);
 		if(cursor.moveToFirst()){
 			int idIndex = cursor.getColumnIndex(Activities._ID);
 			int nameIndex = cursor.getColumnIndex(Activities._NAME);

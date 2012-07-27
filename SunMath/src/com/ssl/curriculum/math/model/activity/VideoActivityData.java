@@ -8,7 +8,7 @@ public class VideoActivityData extends ActivityData{
 	private long videoDuration = 0; //Video Duration in .001s
 	
 	public VideoActivityData(){
-		super(Activities.Types.VIDEO.ordinal());
+		super(Activities.TYPE_VIDEO);
 	}
 	
 	public void initVideoMetadata(String title, String desc, long dur){

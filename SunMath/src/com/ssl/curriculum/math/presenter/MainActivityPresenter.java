@@ -20,11 +20,11 @@ public class MainActivityPresenter {
 	public static String BTN_NAVI = "nav_btn";
 	public static String FLIPPER = "view_flipper";
 	
-	private static final int TYPE_TEXT = Activities.Types.TEXT.ordinal();
-	private static final int TYPE_VIDEO = Activities.Types.VIDEO.ordinal();
-	private static final int TYPE_AUDIO = Activities.Types.AUDIO.ordinal();
-	private static final int TYPE_HTML = Activities.Types.HTML.ordinal();
-	private static final int TYPE_QUIZ = Activities.Types.QUIZ.ordinal();
+	private static final int TYPE_TEXT = Activities.TYPE_TEXT;
+	private static final int TYPE_VIDEO = Activities.TYPE_VIDEO;
+	private static final int TYPE_AUDIO = Activities.TYPE_AUDIO;
+	private static final int TYPE_HTML = Activities.TYPE_HTML;
+	private static final int TYPE_QUIZ = Activities.TYPE_QUIZ;
 	
 	private EdgeContentProvider edgeProvider;
 	private HashMap<String,View> UIBindings = new HashMap<String,View>();
