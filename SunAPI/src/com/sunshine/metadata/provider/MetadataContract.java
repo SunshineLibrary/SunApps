@@ -9,6 +9,27 @@ public final class MetadataContract {
 
     public static final Uri AUTHORITY_URI = new Uri.Builder().scheme("content")
             .authority(AUTHORITY).build();
+    
+    public static final class Edges {
+    	public static final String _ID = BaseColumns._ID;
+    	public static final String _FROM_ID = "from_id";
+    	public static final String _TO_ID = "to_id";
+    	public static final String _CONDITION = "conditoin";
+    	public static final String _SECTION_ID ="section_id";
+    }
+    
+    public static final class Problems {
+    	public static final String _ID = BaseColumns._ID;
+    	public static final String _BODY = "body";
+    	public static final String _TIPE = "tipe";
+    	public static final String _ANSWER = "answer";
+    }
+    
+    public static final class ProblemChoices {
+    	public static final String _ID = BaseColumns._ID;
+    	public static final String _CHOICE = "choice";
+    	public static final String _BODY = "body";
+    }
 
     public static final class Gallery {
         public static final String _ID = BaseColumns._ID;
