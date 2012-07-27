@@ -8,11 +8,38 @@ public final class MetadataContract {
     public static final String AUTHORITY = "com.sunshine.metadata.provider";
 
     public static final Uri AUTHORITY_URI = new Uri.Builder().scheme("content")
-            .authority(AUTHORITY).build();
+        .authority(AUTHORITY).build();
+
+    public static final class Edges {
+        public static final String _ID = BaseColumns._ID;
+        public static final String _FROM_ID = "from_id";
+        public static final String _TO_ID = "to_id";
+        public static final String _CONDITION = "conditoin";
+        public static final String _SECTION_ID ="section_id";
+
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("edges").build();
+    }
+
+    public static final class Problems {
+        public static final String _ID = BaseColumns._ID;
+        public static final String _BODY = "body";
+        public static final String _TIPE = "tipe";
+        public static final String _ANSWER = "answer";
+
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problems").build();
+    }
+
+    public static final class ProblemChoices {
+        public static final String _ID = BaseColumns._ID;
+        public static final String _CHOICE = "choice";
+        public static final String _BODY = "body";
+
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problem_choices").build();
+    }
 
     /*
-    *  课内内容
-    */
+     *  课内内容
+     */
     public static final class GalleryImages {
         public static final String _ID = BaseColumns._ID;
         public static final String _GALLERY_ID = "gallery_id";
@@ -50,6 +77,8 @@ public final class MetadataContract {
         public static final String _ID = BaseColumns._ID;
         public static final String _PARENT_ID = "lesson_id";
         public static final String _NAME = "name";
+
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("sections").build();
     }
 
     public static final class Activities extends Downloadable {
@@ -65,14 +94,12 @@ public final class MetadataContract {
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("activities").build();
 
-        public static enum Types {
-            TEXT,
-            AUDIO,
-            VIDEO,
-            GALLERY,
-            QUIZ,
-            HTML
-        }
+        public static final int TYPE_TEXT = 0;
+        public static final int TYPE_AUDIO = 1;
+        public static final int TYPE_VIDEO = 2;
+        public static final int TYPE_GALLERY = 3;
+        public static final int TYPE_QUIZ = 4;
+        public static final int TYPE_HTML = 5;
 
         public static Uri getActivityVideoUri(long id) {
             return CONTENT_URI.buildUpon().appendPath("video").appendPath(String.valueOf(id)).build();
@@ -84,6 +111,10 @@ public final class MetadataContract {
 
         public static Uri getActivityThumbnailUri(long id) {
             return CONTENT_URI.buildUpon().appendPath("thumbnail").appendPath(String.valueOf(id)).build();
+        }
+
+        public static Uri getActivityUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
         }
     }
 
@@ -256,10 +287,6 @@ public final class MetadataContract {
             CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("tags").build();
         }
     }
-
-    /*
-     * 其他内容
-     */
     public static final class Packages extends Downloadable {
         public static final String _ID = BaseColumns._ID;
         public static final String _NAME = "name";
@@ -269,7 +296,7 @@ public final class MetadataContract {
 
         static {
             CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("packages")
-                    .build();
+                .build();
         }
     }
 

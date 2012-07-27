@@ -2,6 +2,8 @@ package com.sunshine.support.mock;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,10 +25,12 @@ public class ImageTestData {
     private ContentResolver contentResolver;
     private File imageDir;
     private File thumbnailDir;
+    private Context context;
 
-    public ImageTestData(Resources resources, ContentResolver contentResolver) {
-        this.resources = resources;
-        this.contentResolver = contentResolver;
+    public ImageTestData(Context context) {
+        this.resources = context.getResources();
+        this.contentResolver = context.getContentResolver();
+        this.context = context;
         fileStorage = FileStorageManager.getInstance().getWritableFileStorage();
         createDirs();
     }
@@ -60,5 +64,15 @@ public class ImageTestData {
         Bitmap bm = BitmapFactory.decodeResource(resources, imageResource);
         bm.compress(Bitmap.CompressFormat.JPEG, 80, fos);
         fos.close();
+    }
+
+    public boolean hasPreparedData() {
+        SharedPreferences settings = context.getSharedPreferences("MockImageSettings", 0);
+        return settings.getBoolean("isMockedImageDataPrepared", false);
+    }
+
+    public void setHasPreparedData(boolean preparedData) {
+        SharedPreferences settings = context.getSharedPreferences("MockImageSettings", 0);
+        settings.edit().putBoolean("isMockedImageDataPrepared", preparedData).commit();
     }
 }

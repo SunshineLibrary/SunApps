@@ -9,9 +9,14 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import com.sunshine.metadata.database.MetadataDBHandler;
 import com.sunshine.metadata.database.tables.*;
+import com.sunshine.support.api.ApiClient;
+import com.sunshine.support.storage.FileDownloadTask;
 import com.sunshine.support.storage.SharedStorageProvider;
 
 import java.io.FileNotFoundException;
+
+import static com.sunshine.metadata.provider.MetadataContract.*;
+import static com.sunshine.metadata.provider.MetadataContract.Activities.*;
 
 public class MetadataProvider extends ContentProvider {
 
@@ -28,8 +33,9 @@ public class MetadataProvider extends ContentProvider {
     private static final int CHAPTERS = 4;
     private static final int LESSONS = 5;
     private static final int SECTIONS = 6;
-    private static final int GALLERY_IMAGES_ID = 7;
+    private static final int GALLERY_IMAGES = 7;
     private static final int ACTIVITIES = 8;
+    private static final int ACTIVITIES_ID = 9;
 
     static {
         sUriMatcher.addURI(AUTHORITY, "packages", PACKAGES);
@@ -38,7 +44,8 @@ public class MetadataProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, "lessons", LESSONS);
         sUriMatcher.addURI(AUTHORITY, "sections", SECTIONS);
         sUriMatcher.addURI(AUTHORITY, "activities", ACTIVITIES);
-        sUriMatcher.addURI(AUTHORITY, "gallery_images/#", GALLERY_IMAGES_ID);
+        sUriMatcher.addURI(AUTHORITY, "activities/#", ACTIVITIES_ID);
+        sUriMatcher.addURI(AUTHORITY, "activities/gallery/images/#", GALLERY_IMAGES);
     }
 
     /*
@@ -88,8 +95,11 @@ public class MetadataProvider extends ContentProvider {
             case SECTIONS:
                 return dbHandler.getTableManager(SectionTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
-            case GALLERY_IMAGES_ID:
+            case GALLERY_IMAGES:
                 return dbHandler.getTableManager(GalleryTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
+            case ACTIVITIES:
+                return dbHandler.getTableManager(ActivityTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
             default:
                 throw new IllegalArgumentException();
@@ -109,20 +119,17 @@ public class MetadataProvider extends ContentProvider {
                 return METADATA_MIME_TYPE;
             case SECTIONS:
                 return METADATA_MIME_TYPE;
-            case GALLERY_IMAGES_ID:
+            case GALLERY_IMAGES:
                 return GALLERY_IMAGES_MIME_TYPE;
             default:
-                return null;
+                return sharedStorageManager.getType(uri);
         }
     }
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         switch (sUriMatcher.match(uri)) {
-            case PACKAGES:
-                return dbHandler.getTableManager(PackageTable.TABLE_NAME).insert(
-                        uri, values);
-            case GALLERY_IMAGES_ID:
+            case GALLERY_IMAGES:
                 return dbHandler.getTableManager(GalleryTable.TABLE_NAME).insert(
                         uri, values);
             default:
@@ -133,9 +140,6 @@ public class MetadataProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         switch (sUriMatcher.match(uri)) {
-            case PACKAGES:
-                return dbHandler.getTableManager(PackageTable.TABLE_NAME).delete(
-                        uri, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException();
         }
@@ -145,15 +149,38 @@ public class MetadataProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
         switch (sUriMatcher.match(uri)) {
-            case PACKAGES:
-                return dbHandler.getTableManager(PackageTable.TABLE_NAME).update(
-                        uri, values, selection, selectionArgs);
-            case ACTIVITIES:
-                if (values.get(MetadataContract.Downloadable._DOWNLOAD_STATUS).equals(MetadataContract.Downloadable.STATUS.QUEUED.ordinal())) {
-                }
+            case ACTIVITIES_ID:
+                return updateActivity(uri, values, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException();
         }
+    }
+
+    private int updateActivity(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        Table table = dbHandler.getTableManager(ActivityTable.TABLE_NAME);
+        Integer status;
+        if ((status = values.getAsInteger(Downloadable._DOWNLOAD_STATUS)) != null) {
+            if (status == STATUS.QUEUED.ordinal()) {
+                Cursor cursor = table.query(uri, new String[] {_TYPE}, null, null, null);
+                if (cursor.moveToFirst()) {
+                    int id = Integer.parseInt(uri.getLastPathSegment());
+                    switch (cursor.getInt(cursor.getColumnIndex(_TYPE))) {
+                        case TYPE_GALLERY:
+                            new FileDownloadTask(getContext(),
+                                    ApiClient.getDownloadUri("gallery_activity", id),
+                                    Activities.getActivityGalleryUri(id)).execute();
+                            break;
+                        case TYPE_VIDEO:
+                            new FileDownloadTask(getContext(),
+                                    ApiClient.getDownloadUri("video_activity", id),
+                                    Activities.getActivityVideoUri(id)).execute();
+                            break;
+                        default:
+                    }
+                }
+            }
+        }
+        return table.update(uri, values, selection, selectionArgs);
     }
 
     @Override
