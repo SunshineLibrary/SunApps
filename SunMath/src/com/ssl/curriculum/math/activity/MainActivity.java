@@ -13,20 +13,17 @@ import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.component.videoview.VideoPlayer;
 import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
 import com.ssl.curriculum.math.page.GalleryThumbnailPage;
+import com.ssl.curriculum.math.presenter.MainActivityPresenter;
 import com.ssl.curriculum.math.service.GalleryContentProvider;
 import com.ssl.curriculum.math.task.FetchGalleryContentTask;
 
 public class MainActivity extends Activity {
-
-    private ViewFlipper viewFlipper;
-    private ImageView leftBtn;
-    private ImageView rightBtn;
-    private ImageView naviBtn;
+	
+    private MainActivityPresenter presenter;
     private GalleryThumbnailPage galleryThumbnailPage;
     private GalleryContentProvider galleryContentProvider;
     private VideoPlayer videoPlayer;
-    private FlipAnimationManager flipAnimationManager;
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +45,17 @@ public class MainActivity extends Activity {
 
     private void initUI() {
         setContentView(R.layout.main_layout);
-        viewFlipper = (ViewFlipper) this.findViewById(R.id.main_activity_view_flipper);
-        this.leftBtn = (ImageView) this.findViewById(R.id.main_activity_left_btn);
-        this.rightBtn = (ImageView) this.findViewById(R.id.main_activity_right_btn);
-        this.naviBtn = (ImageView) this.findViewById(R.id.main_activity_navi_btn);
+        presenter = new MainActivityPresenter(this);
+        
+        presenter.bindUIElement(MainActivityPresenter.BTN_LEFT, this.findViewById(R.id.main_activity_left_btn));
+        presenter.bindUIElement(MainActivityPresenter.BTN_RIGHT, this.findViewById(R.id.main_activity_right_btn));
+        presenter.bindUIElement(MainActivityPresenter.BTN_NAVI, this.findViewById(R.id.main_activity_navi_btn));
+        presenter.bindUIElement(MainActivityPresenter.FLIPPER, this.findViewById(R.id.main_activity_view_flipper));
+        
+        presenter.initListeners();
+        
         galleryThumbnailPage = (GalleryThumbnailPage) findViewById(R.id.gallery_thumbnail_page);
-
+        
         videoPlayer = (VideoPlayer) findViewById(R.id.content_screen_video_field);
         Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.speaking);
         videoPlayer.setVideoURI(video);
@@ -79,30 +81,6 @@ public class MainActivity extends Activity {
 //    }
 
     private void initListeners() {
-        flipAnimationManager = FlipAnimationManager.getInstance(this);
-        this.leftBtn.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                viewFlipper.setInAnimation(flipAnimationManager.getFlipInFromRightAnimation());
-                viewFlipper.setOutAnimation(flipAnimationManager.getFlipOutToLeftAnimation());
-                viewFlipper.showPrevious();
-            }
-        });
-        this.rightBtn.setOnClickListener(new OnClickListener() {
-
-            public void onClick(View v) {
-                viewFlipper.setInAnimation(flipAnimationManager.getFlipInFromLeftAnimation());
-                viewFlipper.setOutAnimation(flipAnimationManager.getFlipOutToRightAnimation());
-                viewFlipper.showNext();
-
-
-            }
-        });
-        this.naviBtn.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, NaviActivity.class);
-                startActivity(intent);
-            }
-        });
         galleryThumbnailPage.setGalleryItemClickedListener(new GalleryItemClickedListener() {
             @Override
             public void onGalleryItemClicked(int position) {
