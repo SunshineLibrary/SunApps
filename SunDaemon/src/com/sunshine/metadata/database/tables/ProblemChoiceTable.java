@@ -4,7 +4,7 @@ import com.sunshine.metadata.database.MetadataDBHandler;
 import com.sunshine.metadata.provider.MetadataContract.ProblemChoices;
 
 public class ProblemChoiceTable extends DownloadableTable {
-    public static final String TABLE_NAME = "activities";
+    public static final String TABLE_NAME = "problem_choices";
 
     public static final String[] ALL_COLUMNS = {
             ProblemChoices._ID,

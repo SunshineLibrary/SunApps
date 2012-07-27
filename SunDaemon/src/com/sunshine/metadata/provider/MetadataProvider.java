@@ -1,12 +1,12 @@
 package com.sunshine.metadata.provider;
 
 import android.content.ContentProvider;
-
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.provider.BaseColumns;
 import com.sunshine.metadata.database.MetadataDBHandler;
 import com.sunshine.metadata.database.tables.*;
 import com.sunshine.support.api.ApiClient;
@@ -15,8 +15,9 @@ import com.sunshine.support.storage.SharedStorageProvider;
 
 import java.io.FileNotFoundException;
 
-import static com.sunshine.metadata.provider.MetadataContract.*;
+import static com.sunshine.metadata.provider.MetadataContract.Activities;
 import static com.sunshine.metadata.provider.MetadataContract.Activities.*;
+import static com.sunshine.metadata.provider.MetadataContract.Downloadable;
 
 public class MetadataProvider extends ContentProvider {
 
@@ -101,6 +102,10 @@ public class MetadataProvider extends ContentProvider {
             case ACTIVITIES:
                 return dbHandler.getTableManager(ActivityTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
+            case ACTIVITIES_ID:
+                return dbHandler.getTableManager(ActivityTable.TABLE_NAME).query(
+                        uri, projection, BaseColumns._ID + "=?",
+                        new String[]{uri.getLastPathSegment()}, sortOrder);
             default:
                 throw new IllegalArgumentException();
         }
@@ -132,6 +137,9 @@ public class MetadataProvider extends ContentProvider {
             case GALLERY_IMAGES:
                 return dbHandler.getTableManager(GalleryTable.TABLE_NAME).insert(
                         uri, values);
+            case ACTIVITIES:
+                return dbHandler.getTableManager(ActivityTable.TABLE_NAME).insert(
+                        uri, values);
             default:
                 throw new IllegalArgumentException();
         }
@@ -161,10 +169,10 @@ public class MetadataProvider extends ContentProvider {
         Integer status;
         if ((status = values.getAsInteger(Downloadable._DOWNLOAD_STATUS)) != null) {
             if (status == STATUS.QUEUED.ordinal()) {
-                Cursor cursor = table.query(uri, new String[] {_TYPE}, null, null, null);
+                Cursor cursor = table.query(uri, new String[] {Activities._TYPE}, null, null, null);
                 if (cursor.moveToFirst()) {
                     int id = Integer.parseInt(uri.getLastPathSegment());
-                    switch (cursor.getInt(cursor.getColumnIndex(_TYPE))) {
+                    switch (cursor.getInt(cursor.getColumnIndex(Activities._TYPE))) {
                         case TYPE_GALLERY:
                             new FileDownloadTask(getContext(),
                                     ApiClient.getDownloadUri("gallery_activity", id),
