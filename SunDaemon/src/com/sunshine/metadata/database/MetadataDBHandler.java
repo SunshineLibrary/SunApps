@@ -9,8 +9,8 @@ import java.util.HashMap;
 
 /**
  * @author Bowen Sun
- *         <p/>
- *         Manages the meta-data database,
+ *
+ * Manages the meta-data database,
  */
 public class MetadataDBHandler extends SQLiteOpenHelper {
 

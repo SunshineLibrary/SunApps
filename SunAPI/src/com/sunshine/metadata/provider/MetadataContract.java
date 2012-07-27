@@ -10,9 +10,6 @@ public final class MetadataContract {
     public static final Uri AUTHORITY_URI = new Uri.Builder().scheme("content")
             .authority(AUTHORITY).build();
 
-    /*
-    *  课内内容
-    */
     public static final class Gallery {
         public static final String _ID = BaseColumns._ID;
         public static final String _THUMBNAIL_PATH = "thumbnail";
@@ -49,6 +46,8 @@ public final class MetadataContract {
         public static final String _ID = BaseColumns._ID;
         public static final String _PARENT_ID = "lesson_id";
         public static final String _NAME = "name";
+        
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("sections").build();
     }
 
     public static final class Activities extends Downloadable {
@@ -70,11 +69,10 @@ public final class MetadataContract {
             QUIZ,
             HTML
         }
+        
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("activities").build(); 
     }
 
-    /*
-     *  课外内容
-     */
     public static final class BookCollections {
 
         public static final String _ID = BaseColumns._ID;
@@ -240,10 +238,6 @@ public final class MetadataContract {
             CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("tags").build();
         }
     }
-
-    /*
-     * 其他内容
-     */
     public static final class Packages extends Downloadable {
         public static final String _ID = BaseColumns._ID;
         public static final String _NAME = "name";

@@ -4,7 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import com.ssl.curriculum.math.model.GalleryItem;
-import com.ssl.curriculum.math.model.MetadataContract;
+import com.sunshine.metadata.provider.MetadataContract;
 
 import java.util.ArrayList;
 import java.util.List;

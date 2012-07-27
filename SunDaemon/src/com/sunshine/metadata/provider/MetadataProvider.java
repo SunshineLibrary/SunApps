@@ -100,6 +100,9 @@ public class MetadataProvider extends ContentProvider {
             case GALLERY:
                 return dbHandler.getTableManager(GalleryTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
+            case ACTIVITIES:
+                return dbHandler.getTableManager(ActivityTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
             default:
                 throw new IllegalArgumentException();
         }
@@ -120,6 +123,8 @@ public class MetadataProvider extends ContentProvider {
                 return METADATA_MIME_TYPE;
             case SECTIONS:
                 return METADATA_MIME_TYPE;
+            case ACTIVITIES:
+            	return METADATA_MIME_TYPE;
             default:
                 return sharedStorageMananger.getType(uri);
         }
