@@ -35,5 +35,7 @@ public class CategoryGridItem {
 		return description;
 	}
 	
-	
+	public String toString(){
+		return name;
+	}
 }

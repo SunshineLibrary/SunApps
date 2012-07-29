@@ -50,5 +50,7 @@ public class ResourceListGridItem {
 		return intro;
 	}
 	
-	
+	public String toString(){
+		return title;
+	}
 }

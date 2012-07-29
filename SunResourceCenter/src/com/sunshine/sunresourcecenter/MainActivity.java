@@ -1,18 +1,22 @@
 package com.sunshine.sunresourcecenter;
 
 import com.sunshine.metadata.provider.*;
+import com.sunshine.metadata.provider.MetadataContract.BookCollections;
+
 import java.util.ArrayList;
 import java.util.List;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -45,7 +49,9 @@ public class MainActivity extends Activity {
 		DOWN_HOT,
 		DOWN_CATEGORY,
 		DOWN_LIKE,
-		DOWN_LIST
+		DOWN_LIST,
+		DOWN_LIST_RES,
+		DOWN_CATEGORY_RES
 	};
 	private gridType currentGridType;
 	private viewType currentViewType;
@@ -86,12 +92,47 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
-
-				Intent intent = new Intent();
-				intent.setClass(MainActivity.this, ResourceInfoActivity.class);
-				startActivity(intent);
+				Intent intent;
 				
-//				Toast.makeText(MainActivity.this, "item" + (position + 1),
+				switch(currentViewType){
+				case RES_READING:
+				case RES_ALL:
+				case RES_RECENT:
+				case RES_LEARN_NEW:
+				case RES_READED:
+					//book
+					intent = new Intent();
+					intent.putExtra("bookId", gridItems.get(position).toString());
+					intent.setClass(MainActivity.this, ResourceInfoActivity.class);
+					startActivity(intent);
+					break;
+					
+				case DOWN_RECOMMAND:
+				case DOWN_HOT:
+				case DOWN_LIKE:
+				case DOWN_LIST_RES:
+				case DOWN_CATEGORY_RES:
+					//collections
+					intent = new Intent();
+					intent.setClass(MainActivity.this, ResourceInfoActivity.class);
+					startActivity(intent);
+					break;
+					
+				case DOWN_CATEGORY:
+					currentGridType = gridType.GRIDTYPE_RES_TODOWNLOAD;
+					currentViewType = viewType.DOWN_CATEGORY_RES;
+					showGridView(gridItems, currentResType, currentGridType, currentViewType);
+					break;
+				case DOWN_LIST:
+					currentGridType = gridType.GRIDTYPE_RES_TODOWNLOAD;
+					currentViewType = viewType.DOWN_LIST_RES;
+					showGridView(gridItems, currentResType, currentGridType, currentViewType);
+					break;
+				default:
+					break;
+				}
+				
+//				Toast.makeText(MainActivity.this, gridItems.get(position).toString(),
 //						Toast.LENGTH_SHORT).show();
 
 			}
@@ -185,6 +226,11 @@ public class MainActivity extends Activity {
 		simulateTabs(resnav, resnav_switch);
 		simulateTabs(typenav, typenav_switch);
 		simulateTabs(downnav, downnav_switch);
+		
+		String[] curs = getResources().getStringArray(R.array.main_menu);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.spinner_item, curs);
+		adapter.setDropDownViewResource(R.layout.spinner_dropdown);
+		mainnav.setAdapter(adapter);
 		mainnav.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View spinner,
@@ -281,7 +327,8 @@ public class MainActivity extends Activity {
 	private void showGridView(List<Object> itemList, ResourceType resType,
 			gridType theGridType, viewType theViewType) {
 		
-		itemList = boundGridData(resType, theGridType);
+		gridItems = boundGridData(resType, theViewType);
+		itemList = gridItems;
 		
 		switch (theGridType) {
 		case GRIDTYPE_RES_TODOWNLOAD:
@@ -315,14 +362,20 @@ public class MainActivity extends Activity {
 
 	}
 	
-	private List<Object> boundGridData(ResourceType resType, gridType theGridType) {
+	private List<Object> boundGridData(ResourceType resType, viewType theViewType) {
 		// need modify!! content resolver here
+		
+		switch (theViewType) {
 
-		switch (theGridType) {
-
-		case GRIDTYPE_RES_TODOWNLOAD:
-		case GRIDTYPE_RES_INPROGRESS:
-
+		case RES_READING:
+		case RES_ALL:
+		case RES_RECENT:
+		case RES_READED:
+		case RES_LEARN_NEW:
+		case DOWN_HOT:
+		case DOWN_LIKE:
+		case DOWN_CATEGORY_RES:
+		case DOWN_LIST_RES:
 			ArrayList<ResourceGridItem> gridItems = new ArrayList<ResourceGridItem>();
 
 //			if (resType == ResourceType.BOOK) {
@@ -337,11 +390,7 @@ public class MainActivity extends Activity {
 //					int descriptionCol = c.getColumnIndexOrThrow(BookCollections._DESCRIPTION);
 //
 //					while (c.moveToNext()) {
-//
-//						gridItems.add(new ResourceGridItem(c
-//								.getString(titleCol), c.getString(authorCol),
-//								"", R.drawable.ic_launcher, 0, c
-//										.getString(descriptionCol)));
+//						gridItems.add(new ResourceGridItem(c.getString(titleCol), c.getString(authorCol),"", R.drawable.ic_launcher, 0, c.getString(descriptionCol)));
 //					}
 //				} finally {
 //
@@ -369,39 +418,14 @@ public class MainActivity extends Activity {
 			int[] progress = { 30, 40, 60, 70, 99 };
 
 			for (int i = 0; i < titles.length; i++) {
-				 gridItems.add(new ResourceGridItem(titles[i],author[i], tags[i], images[i], progress[i],description[i]));
+				 gridItems.add(new ResourceGridItem(String.valueOf(i), titles[i],author[i], tags[i], images[i], progress[i],description[i]));
 			}
 
 			return (List) gridItems;
-
-		case GRIDTYPE_RESLIST:
-			// title for test
-			String[] listtitles = new String[] { "¹þÀû²¨ÌØµÄÊéµ¥", "ºùÂ«ÍÞµÄÊéµ¥", "Ð¡Ã÷µÄÊéµ¥",
-					"Ð¡Ã÷µÄÊéµ¥", "Ð¡Ã÷µÄÊéµ¥", "Ð¡Ã÷µÄÊéµ¥", "Ð¡Ã÷µÄÊéµ¥", "Ð¡Ã÷µÄÊéµ¥" };
-			// author for test
-			String[] listauthor = new String[] { "¹þÀû²¨ÌØ", "ºùÂ«ÍÞ", "Ð¡Ã÷", "Ð¡Ã÷",
-					"Ð¡Ã÷", "Ð¡Ã÷", "Ð¡Ã÷", "Ð¡Ã÷" };
-			// tag for test
-			String[] listtags = new String[] { "tag1/tag2/tag3/tag4",
-					"tag1/tag2", "tag1/tag2", "tag1/tag2", "tag1/tag2",
-					"tag1/tag2", "tag1/tag2", "tag1/tag2" };
-			// description for test
-			String[] listintro = new String[] {
-					"À²À²À²À²À²À²À²£¬À²À²À²À²À²À²À²À²£¬À²À²À²À²À²À²À²£¬À²À²À²À²À²À²À²¡£\n\rÀ²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²",
-					"‡å", "‡å", "‡å", "‡å", "‡å", "‡å", "‡å" };
-
-			int[] count = new int[] { 12, 10, 3, 122, 1, 2, 4, 18 };
-
-			ArrayList<ResourceListGridItem> gridItems2 = new ArrayList<ResourceListGridItem>();
-			for (int i = 0; i < listtitles.length; i++) {
-				gridItems2.add(new ResourceListGridItem(listtitles[i],
-						listauthor[i], listtags[i], count[i], listintro[i]));
-			}
-
-			return (List) gridItems2;
-
-		case GRIDTYPE_CATEGORY:
-
+		
+		case DOWN_RECOMMAND:
+			return null;
+		case DOWN_CATEGORY:
 			String[] cateNames = new String[] { "ÖÐ¹úÎÄÑ§", "ÖÐ¹úÎÄÑ§", "ÖÐ¹úÎÄÑ§", "ÖÐ¹úÎÄÑ§",
 					"ÖÐ¹úÎÄÑ§", "ÖÐ¹úÎÄÑ§", "ÖÐ¹úÎÄÑ§" };
 			int[] cateCount = new int[] { 1, 2, 3, 4, 5, 6, 7, 8 };
@@ -413,6 +437,32 @@ public class MainActivity extends Activity {
 			}
 
 			return (List) gridItems3;
+		
+		case DOWN_LIST:
+			// title for test
+						String[] listtitles = new String[] { "¹þÀû²¨ÌØµÄÊéµ¥", "ºùÂ«ÍÞµÄÊéµ¥", "Ð¡Ã÷µÄÊéµ¥",
+								"Ð¡Ã÷µÄÊéµ¥", "Ð¡Ã÷µÄÊéµ¥", "Ð¡Ã÷µÄÊéµ¥", "Ð¡Ã÷µÄÊéµ¥", "Ð¡Ã÷µÄÊéµ¥" };
+						// author for test
+						String[] listauthor = new String[] { "¹þÀû²¨ÌØ", "ºùÂ«ÍÞ", "Ð¡Ã÷", "Ð¡Ã÷",
+								"Ð¡Ã÷", "Ð¡Ã÷", "Ð¡Ã÷", "Ð¡Ã÷" };
+						// tag for test
+						String[] listtags = new String[] { "tag1/tag2/tag3/tag4",
+								"tag1/tag2", "tag1/tag2", "tag1/tag2", "tag1/tag2",
+								"tag1/tag2", "tag1/tag2", "tag1/tag2" };
+						// description for test
+						String[] listintro = new String[] {
+								"À²À²À²À²À²À²À²£¬À²À²À²À²À²À²À²À²£¬À²À²À²À²À²À²À²£¬À²À²À²À²À²À²À²¡£\n\rÀ²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²",
+								"‡å", "‡å", "‡å", "‡å", "‡å", "‡å", "‡å" };
+
+						int[] count = new int[] { 12, 10, 3, 122, 1, 2, 4, 18 };
+
+						ArrayList<ResourceListGridItem> gridItems2 = new ArrayList<ResourceListGridItem>();
+						for (int i = 0; i < listtitles.length; i++) {
+							gridItems2.add(new ResourceListGridItem(listtitles[i],
+									listauthor[i], listtags[i], count[i], listintro[i]));
+						}
+
+						return (List) gridItems2;
 
 		default:
 			return null;

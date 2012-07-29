@@ -73,10 +73,9 @@
         android:id="@+id/progressCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/readingProgress"
-        android:layout_centerHorizontal="false"
+        android:layout_alignBottom="@+id/readingProgress"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="2dp"
+        android:layout_marginLeft="10dp"
         android:text="50%"
         android:textColor="@color/text"
         android:textSize="@dimen/grid_text_small" />

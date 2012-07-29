@@ -2,6 +2,7 @@ package com.sunshine.sunresourcecenter;
 
 public class ResourceGridItem   
 {   
+	private String ID;
     private String title;   
     private String author;
     private String tags;
@@ -15,9 +16,10 @@ public class ResourceGridItem
         super();   
     }   
     
-    public ResourceGridItem(String title, String author, String tags, int imageId, int progress, String description)   
+    public ResourceGridItem(String ID, String title, String author, String tags, int imageId, int progress, String description)   
     {   
         super();   
+        this.ID = ID;
         this.title = title;   
         this.imageId = imageId;   
         this.author = author;
@@ -54,4 +56,8 @@ public class ResourceGridItem
     	else if(progress<0) return 0;
     	else return progress;
     }
+    
+    public String toString(){
+		return ID;
+	}
 }  

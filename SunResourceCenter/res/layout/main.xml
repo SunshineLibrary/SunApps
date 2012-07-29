@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
             android:background="@drawable/search"
             android:ems="10"
             android:hint="@string/search_resources"
@@ -39,6 +39,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:background="@drawable/main_spinner_bg"
+            
             android:entries="@array/main_menu"
             android:padding="@dimen/padding_small" />
     </RelativeLayout>
