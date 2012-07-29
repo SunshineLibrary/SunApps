@@ -37,7 +37,7 @@ public class MetadataProvider extends ContentProvider {
     private static final int GALLERY_IMAGES = 7;
     private static final int ACTIVITIES = 8;
     private static final int ACTIVITIES_ID = 9;
-    
+
     private static final int BOOKS = 10;
     private static final int BOOKCOLECTIONS = 11;
     private static final int BOOKLIST = 12;
@@ -54,7 +54,7 @@ public class MetadataProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, "books", BOOKS);
         sUriMatcher.addURI(AUTHORITY, "book_collections", BOOKCOLECTIONS);
         sUriMatcher.addURI(AUTHORITY, "book_lists", BOOKLIST);
-        
+
     }
 
     /*
@@ -107,23 +107,23 @@ public class MetadataProvider extends ContentProvider {
             case GALLERY_IMAGES:
                 return dbHandler.getTableManager(GalleryTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
-           case ACTIVITIES:
+            case ACTIVITIES:
                 return dbHandler.getTableManager(ActivityTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
             case ACTIVITIES_ID:
                 return dbHandler.getTableManager(ActivityTable.TABLE_NAME).query(
                         uri, projection, BaseColumns._ID + "=?",
                         new String[]{uri.getLastPathSegment()}, sortOrder);
-     		case BOOKS:
-            	return dbHandler.getTableManager(BookTable.TABLE_NAME).query(
+            case BOOKS:
+                return dbHandler.getTableManager(BookTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
             case BOOKCOLECTIONS:
-            	return dbHandler.getTableManager(BookCollectionTable.TABLE_NAME).query(
+                return dbHandler.getTableManager(BookCollectionTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
             case BOOKLIST:
-            	return dbHandler.getTableManager(BookListTable.TABLE_NAME).query(
+                return dbHandler.getTableManager(BookListTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
-       
+
             default:
                 throw new IllegalArgumentException();
         }
@@ -183,11 +183,10 @@ public class MetadataProvider extends ContentProvider {
     }
 
     private int updateActivity(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        Table table = dbHandler.getTableManager(ActivityTable.TABLE_NAME);
         Integer status;
         if ((status = values.getAsInteger(Downloadable._DOWNLOAD_STATUS)) != null) {
             if (status == STATUS.QUEUED.ordinal()) {
-                Cursor cursor = table.query(uri, new String[] {Activities._TYPE}, null, null, null);
+                Cursor cursor = query(uri, new String[]{Activities._TYPE}, null, null, null);
                 if (cursor.moveToFirst()) {
                     int id = Integer.parseInt(uri.getLastPathSegment());
                     switch (cursor.getInt(cursor.getColumnIndex(Activities._TYPE))) {
@@ -204,9 +203,10 @@ public class MetadataProvider extends ContentProvider {
                         default:
                     }
                 }
+                cursor.close();
             }
         }
-        return table.update(uri, values, selection, selectionArgs);
+        return dbHandler.getTableManager(ActivityTable.TABLE_NAME).update(uri, values, selection, selectionArgs);
     }
 
     @Override

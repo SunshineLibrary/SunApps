@@ -29,6 +29,8 @@ public class ApiClient {
         apiMap.put(LessonTable.TABLE_NAME, "lessons.json");
         apiMap.put(SectionTable.TABLE_NAME, "sections.json");
         apiMap.put(ActivityTable.TABLE_NAME, "activities.json");
+        apiMap.put(BookTable.TABLE_NAME, "books.json");
+        apiMap.put(BookCollectionTable.TABLE_NAME, "book_collections.json");
     }
 
     public static synchronized ThreadSafeClientConnManager getConnManager() {

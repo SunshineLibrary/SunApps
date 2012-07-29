@@ -28,20 +28,17 @@ public class BookListTable extends Table {
 	
 	@Override
 	public String getTableName() {
-		// TODO Auto-generated method stub
-		return null;
+		return TABLE_NAME;
 	}
 
 	@Override
 	public String[][] getColumnDefinitions() {
-		// TODO Auto-generated method stub
-		return null;
+		return COLUMN_DEFINITIONS;
 	}
 
 	@Override
 	public String[] getColumns() {
-		// TODO Auto-generated method stub
-		return null;
+		return ALL_COLUMNS;
 	}
 
 }
