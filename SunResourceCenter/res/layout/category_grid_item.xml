@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginTop="5dp"
+    android:paddingBottom="10dp"
+    android:background="#FFFFFF"
+    android:minHeight="@dimen/grid_height_list"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/cate_image"
+        android:layout_width="@dimen/imageWidth_cate"
+        android:layout_height="@dimen/imageHeight_cate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="40dp" 
+        android:background="@color/chrome"
+        />
+
+    <TextView
+        android:id="@+id/cate_separater"
+        android:layout_width="fill_parent"
+        android:layout_height="3dp"
+        android:layout_alignBottom="@+id/cate_image"
+        android:layout_marginBottom="45dp"
+        android:layout_toRightOf="@+id/cate_image"
+        android:background="@color/chrome"
+        />
+
+    <TextView
+        android:id="@+id/cate_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/cate_separater"
+        android:layout_alignLeft="@+id/cate_separater"
+        android:layout_marginLeft="25dp"
+        android:textSize="@dimen/grid_text_med"
+        android:textColor="@color/text_dark"
+        android:text="中国文学" />
+
+    <TextView
+        android:id="@+id/cate_lable_count1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/cate_name"
+        android:layout_marginLeft="25dp"
+        android:layout_toRightOf="@+id/cate_name"
+        android:textSize="@dimen/grid_text_small"
+        android:textColor="@color/text_dark"
+        android:text="@string/grid_list_count1" />
+
+    <TextView
+        android:id="@+id/cate_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/cate_lable_count1"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/cate_lable_count1"
+        android:textSize="@dimen/grid_text_small"
+        android:textColor="@color/chrome"
+        android:text="12" />
+
+    <TextView
+        android:id="@+id/cate_lable_count2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/cate_count"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/cate_count"
+        android:textSize="@dimen/grid_text_small"
+        android:textColor="@color/text_dark"
+        android:text="@string/grid_list_count2" />
+	
+</RelativeLayout>

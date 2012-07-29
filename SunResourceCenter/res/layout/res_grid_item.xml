@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginTop="5dp"
+    android:padding="5dp"
+    android:background="@color/chrome_background"
+    android:minHeight="@dimen/grid_height_res"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="@dimen/imageWidth_book"
+        android:layout_height="@dimen/imageHeight_book"
+        android:layout_alignParentTop="true" />
+    
+	<TextView
+        android:id="@+id/author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image"
+        android:layout_alignParentLeft="true"
+        android:gravity="left"
+        android:textSize="@dimen/grid_text_small"
+        android:textColor="@color/chrome"
+         />
+	
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/author"
+        android:layout_alignParentLeft="true"
+        android:gravity="left"
+        android:textColor="@color/chrome"
+        android:textSize="@dimen/grid_text_large" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/image"
+        android:gravity="left"
+        android:maxLines="6"
+        android:textColor="@color/text_dark"
+        android:textSize="@dimen/grid_text_med" />
+
+    <TextView
+        android:id="@+id/tags"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/title"
+        android:gravity="left"
+        android:textSize="@dimen/grid_text_med" 
+        android:textColor="@color/text_dark"
+        />
+
+    <ProgressBar
+        android:id="@+id/readingProgress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="13dp"
+        android:max="100"
+        android:layout_below="@+id/title" 
+        android:progressDrawable="@drawable/grid_progress_style"
+        />
+
+    <TextView
+        android:id="@+id/progressCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/readingProgress"
+        android:layout_centerHorizontal="false"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="2dp"
+        android:text="50%"
+        android:textColor="@color/text"
+        android:textSize="@dimen/grid_text_small" />
+
+</RelativeLayout>

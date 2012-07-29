@@ -16,7 +16,8 @@ public class BookTable extends DownloadableTable {
 		Books._TITLE,
 		Books._DESCRIPTION,
 		Books._AUTHOR,
-		Books._PROGRESS
+		Books._PROGRESS,
+		Books._COVER
 	};
 	
 	public static final String[][] COLUMN_DEFINITIONS = {
@@ -24,7 +25,8 @@ public class BookTable extends DownloadableTable {
 		{Books._TITLE, "TEXT"},
 		{Books._DESCRIPTION, "TEXT"},
 		{Books._AUTHOR, "TEXT"},
-		{Books._PROGRESS, "INTEGER"}
+		{Books._PROGRESS, "INTEGER"},
+		{Books._COVER,"TEXT"}
 	};
 
 	public BookTable(MetadataDBHandler db) {

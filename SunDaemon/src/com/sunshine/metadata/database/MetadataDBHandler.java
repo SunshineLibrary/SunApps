@@ -40,6 +40,10 @@ public class MetadataDBHandler extends SQLiteOpenHelper {
         setTableManager(EdgeTable.TABLE_NAME, new EdgeTable(this));
         setTableManager(ProblemTable.TABLE_NAME, new ProblemTable(this));
         setTableManager(ProblemChoiceTable.TABLE_NAME, new ProblemChoiceTable(this));
+        setTableManager(BookTable.TABLE_NAME, new BookTable(this));
+        setTableManager(BookCollectionTable.TABLE_NAME, new BookCollectionTable(this));
+        setTableManager(BookListTable.TABLE_NAME, new BookListTable(this));
+
     }
 
     private void setTableManager(String tableName, Table table) {

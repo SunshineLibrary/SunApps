@@ -125,15 +125,16 @@ public final class MetadataContract {
     public static final class BookCollections {
 
         public static final String _ID = BaseColumns._ID;
-        public static final String _NAME = "";
-        public static final String _AUTHOR = "";
-        public static final String _DESCRIPTION = "";
-        public static final String _PUBLISHER = "";
-
+        public static final String _NAME = "name";
+        public static final String _AUTHOR = "author";
+        public static final String _DESCRIPTION = "description";
+        public static final String _PUBLISHER = "publisher";
+        public static final String _COVER = "cover";
         public static final Uri CONTENT_URI;
 
-        public static Uri getTags(String bookId) {
+        public static Uri getTags(String collectionId) {
             // content://AUTHORITY/book_collections/#book_collection_id/tags
+        	
             throw new UnsupportedOperationException();
         }
 
@@ -200,9 +201,19 @@ public final class MetadataContract {
     public static final class BookLists {
 
         public static final String _ID = BaseColumns._ID;
+        public static final String _NAME = "name";
+        public static final String _INTRO = "intro";
+        public static final String _AUTHOR = "author";
+        
         public static final Uri CONTENT_URI;
-
-        public static Uri getBookCollections(String collectionId) {
+        
+        public static Uri getTags(String listId) {
+            // content://AUTHORITY/book_lists/#book_list_id/tags
+        	
+            throw new UnsupportedOperationException();
+        }
+        
+        public static Uri getBookCollections(String listId) {
             // content://AUTHORITY/book_lists/#book_list_id/book_collections
             throw new UnsupportedOperationException();
         }
@@ -219,8 +230,16 @@ public final class MetadataContract {
         public static final String _AUTHOR = "author";
         public static final String _DESCRIPTION = "description";
         public static final String _PROGRESS = "progress";
+        public static final String _COVER = "cover";
+        public static final String _TAGS = "tags";
         public static final Uri CONTENT_URI;
-
+        
+        public static Uri getTags(String bookId) {
+            // content://AUTHORITY/books/#book_id/tags
+        	
+            throw new UnsupportedOperationException();
+        }
+        
         static {
             CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("books").build();
         }
@@ -255,12 +274,20 @@ public final class MetadataContract {
             CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("audios").build();
         }
     }
-
+    
+    public static final class BookTag {
+    	
+    	public static final String _ID = BaseColumns._ID;
+    	public static final String _BOOKID = "book_id";
+    	public static final String _TAGID = "tag_id";
+    	
+    }
+    
     public static final class Tags {
 
         public static final String _ID = BaseColumns._ID;
-        public static final String _NAME = "";
-        public static final String _TYPE = "";
+        public static final String _NAME = "name";
+        public static final String _TYPE = "tag_type";
 
         public static enum TYPE {
             THEME, DIFFICULTY

@@ -37,6 +37,10 @@ public class MetadataProvider extends ContentProvider {
     private static final int GALLERY_IMAGES = 7;
     private static final int ACTIVITIES = 8;
     private static final int ACTIVITIES_ID = 9;
+    
+    private static final int BOOKS = 10;
+    private static final int BOOKCOLECTIONS = 11;
+    private static final int BOOKLIST = 12;
 
     static {
         sUriMatcher.addURI(AUTHORITY, "packages", PACKAGES);
@@ -47,6 +51,10 @@ public class MetadataProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, "activities", ACTIVITIES);
         sUriMatcher.addURI(AUTHORITY, "activities/#", ACTIVITIES_ID);
         sUriMatcher.addURI(AUTHORITY, "activities/gallery/images/#", GALLERY_IMAGES);
+        sUriMatcher.addURI(AUTHORITY, "books", BOOKS);
+        sUriMatcher.addURI(AUTHORITY, "book_collections", BOOKCOLECTIONS);
+        sUriMatcher.addURI(AUTHORITY, "book_lists", BOOKLIST);
+        
     }
 
     /*
@@ -99,13 +107,23 @@ public class MetadataProvider extends ContentProvider {
             case GALLERY_IMAGES:
                 return dbHandler.getTableManager(GalleryTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
-            case ACTIVITIES:
+           case ACTIVITIES:
                 return dbHandler.getTableManager(ActivityTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
             case ACTIVITIES_ID:
                 return dbHandler.getTableManager(ActivityTable.TABLE_NAME).query(
                         uri, projection, BaseColumns._ID + "=?",
                         new String[]{uri.getLastPathSegment()}, sortOrder);
+     		case BOOKS:
+            	return dbHandler.getTableManager(BookTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
+            case BOOKCOLECTIONS:
+            	return dbHandler.getTableManager(BookCollectionTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
+            case BOOKLIST:
+            	return dbHandler.getTableManager(BookListTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
+       
             default:
                 throw new IllegalArgumentException();
         }
