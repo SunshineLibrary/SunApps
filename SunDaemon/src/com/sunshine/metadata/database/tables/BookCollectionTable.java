@@ -18,7 +18,6 @@ public class BookCollectionTable extends Table {
 		BookCollections._AUTHOR,
 		BookCollections._DESCRIPTION,
 		BookCollections._PUBLISHER,
-		BookCollections._COVER
 	};
 	
 	public static final String[][] COLUMN_DEFINITIONS = {
@@ -27,25 +26,21 @@ public class BookCollectionTable extends Table {
 		{BookCollections._DESCRIPTION, "TEXT"},
 		{BookCollections._AUTHOR, "TEXT"},
 		{BookCollections._PUBLISHER, "TEXT"},
-		{BookCollections._COVER,"TEXT"}
 	};
 
 	@Override
 	public String getTableName() {
-		// TODO Auto-generated method stub
-		return null;
+		return TABLE_NAME;
 	}
 
 	@Override
 	public String[][] getColumnDefinitions() {
-		// TODO Auto-generated method stub
-		return null;
+		return COLUMN_DEFINITIONS;
 	}
 
 	@Override
 	public String[] getColumns() {
-		// TODO Auto-generated method stub
-		return null;
+		return ALL_COLUMNS;
 	}
 
 }

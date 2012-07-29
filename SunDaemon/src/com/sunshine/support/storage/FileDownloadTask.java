@@ -18,9 +18,9 @@ import java.security.NoSuchAlgorithmException;
 public class FileDownloadTask extends AsyncTask<Uri, Integer, Integer> {
 
     private HttpClient httpClient;
-    private Context context;
+    Context context;
     private Uri remoteUri;
-    private Uri localUri;
+    Uri localUri;
     private long contentLength;
     private long lastProgress;
     private boolean extractFiles;

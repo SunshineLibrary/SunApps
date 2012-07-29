@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
@@ -39,7 +40,6 @@ public class SupportServiceActivity extends Activity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-//        startService(new Intent("com.sunshine.support.action.sync"));
 //        initFileStorage();
         prepareData(1, Activities.TYPE_VIDEO);
         prepareData(2, Activities.TYPE_GALLERY);
@@ -47,17 +47,19 @@ public class SupportServiceActivity extends Activity {
         values.put(Downloadable._DOWNLOAD_STATUS, Downloadable.STATUS.QUEUED.ordinal());
         getContentResolver().update(Activities.getActivityUri(1), values, null, null);
         getContentResolver().update(Activities.getActivityUri(2), values, null, null);
+        startService(new Intent("com.sunshine.support.action.sync"));
     }
 
     private void prepareData(int id, int type) {
         ContentValues values = new ContentValues();
         values.put(Activities._ID, id);
         values.put(Activities._TYPE, type);
-        if (!getContentResolver().query(Activities.getActivityUri(id),
-                ActivityTable.ALL_COLUMNS, null, null, null).moveToFirst()) {
+        Cursor cursor;
+        if (!(cursor = getContentResolver().query(Activities.getActivityUri(id),
+                ActivityTable.ALL_COLUMNS, null, null, null)).moveToFirst()) {
             getContentResolver().insert(Activities.CONTENT_URI, values);
-
         }
+        cursor.close();
     }
 
 
