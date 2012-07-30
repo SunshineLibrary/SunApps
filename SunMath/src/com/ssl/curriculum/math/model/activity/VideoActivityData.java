@@ -5,7 +5,7 @@ import com.sunshine.metadata.provider.MetadataContract.Activities;
 public class VideoActivityData extends ActivityData{
 	private String videoTitle = "";
 	private String videoDescription = "";
-	private long videoDuration = 0; //Video Duration in .001s
+	private long videoDuration = 0; //Video Duration in seconds
 	
 	
 	public VideoActivityData(){

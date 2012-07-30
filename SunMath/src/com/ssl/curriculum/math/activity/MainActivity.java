@@ -62,8 +62,6 @@ public class MainActivity extends Activity {
         presenter.initListeners();
         
         galleryThumbnailPage = (GalleryThumbnailPage) findViewById(R.id.gallery_thumbnail_page);
-        
-        
     }
 
 //    @Override

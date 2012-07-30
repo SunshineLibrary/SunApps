@@ -17,12 +17,9 @@ import android.support.v4.app.NavUtils;
         
         WebView wb = (WebView) findViewById(R.id.webview);
         wb.getSettings().setJavaScriptEnabled(true);  
-        
         wb.loadUrl("file:///android_asset/test.html");
         //wb.loadUrl("file:///android_asset/MathJax/test/index.html");
         //wb.loadUrl("file:///android_asset/MathJax/test/sample-asciimath.html");
-        
-        
     }
 
     @Override
