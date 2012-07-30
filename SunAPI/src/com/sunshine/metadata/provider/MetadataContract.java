@@ -14,7 +14,7 @@ public final class MetadataContract {
         public static final String _ID = BaseColumns._ID;
         public static final String _FROM_ID = "from_id";
         public static final String _TO_ID = "to_id";
-        public static final String _CONDITION = "conditoin";
+        public static final String _CONDITION = "condition";
         public static final String _SECTION_ID ="section_id";
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("edges").build();
@@ -40,7 +40,7 @@ public final class MetadataContract {
     /*
      *  课内内容
      */
-    public static final class GalleryImages {
+    public static final class GalleryImages extends Downloadable{
         public static final String _ID = BaseColumns._ID;
         public static final String _GALLERY_ID = "gallery_id";
         public static final String _THUMBNAIL_PATH = "thumbnail";

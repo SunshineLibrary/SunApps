@@ -5,17 +5,17 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
 import com.sunshine.metadata.database.MetadataDBHandler;
-import com.sunshine.metadata.provider.MetadataContract;
+import com.sunshine.metadata.provider.Matcher;
+import com.sunshine.support.api.ApiClient;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import android.util.Log;
-import com.sunshine.support.api.ApiClient;
-
 import static com.sunshine.metadata.provider.MetadataContract.Activities;
+
 
 public class SharedStorageManager {
 
@@ -24,20 +24,11 @@ public class SharedStorageManager {
     public static final int RO_MODE = 0;
     public static final int WO_MODE = 1;
 
-    private static UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+    private static UriMatcher sUriMatcher = Matcher.Factory.getMatcher();
 
-    private static final int ACTIVITIES_THUMBNAIL = 0;
-    private static final int ACTIVITIES_VIDEO = 1;
-    private static final int ACTIVITIES_GALLERY= 2;
-    private static final int GALLERY_IMAGES_ID = 3;
     private FileStorage fileStorage;
     private Context context;
 
-    static {
-        sUriMatcher.addURI(MetadataContract.AUTHORITY, "activities/video/#", ACTIVITIES_VIDEO);
-        sUriMatcher.addURI(MetadataContract.AUTHORITY, "activities/thumbnail/#", ACTIVITIES_THUMBNAIL);
-        sUriMatcher.addURI(MetadataContract.AUTHORITY, "activities/gallery/images/#", GALLERY_IMAGES_ID);
-    }
 
     public SharedStorageManager(Context context) {
         this.context = context;
@@ -46,37 +37,18 @@ public class SharedStorageManager {
 
     public String getType(Uri uri) {
         switch (sUriMatcher.match(uri)) {
-            case ACTIVITIES_VIDEO:
+            case Matcher.ACTIVITIES_VIDEO:
                 return "video/mp4";
             default:
                 return null;
         }
     }
 
-    public void downloadActivity(Uri uri) {
-        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
-        if (cursor.moveToFirst()) {
-
-            int id = Integer.parseInt(uri.getLastPathSegment());
-            int type = cursor.getInt(cursor.getColumnIndex(Activities._TYPE));
-            switch (type) {
-                case Activities.TYPE_VIDEO:
-                    new FileDownloadTask(context,
-                            ApiClient.getDownloadUri("video_activity", id),
-                            Activities.getActivityVideoUri(id)).execute();
-                    break;
-                default:
-            }
-        }
-        cursor.close();
-    }
-
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
         Log.i(context.toString(), "openFile Uri:" + uri.toString());
         switch (sUriMatcher.match(uri)) {
-            case ACTIVITIES_VIDEO:
-            case ACTIVITIES_GALLERY:
-            case ACTIVITIES_THUMBNAIL:
+            case Matcher.ACTIVITIES_VIDEO:
+            case Matcher.ACTIVITIES_THUMBNAIL:
                 return getActivityDescriptor(uri, mode);
             default:
                 throw new FileNotFoundException();

@@ -2,7 +2,6 @@ package com.sunshine.metadata.database.tables;
 
 import android.provider.BaseColumns;
 
-import com.sunshine.metadata.database.AbstractTable;
 import com.sunshine.metadata.database.MetadataDBHandler;
 
 /**
