@@ -47,7 +47,7 @@ public final class MetadataContract {
         public static final String _IMAGE_PATH = "image";
         public static final String _DESCRIPTION = "description";
 
-        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("gallery_images").build();
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("gallery").appendPath("images").build();
     }
 
     public static final class Courses {

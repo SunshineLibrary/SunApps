@@ -23,7 +23,7 @@ public class ChapterTable extends MenuWithForeignKeyTable {
     };
 
     public ChapterTable(MetadataDBHandler handler) {
-        super(handler);
+        super(handler, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
     }
 
     @Override
@@ -34,21 +34,6 @@ public class ChapterTable extends MenuWithForeignKeyTable {
     @Override
     protected String getParentTableName() {
         return CourseTable.TABLE_NAME;
-    }
-
-    @Override
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    @Override
-    public String[][] getColumnDefinitions() {
-        return COLUMN_DEFINITIONS;
-    }
-
-    @Override
-    public String[] getColumns() {
-        return ALL_COLUMNS;
     }
 
 	@Override

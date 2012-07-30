@@ -1,11 +1,12 @@
 package com.sunshine.metadata.database.tables;
 
 import com.sunshine.metadata.database.MetadataDBHandler;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+
+import java.util.Observable;
 
 /**
  * @author Bowen Sun
@@ -19,31 +20,43 @@ import android.net.Uri;
 public abstract class Table {
 
 	protected MetadataDBHandler dbHandler;
+    private String tableName;
+    private String[][] columnDefinitions;
+    private String[] columns;
 
-	/**
+    /**
 	 * TableManager requires a handle on the DatabaseHandler in order to access
 	 * the database.
 	 * 
 	 * @param handler
 	 */
-	public Table(MetadataDBHandler handler) {
+	public Table(MetadataDBHandler handler, String tableName, String[][] columnDefinitions, String[] columns) {
 		this.dbHandler = handler;
+        this.tableName = tableName;
+        this.columnDefinitions = columnDefinitions;
+        this.columns = columns;
 	}
 
 	/**
 	 * @return name of the table to be managed
 	 */
-	public abstract String getTableName();
+	public String getTableName() {
+       return tableName;
+    }
 
 	/**
 	 * @return an array of column name and column definition pairs
 	 */
-	public abstract String[][] getColumnDefinitions();
+	public String[][] getColumnDefinitions() {
+        return columnDefinitions;
+    }
 	
 	/**
 	 * @return an array of all column names
 	 */
-	public abstract String[] getColumns();
+	public String[] getColumns() {
+        return columns;
+    }
 
 	/**
 	 * Create the database to be managed. Calls getColumnDefinitions() to

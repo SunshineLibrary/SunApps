@@ -5,11 +5,6 @@ import com.sunshine.metadata.provider.MetadataContract.BookLists;
 
 public class BookListTable extends Table {
 
-	public BookListTable(MetadataDBHandler db) {
-		super(db);
-		// TODO Auto-generated constructor stub
-	}
-	
 	public static final String TABLE_NAME = "book_lists";
 	
 	public static final String[] ALL_COLUMNS = {
@@ -25,20 +20,8 @@ public class BookListTable extends Table {
 		{BookLists._INTRO, "TEXT"},
 		{BookLists._AUTHOR, "TEXT"}
 	};
-	
-	@Override
-	public String getTableName() {
-		return TABLE_NAME;
-	}
 
-	@Override
-	public String[][] getColumnDefinitions() {
-		return COLUMN_DEFINITIONS;
-	}
-
-	@Override
-	public String[] getColumns() {
-		return ALL_COLUMNS;
-	}
-
+    public BookListTable(MetadataDBHandler db) {
+        super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
+    }
 }

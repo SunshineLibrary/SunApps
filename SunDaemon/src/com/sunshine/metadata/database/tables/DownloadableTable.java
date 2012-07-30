@@ -17,8 +17,11 @@ public abstract class DownloadableTable extends Table {
             Downloadable._DOWNLOAD_STATUS,
     };
 
-    public DownloadableTable(MetadataDBHandler handler) {
-        super(handler);
+    public DownloadableTable(MetadataDBHandler handler,
+                             String tableName,
+                             String[][] columnDefinitions,
+                             String[] columns) {
+        super(handler, tableName, columnDefinitions, columns);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.sunshine.support.storage;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import com.sunshine.metadata.database.MetadataDBHandler;
@@ -13,8 +13,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import android.util.Log;
+import com.sunshine.support.api.ApiClient;
 
-public class SharedStorageProvider {
+import static com.sunshine.metadata.provider.MetadataContract.Activities;
+
+public class SharedStorageManager {
 
     private MetadataDBHandler dbHandler;
 
@@ -26,16 +29,17 @@ public class SharedStorageProvider {
     private static final int ACTIVITIES_THUMBNAIL = 0;
     private static final int ACTIVITIES_VIDEO = 1;
     private static final int ACTIVITIES_GALLERY= 2;
+    private static final int GALLERY_IMAGES_ID = 3;
     private FileStorage fileStorage;
     private Context context;
 
     static {
         sUriMatcher.addURI(MetadataContract.AUTHORITY, "activities/video/#", ACTIVITIES_VIDEO);
-        sUriMatcher.addURI(MetadataContract.AUTHORITY, "activities/gallery/#", ACTIVITIES_GALLERY);
         sUriMatcher.addURI(MetadataContract.AUTHORITY, "activities/thumbnail/#", ACTIVITIES_THUMBNAIL);
+        sUriMatcher.addURI(MetadataContract.AUTHORITY, "activities/gallery/images/#", GALLERY_IMAGES_ID);
     }
 
-    public SharedStorageProvider(Context context) {
+    public SharedStorageManager(Context context) {
         this.context = context;
         fileStorage = FileStorageManager.getInstance().getReadableFileStorage();
     }
@@ -47,6 +51,24 @@ public class SharedStorageProvider {
             default:
                 return null;
         }
+    }
+
+    public void downloadActivity(Uri uri) {
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+        if (cursor.moveToFirst()) {
+
+            int id = Integer.parseInt(uri.getLastPathSegment());
+            int type = cursor.getInt(cursor.getColumnIndex(Activities._TYPE));
+            switch (type) {
+                case Activities.TYPE_VIDEO:
+                    new FileDownloadTask(context,
+                            ApiClient.getDownloadUri("video_activity", id),
+                            Activities.getActivityVideoUri(id)).execute();
+                    break;
+                default:
+            }
+        }
+        cursor.close();
     }
 
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {

@@ -9,14 +9,11 @@ import android.os.ParcelFileDescriptor;
 import android.provider.BaseColumns;
 import com.sunshine.metadata.database.MetadataDBHandler;
 import com.sunshine.metadata.database.tables.*;
-import com.sunshine.support.api.ApiClient;
-import com.sunshine.support.storage.FileDownloadTask;
-import com.sunshine.support.storage.SharedStorageProvider;
+import com.sunshine.support.storage.SharedStorageManager;
 
 import java.io.FileNotFoundException;
 
-import static com.sunshine.metadata.provider.MetadataContract.Activities;
-import static com.sunshine.metadata.provider.MetadataContract.Activities.*;
+import static com.sunshine.metadata.provider.MetadataContract.Activities.STATUS;
 import static com.sunshine.metadata.provider.MetadataContract.Downloadable;
 
 public class MetadataProvider extends ContentProvider {
@@ -39,8 +36,8 @@ public class MetadataProvider extends ContentProvider {
     private static final int ACTIVITIES_ID = 9;
 
     private static final int BOOKS = 10;
-    private static final int BOOKCOLECTIONS = 11;
-    private static final int BOOKLIST = 12;
+    private static final int BOOK_COLLECTIONS = 11;
+    private static final int BOOK_LISTS = 12;
 
     static {
         sUriMatcher.addURI(AUTHORITY, "packages", PACKAGES);
@@ -50,10 +47,10 @@ public class MetadataProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, "sections", SECTIONS);
         sUriMatcher.addURI(AUTHORITY, "activities", ACTIVITIES);
         sUriMatcher.addURI(AUTHORITY, "activities/#", ACTIVITIES_ID);
-        sUriMatcher.addURI(AUTHORITY, "activities/gallery/images/#", GALLERY_IMAGES);
+        sUriMatcher.addURI(AUTHORITY, "activities/gallery/images", GALLERY_IMAGES);
         sUriMatcher.addURI(AUTHORITY, "books", BOOKS);
-        sUriMatcher.addURI(AUTHORITY, "book_collections", BOOKCOLECTIONS);
-        sUriMatcher.addURI(AUTHORITY, "book_lists", BOOKLIST);
+        sUriMatcher.addURI(AUTHORITY, "book_collections", BOOK_COLLECTIONS);
+        sUriMatcher.addURI(AUTHORITY, "book_lists", BOOK_LISTS);
 
     }
 
@@ -76,12 +73,12 @@ public class MetadataProvider extends ContentProvider {
 
 
     private MetadataDBHandler dbHandler;
-    private SharedStorageProvider sharedStorageManager;
+    private SharedStorageManager sharedStorageManager;
 
     @Override
     public boolean onCreate() {
         dbHandler = new MetadataDBHandler(getContext());
-        sharedStorageManager = new SharedStorageProvider(getContext());
+        sharedStorageManager = new SharedStorageManager(getContext());
         return true;
     }
 
@@ -117,10 +114,10 @@ public class MetadataProvider extends ContentProvider {
             case BOOKS:
                 return dbHandler.getTableManager(BookTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
-            case BOOKCOLECTIONS:
+            case BOOK_COLLECTIONS:
                 return dbHandler.getTableManager(BookCollectionTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
-            case BOOKLIST:
+            case BOOK_LISTS:
                 return dbHandler.getTableManager(BookListTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
 
@@ -186,24 +183,7 @@ public class MetadataProvider extends ContentProvider {
         Integer status;
         if ((status = values.getAsInteger(Downloadable._DOWNLOAD_STATUS)) != null) {
             if (status == STATUS.QUEUED.ordinal()) {
-                Cursor cursor = query(uri, new String[]{Activities._TYPE}, null, null, null);
-                if (cursor.moveToFirst()) {
-                    int id = Integer.parseInt(uri.getLastPathSegment());
-                    switch (cursor.getInt(cursor.getColumnIndex(Activities._TYPE))) {
-                        case TYPE_GALLERY:
-                            new FileDownloadTask(getContext(),
-                                    ApiClient.getDownloadUri("gallery_activity", id),
-                                    Activities.getActivityGalleryUri(id)).execute();
-                            break;
-                        case TYPE_VIDEO:
-                            new FileDownloadTask(getContext(),
-                                    ApiClient.getDownloadUri("video_activity", id),
-                                    Activities.getActivityVideoUri(id)).execute();
-                            break;
-                        default:
-                    }
-                }
-                cursor.close();
+                sharedStorageManager.downloadActivity(uri);
             }
         }
         return dbHandler.getTableManager(ActivityTable.TABLE_NAME).update(uri, values, selection, selectionArgs);

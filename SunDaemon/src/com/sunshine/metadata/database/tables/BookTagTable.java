@@ -20,22 +20,6 @@ public class BookTagTable extends Table {
 	};
 	
 	public BookTagTable(MetadataDBHandler db) {
-		super(db);
+		super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
 	}
-
-	@Override
-	public String getTableName() {
-		return TABLE_NAME;
-	}
-
-	@Override
-	public String[][] getColumnDefinitions() {
-		return COLUMN_DEFINITIONS;
-	}
-
-	@Override
-	public String[] getColumns() {
-		return ALL_COLUMNS;
-	}
-
 }
