@@ -1,14 +1,12 @@
 package com.ssl.curriculum.math.service;
 
-import java.util.concurrent.Callable;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
 
 import com.ssl.curriculum.math.model.activity.ActivityData;
 import com.ssl.curriculum.math.model.activity.VideoActivityData;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
-
-import android.content.ContentResolver;
-import android.content.Context;
-import android.database.Cursor;
 
 public class ActivityContentProvider {
 	private Context context;
@@ -22,7 +20,18 @@ public class ActivityContentProvider {
 	}
 	
 	public ActivityData fetchActivityById(int id){
-		return new ActivityData((int) Math.round(Math.random() * 5));
+		/** Debugging use only, this gives an activity by type every node **/
+		id = (int) Math.round(Math.random() * 100);
+		if(id % 3 == 0){
+			VideoActivityData vad = new VideoActivityData();
+			vad.initVideoMetadata("This is just a test" + id, "Blah", 1000);
+			return vad;
+		}else if(id % 3 == 1){
+			ActivityData tad = new ActivityData(0);
+			return tad;
+		}else{
+			return new ActivityData(1);
+		}
 		/*
 		Cursor cursor = this.query(new String[] {Activities._ID, Activities._NAME, Activities._TYPE, Activities._NOTES, Activities._LENGTH, Activities._SECTION_ID}, 
 			 Activities._ID + " = " + id);
@@ -35,7 +44,7 @@ public class ActivityContentProvider {
 			int sectionIndex = cursor.getColumnIndex(Activities._SECTION_ID);
 			do{
 				int type = cursor.getInt(typeIndex);
-				if(type == Activities.Types.VIDEO.ordinal()){
+				if(type == Activities.T){
 					VideoActivityData vad = new VideoActivityData();
 					vad.initVideoMetadata(cursor.getString(nameIndex), cursor.getString(notesIndex), cursor.getInt(lengthIndex));
 					vad.setUniqueId(cursor.getInt(idIndex));

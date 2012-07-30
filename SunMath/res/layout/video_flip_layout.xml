@@ -6,6 +6,7 @@
     android:orientation="vertical" >
 
     <TextView
+        android:id="@+id/video_title"
         android:layout_width="fill_parent"
         android:layout_height="62dp"
         android:gravity="center_vertical|left"
@@ -40,10 +41,11 @@
         android:background="@color/grey_sep" />
 
     <TextView
+        android:id="@+id/video_descr"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="left"
         android:text="NO.2"
-        android:textSize="20pt" />
+        android:textSize="14pt" />
 
 </LinearLayout>

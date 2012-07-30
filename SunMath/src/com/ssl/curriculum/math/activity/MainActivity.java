@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
     private PageFlipper flipper;
     private GalleryThumbnailPage galleryThumbnailPage;
     private GalleryContentProvider galleryContentProvider;
-    private VideoPlayer videoPlayer;
+    
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-//        loadGalleryContent();
+        //loadGalleryContent();
     }
 
     public void loadActivityById(int id){
@@ -63,9 +63,7 @@ public class MainActivity extends Activity {
         
         galleryThumbnailPage = (GalleryThumbnailPage) findViewById(R.id.gallery_thumbnail_page);
         
-        videoPlayer = (VideoPlayer) findViewById(R.id.content_screen_video_field);
-        Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.speaking);
-        videoPlayer.setVideoURI(video);
+        
     }
 
 //    @Override

@@ -36,9 +36,9 @@
                  android:layout_weight="5"
                  android:gravity="center_vertical"
                  android:background="@color/main_activity_view_flipper_bg">
-        <include android:id="@+id/layout1" layout="@layout/layout1"/>
+        <!--<include android:id="@+id/layout1" layout="@layout/layout1"/>
         <include android:id="@+id/layout2" layout="@layout/layout2"/>
-        <include android:id="@+id/layout3" layout="@layout/layout3"/>
+        <include android:id="@+id/layout3" layout="@layout/video_flip_layout"/>-->
         <com.ssl.curriculum.math.page.GalleryThumbnailPage android:id="@+id/gallery_thumbnail_page" android:layout_height="fill_parent"
                                                   android:layout_width="fill_parent"/>
     </ViewFlipper>
