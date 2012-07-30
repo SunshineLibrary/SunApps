@@ -30,7 +30,7 @@ public class ActivityContentProvider {
 			ActivityData tad = new ActivityData(0);
 			return tad;
 		}else{
-			return new ActivityData(1);
+			return new ActivityData(3);
 		}
 		/*
 		Cursor cursor = this.query(new String[] {Activities._ID, Activities._NAME, Activities._TYPE, Activities._NOTES, Activities._LENGTH, Activities._SECTION_ID}, 

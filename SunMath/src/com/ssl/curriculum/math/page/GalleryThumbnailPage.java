@@ -31,6 +31,13 @@ public class GalleryThumbnailPage extends LinearLayout implements GalleryContent
         initAdapter();
     }
 
+    public GalleryThumbnailPage(Context context) {
+        super(context);
+        initUI();
+        initListener();
+        initAdapter();
+    }
+
     private void initUI() {
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.gallery_page, this, false);
