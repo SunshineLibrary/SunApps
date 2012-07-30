@@ -101,6 +101,7 @@ public final class MetadataContract {
         public static final int TYPE_GALLERY = 3;
         public static final int TYPE_QUIZ = 4;
         public static final int TYPE_HTML = 5;
+        public static final int TYPE_QUIZ_FILL_IN = 6;
 
         public static Uri getActivityVideoUri(long id) {
             return CONTENT_URI.buildUpon().appendPath("video").appendPath(String.valueOf(id)).build();

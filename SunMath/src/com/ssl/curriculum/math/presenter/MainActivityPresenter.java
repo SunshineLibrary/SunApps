@@ -9,6 +9,7 @@ import com.ssl.curriculum.math.activity.MainActivity;
 import com.ssl.curriculum.math.activity.NaviActivity;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.component.flipperchildren.GalleryThumbnailPageFlipperChild;
+import com.ssl.curriculum.math.component.flipperchildren.QuizFillInFlipperChild;
 import com.ssl.curriculum.math.component.flipperchildren.VideoFlipperChild;
 import com.ssl.curriculum.math.listener.PageFlipListener;
 import com.ssl.curriculum.math.model.activity.ActivityData;
@@ -31,6 +32,7 @@ public class MainActivityPresenter {
 	private static final int TYPE_HTML = Activities.TYPE_HTML;
 	private static final int TYPE_QUIZ = Activities.TYPE_QUIZ;
 	private static final int TYPE_GALLERY = Activities.TYPE_GALLERY;
+    private static final int TYPE_QUIZ_FILL_IN = Activities.TYPE_QUIZ_FILL_IN;
 
 	private EdgeContentProvider edgeProvider;
 	private ActivityContentProvider activityProvider;
@@ -86,6 +88,9 @@ public class MainActivityPresenter {
 			case TYPE_QUIZ:{
                 activityView = new TextView(this.activity);
                 ((TextView) activityView).setText("Pop Quiz!");
+            }break;
+            case TYPE_QUIZ_FILL_IN: {
+                activityView = new QuizFillInFlipperChild(this.activity);
             }break;
             case TYPE_GALLERY: {
                 GalleryThumbnailPageFlipperChild galleryThumbnailPage = new GalleryThumbnailPageFlipperChild(this.activity);
