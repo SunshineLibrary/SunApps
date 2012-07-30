@@ -1,5 +1,6 @@
 package com.sunshine.metadata.database.tables;
 
+import com.sunshine.metadata.database.AbstractTable;
 import com.sunshine.metadata.database.MetadataDBHandler;
 import com.sunshine.metadata.provider.MetadataContract.Packages;
 
@@ -7,7 +8,7 @@ import com.sunshine.metadata.provider.MetadataContract.Packages;
  * @author Bowen Sun
  *
  */
-public class PackageTable extends Table {
+public class PackageTable extends AbstractTable {
 	
 	public static final String TABLE_NAME = "packages";
 	

@@ -1,9 +1,10 @@
 package com.sunshine.metadata.database.tables;
 
+import com.sunshine.metadata.database.AbstractTable;
 import com.sunshine.metadata.database.MetadataDBHandler;
 import com.sunshine.metadata.provider.MetadataContract.BookTag;
 
-public class BookTagTable extends Table {
+public class BookTagTable extends AbstractTable {
 	
 	public static final String TABLE_NAME = "book_tag";
 	

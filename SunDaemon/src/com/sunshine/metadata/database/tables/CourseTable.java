@@ -1,10 +1,11 @@
 package com.sunshine.metadata.database.tables;
 
+import com.sunshine.metadata.database.AbstractTable;
 import com.sunshine.metadata.database.MetadataDBHandler;
 
 import static com.sunshine.metadata.provider.MetadataContract.Courses;
 
-public class CourseTable extends Table {
+public class CourseTable extends AbstractTable {
 
     public static final String TABLE_NAME = "courses";
 
