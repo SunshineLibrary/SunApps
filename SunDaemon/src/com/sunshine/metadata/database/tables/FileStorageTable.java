@@ -1,9 +1,10 @@
 package com.sunshine.metadata.database.tables;
 
 import android.provider.BaseColumns;
+import com.sunshine.metadata.database.AbstractTable;
 import com.sunshine.metadata.database.MetadataDBHandler;
 
-public class FileStorageTable extends Table {
+public class FileStorageTable extends AbstractTable {
 
     public static final String TABLE_NAME = "files";
 

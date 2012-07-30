@@ -2,13 +2,14 @@ package com.sunshine.metadata.database.tables;
 
 import android.provider.BaseColumns;
 
+import com.sunshine.metadata.database.AbstractTable;
 import com.sunshine.metadata.database.MetadataDBHandler;
 
 /**
  * @author Bowen Sun
  *
  */
-public class APISyncStateTable extends Table {
+public class APISyncStateTable extends AbstractTable {
 	
 	public static final String TABLE_NAME = "api_sync_states";
 	

@@ -1,12 +1,11 @@
-package com.sunshine.metadata.database.tables;
+package com.sunshine.metadata.database;
 
 import com.sunshine.metadata.database.MetadataDBHandler;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-
-import java.util.Observable;
+import com.sunshine.metadata.database.Table;
 
 /**
  * @author Bowen Sun
@@ -17,7 +16,7 @@ import java.util.Observable;
  * 
  */
 
-public abstract class Table {
+public abstract class AbstractTable implements Table {
 
 	protected MetadataDBHandler dbHandler;
     private String tableName;
@@ -30,7 +29,7 @@ public abstract class Table {
 	 * 
 	 * @param handler
 	 */
-	public Table(MetadataDBHandler handler, String tableName, String[][] columnDefinitions, String[] columns) {
+	public AbstractTable(MetadataDBHandler handler, String tableName, String[][] columnDefinitions, String[] columns) {
 		this.dbHandler = handler;
         this.tableName = tableName;
         this.columnDefinitions = columnDefinitions;

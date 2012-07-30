@@ -1,5 +1,6 @@
 package com.sunshine.support.sync;
 
+import com.sunshine.metadata.database.AbstractTable;
 import com.sunshine.metadata.database.tables.*;
 
 import android.os.AsyncTask;
@@ -8,7 +9,7 @@ import com.sunshine.metadata.database.MetadataDBHandler;
 
 public class APISyncTask extends AsyncTask<String, String, Integer> {
 
-	private Table syncTable;
+	private AbstractTable syncTable;
 	private MetadataDBHandler dbHandler;
 	private APISyncService context;
 
@@ -38,7 +39,7 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
 		if (isConnected()) {
 			//TODO: should check for changed tables before sync.
 			for (String tableName: SYNCED_TABLES) {
-				Table table = dbHandler.getTableManager(tableName);
+				AbstractTable table = dbHandler.getTableManager(tableName);
 				TableSyncManager syncManager = new TableSyncManager(table, syncTable);
 				if (!syncManager.sync() ) {
 					status = SYNC_FAILURE;

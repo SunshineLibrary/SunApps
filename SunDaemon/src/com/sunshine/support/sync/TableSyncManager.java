@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import com.sunshine.metadata.database.AbstractTable;
 import com.sunshine.support.api.ApiClient;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -21,7 +22,6 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.sunshine.metadata.database.tables.APISyncStateTable.APISyncState;
-import com.sunshine.metadata.database.tables.Table;
 
 public class TableSyncManager {
 
@@ -29,11 +29,11 @@ public class TableSyncManager {
 	private static final int BATCH_SIZE = 100;
     private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-	private Table syncStateTable;
-	private Table table;
+	private AbstractTable syncStateTable;
+	private AbstractTable table;
 	private long lastUpdateTime;
 
-	public TableSyncManager(Table table, Table syncStatesTable) {
+	public TableSyncManager(AbstractTable table, AbstractTable syncStatesTable) {
 		this.table = table;
 		this.syncStateTable = syncStatesTable;
 		lastUpdateTime = getLastUpdateTimeFromDB();
