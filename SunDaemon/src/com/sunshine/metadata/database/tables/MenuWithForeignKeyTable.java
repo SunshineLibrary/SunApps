@@ -1,6 +1,5 @@
 package com.sunshine.metadata.database.tables;
 
-import com.sunshine.metadata.database.AbstractTable;
 import com.sunshine.metadata.database.MetadataDBHandler;
 
 public abstract class MenuWithForeignKeyTable extends AbstractTable {

@@ -28,6 +28,7 @@ public class FileDownloadTask extends AsyncTask<Uri, Integer, Integer> {
     public static final int SUCCESS = 0;
     public static final int FAILURE = 1;
     private static final int PROGRESS_SAMPLE_RATE = 20;
+    private static final int RETRY_COUNT = 3;
 
     public FileDownloadTask(Context context, Uri remoteUri, Uri localUri) {
         this.remoteUri = remoteUri;
@@ -39,38 +40,47 @@ public class FileDownloadTask extends AsyncTask<Uri, Integer, Integer> {
 
     @Override
     protected Integer doInBackground(Uri... uris) {
-        Log.d(getClass().getName(), "Requesting file: " + remoteUri);
-        InputStream input = getInputStreamForUri(remoteUri);
-        OutputStream output = getOutputStreamForUri(localUri);
-
-        if (input == null || output == null) {
-            Log.e(getClass().getName(), "Failed during download for uris " + remoteUri + "," + localUri +": null input/output");
-            return FAILURE;
-        }
-
-        int bufferSize = 1024;
-        byte[] buffer = new byte[1024];
         int count, offset;
+        int bufferSize = 1024;
         long total;
-        count = offset = 0;
-        total = 0;
-        try {
-            while ((count = input.read(buffer, offset, bufferSize - offset)) > 0) {
-                output.write(buffer, offset, count);
-                offset = (offset + count) % bufferSize;
-                total += count;
-                if (total * 100 / contentLength >= lastProgress + PROGRESS_SAMPLE_RATE) {
-                    Log.d(getClass().getName(), String.format("Downloading[%d]: %s)", total * 100 / contentLength, remoteUri.toString()));
-                    lastProgress += PROGRESS_SAMPLE_RATE;
+        byte[] buffer = new byte[1024];
+
+        int retryLimit = RETRY_COUNT;
+        while (retryLimit-- > 0) {
+            Log.d(getClass().getName(), "Requesting file: " + remoteUri);
+            InputStream input = getInputStreamForUri(remoteUri);
+            OutputStream output = getOutputStreamForUri(localUri);
+
+            try {
+                if (input == null || output == null) {
+                    Log.e(getClass().getName(), "Failed during download for uris " + remoteUri + "," + localUri + ": null input/output");
                 }
+
+                total = 0;
+                count = offset = 0;
+                while ((count = input.read(buffer, offset, bufferSize - offset)) > 0) {
+                    output.write(buffer, offset, count);
+                    offset = (offset + count) % bufferSize;
+                    total += count;
+                    if (total * 100 / contentLength >= lastProgress + PROGRESS_SAMPLE_RATE) {
+                        Log.d(getClass().getName(), String.format("Downloading[%d]: %s)", total * 100 / contentLength, remoteUri.toString()));
+                        lastProgress += PROGRESS_SAMPLE_RATE;
+                    }
+                }
+                input.close();
+                output.close();
+                return SUCCESS;
+            } catch (IOException e) {
+                Log.e(getClass().getName(), "Failed during download for uris " + remoteUri + "," + localUri, e);
+                try {
+                    if (input != null) input.close();
+                    if (output != null) output.close();
+                } catch (IOException e1) {}
+
+                continue;
             }
-            input.close();
-            output.close();
-            return SUCCESS;
-        } catch (IOException e) {
-            Log.e(getClass().getName(), "Failed during download for uris " + remoteUri + "," + localUri, e);
-            return FAILURE;
         }
+        return FAILURE;
     }
 
     private InputStream getInputStreamForUri(Uri uri) {

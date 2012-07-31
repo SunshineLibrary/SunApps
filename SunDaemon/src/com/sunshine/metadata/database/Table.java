@@ -7,6 +7,10 @@ import android.net.Uri;
 
 public interface Table {
 
+    public String getTableName();
+
+    public String[] getColumns();
+
     public void createTable(SQLiteDatabase db);
 
     public void upgradeTable(SQLiteDatabase db, int oldVersion, int newVersion);
@@ -18,4 +22,5 @@ public interface Table {
     public int delete(Uri uri, String selection, String[] selectionArgs);
 
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs);
+
 }

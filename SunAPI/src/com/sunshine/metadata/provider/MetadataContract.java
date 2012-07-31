@@ -14,7 +14,7 @@ public final class MetadataContract {
         public static final String _ID = BaseColumns._ID;
         public static final String _FROM_ID = "from_id";
         public static final String _TO_ID = "to_id";
-        public static final String _CONDITION = "conditoin";
+        public static final String _CONDITION = "condition";
         public static final String _SECTION_ID ="section_id";
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("edges").build();
@@ -40,14 +40,15 @@ public final class MetadataContract {
     /*
      *  课内内容
      */
-    public static final class GalleryImages {
+    public static final class GalleryImages extends Downloadable{
         public static final String _ID = BaseColumns._ID;
         public static final String _GALLERY_ID = "gallery_id";
         public static final String _THUMBNAIL_PATH = "thumbnail";
         public static final String _IMAGE_PATH = "image";
         public static final String _DESCRIPTION = "description";
 
-        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("gallery").appendPath("images").build();
+        public static final Uri CONTENT_URI = Activities.CONTENT_URI.buildUpon().
+                appendPath("gallery").appendPath("images").build();
     }
 
     public static final class Courses {
@@ -105,16 +106,16 @@ public final class MetadataContract {
             return CONTENT_URI.buildUpon().appendPath("video").appendPath(String.valueOf(id)).build();
         }
 
-        public static Uri getActivityGalleryUri(long id) {
-            return CONTENT_URI.buildUpon().appendPath("gallery").appendPath(String.valueOf(id)).build();
-        }
-
         public static Uri getActivityThumbnailUri(long id) {
             return CONTENT_URI.buildUpon().appendPath("thumbnail").appendPath(String.valueOf(id)).build();
         }
 
         public static Uri getActivityUri(int id) {
             return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
+        }
+
+        public static Uri getGalleryImageUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath("gallery").appendPath("images").appendPath(String.valueOf(id)).build();
         }
     }
 

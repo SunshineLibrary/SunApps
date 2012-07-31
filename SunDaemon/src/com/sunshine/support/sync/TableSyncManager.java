@@ -8,7 +8,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import com.sunshine.metadata.database.AbstractTable;
+import com.sunshine.metadata.database.Table;
+import com.sunshine.metadata.database.tables.AbstractTable;
 import com.sunshine.support.api.ApiClient;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -29,11 +30,11 @@ public class TableSyncManager {
 	private static final int BATCH_SIZE = 100;
     private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-	private AbstractTable syncStateTable;
-	private AbstractTable table;
+	private Table syncStateTable;
+	private Table table;
 	private long lastUpdateTime;
 
-	public TableSyncManager(AbstractTable table, AbstractTable syncStatesTable) {
+	public TableSyncManager(Table table, Table syncStatesTable) {
 		this.table = table;
 		this.syncStateTable = syncStatesTable;
 		lastUpdateTime = getLastUpdateTimeFromDB();
@@ -71,7 +72,6 @@ public class TableSyncManager {
 				JSONArray jsonArr = getJsonArrayFromInputStream(result);
 				isInSync = processJsonArray(jsonArr);
 				updateLastUpdateTime(lastUpdateTime);
-
 			} catch (IOException e) {
 				Log.e(getClassName(), "Failed to get " + requestURI, e);
 				retryCount++;
@@ -105,22 +105,20 @@ public class TableSyncManager {
 	protected JSONArray getJsonArrayFromInputStream(InputStream result)
 			throws IOException, JSONException {
 		StringBuilder builder = new StringBuilder();
-		BufferedReader reader = new BufferedReader(
-				new InputStreamReader(result));
+        InputStreamReader reader = new InputStreamReader(result);
 
-		int bufferSize = 1024;
-		int readCount, totalReadCount = 0;
+		int bufferSize = 4096;
+		int readCount, offset = 0;
 		char[] buffer = new char[bufferSize];
-		while ((readCount = reader.read(buffer, totalReadCount, bufferSize
-				- totalReadCount)) > 0) {
-			totalReadCount += readCount;
-			if (totalReadCount >= bufferSize) {
+		while ((readCount = reader.read(buffer, offset, bufferSize - offset)) > 0) {
+            offset += readCount;
+			if (offset >= bufferSize) {
 				builder.append(buffer);
-				totalReadCount = 0;
+				offset = 0;
 			}
 		}
-		if (totalReadCount > 0) {
-			builder.append(buffer, 0, totalReadCount);
+		if (offset > 0) {
+			builder.append(buffer, 0, offset);
 		}
 
 		return new JSONArray(builder.toString());

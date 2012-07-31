@@ -1,9 +1,11 @@
-package com.sunshine.metadata.database;
+package com.sunshine.metadata.database.tables;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import com.sunshine.metadata.database.Table;
+import com.sunshine.metadata.database.observers.TableObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,16 @@ public class ObservableTable implements Table {
     public void removeObserver(TableObserver observer) {
         mObservers.remove(observer);
 
+    }
+
+    @Override
+    public String getTableName() {
+        return mTable.getTableName();
+    }
+
+    @Override
+    public String[] getColumns() {
+        return mTable.getColumns();
     }
 
     @Override
