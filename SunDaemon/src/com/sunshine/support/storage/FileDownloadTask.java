@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -53,7 +54,7 @@ public class FileDownloadTask extends AsyncTask<Uri, Integer, Integer> {
 
             try {
                 if (input == null || output == null) {
-                    Log.e(getClass().getName(), "Failed during download for uris " + remoteUri + "," + localUri + ": null input/output");
+                    throw new IOException();
                 }
 
                 total = 0;
@@ -71,7 +72,7 @@ public class FileDownloadTask extends AsyncTask<Uri, Integer, Integer> {
                 output.close();
                 return SUCCESS;
             } catch (IOException e) {
-                Log.e(getClass().getName(), "Failed during download for uris " + remoteUri + "," + localUri, e);
+                Log.w(getClass().getName(), "Failed during download for uris." + remoteUri + "," + localUri);
                 try {
                     if (input != null) input.close();
                     if (output != null) output.close();
@@ -88,7 +89,11 @@ public class FileDownloadTask extends AsyncTask<Uri, Integer, Integer> {
         try {
             HttpResponse response = httpClient.execute(get);
             this.contentLength = Long.parseLong(response.getFirstHeader("Content-Length").getValue());
-            return response.getEntity().getContent();
+            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                return null;
+            } else {
+                return response.getEntity().getContent();
+            }
         } catch (IOException e) {
             Log.e(getClass().getName(), "Failed to download file for " + uri, e);
             return null;

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import com.sunshine.metadata.database.MetadataDBHandler;
 import com.sunshine.metadata.database.Table;
+import com.sunshine.metadata.provider.MetadataContract;
 
 /**
  * @author Bowen Sun
@@ -101,10 +102,10 @@ public abstract class AbstractTable implements Table {
 
 	public Uri insert(Uri uri, ContentValues values) {
 		long id = dbHandler.getWritableDatabase().insert(getTableName(), null, values);
-		if (uri != null) {
+		if (id > 0 && uri != null) {
 			return uri.buildUpon().appendPath("" + id).build();
-		} else {
-			return null;
+		} else  {
+            return null;
 		}
 	}
 

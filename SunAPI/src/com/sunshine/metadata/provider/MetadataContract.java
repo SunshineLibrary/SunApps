@@ -49,6 +49,14 @@ public final class MetadataContract {
 
         public static final Uri CONTENT_URI = Activities.CONTENT_URI.buildUpon().
                 appendPath("gallery").appendPath("images").build();
+
+        public static Uri getGalleryImageUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
+        }
+
+        public static Uri getGalleryImageThumbnailUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath("thumbnail").appendPath(String.valueOf(id)).build();
+        }
     }
 
     public static final class Courses {
@@ -114,9 +122,7 @@ public final class MetadataContract {
             return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
         }
 
-        public static Uri getGalleryImageUri(int id) {
-            return CONTENT_URI.buildUpon().appendPath("gallery").appendPath("images").appendPath(String.valueOf(id)).build();
-        }
+
     }
 
 

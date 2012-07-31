@@ -46,6 +46,7 @@ public class SharedStorageManager {
             case Matcher.ACTIVITIES_VIDEO:
             case Matcher.ACTIVITIES_THUMBNAIL:
             case Matcher.GALLERY_IMAGES_ID:
+            case Matcher.GALLERY_IMAGES_THUMBNAIL:
                 return getFileDescriptor(uri, mode);
             default:
                 throw new FileNotFoundException();
