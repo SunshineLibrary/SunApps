@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 import com.ssl.curriculum.math.R;
+import com.ssl.curriculum.math.utils.QuizHtmlLoader;
 
 public class QuizFillInFlipperChild extends LinearLayout {
     private WebView questionWebView;
@@ -28,6 +29,23 @@ public class QuizFillInFlipperChild extends LinearLayout {
         questionWebView.getSettings().setAllowFileAccess(true);
         questionWebView.getSettings().setDomStorageEnabled(true);
         questionWebView.setScrollBarStyle(0);
-        questionWebView.loadUrl("file:///android_asset/sample-asciimath.html");
+        loadQuizHtml();
     }
+
+    private void loadQuizHtml() {
+        final String data = QuizHtmlLoader.getInstance(getContext()).loadQuizHtmlWithNewContent(getNewContent());
+
+        /*
+        * Android thinks file:// schema insecure, so we use http:// here.
+        * And for loadDataWithBaseUrl, the first parameter baseUrl has no exact meaning, we just use it
+        * to tell Android we use the secure schema: http://
+        *
+        * */
+        questionWebView.loadDataWithBaseURL("http://test", data, "text/html", "utf-8", null);
+    }
+
+    private String getNewContent() {
+        return "<p>`x = (-b +- sqrt(b^2-4ac))/(2a) .`</p>";
+    }
+
 }
