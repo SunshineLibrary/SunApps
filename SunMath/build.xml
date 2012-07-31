@@ -88,7 +88,7 @@
             <arg value="am"/>
             <arg value="start"/>
             <arg value="-n"/>
-            <arg value="com.ssl.curriculum.math/com.ssl.curriculum.math.activity.MyActivity"/>
+            <arg value="com.ssl.curriculum.math/com.ssl.curriculum.math.activity.MainActivity"/>
         </exec>
     </target>
 

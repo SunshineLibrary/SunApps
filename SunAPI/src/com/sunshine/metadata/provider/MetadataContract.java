@@ -23,10 +23,13 @@ public final class MetadataContract {
     public static final class Problems {
         public static final String _ID = BaseColumns._ID;
         public static final String _BODY = "body";
-        public static final String _TIPE = "tipe";
+        public static final String _TYPE = "problem_type";
         public static final String _ANSWER = "answer";
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problems").build();
+
+        public static final int TYPE_FILL_BLANK = 0;
+        public static final int TYPE_MULTIPLE_CHOICE = 1;
     }
 
     public static final class ProblemChoices {
