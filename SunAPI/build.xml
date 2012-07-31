@@ -10,7 +10,17 @@
     <fail
             message="sdk.dir is missing. Make sure to generate local.properties using 'android update project' or to inject it through the ANDROID_HOME environment variable."
             unless="sdk.dir"
-    />
+            />
+
+    <target name="compile">
+        <javac encoding="${java_encoding}" srcdir="${classes.dir}" destdir="${classes.dir}" debug="yes">
+            <classpath refid="test.classpath"/>
+        </javac>
+        <javac encoding="${java_encoding}" srcdir="${project.sc.dir}" destdir="${classes.dir}" debug="yes">
+            <classpath location="${classes.dir}"/>
+            <classpath refid="test.classpath"/>
+        </javac>
+    </target>
 
     <!-- Import the actual build file.
 
@@ -31,6 +41,6 @@
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
     <!-- version-tag: 1 -->
-    <import file="${sdk.dir}/tools/ant/build.xml" />
+    <import file="${sdk.dir}/tools/ant/build.xml"/>
 
 </project>
