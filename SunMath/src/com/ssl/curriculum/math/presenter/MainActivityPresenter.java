@@ -8,11 +8,11 @@ import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.activity.MainActivity;
 import com.ssl.curriculum.math.activity.NaviActivity;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
+import com.ssl.curriculum.math.component.flipperchildren.GalleryThumbnailPageFlipperChild;
 import com.ssl.curriculum.math.component.flipperchildren.VideoFlipperChild;
 import com.ssl.curriculum.math.listener.PageFlipListener;
 import com.ssl.curriculum.math.model.activity.ActivityData;
 import com.ssl.curriculum.math.model.activity.VideoActivityData;
-import com.ssl.curriculum.math.page.GalleryThumbnailPage;
 import com.ssl.curriculum.math.service.ActivityContentProvider;
 import com.ssl.curriculum.math.service.EdgeContentProvider;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
@@ -88,7 +88,7 @@ public class MainActivityPresenter {
                 ((TextView) activityView).setText("Pop Quiz!");
             }break;
             case TYPE_GALLERY: {
-                GalleryThumbnailPage galleryThumbnailPage = new GalleryThumbnailPage(this.activity);
+                GalleryThumbnailPageFlipperChild galleryThumbnailPage = new GalleryThumbnailPageFlipperChild(this.activity);
                 galleryThumbnailPage.setGalleryItemClickedListener(this.activity.getGalleryThumbnailItemClickListener());
                 activityView = galleryThumbnailPage;
             }break;
