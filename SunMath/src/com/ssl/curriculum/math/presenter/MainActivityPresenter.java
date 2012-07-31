@@ -9,7 +9,6 @@ import com.ssl.curriculum.math.activity.MainActivity;
 import com.ssl.curriculum.math.activity.NaviActivity;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.component.flipperchildren.GalleryThumbnailPageFlipperChild;
-import com.ssl.curriculum.math.component.flipperchildren.QuizFillInFlipperChild;
 import com.ssl.curriculum.math.component.flipperchildren.QuizFlipperChild;
 import com.ssl.curriculum.math.component.flipperchildren.VideoFlipperChild;
 import com.ssl.curriculum.math.listener.PageFlipListener;

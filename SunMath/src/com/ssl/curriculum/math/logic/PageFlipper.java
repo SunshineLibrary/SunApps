@@ -2,8 +2,6 @@ package com.ssl.curriculum.math.logic;
 
 import java.util.ArrayList;
 
-import android.content.Context;
-
 import com.ssl.curriculum.math.listener.ActivityDataReceiver;
 import com.ssl.curriculum.math.listener.EdgeReceiver;
 import com.ssl.curriculum.math.listener.PageFlipListener;

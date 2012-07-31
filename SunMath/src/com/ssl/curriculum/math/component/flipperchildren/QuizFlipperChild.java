@@ -6,6 +6,7 @@ import com.ssl.curriculum.math.model.activity.QuizActivityData;
 import com.ssl.curriculum.math.model.activity.quiz.QuizMultichoiceQuestion;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+@SuppressLint("ViewConstructor")
 public class QuizFlipperChild extends LinearLayout{
 	private QuizQuestion currentQuestion;
 	private int currentPos = 0;

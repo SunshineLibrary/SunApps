@@ -2,11 +2,9 @@ package com.ssl.curriculum.math.task;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 
 import com.ssl.curriculum.math.listener.EdgeReceiver;
-import com.ssl.curriculum.math.logic.PageFlipper;
 import com.ssl.curriculum.math.model.Edge;
 import com.ssl.curriculum.math.model.activity.ActivityData;
 import com.ssl.curriculum.math.service.EdgeContentProvider;
