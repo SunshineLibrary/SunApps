@@ -1,4 +1,4 @@
-package com.ssl.curriculum.math.page;
+package com.ssl.curriculum.math.component.flipperchildren;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -18,20 +18,20 @@ import com.ssl.curriculum.math.model.GalleryItem;
 
 import java.util.List;
 
-public class GalleryThumbnailPage extends LinearLayout implements GalleryContentChangedListener {
+public class GalleryThumbnailPageFlipperChild extends LinearLayout implements GalleryContentChangedListener {
     private GridView gridview;
     private GalleryAdapter adapter;
     private TextView title;
     private GalleryItemClickedListener galleryItemClickedListener;
 
-    public GalleryThumbnailPage(Context context, AttributeSet attrs) {
+    public GalleryThumbnailPageFlipperChild(Context context, AttributeSet attrs) {
         super(context, attrs);
         initUI();
         initListener();
         initAdapter();
     }
 
-    public GalleryThumbnailPage(Context context) {
+    public GalleryThumbnailPageFlipperChild(Context context) {
         super(context);
         initUI();
         initListener();
