@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import com.sunshine.metadata.provider.Matcher;
-import com.sunshine.metadata.provider.MetadataContract;
 import com.sunshine.support.api.ApiClient;
 import com.sunshine.support.storage.FileDownloadTask;
 
@@ -17,6 +16,7 @@ import java.util.Vector;
 import static com.sunshine.metadata.provider.MetadataContract.Activities;
 import static com.sunshine.metadata.provider.MetadataContract.Downloadable.STATUS;
 import static com.sunshine.metadata.provider.MetadataContract.Downloadable._DOWNLOAD_STATUS;
+import static com.sunshine.metadata.provider.MetadataContract.GalleryImages;
 
 public class DownloadableTableObserver extends TableObserver {
 
@@ -91,7 +91,7 @@ public class DownloadableTableObserver extends TableObserver {
                 case Activities.TYPE_GALLERY:
                     ContentValues values = new ContentValues();
                     values.put(Activities._DOWNLOAD_STATUS, STATUS.QUEUED.ordinal());
-                    context.getContentResolver().update(MetadataContract.GalleryImages.CONTENT_URI, values,
+                    context.getContentResolver().update(GalleryImages.CONTENT_URI, values,
                             "gallery_id = ?", new String[]{String.valueOf(id)});
                     break;
                 default:
@@ -104,6 +104,6 @@ public class DownloadableTableObserver extends TableObserver {
         int id = Integer.parseInt(uri.getLastPathSegment());
         new FileDownloadTask(context,
                 ApiClient.getDownloadUri("gallery_image", id),
-                Activities.getGalleryImageUri(id)).execute();
+                GalleryImages.getGalleryImageUri(id)).execute();
     }
 }

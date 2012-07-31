@@ -25,13 +25,14 @@ public class Matcher {
 
     public static final int GALLERY_IMAGES = 10;
     public static final int GALLERY_IMAGES_ID = 11;
+    public static final int GALLERY_IMAGES_THUMBNAIL = 12;
 
-    public static final int BOOKS = 12;
-    public static final int BOOKS_ID = 13;
-    public static final int BOOK_COLLECTIONS = 14;
-    public static final int BOOK_COLLECTIONS_ID = 15;
-    public static final int BOOK_LISTS = 16;
-    public static final int BOOK_LISTS_ID = 17;
+    public static final int BOOKS = 13;
+    public static final int BOOKS_ID = 14;
+    public static final int BOOK_COLLECTIONS = 15;
+    public static final int BOOK_COLLECTIONS_ID = 16;
+    public static final int BOOK_LISTS = 17;
+    public static final int BOOK_LISTS_ID = 18;
 
 
     public static class Factory {
@@ -52,6 +53,7 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "activities/video/#", ACTIVITIES_VIDEO);
             matcher.addURI(AUTHORITY, "activities/thumbnail/#", ACTIVITIES_THUMBNAIL);
             matcher.addURI(AUTHORITY, "activities/gallery/images/#", GALLERY_IMAGES_ID);
+            matcher.addURI(AUTHORITY, "activities/gallery/images/thumbnail/#", GALLERY_IMAGES_THUMBNAIL);
 
             matcher.addURI(AUTHORITY, "books", BOOKS);
             matcher.addURI(AUTHORITY, "books/#", BOOKS_ID);

@@ -3,6 +3,7 @@ package com.sunshine.metadata.database;
 import android.content.Context;
 import com.sunshine.metadata.database.observers.DownloadableTableObserver;
 import com.sunshine.metadata.database.observers.TableObserver;
+import com.sunshine.metadata.database.observers.ThumbnailFetchObserver;
 import com.sunshine.metadata.database.tables.*;
 
 public class MetadataDBHandlerFactory {
@@ -23,17 +24,20 @@ public class MetadataDBHandlerFactory {
         dbHandler.addTableManager(BookListTable.TABLE_NAME, new BookListTable(dbHandler));
 
         // Observable Tables
-        TableObserver observer = new DownloadableTableObserver(context);
+        TableObserver downloadableObserver = new DownloadableTableObserver(context);
+        TableObserver thumbnailObserver = new ThumbnailFetchObserver(context);
         ObservableTable table = new ObservableTable(new ActivityTable(dbHandler));
-        table.addObserver(observer);
+        table.addObserver(downloadableObserver);
+        table.addObserver(thumbnailObserver);
         dbHandler.addTableManager(ActivityTable.TABLE_NAME, table);
 
         table = new ObservableTable(new GalleryImageTable(dbHandler));
-        table.addObserver(observer);
+        table.addObserver(downloadableObserver);
+        table.addObserver(thumbnailObserver);
         dbHandler.addTableManager(GalleryImageTable.TABLE_NAME, table);
 
         table = new ObservableTable(new BookTable(dbHandler));
-        table.addObserver(observer);
+        table.addObserver(downloadableObserver);
         dbHandler.addTableManager(BookTable.TABLE_NAME, table);
 
         return dbHandler;

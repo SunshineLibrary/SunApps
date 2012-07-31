@@ -58,4 +58,9 @@ public class ApiClient {
         return ROOT_URI.buildUpon().appendPath("download")
                 .appendQueryParameter("type", type).appendQueryParameter("id", String.valueOf(id)).build();
     }
+
+    public static Uri getThumbnailUri(String type, int id) {
+        return ROOT_URI.buildUpon().appendPath("thumbnail")
+                .appendQueryParameter("type", type).appendQueryParameter("id", String.valueOf(id)).build();
+    }
 }

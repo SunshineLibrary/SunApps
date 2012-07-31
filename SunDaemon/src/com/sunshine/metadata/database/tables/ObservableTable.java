@@ -72,7 +72,7 @@ public class ObservableTable implements Table {
     private void postInsert(Uri uri, ContentValues values, Uri result) {
         if (mObservers.size() > 0) {
             for(TableObserver observer: mObservers) {
-                observer.postInsert(uri, values, result);
+                observer.postInsert(this, uri, values, result);
             }
         }
     }
