@@ -22,6 +22,7 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
             LessonTable.TABLE_NAME,
             SectionTable.TABLE_NAME,
             ActivityTable.TABLE_NAME,
+            GalleryImageTable.TABLE_NAME,
             BookTable.TABLE_NAME,
             BookCollectionTable.TABLE_NAME,
     };

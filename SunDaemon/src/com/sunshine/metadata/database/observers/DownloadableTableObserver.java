@@ -7,8 +7,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import com.sunshine.metadata.provider.Matcher;
+import com.sunshine.metadata.provider.MetadataContract;
 import com.sunshine.support.api.ApiClient;
 import com.sunshine.support.storage.FileDownloadTask;
+
+import java.util.List;
+import java.util.Vector;
 
 import static com.sunshine.metadata.provider.MetadataContract.Activities;
 import static com.sunshine.metadata.provider.MetadataContract.Downloadable.STATUS;
@@ -46,13 +50,18 @@ public class DownloadableTableObserver extends TableObserver {
     private void downloadContents(Uri uri, String selection, String[] selectionArgs) {
         Cursor cursor = context.getContentResolver().query(uri, new String[]{BaseColumns._ID},
                 selection, selectionArgs, null);
+        List<Uri> downloadUris= new Vector<Uri>();
         if (cursor.moveToFirst()) {
             do {
                 int id = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
-                downloadContent(uri.buildUpon().appendPath(String.valueOf(id)).build());
+                downloadUris.add(uri.buildUpon().appendPath(String.valueOf(id)).build());
             } while (cursor.moveToNext());
         }
         cursor.close();
+
+        for (Uri u: downloadUris){
+            downloadContent(u);
+        }
     }
 
     private void downloadContent(Uri uri) {
@@ -79,6 +88,12 @@ public class DownloadableTableObserver extends TableObserver {
                             ApiClient.getDownloadUri("video_activity", id),
                             Activities.getActivityVideoUri(id)).execute();
                     break;
+                case Activities.TYPE_GALLERY:
+                    ContentValues values = new ContentValues();
+                    values.put(Activities._DOWNLOAD_STATUS, STATUS.QUEUED.ordinal());
+                    context.getContentResolver().update(MetadataContract.GalleryImages.CONTENT_URI, values,
+                            "gallery_id = ?", new String[]{String.valueOf(id)});
+                    break;
                 default:
             }
         }
@@ -89,6 +104,6 @@ public class DownloadableTableObserver extends TableObserver {
         int id = Integer.parseInt(uri.getLastPathSegment());
         new FileDownloadTask(context,
                 ApiClient.getDownloadUri("gallery_image", id),
-                Activities.getActivityVideoUri(id)).execute();
+                Activities.getGalleryImageUri(id)).execute();
     }
 }

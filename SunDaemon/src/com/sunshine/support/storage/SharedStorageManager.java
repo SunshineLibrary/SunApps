@@ -2,19 +2,15 @@ package com.sunshine.support.storage;
 
 import android.content.Context;
 import android.content.UriMatcher;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import com.sunshine.metadata.database.MetadataDBHandler;
 import com.sunshine.metadata.provider.Matcher;
-import com.sunshine.support.api.ApiClient;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import static com.sunshine.metadata.provider.MetadataContract.Activities;
 
 
 public class SharedStorageManager {
@@ -49,14 +45,15 @@ public class SharedStorageManager {
         switch (sUriMatcher.match(uri)) {
             case Matcher.ACTIVITIES_VIDEO:
             case Matcher.ACTIVITIES_THUMBNAIL:
-                return getActivityDescriptor(uri, mode);
+            case Matcher.GALLERY_IMAGES_ID:
+                return getFileDescriptor(uri, mode);
             default:
                 throw new FileNotFoundException();
         }
     }
 
-    private ParcelFileDescriptor getActivityDescriptor(Uri uri, String mode) throws FileNotFoundException {
-        File directory = getActivityFileDirectory(uri);
+    private ParcelFileDescriptor getFileDescriptor(Uri uri, String mode) throws FileNotFoundException {
+        File directory = getFileDirectory(uri);
         ParcelFileDescriptor descriptor;
         File file = new File(directory, uri.getLastPathSegment());
 
@@ -102,14 +99,14 @@ public class SharedStorageManager {
         }
     }
 
-    private File getActivityFileDirectory(Uri uri) throws FileNotFoundException {
+    private File getFileDirectory(Uri uri) throws FileNotFoundException {
         String path = uri.getPath();
         String directoryPath = path.substring(0, path.lastIndexOf("/"));
         File directory = fileStorage.mkdir(directoryPath);
         if (directory.exists()) {
             return directory;
         } else {
-            Log.e(getClass().getName(), "Could not create activity directory: " + directoryPath);
+            Log.e(getClass().getName(), "Could not create file directory: " + directoryPath);
             throw new FileNotFoundException();
         }
     }

@@ -105,22 +105,20 @@ public class TableSyncManager {
 	protected JSONArray getJsonArrayFromInputStream(InputStream result)
 			throws IOException, JSONException {
 		StringBuilder builder = new StringBuilder();
-		BufferedReader reader = new BufferedReader(
-				new InputStreamReader(result));
+        InputStreamReader reader = new InputStreamReader(result);
 
-		int bufferSize = 1024;
-		int readCount, totalReadCount = 0;
+		int bufferSize = 4096;
+		int readCount, offset = 0;
 		char[] buffer = new char[bufferSize];
-		while ((readCount = reader.read(buffer, totalReadCount, bufferSize
-				- totalReadCount)) > 0) {
-			totalReadCount += readCount;
-			if (totalReadCount >= bufferSize) {
+		while ((readCount = reader.read(buffer, offset, bufferSize - offset)) > 0) {
+            offset += readCount;
+			if (offset >= bufferSize) {
 				builder.append(buffer);
-				totalReadCount = 0;
+				offset = 0;
 			}
 		}
-		if (totalReadCount > 0) {
-			builder.append(buffer, 0, totalReadCount);
+		if (offset > 0) {
+			builder.append(buffer, 0, offset);
 		}
 
 		return new JSONArray(builder.toString());

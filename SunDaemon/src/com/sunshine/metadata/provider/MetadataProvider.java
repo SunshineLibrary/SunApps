@@ -125,7 +125,16 @@ public class MetadataProvider extends ContentProvider {
                       String[] selectionArgs) {
         switch (sUriMatcher.match(uri)) {
             case Matcher.ACTIVITIES_ID:
+                selection = MetadataContract.Activities._ID + " = ?";
+                selectionArgs = new String[] {uri.getLastPathSegment()};
+            case Matcher.ACTIVITIES:
                 return dbHandler.getTableManager(ActivityTable.TABLE_NAME).update(
+                        uri, values, selection, selectionArgs);
+            case Matcher.GALLERY_IMAGES_ID:
+                selection = MetadataContract.GalleryImages._ID + " = ?";
+                selectionArgs = new String[] {uri.getLastPathSegment()};
+            case Matcher.GALLERY_IMAGES:
+                return dbHandler.getTableManager(GalleryImageTable.TABLE_NAME).update(
                         uri, values, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException();
@@ -136,5 +145,6 @@ public class MetadataProvider extends ContentProvider {
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
         return sharedStorageManager.openFile(uri, mode);
     }
+
 
 }

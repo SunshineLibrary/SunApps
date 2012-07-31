@@ -24,13 +24,6 @@ public class ApiClient {
     static {
         ROOT_URI = new Uri.Builder().scheme("http").authority(HOST).build();
         apiMap = new HashMap<String, String>();
-        apiMap.put(CourseTable.TABLE_NAME, "courses.json");
-        apiMap.put(ChapterTable.TABLE_NAME, "chapters.json");
-        apiMap.put(LessonTable.TABLE_NAME, "lessons.json");
-        apiMap.put(SectionTable.TABLE_NAME, "sections.json");
-        apiMap.put(ActivityTable.TABLE_NAME, "activities.json");
-        apiMap.put(BookTable.TABLE_NAME, "books.json");
-        apiMap.put(BookCollectionTable.TABLE_NAME, "book_collections.json");
     }
 
     public static synchronized ThreadSafeClientConnManager getConnManager() {
@@ -53,7 +46,8 @@ public class ApiClient {
     }
 
     private static String getApiPath(String tableName) {
-        return apiMap.get(tableName);
+        String name = apiMap.get(tableName);
+        return (name != null) ? name : tableName + ".json";
     }
 
     public static Uri getRootUri() {
