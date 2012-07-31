@@ -4,7 +4,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import com.ssl.curriculum.math.model.activity.ActivityData;
+import com.ssl.curriculum.math.model.activity.QuizActivityData;
 import com.ssl.curriculum.math.model.activity.VideoActivityData;
+import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
 
 public class ActivityContentProvider {
@@ -22,15 +24,19 @@ public class ActivityContentProvider {
     public ActivityData fetchActivityById(int id) {
         /** Debugging use only, this gives an activity by type every node **/
         id = (int) Math.round(Math.random() * 100);
-        if (id % 3 == 0) {
+        if (id % 4 == 0) {
             VideoActivityData vad = new VideoActivityData();
             vad.initVideoMetadata("This is just a test" + id, "Blah", 1000);
             return vad;
-        } else if (id % 3 == 1) {
-            ActivityData activityData = new ActivityData(Activities.TYPE_QUIZ_FILL_IN);
-            return activityData;
+        } else if (id % 4 == 1 || id % 4 == 2) {
+        	QuizActivityData activityData = new QuizActivityData();
+        	activityData.addQuestion(new QuizQuestion(QuizQuestion.TYPE_MULTICHOICE));
+        	activityData.addQuestion(new QuizQuestion(QuizQuestion.TYPE_MULTICHOICE));
+        	activityData.addQuestion(new QuizQuestion(QuizQuestion.TYPE_FILLBLANKS));
+        	activityData.addQuestion(new QuizQuestion(QuizQuestion.TYPE_FILLBLANKS));
+        	return activityData;
         } else {
-            return new ActivityData(3);
+            return new ActivityData(Activities.TYPE_GALLERY);
         }
         /*
           Cursor cursor = this.query(new String[] {Activities._ID, Activities._NAME, Activities._TYPE, Activities._NOTES, Activities._LENGTH, Activities._SECTION_ID},
