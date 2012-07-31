@@ -9,14 +9,14 @@ public class ProblemTable extends DownloadableTable {
     public static final String[] ALL_COLUMNS = {
             Problems._ID,
             Problems._BODY,
-            Problems._TIPE,
+            Problems._TYPE,
             Problems._ANSWER
     };
 
     public static final String[][] COLUMN_DEFINITIONS = {
             {Problems._ID, "INTEGER PRIMARY KEY"},
             {Problems._BODY, "TEXT"},
-            {Problems._TIPE, "TEXT"},
+            {Problems._TYPE, "TEXT"},
             {Problems._ANSWER, "TEXT"}
     };
 
