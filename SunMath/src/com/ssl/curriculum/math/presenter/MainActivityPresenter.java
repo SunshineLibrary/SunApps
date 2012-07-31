@@ -10,10 +10,10 @@ import com.ssl.curriculum.math.activity.NaviActivity;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.component.flipperchildren.GalleryThumbnailPageFlipperChild;
 import com.ssl.curriculum.math.component.flipperchildren.QuizFlipperChild;
+import com.ssl.curriculum.math.component.flipperchildren.QuizFillInFlipperChild;
 import com.ssl.curriculum.math.component.flipperchildren.VideoFlipperChild;
 import com.ssl.curriculum.math.listener.PageFlipListener;
 import com.ssl.curriculum.math.model.activity.ActivityData;
-import com.ssl.curriculum.math.model.activity.QuizActivityData;
 import com.ssl.curriculum.math.model.activity.VideoActivityData;
 import com.ssl.curriculum.math.service.ActivityContentProvider;
 import com.ssl.curriculum.math.service.EdgeContentProvider;
@@ -86,7 +86,7 @@ public class MainActivityPresenter {
 				((TextView) activityView).setText("HTML");
 			}break;
 			case TYPE_QUIZ:{
-				activityView = new QuizFlipperChild(this.activity, null, (QuizActivityData) activity);
+				activityView = new QuizFillInFlipperChild(this.activity);
             }break;
             case TYPE_GALLERY: {
                 GalleryThumbnailPageFlipperChild galleryThumbnailPage = new GalleryThumbnailPageFlipperChild(this.activity);

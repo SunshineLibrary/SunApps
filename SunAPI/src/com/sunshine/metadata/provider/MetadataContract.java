@@ -28,9 +28,6 @@ public final class MetadataContract {
         public static final String _TITLE = "title";
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problems").build();
-
-        public static final int TYPE_FILL_BLANK = 0;
-        public static final int TYPE_MULTIPLE_CHOICE = 1;
     }
 
     public static final class ProblemChoices {

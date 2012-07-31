@@ -1,7 +1,5 @@
 package com.ssl.curriculum.math.logic;
 
-import java.util.ArrayList;
-
 import com.ssl.curriculum.math.listener.ActivityDataReceiver;
 import com.ssl.curriculum.math.listener.EdgeReceiver;
 import com.ssl.curriculum.math.listener.PageFlipListener;
@@ -11,6 +9,8 @@ import com.ssl.curriculum.math.model.activity.ActivityData;
 import com.ssl.curriculum.math.presenter.MainActivityPresenter;
 import com.ssl.curriculum.math.task.FetchActivityDataTask;
 import com.ssl.curriculum.math.task.FetchEdgeTask;
+
+import java.util.ArrayList;
 
 public class PageFlipper implements EdgeReceiver, ActivityDataReceiver, PageFlipListener {
 	private ArrayList<ActivityData> activityStack = new ArrayList<ActivityData>();

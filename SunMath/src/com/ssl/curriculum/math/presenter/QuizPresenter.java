@@ -22,11 +22,11 @@ public class QuizPresenter {
                 quizQuestions = quizQuestionsProvider.loadQuizQuestions(title);
                 updateQuizView();
             }
-        });
+        }).start();
     }
 
     private void updateQuizView() {
         if(quizQuestions == null || quizQuestions.size() == 0 )return;
-        quizFillInFlipperChild.loadQuiz(quizQuestions.get(0));
+        quizFillInFlipperChild.loadQuiz(quizQuestions.get(2));
     }
 }

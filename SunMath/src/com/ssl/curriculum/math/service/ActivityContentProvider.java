@@ -31,9 +31,9 @@ public class ActivityContentProvider {
             return vad;
         } else if (id % 4 == 1 || id % 4 == 2) {
         	QuizActivityData activityData = new QuizActivityData();
-        	activityData.addQuestion( new QuizMultichoiceQuestion());
-        	activityData.addQuestion( new QuizMultichoiceQuestion());
-        	activityData.addQuestion(new QuizQuestion(QuizQuestion.TYPE_FILLBLANKS));
+//        	activityData.addQuestion(new QuizQuestion(QuizQuestion.TYPE_MULTICHOICE));
+//        	activityData.addQuestion(new QuizQuestion(QuizQuestion.TYPE_MULTICHOICE));
+//        	activityData.addQuestion(new QuizQuestion(QuizQuestion.TYPE_FILLBLANKS));
         	activityData.addQuestion(new QuizQuestion(QuizQuestion.TYPE_FILLBLANKS));
         	return activityData;
         } else {
