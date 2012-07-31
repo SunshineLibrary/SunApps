@@ -1,7 +1,9 @@
 package com.ssl.curriculum.math.component.flipperchildren;
 
 import com.ssl.curriculum.math.R;
+import com.ssl.curriculum.math.component.flipperchildren.subviews.QuizMultichoiceSubview;
 import com.ssl.curriculum.math.model.activity.QuizActivityData;
+import com.ssl.curriculum.math.model.activity.quiz.QuizMultichoiceQuestion;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 
 import android.content.Context;
@@ -33,7 +35,6 @@ public class QuizFlipperChild extends LinearLayout{
 		tv.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
-				System.out.println("Clicked Btn!");
 				self.nextQuestion();
 			}
 			
@@ -55,9 +56,8 @@ public class QuizFlipperChild extends LinearLayout{
 		System.out.println(currentPos);
 		switch(currentQuestion.getType()){
 			case QuizQuestion.TYPE_MULTICHOICE:{
-				TextView tmp = new TextView(getContext());
-				tmp.setText("This is a multichoice question");
-				questionView.addView(tmp);
+				QuizMultichoiceSubview multichoice = new QuizMultichoiceSubview(getContext(),null,(QuizMultichoiceQuestion) currentQuestion);
+				questionView.addView(multichoice);
 			}break;
 			case QuizQuestion.TYPE_FILLBLANKS:{
 				TextView tmp = new TextView(getContext());
@@ -65,6 +65,9 @@ public class QuizFlipperChild extends LinearLayout{
 				questionView.addView(tmp);
 			}break;
 			default:break;
+		}
+		if(questionView.getChildCount() > 1){
+			questionView.showNext();
 		}
 		while(questionView.getChildCount() > 1){
 			questionView.removeViewAt(0);

@@ -5,11 +5,15 @@
 		android:layout_height="0dp" android:layout_weight="1" android:layout_alignParentTop="true">
 	</ViewFlipper>
 	<RelativeLayout
-		android:layout_width="match_parent" android:layout_height="200dp"
+		android:layout_width="match_parent" android:layout_height="30dp"
 		android:id="@+id/quiz_bottom_navigation">
 		<TextView android:id="@+id/quiz_next_button"
 			android:layout_width="wrap_content" android:layout_height="match_parent"
-			android:background="@color/green"
+			android:paddingLeft="10dp"
+			android:paddingRight="10dp"
+			android:paddingTop="5dp"
+ 			android:background="@color/blue"
+			android:layout_alignParentRight="true"
 			android:text="Next" />
 	</RelativeLayout>
 </LinearLayout>
