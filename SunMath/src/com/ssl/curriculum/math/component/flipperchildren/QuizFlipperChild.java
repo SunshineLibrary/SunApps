@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 public class QuizFlipperChild extends LinearLayout{
 	private QuizQuestion currentQuestion;
@@ -50,18 +51,23 @@ public class QuizFlipperChild extends LinearLayout{
 	private void presentQuestion(){
 		if(currentQuestion == null)
 			return;
-		View questionView = (View) findViewById(R.id.quiz_question_view);
+		ViewFlipper questionView = (ViewFlipper) findViewById(R.id.quiz_question_view);
 		System.out.println(currentPos);
 		switch(currentQuestion.getType()){
 			case QuizQuestion.TYPE_MULTICHOICE:{
-				questionView = new TextView(getContext());
-				((TextView)questionView).setText("This is a multichoice question");
+				TextView tmp = new TextView(getContext());
+				tmp.setText("This is a multichoice question");
+				questionView.addView(tmp);
 			}break;
 			case QuizQuestion.TYPE_FILLBLANKS:{
-				questionView = new TextView(getContext());
-				((TextView)questionView).setText("This is a fill-in question");
+				TextView tmp = new TextView(getContext());
+				tmp.setText("This is a fill-in question");
+				questionView.addView(tmp);
 			}break;
 			default:break;
+		}
+		while(questionView.getChildCount() > 1){
+			questionView.removeViewAt(0);
 		}
 	}
 	
