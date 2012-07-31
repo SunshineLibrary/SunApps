@@ -6,14 +6,20 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 import com.ssl.curriculum.math.R;
+import com.ssl.curriculum.math.model.activity.quiz.QuizFillBlankQuestion;
+import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
+import com.ssl.curriculum.math.presenter.QuizPresenter;
+import com.ssl.curriculum.math.service.QuizQuestionsProvider;
 import com.ssl.curriculum.math.utils.QuizHtmlLoader;
 
 public class QuizFillInFlipperChild extends LinearLayout {
     private WebView questionWebView;
+    private QuizPresenter quizPresenter;
 
     public QuizFillInFlipperChild(Context context) {
         super(context);
         initUI();
+        initComponent();
         initWebView();
     }
 
@@ -24,16 +30,20 @@ public class QuizFillInFlipperChild extends LinearLayout {
         questionWebView = (WebView) findViewById(R.id.quiz_fill_in_flipper_child_question);
     }
 
+    private void initComponent() {
+        quizPresenter = new QuizPresenter(this);
+        quizPresenter.loadQuizQuestions(new QuizQuestionsProvider(getContext()), "quiz 1");
+    }
+
     private void initWebView() {
         questionWebView.getSettings().setJavaScriptEnabled(true);
         questionWebView.getSettings().setAllowFileAccess(true);
         questionWebView.getSettings().setDomStorageEnabled(true);
         questionWebView.setScrollBarStyle(0);
-        loadQuizHtml();
     }
 
-    private void loadQuizHtml() {
-        final String data = QuizHtmlLoader.getInstance(getContext()).loadQuizHtmlWithNewContent(getNewContent());
+    private void loadQuizHtml(String newContent) {
+        final String data = QuizHtmlLoader.getInstance(getContext()).loadQuizHtmlWithNewContent(newContent);
 
         /*
         * Android thinks file:// schema insecure, so we use http:// here.
@@ -44,8 +54,9 @@ public class QuizFillInFlipperChild extends LinearLayout {
         questionWebView.loadDataWithBaseURL("http://test", data, "text/html", "utf-8", null);
     }
 
-    private String getNewContent() {
-        return "<p>`x = (-b +- sqrt(b^2-4ac))/(2a) .`</p>";
+    public void loadQuiz(QuizQuestion quizQuestion) {
+        if (quizQuestion.getType() == QuizQuestion.TYPE_FILLBLANKS) {
+            loadQuizHtml(((QuizFillBlankQuestion) quizQuestion).getQuizContent());
+        }
     }
-
 }
