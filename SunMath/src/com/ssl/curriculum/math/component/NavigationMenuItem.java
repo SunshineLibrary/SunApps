@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ssl.curriculum.math.R;
-import com.ssl.curriculum.math.activity.NaviActivity;
 import com.ssl.curriculum.math.listener.NextLevelMenuChangedListener;
 
 public class NavigationMenuItem extends FrameLayout {

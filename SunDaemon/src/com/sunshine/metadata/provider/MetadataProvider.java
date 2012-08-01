@@ -1,76 +1,33 @@
 package com.sunshine.metadata.provider;
 
 import android.content.ContentProvider;
-
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.provider.BaseColumns;
 import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.MetadataDBHandlerFactory;
 import com.sunshine.metadata.database.tables.*;
-import com.sunshine.support.storage.SharedStorageProvider;
+import com.sunshine.support.storage.SharedStorageManager;
 
 import java.io.FileNotFoundException;
 
 public class MetadataProvider extends ContentProvider {
 
-    /*
-      * Defining constants for matching the content URI
-      */
     private static final String AUTHORITY = MetadataContract.AUTHORITY;
 
-    private static final UriMatcher sUriMatcher = new UriMatcher(
-            UriMatcher.NO_MATCH);
-
-    private static final int PACKAGES = 1;
-    private static final int PACKAGES_ID = 2;
-    private static final int COURSES = 3;
-    private static final int CHAPTERS = 4;
-    private static final int LESSONS = 5;
-    private static final int SECTIONS = 6;
-    private static final int GALLERY = 7;
-    private static final int ACTIVITIES = 8;
-
-    static {
-        sUriMatcher.addURI(AUTHORITY, "packages", PACKAGES);
-        sUriMatcher.addURI(AUTHORITY, "packages/#", PACKAGES_ID);
-        sUriMatcher.addURI(AUTHORITY, "courses", COURSES);
-        sUriMatcher.addURI(AUTHORITY, "chapters", CHAPTERS);
-        sUriMatcher.addURI(AUTHORITY, "lessons", LESSONS);
-        sUriMatcher.addURI(AUTHORITY, "sections", SECTIONS);
-        sUriMatcher.addURI(AUTHORITY, "gallery", GALLERY);
-        sUriMatcher.addURI(AUTHORITY, "activities", ACTIVITIES);
-    }
-
-    /*
-      * Constants for handling MIME_TYPE
-      */
-    public static final String DIR_MIME_TYPE = "vnd.android.cursor.dir/vnd."
-            + AUTHORITY;
-    public static final String ITEM_MIME_TYPE = "vnd.android.cursor.item/vnd."
-            + AUTHORITY;
-
-    private static final String METADATA_MIME_TYPE = DIR_MIME_TYPE
-            + ".metadata";
-
-    private static final String METADATA_ID_MIME_TYPE = ITEM_MIME_TYPE
-            + ".metadata";
-
-    private static final String GALLERY_IMAGE_MIME_TYPE = DIR_MIME_TYPE
-            + ".image";
-
-    private static final String GALLERY_THUMBNAIL_MIME_TYPE = DIR_MIME_TYPE
-            + ".thumbnail";
-
+    private static final UriMatcher sUriMatcher = Matcher.Factory.getMatcher();
 
     private MetadataDBHandler dbHandler;
-    private SharedStorageProvider sharedStorageMananger;
+
+    private SharedStorageManager sharedStorageManager;
 
     @Override
     public boolean onCreate() {
-        dbHandler = new MetadataDBHandler(getContext());
-        sharedStorageMananger = new SharedStorageProvider(getContext());
+        dbHandler = MetadataDBHandlerFactory.newMetadataDBHandler(getContext());
+        sharedStorageManager = new SharedStorageManager(getContext());
         return true;
     }
 
@@ -78,31 +35,44 @@ public class MetadataProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         switch (sUriMatcher.match(uri)) {
-            case PACKAGES:
+            case Matcher.PACKAGES:
                 return dbHandler.getTableManager(PackageTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
-            case PACKAGES_ID:
-                return dbHandler.getTableManager(PackageTable.TABLE_NAME).query(
-                        uri, projection, MetadataContract.Packages._ID + " = ?",
-                        new String[]{uri.getLastPathSegment()}, sortOrder);
-            case COURSES:
+            case Matcher.COURSES:
                 return dbHandler.getTableManager(CourseTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
-            case CHAPTERS:
+            case Matcher.CHAPTERS:
                 return dbHandler.getTableManager(ChapterTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
-            case LESSONS:
+            case Matcher.LESSONS:
                 return dbHandler.getTableManager(LessonTable.TABLE_NAME).query(
-                        uri, projection, selection, selectionArgs, sortOrder);
-            case SECTIONS:
+                		uri, projection, selection, selectionArgs, sortOrder);
+            case Matcher.SECTIONS:
                 return dbHandler.getTableManager(SectionTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
-            case GALLERY:
-                return dbHandler.getTableManager(GalleryTable.TABLE_NAME).query(
-                        uri, projection, selection, selectionArgs, sortOrder);
-            case ACTIVITIES:
+            case Matcher.GALLERY_IMAGES:
+                return dbHandler.getTableManager(GalleryImageTable.TABLE_NAME).query(
+                		uri, projection, selection, selectionArgs, sortOrder);
+            case Matcher.ACTIVITIES:
                 return dbHandler.getTableManager(ActivityTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
+            case Matcher.ACTIVITIES_ID:
+                return dbHandler.getTableManager(ActivityTable.TABLE_NAME).query(
+                        uri, projection, BaseColumns._ID + "=?",
+                        new String[]{uri.getLastPathSegment()}, sortOrder);
+            case Matcher.BOOKS:
+                return dbHandler.getTableManager(BookTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
+            case Matcher.BOOK_COLLECTIONS:
+                return dbHandler.getTableManager(BookCollectionTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
+            case Matcher.BOOK_LISTS:
+                return dbHandler.getTableManager(BookListTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
+            case Matcher.PROBLEMS:
+                return dbHandler.getTableManager(ProblemTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
+
             default:
                 throw new IllegalArgumentException();
         }
@@ -111,33 +81,33 @@ public class MetadataProvider extends ContentProvider {
     @Override
     public String getType(Uri uri) {
         switch (sUriMatcher.match(uri)) {
-            case PACKAGES:
-                return METADATA_MIME_TYPE;
-            case PACKAGES_ID:
-                return METADATA_ID_MIME_TYPE;
-            case COURSES:
-                return METADATA_MIME_TYPE;
-            case CHAPTERS:
-                return METADATA_MIME_TYPE;
-            case LESSONS:
-                return METADATA_MIME_TYPE;
-            case SECTIONS:
-                return METADATA_MIME_TYPE;
-            case ACTIVITIES:
-            	return METADATA_MIME_TYPE;
+            case Matcher.PACKAGES:
+                return MimeType.METADATA_MIME_TYPE;
+            case Matcher.COURSES:
+                return MimeType.METADATA_MIME_TYPE;
+            case Matcher.CHAPTERS:
+                return MimeType.METADATA_MIME_TYPE;
+            case Matcher.LESSONS:
+                return MimeType.METADATA_MIME_TYPE;
+            case Matcher.SECTIONS:
+                return MimeType.METADATA_MIME_TYPE;
+            case Matcher.GALLERY_IMAGES:
+                return MimeType.GALLERY_IMAGES_MIME_TYPE;
+            case Matcher.PROBLEMS:
+                            return MimeType.METADATA_MIME_TYPE;
             default:
-                return sharedStorageMananger.getType(uri);
+                return sharedStorageManager.getType(uri);
         }
     }
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         switch (sUriMatcher.match(uri)) {
-            case PACKAGES:
-                return dbHandler.getTableManager(PackageTable.TABLE_NAME).insert(
+            case Matcher.GALLERY_IMAGES:
+                return dbHandler.getTableManager(GalleryImageTable.TABLE_NAME).insert(
                         uri, values);
-            case GALLERY:
-                return dbHandler.getTableManager(GalleryTable.TABLE_NAME).insert(
+            case Matcher.ACTIVITIES:
+                return dbHandler.getTableManager(ActivityTable.TABLE_NAME).insert(
                         uri, values);
             default:
                 throw new IllegalArgumentException();
@@ -147,12 +117,6 @@ public class MetadataProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         switch (sUriMatcher.match(uri)) {
-            case PACKAGES:
-                return dbHandler.getTableManager(PackageTable.TABLE_NAME).delete(
-                        uri, selection, selectionArgs);
-            case PACKAGES_ID:
-                return dbHandler.getTableManager(PackageTable.TABLE_NAME).delete(
-                        uri, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException();
         }
@@ -162,22 +126,27 @@ public class MetadataProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
         switch (sUriMatcher.match(uri)) {
-            case PACKAGES:
-                return dbHandler.getTableManager(PackageTable.TABLE_NAME).update(
+            case Matcher.ACTIVITIES_ID:
+                selection = MetadataContract.Activities._ID + " = ?";
+                selectionArgs = new String[] {uri.getLastPathSegment()};
+            case Matcher.ACTIVITIES:
+                return dbHandler.getTableManager(ActivityTable.TABLE_NAME).update(
                         uri, values, selection, selectionArgs);
-            case PACKAGES_ID:
-                return dbHandler.getTableManager(PackageTable.TABLE_NAME).update(
-                        uri, values, MetadataContract.Packages._ID + "=?",
-                        new String[]{uri.getLastPathSegment()});
+            case Matcher.GALLERY_IMAGES_ID:
+                selection = MetadataContract.GalleryImages._ID + " = ?";
+                selectionArgs = new String[] {uri.getLastPathSegment()};
+            case Matcher.GALLERY_IMAGES:
+                return dbHandler.getTableManager(GalleryImageTable.TABLE_NAME).update(
+                        uri, values, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException();
         }
     }
 
-
     @Override
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
-        return sharedStorageMananger.openFile(uri, mode);
+        return sharedStorageManager.openFile(uri, mode);
     }
+
 
 }

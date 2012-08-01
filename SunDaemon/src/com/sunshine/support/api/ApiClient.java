@@ -19,16 +19,11 @@ public class ApiClient {
     private static final String HOST = "ssl-mock.herokuapp.com";
 
 
-	private static final Map<String, String> apiMap;
+    private static final Map<String, String> apiMap;
 
     static {
         ROOT_URI = new Uri.Builder().scheme("http").authority(HOST).build();
         apiMap = new HashMap<String, String>();
-        apiMap.put(CourseTable.TABLE_NAME, "courses.json");
-        apiMap.put(ChapterTable.TABLE_NAME, "chapters.json");
-        apiMap.put(LessonTable.TABLE_NAME, "lessons.json");
-        apiMap.put(SectionTable.TABLE_NAME, "sections.json");
-        apiMap.put(ActivityTable.TABLE_NAME, "activities.json");
     }
 
     public static synchronized ThreadSafeClientConnManager getConnManager() {
@@ -51,6 +46,21 @@ public class ApiClient {
     }
 
     private static String getApiPath(String tableName) {
-        return apiMap.get(tableName);
+        String name = apiMap.get(tableName);
+        return (name != null) ? name : tableName + ".json";
+    }
+
+    public static Uri getRootUri() {
+        return ROOT_URI;
+    }
+
+    public static Uri getDownloadUri(String type, long id) {
+        return ROOT_URI.buildUpon().appendPath("download")
+                .appendQueryParameter("type", type).appendQueryParameter("id", String.valueOf(id)).build();
+    }
+
+    public static Uri getThumbnailUri(String type, int id) {
+        return ROOT_URI.buildUpon().appendPath("thumbnail")
+                .appendQueryParameter("type", type).appendQueryParameter("id", String.valueOf(id)).build();
     }
 }

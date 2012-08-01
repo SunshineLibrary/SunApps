@@ -8,36 +8,65 @@ public final class MetadataContract {
     public static final String AUTHORITY = "com.sunshine.metadata.provider";
 
     public static final Uri AUTHORITY_URI = new Uri.Builder().scheme("content")
-            .authority(AUTHORITY).build();
-    
+        .authority(AUTHORITY).build();
+
     public static final class Edges {
-    	public static final String _ID = BaseColumns._ID;
-    	public static final String _FROM_ID = "from_id";
-    	public static final String _TO_ID = "to_id";
-    	public static final String _CONDITION = "conditoin";
-    	public static final String _SECTION_ID ="section_id";
-    }
-    
-    public static final class Problems {
-    	public static final String _ID = BaseColumns._ID;
-    	public static final String _BODY = "body";
-    	public static final String _TIPE = "tipe";
-    	public static final String _ANSWER = "answer";
-    }
-    
-    public static final class ProblemChoices {
-    	public static final String _ID = BaseColumns._ID;
-    	public static final String _CHOICE = "choice";
-    	public static final String _BODY = "body";
+        public static final String _ID = BaseColumns._ID;
+        public static final String _FROM_ID = "from_id";
+        public static final String _TO_ID = "to_id";
+        public static final String _CONDITION = "condition";
+        public static final String _SECTION_ID ="section_id";
+        
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("edges").build();
     }
 
-    public static final class Gallery {
+    public static final class Problems {
         public static final String _ID = BaseColumns._ID;
+        public static final String _BODY = "body";
+        public static final String _TYPE = "problem_type";
+        public static final String _ANSWER = "answer";
+        public static final String _PARENT_ID = "quiz_activity_id";
+        
+        public static final int TYPE_FILLBLANK = 1;
+        public static final int TYPE_MULTICHOICE = 0;
+        
+        public static int getInternalType(String type){
+        	return 0;
+        }
+        
+        
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problems").build();
+    }
+
+    public static final class ProblemChoices {
+        public static final String _ID = BaseColumns._ID;
+        public static final String _CHOICE = "choice";
+        public static final String _BODY = "body";
+        public static final String _PARENT_ID = "problem_id";
+        
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problem_choices").build();
+    }
+    
+    /*
+     * Please use English comments only!
+     */
+    public static final class GalleryImages extends Downloadable{
+        public static final String _ID = BaseColumns._ID;
+        public static final String _GALLERY_ID = "gallery_id";
         public static final String _THUMBNAIL_PATH = "thumbnail";
         public static final String _IMAGE_PATH = "image";
         public static final String _DESCRIPTION = "description";
 
-        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("gallery").build();
+        public static final Uri CONTENT_URI = Activities.CONTENT_URI.buildUpon().
+                appendPath("gallery").appendPath("images").build();
+
+        public static Uri getGalleryImageUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
+        }
+
+        public static Uri getGalleryImageThumbnailUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath("thumbnail").appendPath(String.valueOf(id)).build();
+        }
     }
 
     public static final class Courses {
@@ -68,7 +97,6 @@ public final class MetadataContract {
         public static final String _PARENT_ID = "lesson_id";
         public static final String _NAME = "name";
         public static final String _DESCRIPTION = "description";
-        
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("sections").build();
     }
 
@@ -83,30 +111,47 @@ public final class MetadataContract {
         public static final String _NOTES = "notes";
         public static final String _DIFFICULTY = "difficulty";
 
-        public static enum Types {
-            TEXT,
-            AUDIO,
-            VIDEO,
-            GALLERY,
-            QUIZ,
-            HTML
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("activities").build();
+
+        public static final int TYPE_TEXT = 0;
+        public static final int TYPE_AUDIO = 1;
+        public static final int TYPE_VIDEO = 2;
+        public static final int TYPE_GALLERY = 3;
+        public static final int TYPE_QUIZ = 4;
+        public static final int TYPE_HTML = 5;
+
+        public static Uri getActivityVideoUri(long id) {
+            return CONTENT_URI.buildUpon().appendPath("video").appendPath(String.valueOf(id)).build();
         }
-        
-        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("activities").build(); 
+
+        public static Uri getActivityThumbnailUri(long id) {
+            return CONTENT_URI.buildUpon().appendPath("thumbnail").appendPath(String.valueOf(id)).build();
+        }
+
+        public static Uri getActivityUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
+        }
+
+
     }
 
+
+    /*
+     * English comments only
+     */
     public static final class BookCollections {
 
         public static final String _ID = BaseColumns._ID;
-        public static final String _NAME = "";
-        public static final String _AUTHOR = "";
-        public static final String _DESCRIPTION = "";
-        public static final String _PUBLISHER = "";
-
+        public static final String _NAME = "name";
+        public static final String _AUTHOR = "author";
+        public static final String _DESCRIPTION = "description";
+        public static final String _PUBLISHER = "publisher";
+        public static final String _COVER = "cover";
         public static final Uri CONTENT_URI;
 
-        public static Uri getTags(String bookId) {
+        public static Uri getTags(String collectionId) {
             // content://AUTHORITY/book_collections/#book_collection_id/tags
+
             throw new UnsupportedOperationException();
         }
 
@@ -173,9 +218,19 @@ public final class MetadataContract {
     public static final class BookLists {
 
         public static final String _ID = BaseColumns._ID;
+        public static final String _NAME = "name";
+        public static final String _INTRO = "intro";
+        public static final String _AUTHOR = "author";
+
         public static final Uri CONTENT_URI;
 
-        public static Uri getBookCollections(String collectionId) {
+        public static Uri getTags(String listId) {
+            // content://AUTHORITY/book_lists/#book_list_id/tags
+
+            throw new UnsupportedOperationException();
+        }
+
+        public static Uri getBookCollections(String listId) {
             // content://AUTHORITY/book_lists/#book_list_id/book_collections
             throw new UnsupportedOperationException();
         }
@@ -192,7 +247,15 @@ public final class MetadataContract {
         public static final String _AUTHOR = "author";
         public static final String _DESCRIPTION = "description";
         public static final String _PROGRESS = "progress";
+        public static final String _COVER = "cover";
+        public static final String _TAGS = "tags";
         public static final Uri CONTENT_URI;
+
+        public static Uri getTags(String bookId) {
+            // content://AUTHORITY/books/#book_id/tags
+
+            throw new UnsupportedOperationException();
+        }
 
         static {
             CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("books").build();
@@ -229,11 +292,19 @@ public final class MetadataContract {
         }
     }
 
+    public static final class BookTag {
+
+    	public static final String _ID = BaseColumns._ID;
+    	public static final String _BOOKID = "book_id";
+    	public static final String _TAGID = "tag_id";
+
+    }
+
     public static final class Tags {
 
         public static final String _ID = BaseColumns._ID;
-        public static final String _NAME = "";
-        public static final String _TYPE = "";
+        public static final String _NAME = "name";
+        public static final String _TYPE = "tag_type";
 
         public static enum TYPE {
             THEME, DIFFICULTY
@@ -269,7 +340,7 @@ public final class MetadataContract {
 
         static {
             CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("packages")
-                    .build();
+                .build();
         }
     }
 

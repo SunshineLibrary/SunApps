@@ -3,7 +3,6 @@ package com.ssl.curriculum.math.activity;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -14,12 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.HorizontalListView;
 import com.ssl.curriculum.math.component.NavigationListView;
-import com.ssl.curriculum.math.component.NavigationMenuItem;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
 import com.sunshine.metadata.provider.MetadataContract.Sections;
 import com.ssl.curriculum.math.presenter.NavigationMenuPresenter;
@@ -49,11 +46,6 @@ public class NaviActivity extends Activity {
 		menuPresenter.loadMenuData();
 		something();
 	}
-	//public static void any(ListView anylistview,int index){
-		//anylistview.setBackgroundResource(R.drawable.bigbtn_hover);
-		
-	
-	//}
 
 	public static void loadRightData(Context context, ListView someListView, int position) {
 	    ContentResolver contentResolver = context.getContentResolver();
@@ -89,33 +81,6 @@ public class NaviActivity extends Activity {
 		});
 
 	}
-
-	/*
-	 * private static String[] dataObjects = new String[] { "Text #1",
-	 * "Text #2", "Text #3", "Text #4", "Text #5", "Text #6", "Text #7",
-	 * "Text #8", "Text #9" };
-	 * 
-	 * 
-	 * {
-	 * 
-	 * public int getCount() { return MZ.length; }
-	 * 
-	 * public Object getItem(int position) { return null; }
-	 * 
-	 * public long getItemId(int position) { return 0; }
-	 * 
-	 * public View getView(int position, View convertView, ViewGroup parent) {
-	 * View retval =
-	 * LayoutInflater.from(parent.getContext()).inflate(R.layout.viewitem,
-	 * null);
-	 * 
-	 * TextView title = (TextView) retval.findViewById(R.id.title);
-	 * title.setText(dataObjects[position]);
-	 * 
-	 * return retval; }
-	 * 
-	 * };
-	 */
 
 	private void initUI() {
 		setContentView(R.layout.navigation_layout);

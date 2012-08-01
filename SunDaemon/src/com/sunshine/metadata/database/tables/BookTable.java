@@ -16,7 +16,7 @@ public class BookTable extends DownloadableTable {
 		Books._TITLE,
 		Books._DESCRIPTION,
 		Books._AUTHOR,
-		Books._PROGRESS
+		Books._PROGRESS,
 	};
 	
 	public static final String[][] COLUMN_DEFINITIONS = {
@@ -24,25 +24,10 @@ public class BookTable extends DownloadableTable {
 		{Books._TITLE, "TEXT"},
 		{Books._DESCRIPTION, "TEXT"},
 		{Books._AUTHOR, "TEXT"},
-		{Books._PROGRESS, "INTEGER"}
+		{Books._PROGRESS, "INTEGER"},
 	};
 
 	public BookTable(MetadataDBHandler db) {
-		super(db);
-	}
-
-	@Override
-	public String getTableName() {
-		return TABLE_NAME;
-	}
-
-	@Override
-	public String[][] getColumnDefinitions() {
-		return COLUMN_DEFINITIONS;
-	}
-
-	@Override
-	public String[] getColumns() {
-		return ALL_COLUMNS;
+		super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
 	}
 }

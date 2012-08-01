@@ -3,7 +3,7 @@ package com.sunshine.metadata.database.tables;
 import android.provider.BaseColumns;
 import com.sunshine.metadata.database.MetadataDBHandler;
 
-public class FileStorageTable extends Table {
+public class FileStorageTable extends AbstractTable {
 
     public static final String TABLE_NAME = "files";
 
@@ -29,21 +29,6 @@ public class FileStorageTable extends Table {
     };
 
     public FileStorageTable(MetadataDBHandler handler) {
-        super(handler);
-    }
-
-    @Override
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    @Override
-    public String[][] getColumnDefinitions() {
-        return COLUMN_DEFINITIONS;
-    }
-
-    @Override
-    public String[] getColumns() {
-        return ALL_COLUMNS;
+        super(handler, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
     }
 }

@@ -48,7 +48,7 @@
               command="package"
               verbose="false"
               manifest="AndroidManifest.xml"
-              androidjar="${sdk.dir}/platforms/android-14/android.jar"
+              androidjar="${sdk.dir}/platforms/android-8/android.jar"
               rfolder="gen"
               libraryResFolderPathRefid=""
               libraryPackagesRefid=""
@@ -60,7 +60,13 @@
         </copy>
     </target>
 
-    <target name="compile" depends="clean, init, generate-R">
+    <target name="load_library_src">
+        <copy todir="${classes.dir}">
+            <fileset dir="../SunAPI/src"/>
+        </copy>
+    </target>
+
+    <target name="compile" depends="clean, init, load_library_src, generate-R">
         <javac encoding="${java_encoding}" srcdir="${classes.dir}" destdir="${classes.dir}" debug="yes">
             <classpath refid="test.classpath"/>
         </javac>
@@ -88,7 +94,7 @@
             <arg value="am"/>
             <arg value="start"/>
             <arg value="-n"/>
-            <arg value="com.ssl.curriculum.math/com.ssl.curriculum.math.activity.MyActivity"/>
+            <arg value="com.ssl.curriculum.math/com.ssl.curriculum.math.activity.MainActivity"/>
         </exec>
     </target>
 

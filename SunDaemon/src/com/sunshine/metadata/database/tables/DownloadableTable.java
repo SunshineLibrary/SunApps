@@ -1,10 +1,9 @@
 package com.sunshine.metadata.database.tables;
 
-import android.database.sqlite.SQLiteDatabase;
 import com.sunshine.metadata.database.MetadataDBHandler;
 import com.sunshine.metadata.provider.MetadataContract.Downloadable;
 
-public abstract class DownloadableTable extends Table {
+public abstract class DownloadableTable extends AbstractTable {
     /**
      * TableManager requires a handle on the DatabaseHandler in order to access
      * the database.
@@ -17,8 +16,11 @@ public abstract class DownloadableTable extends Table {
             Downloadable._DOWNLOAD_STATUS,
     };
 
-    public DownloadableTable(MetadataDBHandler handler) {
-        super(handler);
+    public DownloadableTable(MetadataDBHandler handler,
+                             String tableName,
+                             String[][] columnDefinitions,
+                             String[] columns) {
+        super(handler, tableName, columnDefinitions, columns);
     }
 
     @Override

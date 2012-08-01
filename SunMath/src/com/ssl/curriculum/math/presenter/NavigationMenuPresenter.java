@@ -1,9 +1,6 @@
 package com.ssl.curriculum.math.presenter;
 
 import com.ssl.curriculum.math.activity.NaviActivity;
-
-import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -84,7 +81,6 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener{
 			test_linear.setVisibility(View.VISIBLE);
 			navigationListView.activateMenuItem(index);
 			NaviActivity.loadRightData(context,desListView, index);
-			//NaviActivity.any(desListView,index);
 			mztext.setText(item.getName());
 			return;
 		}

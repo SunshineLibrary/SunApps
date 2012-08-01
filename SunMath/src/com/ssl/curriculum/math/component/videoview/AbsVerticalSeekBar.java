@@ -1,5 +1,7 @@
 package com.ssl.curriculum.math.component.videoview;
 
+import com.ssl.curriculum.math.R;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -8,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import com.ssl.curriculum.math.R;
 
 public class AbsVerticalSeekBar extends VerticalProgressBar{
 

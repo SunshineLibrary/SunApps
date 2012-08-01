@@ -12,19 +12,19 @@ public class SectionTable extends MenuWithForeignKeyTable {
     private static final String[] ALL_COLUMNS = {
             Sections._ID,
             Sections._NAME,
+            Sections._PARENT_ID,
             Sections._DESCRIPTION,
-            Sections._PARENT_ID
     };
 
     private static final String[][] COLUMN_DEFINITIONS = {
             {Sections._ID, "INTEGER PRIMARY KEY"},
             {Sections._NAME, "TEXT"},
+            {Sections._PARENT_ID, "INTEGER NOT NULL"},
             {Sections._DESCRIPTION, "TEXT"},
-            {Sections._PARENT_ID, "INTEGER NOT NULL"}
     };
 
     public SectionTable(MetadataDBHandler handler) {
-        super(handler);
+        super(handler, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
     }
 
     @Override
@@ -35,21 +35,6 @@ public class SectionTable extends MenuWithForeignKeyTable {
     @Override
     protected String getParentTableName() {
         return LessonTable.TABLE_NAME;
-    }
-
-    @Override
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    @Override
-    public String[][] getColumnDefinitions() {
-        return COLUMN_DEFINITIONS;
-    }
-
-    @Override
-    public String[] getColumns() {
-        return ALL_COLUMNS;
     }
 
 	@Override

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginTop="5dp"
+    android:background="@color/chrome_background"
+    android:minHeight="@dimen/grid_height_list"
+    android:orientation="vertical"
+    android:paddingBottom="5dp" >
+
+    <RelativeLayout                                    
+        android:id="@+id/relativeLayout2"                         
+        android:layout_width="fill_parent"
+        android:layout_height="31dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/chrome"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/list_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/text"
+            android:textSize="@dimen/grid_text_med" />
+
+        <TextView
+            android:id="@+id/list_tags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/text"
+            android:textSize="@dimen/grid_text_small" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/lable_builder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/relativeLayout2"
+        android:layout_below="@+id/relativeLayout2"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="@dimen/grid_text_small"
+        android:textColor="@color/text_dark"
+        android:text="@string/grid_list_builder" />
+
+    <TextView
+        android:id="@+id/list_builder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lable_builder"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/lable_builder"
+        android:textSize="@dimen/grid_text_small"
+        android:textColor="@color/chrome"
+        />
+
+    <TextView
+        android:id="@+id/lable_count1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lable_builder"
+        android:layout_marginLeft="80dp"
+        android:layout_toRightOf="@+id/lable_builder"
+        android:textSize="@dimen/grid_text_small"
+        android:textColor="@color/text_dark"
+        android:text="@string/grid_list_count1" />
+
+    <TextView
+        android:id="@+id/list_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lable_count1"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/lable_count1"
+        android:textSize="@dimen/grid_text_small"
+        android:textColor="@color/chrome"
+        />
+
+    <TextView
+        android:id="@+id/lable_count2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/list_count"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/list_count"
+        android:textSize="@dimen/grid_text_small"
+        android:textColor="@color/text_dark"
+        android:text="@string/grid_list_count2" />
+
+    <TextView
+        android:id="@+id/lable_intro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lable_builder"
+        android:layout_below="@+id/lable_builder"
+        android:layout_marginTop="10dp"
+        android:textSize="@dimen/grid_text_small"
+        android:textColor="@color/text_dark"
+        android:text="@string/grid_list_intro" />
+
+    <TextView
+        android:id="@+id/list_intro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lable_intro"
+        android:layout_below="@+id/lable_intro"
+        android:textSize="@dimen/grid_text_small"
+        android:lines="2"
+        android:textColor="@color/text_dark"
+        />
+    
+</RelativeLayout>

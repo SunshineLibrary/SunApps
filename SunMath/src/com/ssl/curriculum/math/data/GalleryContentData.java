@@ -30,6 +30,10 @@ public class GalleryContentData {
 
     private void notifyGalleryContentChanged() {
         for (GalleryContentChangedListener galleryContentChangedListener : galleryContentChangedListeners) {
+            if (galleryContentChangedListener == null) {
+                galleryContentChangedListeners.remove(galleryContentChangedListener);
+                continue;
+            }
             galleryContentChangedListener.onContentChanged(galleryItems);
         }
     }
