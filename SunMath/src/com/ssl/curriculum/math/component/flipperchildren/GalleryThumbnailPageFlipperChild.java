@@ -10,17 +10,15 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.ssl.curriculum.math.R;
-import com.ssl.curriculum.math.adapter.GalleryAdapter;
+import com.ssl.curriculum.math.adapter.GalleryGridAdapter;
 import com.ssl.curriculum.math.data.GalleryContentData;
-import com.ssl.curriculum.math.listener.GalleryContentChangedListener;
+import com.ssl.curriculum.math.data.GalleryContentManager;
+import com.ssl.curriculum.math.listener.GalleryContentFetchedListener;
 import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
-import com.ssl.curriculum.math.model.GalleryItem;
 
-import java.util.List;
-
-public class GalleryThumbnailPageFlipperChild extends LinearLayout implements GalleryContentChangedListener {
+public class GalleryThumbnailPageFlipperChild extends LinearLayout implements GalleryContentFetchedListener {
     private GridView gridview;
-    private GalleryAdapter adapter;
+    private GalleryGridAdapter gridAdapter;
     private TextView title;
     private GalleryItemClickedListener galleryItemClickedListener;
 
@@ -47,17 +45,27 @@ public class GalleryThumbnailPageFlipperChild extends LinearLayout implements Ga
     }
 
     private void initAdapter() {
-        adapter = new GalleryAdapter(getContext());
-        gridview.setAdapter(adapter);
+        gridAdapter = new GalleryGridAdapter(getContext());
+        gridview.setAdapter(gridAdapter);
+        fetchGalleryContent();
+    }
+
+    private void fetchGalleryContent() {
+        if (GalleryContentManager.getInstance().isDataFetched()) {
+            gridAdapter.setGalleryData(GalleryContentManager.getInstance().getGalleryContent());
+            return;
+        }
+        GalleryContentManager.getInstance().registerGalleyContentChangedListener(this);
     }
 
     private void initListener() {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                gridAdapter.setSelectedPosition(position);
             }
         });
-        GalleryContentData.getInstance().registerGalleyContentChangedListener(this);
+
         title.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,10 +77,10 @@ public class GalleryThumbnailPageFlipperChild extends LinearLayout implements Ga
     }
 
     @Override
-    public void onContentChanged(List<GalleryItem> galleryItems) {
-        adapter.setGalleryData(galleryItems);
+    public void onGalleryContentFetched(GalleryContentData galleryContentData) {
+        gridAdapter.setGalleryData(galleryContentData);
+        GalleryContentManager.getInstance().removeOnGalleryFetchedListener(this);
     }
-
 
     public void setGalleryItemClickedListener(GalleryItemClickedListener galleryItemClickedListener) {
         this.galleryItemClickedListener = galleryItemClickedListener;

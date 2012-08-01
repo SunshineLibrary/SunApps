@@ -6,24 +6,28 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.listener.GalleySlideListener;
 
 public class GalleryPanoramicView extends RelativeLayout implements GalleySlideListener {
     private static final int FLIPPING_DISTANCE = 120;
-    private ViewFlipper panoramicViewerFlipper;
+    private GalleryPanoramicFlipper panoramicViewerFlipper;
     private FlipAnimationManager flipAnimationManager;
     private GalleryFloatingPanel galleryFloatingPanel;
 
     public GalleryPanoramicView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initUI();
-        initFlipData();
+//        initFlipView();
+        initListener();
     }
 
-    private void initFlipData() {
+    private void initListener() {
+        panoramicViewerFlipper.setSlideListener(this);
+    }
+
+    private void initFlipView() {
         GalleryPanoramicItem item01 = new GalleryPanoramicItem(getContext());
         item01.setGallerySlideListener(this);
         item01.setItemImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.image02));
@@ -41,7 +45,7 @@ public class GalleryPanoramicView extends RelativeLayout implements GalleySlideL
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.gallery_panoramic_page, this, false);
         addView(viewGroup);
-        panoramicViewerFlipper = (ViewFlipper) findViewById(R.id.gallery_panoramic_flipper);
+        panoramicViewerFlipper = (GalleryPanoramicFlipper) findViewById(R.id.gallery_panoramic_flipper);
         galleryFloatingPanel = (GalleryFloatingPanel) findViewById(R.id.gallery_panoramic_panel);
     }
 

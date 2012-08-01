@@ -9,24 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import com.ssl.curriculum.math.model.GalleryItem;
+import com.ssl.curriculum.math.data.GalleryContentData;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class GalleryAdapter extends BaseAdapter {
+public class GalleryGridAdapter extends BaseAdapter {
     private Context context;
-    private List<GalleryItem> galleryItemList;
+    private GalleryContentData galleryContentData;
 
-    public GalleryAdapter(Context context) {
+    public GalleryGridAdapter(Context context) {
         this.context = context;
-        galleryItemList = new ArrayList<GalleryItem>();
     }
 
     public int getCount() {
-        return galleryItemList.size();
+        return galleryContentData.getCount();
     }
 
     public Object getItem(int position) {
@@ -38,10 +35,14 @@ public class GalleryAdapter extends BaseAdapter {
     }
 
     public View getView(int position, View view, ViewGroup viewGroup) {
-        ImageView imageView = (ImageView) view;
+        ImageView imageView = null;
         try {
-            if (imageView != null) updateImageView(imageView, position);
-            else imageView = createNewImageView(position);
+            if (view == null) {
+                imageView = createNewImageView(position);
+            } else {
+                imageView = (ImageView) view;
+                updateImageView(imageView, position);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,7 +50,7 @@ public class GalleryAdapter extends BaseAdapter {
     }
 
     private void updateImageView(ImageView imageView, int position) throws FileNotFoundException {
-        ParcelFileDescriptor pfdInput = context.getContentResolver().openFileDescriptor(Uri.parse(galleryItemList.get(position).getThumbnailUri()), "r");
+        ParcelFileDescriptor pfdInput = context.getContentResolver().openFileDescriptor(Uri.parse(galleryContentData.getGalleryImage(position).getThumbnailUri()), "r");
         if (pfdInput == null) return;
         Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null);
         imageView.setImageBitmap(bitmap);
@@ -57,7 +58,7 @@ public class GalleryAdapter extends BaseAdapter {
 
     private ImageView createNewImageView(int position) throws IOException {
         ImageView imageView = new ImageView(context);
-        ParcelFileDescriptor pfdInput = context.getContentResolver().openFileDescriptor(Uri.parse(galleryItemList.get(position).getThumbnailUri()), "r");
+        ParcelFileDescriptor pfdInput = context.getContentResolver().openFileDescriptor(Uri.parse(galleryContentData.getGalleryImage(position).getThumbnailUri()), "r");
         if (pfdInput == null) return imageView;
         Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null);
         imageView.setImageBitmap(bitmap);
@@ -65,8 +66,11 @@ public class GalleryAdapter extends BaseAdapter {
         return imageView;
     }
 
-    public void setGalleryData(List<GalleryItem> galleryItemList) {
-        this.galleryItemList = galleryItemList;
-        notifyDataSetChanged();
+    public void setGalleryData(GalleryContentData galleryContentData) {
+        this.galleryContentData = galleryContentData;
+    }
+
+    public void setSelectedPosition(int position) {
+        galleryContentData.setSelectedPosition(position);
     }
 }
