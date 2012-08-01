@@ -6,7 +6,6 @@ import com.sunshine.metadata.provider.MetadataContract.Activities;
 import com.ssl.curriculum.math.model.activity.quiz.*;
 
 public class QuizActivityData extends ActivityData {
-	private int type = -1;
 	private ArrayList<QuizQuestion> questions = new ArrayList<QuizQuestion>();
 	
 	public QuizActivityData() {
@@ -19,10 +18,6 @@ public class QuizActivityData extends ActivityData {
 	
 	public void initQuizMetadata(ArrayList<QuizQuestion> quizQuestionsList){
 		this.questions = quizQuestionsList;
-	}
-	
-	public int getQuizType(){
-		return this.type;
 	}
 	
 	public int size(){

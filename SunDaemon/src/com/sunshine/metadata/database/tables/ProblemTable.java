@@ -11,7 +11,8 @@ public class ProblemTable extends DownloadableTable {
             Problems._BODY,
             Problems._TYPE,
             Problems._TITLE,
-            Problems._ANSWER
+            Problems._ANSWER,
+            Problems._PARENT_ID
     };
 
     public static final String[][] COLUMN_DEFINITIONS = {
@@ -19,7 +20,8 @@ public class ProblemTable extends DownloadableTable {
             {Problems._BODY, "TEXT"},
             {Problems._TYPE, "TEXT"},
             {Problems._TITLE, "TEXT"},
-            {Problems._ANSWER, "TEXT"}
+            {Problems._ANSWER, "TEXT"},
+            {Problems._PARENT_ID,"INTEGER"}
     };
 
     public ProblemTable(MetadataDBHandler db) {

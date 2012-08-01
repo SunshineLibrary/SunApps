@@ -8,25 +8,29 @@ public class QuizMultichoiceQuestion extends QuizQuestion {
 	
 	private class Choice{
 		public String source = "";
+		public String name = "";
 		public int mode = 0;
-		public Choice(String source, int mode){
+		public Choice(String source, String name, int mode){
 			this.source = source;
 			this.mode = mode;
+			this.name = name;
 		}
 	}
 	private String source = "";
+	private String title = "";
 	private ArrayList<Choice> choices = new ArrayList<Choice>();
 	
 	public QuizMultichoiceQuestion() {
 		super(QuizQuestion.TYPE_MULTICHOICE);
 	}
 	
-	public void initQuestion(String source){
+	public void initQuestion(String title, String source){
 		this.source = source;
+		this.title = title;
 	}
 	
-	public void addChoice(String choice, int mode){
-		choices.add(new Choice(choice, mode));
+	public void addChoice(String choice, String name, int mode){
+		choices.add(new Choice(choice, name, mode));
 	}
 	
 	public boolean isCorrect(int selection){
@@ -41,6 +45,10 @@ public class QuizMultichoiceQuestion extends QuizQuestion {
 	
 	public String getQuestionHtml(){
 		return this.source;
+	}
+	
+	public String getTitle(){
+		return this.title;
 	}
 	
 	public int size(){
