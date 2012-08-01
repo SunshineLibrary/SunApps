@@ -25,7 +25,6 @@ public final class MetadataContract {
         public static final String _BODY = "body";
         public static final String _TYPE = "problem_type";
         public static final String _ANSWER = "answer";
-        public static final String _TITLE = "title";
         public static final String _PARENT_ID = "quiz_activity_id";
         
         public static final int TYPE_FILLBLANK = 1;

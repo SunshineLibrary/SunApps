@@ -36,21 +36,20 @@ public class QuizQuestionsProvider {
     }
     
     public void loadQuizQuestions(QuizActivityData quizData) {
-        final String[] columns = new String[]{MetadataContract.Problems._ID, MetadataContract.Problems._TYPE , MetadataContract.Problems._TITLE , MetadataContract.Problems._BODY, MetadataContract.Problems._ANSWER};
+        final String[] columns = new String[]{MetadataContract.Problems._ID, MetadataContract.Problems._TYPE, MetadataContract.Problems._BODY, MetadataContract.Problems._ANSWER};
         Cursor cursor = contentResolver.query(MetadataContract.Problems.CONTENT_URI, columns,  Problems._PARENT_ID + " = " + quizData.getUniqueId(), null, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
             	int idIndex = cursor.getColumnIndex(MetadataContract.Problems._ID);
                 int bodyIndex = cursor.getColumnIndex(MetadataContract.Problems._BODY);
                 int answerIndex = cursor.getColumnIndex(MetadataContract.Problems._ANSWER);
-                int titleIndex = cursor.getColumnIndex(MetadataContract.Problems._TITLE);
                 int typeIndex = cursor.getColumnIndex(MetadataContract.Problems._TYPE);
                 
                 QuizQuestion question = null;
                 if(Problems.getInternalType(cursor.getString(typeIndex)) == Problems.TYPE_FILLBLANK){
-                	question = createFillBlankQuestion(cursor.getInt(idIndex), cursor.getString(titleIndex), cursor.getString(bodyIndex), cursor.getString(answerIndex));
+                	question = createFillBlankQuestion(cursor.getInt(idIndex), cursor.getString(bodyIndex), cursor.getString(answerIndex));
                 }else if(Problems.getInternalType(cursor.getString(typeIndex)) == Problems.TYPE_MULTICHOICE){
-                	question = createMultichoiceQuestion(cursor.getInt(idIndex), cursor.getString(titleIndex), cursor.getString(bodyIndex));
+                	question = createMultichoiceQuestion(cursor.getInt(idIndex),cursor.getString(bodyIndex));
                 	loadQuestionChoices( (QuizMultichoiceQuestion)question , cursor.getString(answerIndex));
                 }
                 if (question != null) {
@@ -60,18 +59,17 @@ public class QuizQuestionsProvider {
         }
     }
 
-    private QuizFillBlankQuestion createFillBlankQuestion(int id, String title, String body, String answer) {
+    private QuizFillBlankQuestion createFillBlankQuestion(int id, String body, String answer) {
         QuizFillBlankQuestion question = new QuizFillBlankQuestion();
         question.setUniqueId(id);
         question.setAnswer(answer);
         question.setQuizContent(body);
-        question.setTitle(title);
         return question;
     }
     
-    private QuizMultichoiceQuestion createMultichoiceQuestion(int id, String title, String body){
+    private QuizMultichoiceQuestion createMultichoiceQuestion(int id, String body){
     	QuizMultichoiceQuestion question = new QuizMultichoiceQuestion();
-    	question.initQuestion(title, body);
+    	question.initQuestion(body);
     	question.setUniqueId(id);
     	return question;
     }

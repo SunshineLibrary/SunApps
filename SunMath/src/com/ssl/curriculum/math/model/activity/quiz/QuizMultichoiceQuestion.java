@@ -17,16 +17,14 @@ public class QuizMultichoiceQuestion extends QuizQuestion {
 		}
 	}
 	private String source = "";
-	private String title = "";
 	private ArrayList<Choice> choices = new ArrayList<Choice>();
 	
 	public QuizMultichoiceQuestion() {
 		super(QuizQuestion.TYPE_MULTICHOICE);
 	}
 	
-	public void initQuestion(String title, String source){
+	public void initQuestion(String source){
 		this.source = source;
-		this.title = title;
 	}
 	
 	public void addChoice(String choice, String name, int mode){
@@ -43,12 +41,12 @@ public class QuizMultichoiceQuestion extends QuizQuestion {
 		return choices.get(id).source;
 	}
 	
-	public String getQuestionHtml(){
-		return this.source;
+	public String getChoiceName(int id){
+		return choices.get(id).name;
 	}
 	
-	public String getTitle(){
-		return this.title;
+	public String getQuestionHtml(){
+		return this.source;
 	}
 	
 	public int size(){
