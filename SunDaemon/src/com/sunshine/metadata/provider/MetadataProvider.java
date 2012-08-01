@@ -14,9 +14,6 @@ import com.sunshine.support.storage.SharedStorageManager;
 
 import java.io.FileNotFoundException;
 
-import static com.sunshine.metadata.provider.MetadataContract.Activities.STATUS;
-import static com.sunshine.metadata.provider.MetadataContract.Downloadable;
-
 public class MetadataProvider extends ContentProvider {
 
     private static final String AUTHORITY = MetadataContract.AUTHORITY;
@@ -72,6 +69,9 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.BOOK_LISTS:
                 return dbHandler.getTableManager(BookListTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
+            case Matcher.PROBLEMS:
+                return dbHandler.getTableManager(ProblemTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
 
             default:
                 throw new IllegalArgumentException();
@@ -93,6 +93,8 @@ public class MetadataProvider extends ContentProvider {
                 return MimeType.METADATA_MIME_TYPE;
             case Matcher.GALLERY_IMAGES:
                 return MimeType.GALLERY_IMAGES_MIME_TYPE;
+            case Matcher.PROBLEMS:
+                            return MimeType.METADATA_MIME_TYPE;
             default:
                 return sharedStorageManager.getType(uri);
         }

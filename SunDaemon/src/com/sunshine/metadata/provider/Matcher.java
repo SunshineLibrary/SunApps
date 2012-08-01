@@ -34,6 +34,8 @@ public class Matcher {
     public static final int BOOK_LISTS = 17;
     public static final int BOOK_LISTS_ID = 18;
 
+    public static final int PROBLEMS = 18;
+
 
     public static class Factory {
         public static UriMatcher getMatcher() {
@@ -61,6 +63,8 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "book_collections/#", BOOK_COLLECTIONS_ID);
             matcher.addURI(AUTHORITY, "book_lists", BOOK_LISTS);
             matcher.addURI(AUTHORITY, "book_lists/#", BOOK_LISTS_ID);
+
+            matcher.addURI(AUTHORITY, "problems", PROBLEMS);
 
             return matcher;
         }
