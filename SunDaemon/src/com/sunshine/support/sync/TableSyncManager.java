@@ -144,9 +144,11 @@ public class TableSyncManager {
 			try {
 				if (column.equals(BaseColumns._ID)) {
 					values.put(column, row.getInt("id"));
-				} else {
+				} else if (row.has(column)) {
 					values.put(column, row.getString(column));
-				}
+				} else {
+                    Log.w(getClassName(), "Could not read column " + column + " for table " + table.getTableName());
+                }
 			} catch (JSONException e) {
 				Log.e(getClassName(), "Failed to read column " + column, e);
 			}

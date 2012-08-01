@@ -42,7 +42,6 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
 	protected Integer doInBackground(String... params) {
 		int status = SYNC_SUCCESS;
 		if (isConnected()) {
-			//TODO: should check for changed tables before sync.
 			for (String tableName: SYNCED_TABLES) {
 				Table table = dbHandler.getTableManager(tableName);
 				TableSyncManager syncManager = new TableSyncManager(table, syncTable);
