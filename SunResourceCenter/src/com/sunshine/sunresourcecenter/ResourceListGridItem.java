@@ -1,7 +1,8 @@
 package com.sunshine.sunresourcecenter;
 
 public class ResourceListGridItem {
-
+	
+	private String id;
 	private String title;
 	private String builder;
 	private String tags;
@@ -13,8 +14,9 @@ public class ResourceListGridItem {
 		super();
 	}
 	
-	public ResourceListGridItem(String title, String builder, String tags, int count, String intro) {
+	public ResourceListGridItem(String id, String title, String builder, String tags, int count, String intro) {
 		super();
+		this.id = id;
 		this.title = title;
 		this.builder = builder;
 		this.tags = tags;
@@ -50,7 +52,11 @@ public class ResourceListGridItem {
 		return intro;
 	}
 	
+	public String getId(){
+		return id;
+	}
+	
 	public String toString(){
-		return title;
+		return id;
 	}
 }

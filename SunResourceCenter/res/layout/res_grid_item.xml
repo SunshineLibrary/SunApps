@@ -60,7 +60,7 @@
         />
 
     <ProgressBar
-        android:id="@+id/readingProgress"
+        android:id="@+id/reading_progress"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="fill_parent"
         android:layout_height="13dp"
@@ -70,10 +70,10 @@
         />
 
     <TextView
-        android:id="@+id/progressCount"
+        android:id="@+id/progress_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/readingProgress"
+        android:layout_alignBottom="@+id/reading_progress"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:text="50%"

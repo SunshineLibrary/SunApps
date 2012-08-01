@@ -3,7 +3,7 @@ package com.sunshine.metadata.database.tables;
 import com.sunshine.metadata.database.MetadataDBHandler;
 import com.sunshine.metadata.provider.MetadataContract.BookLists;
 
-public class BookListTable extends Table {
+public class BookListTable extends DownloadableTable {
 
 	public BookListTable(MetadataDBHandler db) {
 		super(db);
