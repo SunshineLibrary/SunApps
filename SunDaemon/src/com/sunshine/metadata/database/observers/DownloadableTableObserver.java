@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import com.sunshine.metadata.provider.Matcher;
 import com.sunshine.support.api.ApiClient;
-import com.sunshine.support.storage.FileDownloadTask;
+import com.sunshine.support.downloader.FileDownloadTask;
 
 import java.util.List;
 import java.util.Vector;

@@ -1,10 +1,11 @@
-package com.sunshine.support.storage;
+package com.sunshine.support.downloader;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
+import com.sunshine.support.storage.SharedStorageManager;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;

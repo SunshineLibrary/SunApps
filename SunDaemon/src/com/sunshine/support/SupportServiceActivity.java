@@ -10,14 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import com.sunshine.metadata.database.tables.ActivityTable;
 import com.sunshine.support.mock.ImageTestData;
-import com.sunshine.support.webclient.WebClient;
 
 import static com.sunshine.metadata.provider.MetadataContract.Activities;
 import static com.sunshine.metadata.provider.MetadataContract.Downloadable;
 
 public class SupportServiceActivity extends Activity {
     private PackageManager localPackageManager;
-    private WebClient serverClient;
     private ImageTestData imageTestData;
 
     /**

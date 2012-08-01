@@ -3,24 +3,16 @@ package com.sunshine.metadata.database.observers;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
-import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.util.Log;
 import com.sunshine.metadata.database.tables.ActivityTable;
 import com.sunshine.metadata.database.tables.GalleryImageTable;
 import com.sunshine.metadata.database.tables.ObservableTable;
 import com.sunshine.metadata.provider.Matcher;
-import com.sunshine.metadata.provider.MetadataContract;
 import com.sunshine.support.api.ApiClient;
-import com.sunshine.support.storage.FileDownloadTask;
-
-import java.util.List;
-import java.util.Vector;
+import com.sunshine.support.downloader.FileDownloadTask;
 
 import static com.sunshine.metadata.provider.MetadataContract.Activities;
-import static com.sunshine.metadata.provider.MetadataContract.Downloadable.STATUS;
-import static com.sunshine.metadata.provider.MetadataContract.Downloadable._DOWNLOAD_STATUS;
 import static com.sunshine.metadata.provider.MetadataContract.GalleryImages;
 
 public class ThumbnailFetchObserver extends TableObserver {

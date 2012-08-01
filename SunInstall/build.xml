@@ -35,10 +35,6 @@
         <delete dir="${reports.dir}"/>
         <delete file="cobertura.log"/>
         <delete file="cobertura.ser"/>
-        <exec executable="${sdk.dir}/platform-tools/adb">
-            <arg value="shell" />
-            <arg value="rm -r /sdcard/.contents" />
-        </exec>
     </target>
 
     <taskdef name="aapt" classname="com.android.ant.AaptExecTask" classpathref="android.antlibs"/>
