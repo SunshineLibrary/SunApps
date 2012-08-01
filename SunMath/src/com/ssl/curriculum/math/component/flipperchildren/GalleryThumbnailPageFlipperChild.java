@@ -63,14 +63,8 @@ public class GalleryThumbnailPageFlipperChild extends LinearLayout implements Ga
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 gridAdapter.setSelectedPosition(position);
-            }
-        });
-
-        title.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 if (galleryItemClickedListener != null) {
-                    galleryItemClickedListener.onGalleryItemClicked(1);
+                    galleryItemClickedListener.onGalleryItemClicked();
                 }
             }
         });

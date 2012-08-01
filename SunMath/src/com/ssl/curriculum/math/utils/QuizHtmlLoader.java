@@ -28,8 +28,6 @@ public class QuizHtmlLoader {
             while ((line = bufferedReader.readLine()) != null) {
                 htmlString += line;
             }
-            System.out.println("-----------htmlString = " + htmlString);
-
         } catch (IOException e) {
             Log.e("QuizHtml", "can not load quiz html template, " + QUIZ_TEMPLATE_ASSET_FILE_NAME);
         }

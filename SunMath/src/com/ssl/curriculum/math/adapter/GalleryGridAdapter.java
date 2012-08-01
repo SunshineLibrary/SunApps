@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import com.ssl.curriculum.math.data.GalleryContentData;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class GalleryGridAdapter extends BaseAdapter {
@@ -19,6 +18,7 @@ public class GalleryGridAdapter extends BaseAdapter {
 
     public GalleryGridAdapter(Context context) {
         this.context = context;
+        galleryContentData = new GalleryContentData();
     }
 
     public int getCount() {
@@ -48,23 +48,26 @@ public class GalleryGridAdapter extends BaseAdapter {
         return imageView;
     }
 
-    private void updateImageView(ImageView imageView, int position) throws FileNotFoundException {
-        ParcelFileDescriptor pfdInput = context.getContentResolver().openFileDescriptor(
-                galleryContentData.getGalleryImage(position).getThumbnailUri(), "r");
-        if (pfdInput == null) return;
-        Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null);
+    private void updateImageView(ImageView imageView, int position) throws IOException {
+        Bitmap bitmap = getBitmap(position);
+        if(bitmap == null) return;
         imageView.setImageBitmap(bitmap);
     }
 
     private ImageView createNewImageView(int position) throws IOException {
+        Bitmap bitmap = getBitmap(position);
         ImageView imageView = new ImageView(context);
-        ParcelFileDescriptor pfdInput = context.getContentResolver().openFileDescriptor(
-                galleryContentData.getGalleryImage(position).getThumbnailUri(), "r");
-        if (pfdInput == null) return imageView;
-        Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null);
+        if(bitmap == null) return imageView;
         imageView.setImageBitmap(bitmap);
-        pfdInput.close();
         return imageView;
+    }
+
+    private Bitmap getBitmap(int position) throws IOException {
+        ParcelFileDescriptor pfdInput = context.getContentResolver().openFileDescriptor(galleryContentData.getGalleryItem(position).getThumbnailUri(), "r");
+        if(pfdInput == null) return null;
+        Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null);
+        pfdInput.close();
+        return bitmap;
     }
 
     public void setGalleryData(GalleryContentData galleryContentData) {

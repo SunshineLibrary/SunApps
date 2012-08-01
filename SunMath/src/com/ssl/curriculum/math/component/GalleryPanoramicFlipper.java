@@ -15,11 +15,10 @@ public class GalleryPanoramicFlipper extends ViewFlipper implements GalleryConte
 
     public GalleryPanoramicFlipper(Context context, AttributeSet attrs) {
         super(context, attrs);
-        fetchGalleryContent();
+        viewPresenter = new GalleryPanoramicViewPresenter(this);
     }
 
-    private void fetchGalleryContent() {
-        viewPresenter = new GalleryPanoramicViewPresenter(this);
+    public void fetchGalleryContent() {
         if (GalleryContentManager.getInstance().isDataFetched()) {
             viewPresenter.setGalleryData(GalleryContentManager.getInstance().getGalleryContent());
             return;

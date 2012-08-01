@@ -23,9 +23,10 @@ public class GalleryContentProvider {
         Cursor cursor = contentResolver.query(MetadataContract.GalleryImages.CONTENT_URI, columns, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
+                int idIndex = cursor.getColumnIndex(MetadataContract.GalleryImages._ID);
                 int galleryIdIndex = cursor.getColumnIndex(MetadataContract.GalleryImages._GALLERY_ID);
                 int descriptionIndex = cursor.getColumnIndex(MetadataContract.GalleryImages._DESCRIPTION);
-                GalleryItem item = new GalleryItem(cursor.getInt(galleryIdIndex), cursor.getString(descriptionIndex));
+                GalleryItem item = new GalleryItem(cursor.getInt(idIndex), cursor.getString(descriptionIndex));
                 list.add(item);
             } while (cursor.moveToNext());
         }

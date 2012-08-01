@@ -1,7 +1,6 @@
 package com.ssl.curriculum.math.component;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -19,26 +18,16 @@ public class GalleryPanoramicView extends RelativeLayout implements GalleySlideL
     public GalleryPanoramicView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initUI();
-//        initFlipView();
         initListener();
+        fetchGalleryContent();
+    }
+
+    private void fetchGalleryContent() {
+        panoramicViewerFlipper.fetchGalleryContent();
     }
 
     private void initListener() {
         panoramicViewerFlipper.setSlideListener(this);
-    }
-
-    private void initFlipView() {
-        GalleryPanoramicItem item01 = new GalleryPanoramicItem(getContext());
-        item01.setGallerySlideListener(this);
-        item01.setItemImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.image02));
-        GalleryPanoramicItem item02 = new GalleryPanoramicItem(getContext());
-        item02.setGallerySlideListener(this);
-
-        item02.setItemImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.image03));
-
-        panoramicViewerFlipper.addView(item01, 0);
-        panoramicViewerFlipper.addView(item02, 1);
-        panoramicViewerFlipper.setDisplayedChild(0);
     }
 
     private void initUI() {

@@ -3,6 +3,7 @@ package com.ssl.curriculum.math.data;
 import com.ssl.curriculum.math.model.GalleryItem;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class GalleryContentData {
@@ -21,7 +22,7 @@ public class GalleryContentData {
         return galleryItems.size();
     }
 
-    public GalleryItem getGalleryImage(int position) {
+    public GalleryItem getGalleryItem(int position) {
         return galleryItems.get(position);
     }
 
@@ -33,7 +34,7 @@ public class GalleryContentData {
         selectedPosition = position;
     }
 
-    public Iterable<? extends GalleryItem> galleryItemsIterator() {
-        return (Iterable<? extends GalleryItem>) galleryItems.iterator();
+    public Iterator<GalleryItem> galleryItemsIterator() {
+        return galleryItems.iterator();
     }
 }

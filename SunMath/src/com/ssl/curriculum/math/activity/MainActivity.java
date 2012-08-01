@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
     public GalleryItemClickedListener getGalleryThumbnailItemClickListener() {
         return new GalleryItemClickedListener() {
             @Override
-            public void onGalleryItemClicked(int position) {
+            public void onGalleryItemClicked() {
                 Intent intent = new Intent(MainActivity.this, GalleryFlipperActivity.class);
                 startActivity(intent);
             }

@@ -8,7 +8,8 @@ import com.ssl.curriculum.math.data.GalleryContentData;
 import com.ssl.curriculum.math.listener.GalleySlideListener;
 import com.ssl.curriculum.math.model.GalleryItem;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Iterator;
 
 public class GalleryPanoramicViewPresenter {
 
@@ -26,27 +27,30 @@ public class GalleryPanoramicViewPresenter {
     }
 
     private void updateView() {
-        for (GalleryItem item : galleryContentData.galleryItemsIterator()) {
+        Iterator<GalleryItem> galleryItemIterator = galleryContentData.galleryItemsIterator();
+        while (galleryItemIterator.hasNext()) {
             try {
+                GalleryItem item = galleryItemIterator.next();
                 GalleryPanoramicItem galleryPanoramicItem = createGalleryPanoramicItem(item);
                 if (galleryPanoramicItem != null) {
-                    galleryPanoramicItem.setGallerySlideListener(galleySlideListener);
                     galleryPanoramicFlipper.addView(galleryPanoramicItem);
                 }
-            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
                 return;
             }
         }
-        galleryPanoramicFlipper.setDisplayedChild(galleryContentData.getSelectedPosition());
+        int selectedPosition = galleryContentData.getSelectedPosition();
+        galleryPanoramicFlipper.setDisplayedChild(selectedPosition);
     }
 
-    private GalleryPanoramicItem createGalleryPanoramicItem(GalleryItem item) throws FileNotFoundException {
+    private GalleryPanoramicItem createGalleryPanoramicItem(GalleryItem item) throws IOException {
         GalleryPanoramicItem galleryPanoramicItem = new GalleryPanoramicItem(galleryPanoramicFlipper.getContext());
-        ParcelFileDescriptor pfdInput = galleryPanoramicFlipper.getContext().getContentResolver().openFileDescriptor(
-                item.getImageUri(), "r");
+        ParcelFileDescriptor pfdInput = galleryPanoramicFlipper.getContext().getContentResolver().openFileDescriptor(item.getImageUri(), "r");
         if (pfdInput == null) return null;
         galleryPanoramicItem.setItemImageBitmap(BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null));
+        galleryPanoramicItem.setGallerySlideListener(galleySlideListener);
+        pfdInput.close();
         return galleryPanoramicItem;
     }
 
