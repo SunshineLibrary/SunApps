@@ -25,9 +25,7 @@ public class GalleryContentProvider {
             do {
                 int galleryIdIndex = cursor.getColumnIndex(MetadataContract.GalleryImages._GALLERY_ID);
                 int descriptionIndex = cursor.getColumnIndex(MetadataContract.GalleryImages._DESCRIPTION);
-                GalleryItem item = new GalleryItem();
-                item.setGalleryID(cursor.getInt(galleryIdIndex));
-                item.setDescription(cursor.getString(descriptionIndex));
+                GalleryItem item = new GalleryItem(cursor.getInt(galleryIdIndex), cursor.getString(descriptionIndex));
                 list.add(item);
             } while (cursor.moveToNext());
         }

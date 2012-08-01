@@ -7,6 +7,8 @@ import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
 import com.ssl.curriculum.math.logic.PageFlipper;
 import com.ssl.curriculum.math.presenter.MainActivityPresenter;
+import com.ssl.curriculum.math.service.GalleryContentProvider;
+import com.ssl.curriculum.math.task.FetchGalleryContentTask;
 
 public class MainActivity extends Activity {
 
@@ -22,6 +24,12 @@ public class MainActivity extends Activity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        loadGalleryData();
+    }
+
+    private void loadGalleryData() {
+        FetchGalleryContentTask task = new FetchGalleryContentTask(new GalleryContentProvider(this));
+        task.execute();
     }
 
     private void initUI() {

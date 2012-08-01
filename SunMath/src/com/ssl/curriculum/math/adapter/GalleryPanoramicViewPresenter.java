@@ -1,7 +1,6 @@
 package com.ssl.curriculum.math.adapter;
 
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import com.ssl.curriculum.math.component.GalleryPanoramicFlipper;
 import com.ssl.curriculum.math.component.GalleryPanoramicItem;
@@ -44,7 +43,8 @@ public class GalleryPanoramicViewPresenter {
 
     private GalleryPanoramicItem createGalleryPanoramicItem(GalleryItem item) throws FileNotFoundException {
         GalleryPanoramicItem galleryPanoramicItem = new GalleryPanoramicItem(galleryPanoramicFlipper.getContext());
-        ParcelFileDescriptor pfdInput = galleryPanoramicFlipper.getContext().getContentResolver().openFileDescriptor(Uri.parse(item.getImageUri()), "r");
+        ParcelFileDescriptor pfdInput = galleryPanoramicFlipper.getContext().getContentResolver().openFileDescriptor(
+                item.getImageUri(), "r");
         if (pfdInput == null) return null;
         galleryPanoramicItem.setItemImageBitmap(BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null));
         return galleryPanoramicItem;

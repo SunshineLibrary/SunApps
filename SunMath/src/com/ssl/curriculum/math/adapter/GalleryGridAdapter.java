@@ -3,7 +3,6 @@ package com.ssl.curriculum.math.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +49,8 @@ public class GalleryGridAdapter extends BaseAdapter {
     }
 
     private void updateImageView(ImageView imageView, int position) throws FileNotFoundException {
-        ParcelFileDescriptor pfdInput = context.getContentResolver().openFileDescriptor(Uri.parse(galleryContentData.getGalleryImage(position).getThumbnailUri()), "r");
+        ParcelFileDescriptor pfdInput = context.getContentResolver().openFileDescriptor(
+                galleryContentData.getGalleryImage(position).getThumbnailUri(), "r");
         if (pfdInput == null) return;
         Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null);
         imageView.setImageBitmap(bitmap);
@@ -58,7 +58,8 @@ public class GalleryGridAdapter extends BaseAdapter {
 
     private ImageView createNewImageView(int position) throws IOException {
         ImageView imageView = new ImageView(context);
-        ParcelFileDescriptor pfdInput = context.getContentResolver().openFileDescriptor(Uri.parse(galleryContentData.getGalleryImage(position).getThumbnailUri()), "r");
+        ParcelFileDescriptor pfdInput = context.getContentResolver().openFileDescriptor(
+                galleryContentData.getGalleryImage(position).getThumbnailUri(), "r");
         if (pfdInput == null) return imageView;
         Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null);
         imageView.setImageBitmap(bitmap);
@@ -68,6 +69,7 @@ public class GalleryGridAdapter extends BaseAdapter {
 
     public void setGalleryData(GalleryContentData galleryContentData) {
         this.galleryContentData = galleryContentData;
+        notifyDataSetChanged();
     }
 
     public void setSelectedPosition(int position) {
