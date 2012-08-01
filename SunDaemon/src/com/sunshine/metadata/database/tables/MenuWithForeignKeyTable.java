@@ -1,11 +1,13 @@
 package com.sunshine.metadata.database.tables;
 
 import com.sunshine.metadata.database.MetadataDBHandler;
-import com.sunshine.metadata.provider.MetadataContract;
 
-public abstract class MenuWithForeignKeyTable extends Table {
-    public MenuWithForeignKeyTable(MetadataDBHandler handler) {
-        super(handler);
+public abstract class MenuWithForeignKeyTable extends AbstractTable {
+    public MenuWithForeignKeyTable(MetadataDBHandler handler,
+                                   String tableName,
+                                   String[][] columnDefinitions,
+                                   String[] columns) {
+        super(handler, tableName, columnDefinitions, columns);
     }
 
     @Override

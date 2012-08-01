@@ -4,7 +4,7 @@ import com.sunshine.metadata.database.MetadataDBHandler;
 
 import static com.sunshine.metadata.provider.MetadataContract.Courses;
 
-public class CourseTable extends Table {
+public class CourseTable extends AbstractTable {
 
     public static final String TABLE_NAME = "courses";
 
@@ -20,21 +20,6 @@ public class CourseTable extends Table {
 
 
     public CourseTable(MetadataDBHandler handler) {
-        super(handler);
-    }
-
-    @Override
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    @Override
-    public String[][] getColumnDefinitions() {
-        return COLUMN_DEFINITIONS;
-    }
-
-    @Override
-    public String[] getColumns() {
-        return ALL_COLUMNS;
+        super(handler, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
     }
 }

@@ -21,7 +21,7 @@ public class GalleryContentProvider {
         ContentResolver contentResolver = context.getContentResolver();
         String[] columns = {MetadataContract.GalleryImages._ID, MetadataContract.GalleryImages._IMAGE_PATH, MetadataContract.GalleryImages._THUMBNAIL_PATH, MetadataContract.GalleryImages._DESCRIPTION};
         Cursor cursor = contentResolver.query(MetadataContract.GalleryImages.CONTENT_URI, columns, null, null, null);
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 int imageIndex = cursor.getColumnIndex(MetadataContract.GalleryImages._IMAGE_PATH);
                 int thumbnailIndex = cursor.getColumnIndex(MetadataContract.GalleryImages._THUMBNAIL_PATH);
@@ -33,7 +33,9 @@ public class GalleryContentProvider {
                 list.add(item);
             } while (cursor.moveToNext());
         }
-        cursor.close();
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
         return list;
     }
 }

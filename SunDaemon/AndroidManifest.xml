@@ -28,14 +28,6 @@
         </activity>
 
         <service
-                android:name=".installer.service.InstallerService"
-                android:enabled="true">
-            <intent-filter>
-                <action android:name="sunshine.supportservice.install"/>
-            </intent-filter>
-        </service>
-
-        <service
                 android:name="com.sunshine.support.sync.APISyncService"
                 android:enabled="true">
             <intent-filter>

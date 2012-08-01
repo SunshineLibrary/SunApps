@@ -8,7 +8,7 @@ import com.sunshine.metadata.database.MetadataDBHandler;
  * @author Bowen Sun
  *
  */
-public class APISyncStateTable extends Table {
+public class APISyncStateTable extends AbstractTable {
 	
 	public static final String TABLE_NAME = "api_sync_states";
 	
@@ -31,21 +31,6 @@ public class APISyncStateTable extends Table {
 	};
 
 	public APISyncStateTable(MetadataDBHandler db) {
-		super(db);
-	}
-
-	@Override
-	public String getTableName() {
-		return TABLE_NAME;
-	}
-
-	@Override
-	public String[][] getColumnDefinitions() {
-		return COLUMN_DEFINITIONS;
-	}
-
-	@Override
-	public String[] getColumns() {
-		return ALL_COLUMNS;
+		super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
 	}
 }

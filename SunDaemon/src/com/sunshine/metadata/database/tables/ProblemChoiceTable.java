@@ -9,31 +9,18 @@ public class ProblemChoiceTable extends DownloadableTable {
     public static final String[] ALL_COLUMNS = {
             ProblemChoices._ID,
             ProblemChoices._CHOICE,
-            ProblemChoices._BODY
+            ProblemChoices._BODY,
+            ProblemChoices._PARENT_ID
     };
 
     public static final String[][] COLUMN_DEFINITIONS = {
             {ProblemChoices._ID, "INTEGER PRIMARY KEY"},
             {ProblemChoices._CHOICE, "TEXT"},
             {ProblemChoices._BODY, "TEXT"},
+            {ProblemChoices._PARENT_ID, "INTEGER"},
     };
 
     public ProblemChoiceTable(MetadataDBHandler db) {
-        super(db);
-    }
-
-    @Override
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    @Override
-    public String[][] getColumnDefinitions() {
-        return COLUMN_DEFINITIONS;
-    }
-
-    @Override
-    public String[] getColumns() {
-        return ALL_COLUMNS;
+        super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
     }
 }

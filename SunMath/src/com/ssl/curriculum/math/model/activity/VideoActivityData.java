@@ -5,7 +5,7 @@ import com.sunshine.metadata.provider.MetadataContract.Activities;
 public class VideoActivityData extends ActivityData{
 	private String videoTitle = "";
 	private String videoDescription = "";
-	private long videoDuration = 0; //Video Duration in .001s
+	private long videoDuration = 0; //Video Duration in seconds
 	
 	
 	public VideoActivityData(){
@@ -31,6 +31,19 @@ public class VideoActivityData extends ActivityData{
 	}
 	
 	public String getDurationText(){
-		return "";
+		int hours = (int)Math.floor(this.videoDuration / 3600);
+		int minutes = (int)Math.floor(this.videoDuration / 60) - hours * 60;
+		int seconds = (int)(this.videoDuration % 60);
+		String durationText = "";
+		
+		if(hours > 0)
+			durationText = hours + ":";
+		if(minutes > 9 || hours == 0)
+			durationText += minutes + ":";
+		else
+			durationText += "0" + minutes + ":";
+		
+		durationText += seconds > 9 ? seconds : "0" + seconds; 
+		return durationText;
 	}
 }

@@ -31,21 +31,6 @@ public class ActivityTable extends DownloadableTable {
     };
 
     public ActivityTable(MetadataDBHandler db) {
-        super(db);
-    }
-
-    @Override
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    @Override
-    public String[][] getColumnDefinitions() {
-        return COLUMN_DEFINITIONS;
-    }
-
-    @Override
-    public String[] getColumns() {
-        return ALL_COLUMNS;
+        super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
     }
 }
