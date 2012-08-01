@@ -12,13 +12,15 @@ public class SectionTable extends MenuWithForeignKeyTable {
     private static final String[] ALL_COLUMNS = {
             Sections._ID,
             Sections._NAME,
-            Sections._PARENT_ID
+            Sections._PARENT_ID,
+            Sections._DESCRIPTION,
     };
 
     private static final String[][] COLUMN_DEFINITIONS = {
             {Sections._ID, "INTEGER PRIMARY KEY"},
             {Sections._NAME, "TEXT"},
-            {Sections._PARENT_ID, "INTEGER NOT NULL"}
+            {Sections._PARENT_ID, "INTEGER NOT NULL"},
+            {Sections._DESCRIPTION, "TEXT"},
     };
 
     public SectionTable(MetadataDBHandler handler) {
