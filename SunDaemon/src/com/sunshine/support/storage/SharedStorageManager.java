@@ -91,9 +91,9 @@ public class SharedStorageManager {
     }
 
     private int getMode(String mode) {
-        if (mode.equals(String.valueOf(RO_MODE))) {
+        if (mode.equalsIgnoreCase("r")) {
             return RO_MODE;
-        } else if (mode.equals(String.valueOf(WO_MODE))) {
+        } else if (mode.equalsIgnoreCase("w")) {
             return WO_MODE;
         } else {
             return -1;

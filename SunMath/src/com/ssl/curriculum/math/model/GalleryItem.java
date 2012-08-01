@@ -1,31 +1,28 @@
 package com.ssl.curriculum.math.model;
 
+import android.net.Uri;
+import com.sunshine.metadata.provider.MetadataContract;
+
 public class GalleryItem {
-    private String imageUri;
-    private String thumbnailUri;
+    private Uri imageUri;
+    private Uri thumbnailUri;
     private String description;
 
-    public String getImageUri() {
+    public GalleryItem(int galleryId, String description) {
+        imageUri = MetadataContract.GalleryImages.getGalleryImageUri(galleryId);
+        thumbnailUri = MetadataContract.GalleryImages.getGalleryImageThumbnailUri(galleryId);
+        this.description = description;
+    }
+
+    public Uri getImageUri() {
         return imageUri;
     }
 
-    public void setImageUri(String imageUri) {
-        this.imageUri = imageUri;
-    }
-
-    public String getThumbnailUri() {
+    public Uri getThumbnailUri() {
         return thumbnailUri;
-    }
-
-    public void setThumbnailUri(String thumbnailUri) {
-        this.thumbnailUri = thumbnailUri;
     }
 
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

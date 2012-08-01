@@ -104,7 +104,7 @@ public class FileDownloadTask extends AsyncTask<Uri, Integer, Integer> {
     private OutputStream getOutputStreamForUri(Uri uri) {
         try {
             Log.d(getClass().getName(), "Accessing local uri: " + uri);
-            ParcelFileDescriptor fid = context.getContentResolver().openFileDescriptor(uri, String.valueOf(SharedStorageManager.WO_MODE));
+            ParcelFileDescriptor fid = context.getContentResolver().openFileDescriptor(uri, "w");
             if (fid != null)
                 return new FileOutputStream(fid.getFileDescriptor());
         } catch (FileNotFoundException e) {

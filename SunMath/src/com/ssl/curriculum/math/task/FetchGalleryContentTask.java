@@ -1,7 +1,7 @@
 package com.ssl.curriculum.math.task;
 
 import android.os.AsyncTask;
-import com.ssl.curriculum.math.data.GalleryContentData;
+import com.ssl.curriculum.math.data.GalleryContentManager;
 import com.ssl.curriculum.math.model.GalleryItem;
 import com.ssl.curriculum.math.service.GalleryContentProvider;
 
@@ -22,6 +22,6 @@ public class FetchGalleryContentTask extends AsyncTask<Void, Void, List<GalleryI
 
     @Override
     protected void onPostExecute(List<GalleryItem> galleryItems) {
-        GalleryContentData.getInstance().saveGalleryItems(galleryItems);
+        GalleryContentManager.getInstance().saveGalleryItems(galleryItems);
     }
 }

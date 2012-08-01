@@ -9,14 +9,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import com.sunshine.metadata.database.tables.ActivityTable;
-import com.sunshine.support.mock.ImageTestData;
 
 import static com.sunshine.metadata.provider.MetadataContract.Activities;
 import static com.sunshine.metadata.provider.MetadataContract.Downloadable;
 
 public class SupportServiceActivity extends Activity {
     private PackageManager localPackageManager;
-    private ImageTestData imageTestData;
 
     /**
      * Called when the activity is first created.

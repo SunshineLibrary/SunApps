@@ -1,44 +1,40 @@
 package com.ssl.curriculum.math.data;
 
-import com.ssl.curriculum.math.listener.GalleryContentChangedListener;
 import com.ssl.curriculum.math.model.GalleryItem;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class GalleryContentData {
-    private static GalleryContentData data;
     private List<GalleryItem> galleryItems;
-    private List<GalleryContentChangedListener> galleryContentChangedListeners;
+    private int selectedPosition;
 
-    private GalleryContentData() {
+    public GalleryContentData() {
         galleryItems = new ArrayList<GalleryItem>();
-        galleryContentChangedListeners = new ArrayList<GalleryContentChangedListener>();
-    }
-
-    public static GalleryContentData getInstance() {
-        if (data == null) {
-            data = new GalleryContentData();
-        }
-        return data;
     }
 
     public void saveGalleryItems(List<GalleryItem> galleryItems) {
         this.galleryItems = galleryItems;
-        notifyGalleryContentChanged();
     }
 
-    private void notifyGalleryContentChanged() {
-        for (GalleryContentChangedListener galleryContentChangedListener : galleryContentChangedListeners) {
-            if (galleryContentChangedListener == null) {
-                galleryContentChangedListeners.remove(galleryContentChangedListener);
-                continue;
-            }
-            galleryContentChangedListener.onContentChanged(galleryItems);
-        }
+    public int getCount() {
+        return galleryItems.size();
     }
 
-    public void registerGalleyContentChangedListener(GalleryContentChangedListener galleryContentChangedListener) {
-        galleryContentChangedListeners.add(galleryContentChangedListener);
+    public GalleryItem getGalleryItem(int position) {
+        return galleryItems.get(position);
+    }
+
+    public int getSelectedPosition() {
+        return selectedPosition;
+    }
+
+    public void setSelectedPosition(int position) {
+        selectedPosition = position;
+    }
+
+    public Iterator<GalleryItem> galleryItemsIterator() {
+        return galleryItems.iterator();
     }
 }
