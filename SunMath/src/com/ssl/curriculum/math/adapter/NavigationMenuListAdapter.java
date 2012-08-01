@@ -70,4 +70,5 @@ public class NavigationMenuListAdapter extends BaseAdapter {
     public void setNextLevelMenuChangedListener(NextLevelMenuChangedListener nextLevelMenuChangedListener) {
         this.nextLevelMenuChangedListener = nextLevelMenuChangedListener;
     }
+
 }

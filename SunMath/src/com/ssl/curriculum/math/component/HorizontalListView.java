@@ -1,4 +1,4 @@
-package com.ssl.curriculum.math.activity;
+package com.ssl.curriculum.math.component;
 
 import java.util.LinkedList;
 import java.util.Queue;
