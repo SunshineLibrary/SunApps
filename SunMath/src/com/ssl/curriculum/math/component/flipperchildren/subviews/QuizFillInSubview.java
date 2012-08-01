@@ -1,4 +1,4 @@
-package com.ssl.curriculum.math.component.flipperchildren;
+package com.ssl.curriculum.math.component.flipperchildren.subviews;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,14 +12,12 @@ import com.ssl.curriculum.math.presenter.QuizPresenter;
 import com.ssl.curriculum.math.service.QuizQuestionsProvider;
 import com.ssl.curriculum.math.utils.QuizHtmlLoader;
 
-public class QuizFillInFlipperChild extends LinearLayout {
+public class QuizFillInSubview extends LinearLayout {
     private WebView questionWebView;
-    private QuizPresenter quizPresenter;
 
-    public QuizFillInFlipperChild(Context context) {
+    public QuizFillInSubview(Context context) {
         super(context);
         initUI();
-        initComponent();
         initWebView();
     }
 
@@ -28,11 +26,6 @@ public class QuizFillInFlipperChild extends LinearLayout {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.quiz_fill_in_flipper_child, this, false);
         addView(viewGroup);
         questionWebView = (WebView) findViewById(R.id.quiz_fill_in_flipper_child_question);
-    }
-
-    private void initComponent() {
-        quizPresenter = new QuizPresenter(this);
-        quizPresenter.loadQuizQuestions(new QuizQuestionsProvider(getContext()), "quiz 1");
     }
 
     private void initWebView() {
@@ -54,9 +47,7 @@ public class QuizFillInFlipperChild extends LinearLayout {
         questionWebView.loadDataWithBaseURL("http://test", data, "text/html", "utf-8", null);
     }
 
-    public void loadQuiz(QuizQuestion quizQuestion) {
-        if (quizQuestion.getType() == QuizQuestion.TYPE_FILLBLANKS) {
-            loadQuizHtml(((QuizFillBlankQuestion) quizQuestion).getQuizContent());
-        }
+    public void loadQuiz(QuizFillBlankQuestion quizQuestion) {
+        loadQuizHtml(quizQuestion.getQuizContent());
     }
 }

@@ -48,7 +48,7 @@
               command="package"
               verbose="false"
               manifest="AndroidManifest.xml"
-              androidjar="${sdk.dir}/platforms/android-14/android.jar"
+              androidjar="${sdk.dir}/platforms/android-8/android.jar"
               rfolder="gen"
               libraryResFolderPathRefid=""
               libraryPackagesRefid=""

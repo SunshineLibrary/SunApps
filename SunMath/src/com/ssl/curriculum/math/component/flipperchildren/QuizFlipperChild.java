@@ -1,9 +1,11 @@
 package com.ssl.curriculum.math.component.flipperchildren;
 
 import com.ssl.curriculum.math.R;
+import com.ssl.curriculum.math.component.flipperchildren.subviews.QuizFillInSubview;
 import com.ssl.curriculum.math.component.flipperchildren.subviews.QuizMultichoiceSubview;
 import com.ssl.curriculum.math.model.activity.QuizActivityData;
 import com.ssl.curriculum.math.model.activity.quiz.QuizMultichoiceQuestion;
+import com.ssl.curriculum.math.model.activity.quiz.QuizFillBlankQuestion;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 
 import android.annotation.SuppressLint;
@@ -62,9 +64,9 @@ public class QuizFlipperChild extends LinearLayout{
 				questionView.addView(multichoice);
 			}break;
 			case QuizQuestion.TYPE_FILLBLANKS:{
-				TextView tmp = new TextView(getContext());
-				tmp.setText("This is a fill-in question");
-				questionView.addView(tmp);
+				QuizFillInSubview fillin = new QuizFillInSubview(getContext());
+				fillin.loadQuiz((QuizFillBlankQuestion) currentQuestion);
+				questionView.addView(fillin);
 			}break;
 			default:break;
 		}
