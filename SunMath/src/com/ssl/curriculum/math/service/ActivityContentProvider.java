@@ -6,6 +6,7 @@ import android.database.Cursor;
 import com.ssl.curriculum.math.model.activity.ActivityData;
 import com.ssl.curriculum.math.model.activity.QuizActivityData;
 import com.ssl.curriculum.math.model.activity.VideoActivityData;
+import com.ssl.curriculum.math.model.activity.quiz.QuizFillBlankQuestion;
 import com.ssl.curriculum.math.model.activity.quiz.QuizMultichoiceQuestion;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
@@ -31,10 +32,10 @@ public class ActivityContentProvider {
             return vad;
         } else if (id % 4 == 1 || id % 4 == 2) {
         	QuizActivityData activityData = new QuizActivityData();
-//        	activityData.addQuestion(new QuizQuestion(QuizQuestion.TYPE_MULTICHOICE));
-//        	activityData.addQuestion(new QuizQuestion(QuizQuestion.TYPE_MULTICHOICE));
-//        	activityData.addQuestion(new QuizQuestion(QuizQuestion.TYPE_FILLBLANKS));
-        	activityData.addQuestion(new QuizQuestion(QuizQuestion.TYPE_FILLBLANKS));
+        	activityData.addQuestion(new QuizMultichoiceQuestion());
+        	activityData.addQuestion(new QuizMultichoiceQuestion());
+        	activityData.addQuestion(new QuizFillBlankQuestion());
+        	activityData.addQuestion(new QuizFillBlankQuestion());
         	return activityData;
         } else {
             return new ActivityData(Activities.TYPE_GALLERY);

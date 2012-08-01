@@ -16,7 +16,7 @@ public final class MetadataContract {
         public static final String _TO_ID = "to_id";
         public static final String _CONDITION = "condition";
         public static final String _SECTION_ID ="section_id";
-
+        
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("edges").build();
     }
 
@@ -25,8 +25,16 @@ public final class MetadataContract {
         public static final String _BODY = "body";
         public static final String _TYPE = "problem_type";
         public static final String _ANSWER = "answer";
-        public static final String _TITLE = "title";
-
+        public static final String _PARENT_ID = "quiz_activity_id";
+        
+        public static final int TYPE_FILLBLANK = 1;
+        public static final int TYPE_MULTICHOICE = 0;
+        
+        public static int getInternalType(String type){
+        	return 0;
+        }
+        
+        
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problems").build();
     }
 
@@ -34,12 +42,13 @@ public final class MetadataContract {
         public static final String _ID = BaseColumns._ID;
         public static final String _CHOICE = "choice";
         public static final String _BODY = "body";
-
+        public static final String _PARENT_ID = "problem_id";
+        
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problem_choices").build();
     }
-
+    
     /*
-     *  课内内容
+     * Please use English comments only!
      */
     public static final class GalleryImages extends Downloadable{
         public static final String _ID = BaseColumns._ID;
@@ -129,7 +138,7 @@ public final class MetadataContract {
 
 
     /*
-     *  课外内容
+     * English comments only
      */
     public static final class BookCollections {
 

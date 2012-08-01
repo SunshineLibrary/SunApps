@@ -1,10 +1,15 @@
 package com.ssl.curriculum.math.component.flipperchildren;
 
 import com.ssl.curriculum.math.R;
+import com.ssl.curriculum.math.component.flipperchildren.subviews.QuizFillInSubview;
 import com.ssl.curriculum.math.component.flipperchildren.subviews.QuizMultichoiceSubview;
+import com.ssl.curriculum.math.listener.QuizLoadedListener;
 import com.ssl.curriculum.math.model.activity.QuizActivityData;
 import com.ssl.curriculum.math.model.activity.quiz.QuizMultichoiceQuestion;
+import com.ssl.curriculum.math.model.activity.quiz.QuizFillBlankQuestion;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
+import com.ssl.curriculum.math.presenter.QuizPresenter;
+import com.ssl.curriculum.math.service.QuizQuestionsProvider;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,10 +20,10 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 @SuppressLint("ViewConstructor")
-public class QuizFlipperChild extends LinearLayout{
-	private QuizQuestion currentQuestion;
-	private int currentPos = 0;
+public class QuizFlipperChild extends LinearLayout implements QuizLoadedListener{
+	private QuizPresenter presenter;
 	private QuizActivityData quiz;
+	
 	public QuizFlipperChild(Context context, AttributeSet attrs, QuizActivityData quiz) {
 		super(context, attrs);
 		try{
@@ -27,8 +32,9 @@ public class QuizFlipperChild extends LinearLayout{
 			e.printStackTrace();
 		}
 		this.quiz = quiz;
+		this.presenter = new QuizPresenter(quiz, new QuizQuestionsProvider(getContext()));
+
 		initUI();
-		initQuestion();
 	}
 	
 	private void initUI(){
@@ -44,27 +50,21 @@ public class QuizFlipperChild extends LinearLayout{
 	}
 	
 	private void initQuestion(){
-		if(quiz.size() <= 0)
-			return;
-		currentQuestion = quiz.getQuestion(0);
-		currentPos = 0;
-		this.presentQuestion();
+		if(this.presenter.toFirst())
+			this.present(presenter.getQuestion());
 	}
 	
-	private void presentQuestion(){
-		if(currentQuestion == null)
-			return;
+	private void present(QuizQuestion question){
 		ViewFlipper questionView = (ViewFlipper) findViewById(R.id.quiz_question_view);
-		System.out.println(currentPos);
-		switch(currentQuestion.getType()){
+		switch(question.getType()){
 			case QuizQuestion.TYPE_MULTICHOICE:{
-				QuizMultichoiceSubview multichoice = new QuizMultichoiceSubview(getContext(),null,(QuizMultichoiceQuestion) currentQuestion);
+				QuizMultichoiceSubview multichoice = new QuizMultichoiceSubview(getContext(),null,(QuizMultichoiceQuestion) question);
 				questionView.addView(multichoice);
 			}break;
 			case QuizQuestion.TYPE_FILLBLANKS:{
-				TextView tmp = new TextView(getContext());
-				tmp.setText("This is a fill-in question");
-				questionView.addView(tmp);
+				QuizFillInSubview fillin = new QuizFillInSubview(getContext());
+				fillin.loadQuiz((QuizFillBlankQuestion) question);
+				questionView.addView(fillin);
 			}break;
 			default:break;
 		}
@@ -77,14 +77,14 @@ public class QuizFlipperChild extends LinearLayout{
 	}
 	
 	public void nextQuestion(){
-		currentPos++;
-		if(currentPos >= quiz.size()){
-			currentPos--;
-			return;
-		}else{
-			currentQuestion = quiz.getQuestion(currentPos);
-			this.presentQuestion();
+		if(this.presenter.toNext()){
+			this.present(this.presenter.getQuestion());
 		}
+	}
+
+	@Override
+	public void onQuizLoaded() {
+		this.initQuestion();
 	}
 	
 }
