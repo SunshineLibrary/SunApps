@@ -97,6 +97,7 @@ public final class MetadataContract {
         public static final String _ID = BaseColumns._ID;
         public static final String _PARENT_ID = "lesson_id";
         public static final String _NAME = "name";
+        public static final String _DESCRIPTION = "description";
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("sections").build();
     }

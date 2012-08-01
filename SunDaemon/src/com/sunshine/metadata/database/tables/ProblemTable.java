@@ -10,7 +10,6 @@ public class ProblemTable extends DownloadableTable {
             Problems._ID,
             Problems._BODY,
             Problems._TYPE,
-            Problems._TITLE,
             Problems._ANSWER,
             Problems._PARENT_ID
     };
@@ -19,7 +18,6 @@ public class ProblemTable extends DownloadableTable {
             {Problems._ID, "INTEGER PRIMARY KEY"},
             {Problems._BODY, "TEXT"},
             {Problems._TYPE, "TEXT"},
-            {Problems._TITLE, "TEXT"},
             {Problems._ANSWER, "TEXT"},
             {Problems._PARENT_ID,"INTEGER"}
     };
