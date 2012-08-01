@@ -143,7 +143,8 @@ public class TouchableImageView extends ImageView implements View.OnTouchListene
 
     private void handleFlingAction() {
         if (galleySlideListener != null) {
-            galleySlideListener.onSlide(lastPointF.x - currPointF.x);
+            boolean isSlided = galleySlideListener.onSlide(lastPointF.x - currPointF.x);
+            if(isSlided) state = State.NONE;
         }
     }
 
