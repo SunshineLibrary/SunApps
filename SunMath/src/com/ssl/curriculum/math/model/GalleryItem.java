@@ -4,21 +4,14 @@ public class GalleryItem {
     private String imageUri;
     private String thumbnailUri;
     private String description;
+    private int galleryID;
 
     public String getImageUri() {
         return imageUri;
     }
 
-    public void setImageUri(String imageUri) {
-        this.imageUri = imageUri;
-    }
-
     public String getThumbnailUri() {
         return thumbnailUri;
-    }
-
-    public void setThumbnailUri(String thumbnailUri) {
-        this.thumbnailUri = thumbnailUri;
     }
 
     public String getDescription() {
@@ -27,5 +20,9 @@ public class GalleryItem {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setGalleryID(int galleryID) {
+        this.galleryID = galleryID;
     }
 }
