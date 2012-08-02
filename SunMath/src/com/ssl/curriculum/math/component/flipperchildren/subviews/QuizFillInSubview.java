@@ -51,8 +51,6 @@ public class QuizFillInSubview extends LinearLayout {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-                //change confirm button
                 judgeAndDisplayMessage();
             }
         });
@@ -62,7 +60,6 @@ public class QuizFillInSubview extends LinearLayout {
         EditText editText = (EditText) findViewById(R.id.quiz_fill_in_flipper_child_answer);
         String userInput = editText.getText().toString();
         boolean correct = quizPresenter.getCurrentAnswerState(userInput.trim());
-        System.out.println(userInput + "d");
         if (correct) {
             showAnswerField.setText("正确！");
         } else {
@@ -84,5 +81,9 @@ public class QuizFillInSubview extends LinearLayout {
 
     public void loadQuiz(QuizFillBlankQuestion quizQuestion) {
         loadQuizHtml(quizQuestion.getQuizContent());
+    }
+
+    public void setQuizPresenter(QuizPresenter presenter) {
+        quizPresenter = presenter;
     }
 }
