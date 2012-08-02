@@ -149,13 +149,12 @@ public final class MetadataContract {
 
         public static Uri getTags(String collectionId) {
             // content://AUTHORITY/book_collections/#book_collection_id/tags
-
-            throw new UnsupportedOperationException();
+        	return CONTENT_URI.buildUpon().appendPath(collectionId).appendPath("tags").build();
         }
 
         public static Uri getBooks(String collectionId) {
             // content://AUTHORITY/book_collections/#book_collection_id/books
-            throw new UnsupportedOperationException();
+            return CONTENT_URI.buildUpon().appendPath(collectionId).appendPath("books").build();
         }
 
         static {
@@ -173,14 +172,14 @@ public final class MetadataContract {
 
         public static final Uri CONTENT_URI;
 
-        public static Uri getTags(String bookId) {
+        public static Uri getTags(String id) {
             // content://AUTHORITY/video_collections/#video_collection_id/tags
-            throw new UnsupportedOperationException();
+        	return CONTENT_URI.buildUpon().appendPath(id).appendPath("tags").build();
         }
 
-        public static Uri getVideos(String collectionId) {
+        public static Uri getVideos(String id) {
             // content://AUTHORITY/video_collections/#video_collection_id/videos
-            throw new UnsupportedOperationException();
+        	return CONTENT_URI.buildUpon().appendPath(id).appendPath("videos").build();
         }
 
         static {
@@ -198,14 +197,14 @@ public final class MetadataContract {
 
         public static final Uri CONTENT_URI;
 
-        public static Uri getTags(String bookId) {
+        public static Uri getTags(String id) {
             // content://AUTHORITY/audio_collections/#audio_collection_id/tags
-            throw new UnsupportedOperationException();
+        	return CONTENT_URI.buildUpon().appendPath(id).appendPath("tags").build();
         }
 
-        public static Uri getAudios(String collectionId) {
-            // content://AUTHORITY/audio_collections/#audio_collection_id/books
-            throw new UnsupportedOperationException();
+        public static Uri getAudios(String id) {
+            // content://AUTHORITY/audio_collections/#audio_collection_id/audios
+        	return CONTENT_URI.buildUpon().appendPath(id).appendPath("audios").build();
         }
 
         static {
@@ -224,17 +223,30 @@ public final class MetadataContract {
 
         public static Uri getTags(String listId) {
             // content://AUTHORITY/book_lists/#book_list_id/tags
-
-            throw new UnsupportedOperationException();
+        	return CONTENT_URI.buildUpon().appendPath(listId).appendPath("tags").build();
+            
         }
 
         public static Uri getBookCollections(String listId) {
             // content://AUTHORITY/book_lists/#book_list_id/book_collections
-            throw new UnsupportedOperationException();
+        	return CONTENT_URI.buildUpon().appendPath(listId).appendPath("book_collections").build();
         }
 
         static {
             CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_lists").build();
+        }
+    }
+    
+    public static final class BookListCollections {
+
+    	public static final String _ID = BaseColumns._ID;
+    	public static final String _BOOK_LIST_ID = "book_list_id";
+    	public static final String _BOOK_COLLECTION_ID = "book_collection_id";
+    	
+    	public static final Uri CONTENT_URI;
+    	
+    	static {
+            CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_list_collections").build();
         }
     }
 
@@ -247,12 +259,15 @@ public final class MetadataContract {
         public static final String _PROGRESS = "progress";
         public static final String _COVER = "cover";
         public static final String _TAGS = "tags";
+        public static final String _ORIGINAL_TITLE = "original_title";
+        public static final String _PUBLISHER = "publisher";
+        public static final String _PUBLICATION_YEAR = "publication_year";
+        public static final String _COLLECTION_ID = "collection_id";
         public static final Uri CONTENT_URI;
 
         public static Uri getTags(String bookId) {
-            // content://AUTHORITY/books/#book_id/tags
-
-            throw new UnsupportedOperationException();
+            return CONTENT_URI.buildUpon().appendPath(bookId).appendPath("tags").build();
+        	// content://AUTHORITY/books/#book_id/tags
         }
 
         static {
@@ -269,7 +284,12 @@ public final class MetadataContract {
         public static final String _PROGRESS = "";
         public static final String _DURATION = "";
         public static final Uri CONTENT_URI;
-
+        
+        public static Uri getTags(String id) {
+            return CONTENT_URI.buildUpon().appendPath(id).appendPath("tags").build();
+        	// content://AUTHORITY/videos/#video_id/tags
+        }
+        
         static {
             CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("videos").build();
         }
@@ -284,18 +304,15 @@ public final class MetadataContract {
         public static final String _PROGRESS = "";
         public static final String _DURATION = "";
         public static final Uri CONTENT_URI;
-
+        
+        public static Uri getTags(String id) {
+            return CONTENT_URI.buildUpon().appendPath(id).appendPath("tags").build();
+        	// content://AUTHORITY/books/#book_id/tags
+        }
+        
         static {
             CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("audios").build();
         }
-    }
-
-    public static final class BookTag {
-
-    	public static final String _ID = BaseColumns._ID;
-    	public static final String _BOOKID = "book_id";
-    	public static final String _TAGID = "tag_id";
-
     }
 
     public static final class Tags {
@@ -310,25 +327,66 @@ public final class MetadataContract {
 
         public static final Uri CONTENT_URI;
 
-        public static Uri getBookCollections(String bookId) {
+        public static Uri getBookCollections(String tagId) {
             //content://AUTHORITY/tags/#tag_id/book_collections
-            throw new UnsupportedOperationException();
+            return CONTENT_URI.buildUpon().appendPath(tagId).appendPath("book_collections").build();
         }
 
-        public static Uri getVideoCollections(String bookId) {
+        public static Uri getVideoCollections(String tagId) {
             //content://AUTHORITY/tags/#tag_id/video_collections
-            throw new UnsupportedOperationException();
+            return CONTENT_URI.buildUpon().appendPath(tagId).appendPath("video_collections").build();
         }
 
-        public static Uri getAudioCollections(String bookId) {
+        public static Uri getAudioCollections(String tagId) {
             //content://AUTHORITY/tags/#tag_id/audio_collections
-            throw new UnsupportedOperationException();
+        	return CONTENT_URI.buildUpon().appendPath(tagId).appendPath("audio_collections").build();
         }
 
         static {
             CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("tags").build();
         }
     }
+    
+    public static final class BookTags {
+
+    	public static final String _ID = BaseColumns._ID;
+    	public static final String _BOOK_ID = "book_id";
+    	public static final String _TAG_ID = "tag_id";
+    	
+    	public static final Uri CONTENT_URI;
+    	
+    	static {
+            CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_tag").build();
+        }
+    }
+    
+    public static final class BookCollectionTags {
+
+    	public static final String _ID = BaseColumns._ID;
+    	public static final String _BOOK_COLLLECTION_ID = "book_collection_id";
+    	public static final String _TAG_ID = "tag_id";
+    	
+    	public static final Uri CONTENT_URI;
+    	
+    	static {
+            CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_collection_tag").build();
+        }
+    }
+    
+    public static final class BookListTags {
+
+    	public static final String _ID = BaseColumns._ID;
+    	public static final String _BOOK_LIST_ID = "book_list_id";
+    	public static final String _TAG_ID = "tag_id";
+    	
+    	public static final Uri CONTENT_URI;
+    	
+    	static {
+            CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_list_tag").build();
+        }
+    }
+
+    
     public static final class Packages extends Downloadable {
         public static final String _ID = BaseColumns._ID;
         public static final String _NAME = "name";
@@ -345,9 +403,11 @@ public final class MetadataContract {
     public static class Downloadable {
 
         public static final String _DOWNLOAD_STATUS = "download_status";
-
+        
         public static final String _DOWNLOAD_PROGRESS = "download_progress";
-
+        
+        public static final String _DOWNLOAD_TIME = "download_time";
+        
         public static enum STATUS {
             NOT_DOWNLOADED, QUEUED, DOWNLOADING, DOWNLOADED, MARK_DELETE
         }

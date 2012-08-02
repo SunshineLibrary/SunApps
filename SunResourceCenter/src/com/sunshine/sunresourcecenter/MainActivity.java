@@ -1,21 +1,29 @@
 package com.sunshine.sunresourcecenter;
 
 import com.sunshine.metadata.provider.*;
+import com.sunshine.metadata.provider.MetadataContract.BookCollections;
+import com.sunshine.metadata.provider.MetadataContract.Books;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -39,13 +47,16 @@ public class MainActivity extends Activity {
 		RES_READING,
 		RES_ALL,
 		RES_RECENT,
-		RES_LEARN_NEW,
 		RES_READED,
+		RES_READ_HISTORY,
 		DOWN_RECOMMAND,
 		DOWN_HOT,
 		DOWN_CATEGORY,
 		DOWN_LIKE,
-		DOWN_LIST
+		DOWN_LIST,
+		DOWN_LIST_RES,
+		DOWN_CATEGORY_RES,
+		COLLECTION
 	};
 	private gridType currentGridType;
 	private viewType currentViewType;
@@ -55,8 +66,9 @@ public class MainActivity extends Activity {
 	private LinearLayout resnav;
 	private LinearLayout downnav;
 	private LinearLayout typenav;
+	private LinearLayout recommandView;
 	private Spinner mainnav;
-	private ContentResolver resolver;
+	private ReasourceContentResolver resolver;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -68,13 +80,16 @@ public class MainActivity extends Activity {
 		downnav = (LinearLayout) findViewById(R.id.downnav);
 		typenav = (LinearLayout) findViewById(R.id.typenav);
 		mainnav = (Spinner) findViewById(R.id.mainnav);
+		recommandView = (LinearLayout) findViewById(R.id.recommand_view);
 		
-		resolver = MainActivity.this.getContentResolver();
+		resolver = new ReasourceContentResolver(MainActivity.this.getContentResolver());
+		
 		// change via tab state
 		currentGridType = gridType.GRIDTYPE_RES_INPROGRESS;
 		currentViewType = viewType.RES_READING;
 		currentResType = ResourceType.BOOK;
-
+		recommandView.setVisibility(View.INVISIBLE);
+		
 		// bound data to grids
 		//gridItems = boundGridData(currentResType, currentGridType);
 
@@ -86,12 +101,57 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
-
-				Intent intent = new Intent();
-				intent.setClass(MainActivity.this, ResourceInfoActivity.class);
-				startActivity(intent);
+				Intent intent;
 				
-//				Toast.makeText(MainActivity.this, "item" + (position + 1),
+				switch(currentViewType){
+				case RES_READING:
+				case RES_ALL:
+				case RES_RECENT:
+				case RES_READED:
+				case RES_READ_HISTORY:
+					//book
+					intent = new Intent();
+					intent.putExtra("bookId", gridItems.get(position).toString());
+					intent.setClass(MainActivity.this, ResourceInfoActivity.class);
+					startActivity(intent);
+					break;
+					
+				case DOWN_RECOMMAND:
+				case DOWN_HOT:
+				case DOWN_LIKE:
+				case DOWN_LIST_RES:
+				case DOWN_CATEGORY_RES:
+					
+					ResourceGridItem item = (ResourceGridItem)gridItems.get(position);
+					//Toast.makeText(MainActivity.this, String.valueOf(item.getResCount()),Toast.LENGTH_SHORT).show();
+					if(item.getResCount() > 0){
+						//collections
+						currentGridType = gridType.GRIDTYPE_RES_TODOWNLOAD;
+						currentViewType = viewType.COLLECTION;
+						showGridView(gridItems, currentResType, currentGridType, currentViewType, gridItems.get(position).toString());
+					}else{
+						intent = new Intent();
+						intent.setClass(MainActivity.this, ResourceInfoActivity.class);
+						startActivity(intent);
+					}
+					
+					break;
+					
+				case DOWN_CATEGORY:
+					currentGridType = gridType.GRIDTYPE_RES_TODOWNLOAD;
+					currentViewType = viewType.DOWN_CATEGORY_RES;
+					showGridView(gridItems, currentResType, currentGridType, currentViewType,gridItems.get(position).toString());
+					break;
+				case DOWN_LIST:
+					currentGridType = gridType.GRIDTYPE_RES_TODOWNLOAD;
+					currentViewType = viewType.DOWN_LIST_RES;
+					showGridView(gridItems, currentResType, currentGridType, currentViewType,gridItems.get(position).toString());
+					break;
+				default:
+					break;
+				}
+				
+//				Toast.makeText(MainActivity.this, gridItems.get(position).toString(),
 //						Toast.LENGTH_SHORT).show();
 
 			}
@@ -116,14 +176,15 @@ public class MainActivity extends Activity {
 					break;
 				case 3:// learn_new
 					currentGridType = gridType.GRIDTYPE_RES_INPROGRESS;
-					currentViewType = viewType.RES_LEARN_NEW;
+					currentViewType = viewType.RES_READED;
 					break;
 				case 4:// readed
 					currentGridType = gridType.GRIDTYPE_RES_INPROGRESS;
-					currentViewType = viewType.RES_READED;
+					currentViewType = viewType.RES_READ_HISTORY;
 					break;
 				}
 				gridView.setVisibility(View.VISIBLE);
+				recommandView.setVisibility(View.INVISIBLE);
 				showGridView(gridItems, currentResType, currentGridType, currentViewType);
 
 			}
@@ -145,6 +206,7 @@ public class MainActivity extends Activity {
 					break;
 				}
 				gridView.setVisibility(View.VISIBLE);
+				recommandView.setVisibility(View.INVISIBLE);
 				showGridView(gridItems, currentResType, currentGridType, currentViewType);
 			}
 		};
@@ -178,6 +240,7 @@ public class MainActivity extends Activity {
 					break;
 				}
 				gridView.setVisibility(View.VISIBLE);
+				recommandView.setVisibility(View.INVISIBLE);
 				showGridView(gridItems, currentResType, currentGridType, currentViewType);
 			}
 		};
@@ -185,6 +248,11 @@ public class MainActivity extends Activity {
 		simulateTabs(resnav, resnav_switch);
 		simulateTabs(typenav, typenav_switch);
 		simulateTabs(downnav, downnav_switch);
+		
+		String[] curs = getResources().getStringArray(R.array.main_menu);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.spinner_item, curs);
+		adapter.setDropDownViewResource(R.layout.spinner_dropdown);
+		mainnav.setAdapter(adapter);
 		mainnav.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View spinner,
@@ -277,17 +345,25 @@ public class MainActivity extends Activity {
 		}
 		return selected;
 	}
-
+	
 	private void showGridView(List<Object> itemList, ResourceType resType,
-			gridType theGridType, viewType theViewType) {
+			gridType theGridType, viewType theViewType){
+		showGridView(itemList, resType, theGridType, theViewType, null);
+	}
+	
+	//argId could be listId, categoryId or collectionId
+	private void showGridView(List<Object> itemList, ResourceType resType,
+			gridType theGridType, viewType theViewType, String argId) {
 		
-		itemList = boundGridData(resType, theGridType);
+		gridItems = boundGridData(resType, theViewType, argId);
+		itemList = gridItems;
 		
 		switch (theGridType) {
 		case GRIDTYPE_RES_TODOWNLOAD:
 			// res grid in download page
 			ResourceGridAdapter adapter = new ResourceGridAdapter(itemList,
 					false, this);
+			//gridView.
 			gridView.setAdapter(adapter);
 			break;
 		case GRIDTYPE_RES_INPROGRESS:
@@ -308,117 +384,103 @@ public class MainActivity extends Activity {
 					this);
 			gridView.setAdapter(adapter4);
 			break;
-
+		case GRIDTYPE_RECOMMAND:
+			gridView.setVisibility(View.INVISIBLE);
+			recommandView.setVisibility(View.VISIBLE);
+			break;
 		default:
 			break;
 		}
 
 	}
 	
-	private List<Object> boundGridData(ResourceType resType, gridType theGridType) {
-		// need modify!! content resolver here
+	
+	private List<Object> boundGridData(ResourceType resType, viewType theViewType, String argId) {
+		
+		String[] projection = null;
+		String  selection = null;
+		
+		String s = Books._PROGRESS;
+		switch(resType){
+		case BOOK:
+			switch (theViewType) {
+			//books
+			case RES_READING:
+				// AND progress > 0 AND progress < 100
+				//selection = "download_status = 'DOWNLOADED'";
+				return resolver.getBooks(projection, selection);
+					
+			case RES_ALL:
+				//selection = "download_status = 'DOWNLOADED'";
+				return resolver.getBooks(projection, selection);
+				
+			case RES_RECENT:
+				// AND download_time > ...
+				//selection = "download_status = 'DOWNLOADED' ";
+				return resolver.getBooks(projection, selection);
+			
+			case RES_READED:
+				//WEN GU ZHI XIN
+				// AND readed
+				//selection = "download_status = 'DOWNLOADED'";
+				return resolver.getBooks(projection, selection);
+				
+			case COLLECTION:
+				//
+				return resolver.getBooks(projection, "collection_id = '"+argId+"'");
+			
+				//collections
+			case DOWN_HOT:
+				//AND HOT
+				//selection = "download_status = 'NOT_DOWNLOADED'";
+				return resolver.getBookCollections(projection, selection);
+				
+			case DOWN_LIKE:
+				//AND LIKE
+				//selection = "download_status = 'NOT_DOWNLOADED'";
+				
+				return resolver.getBookCollections(projection, selection);
+			
+			case DOWN_CATEGORY_RES:
+				//nested
+				//AND category_id = categoryId
+				//selection = "download_status = 'NOT_DOWNLOADED'";
+				return resolver.getBookCollections(projection, selection);
+			
+			case DOWN_LIST_RES:
+				//nested
+				//AND list_id = listId
+				//selection = "download_status = 'NOT_DOWNLOADED'";
+				return resolver.getBookCollections(projection, selection);
+				
+			case RES_READ_HISTORY:
+				//YUE DU LI CHENG
+				return null;
+				
+			case DOWN_RECOMMAND:
+				return null;
+			case DOWN_CATEGORY:
 
-		switch (theGridType) {
+				return null;
+			
+			case DOWN_LIST:
 
-		case GRIDTYPE_RES_TODOWNLOAD:
-		case GRIDTYPE_RES_INPROGRESS:
+				return null;
 
-			ArrayList<ResourceGridItem> gridItems = new ArrayList<ResourceGridItem>();
+			default:
+				return null;
 
-//			if (resType == ResourceType.BOOK) {
-//				try {
-//					// String[] projection = new String[]{};
-//					Cursor c = resolver.query(BookCollections.CONTENT_URI,
-//							null, null, null, null);
-//
-//					int idCol = c.getColumnIndexOrThrow(BookCollections._ID);
-//					int titleCol = c.getColumnIndexOrThrow(BookCollections._NAME);
-//					int authorCol = c.getColumnIndexOrThrow(BookCollections._AUTHOR);
-//					int descriptionCol = c.getColumnIndexOrThrow(BookCollections._DESCRIPTION);
-//
-//					while (c.moveToNext()) {
-//
-//						gridItems.add(new ResourceGridItem(c
-//								.getString(titleCol), c.getString(authorCol),
-//								"", R.drawable.ic_launcher, 0, c
-//										.getString(descriptionCol)));
-//					}
-//				} finally {
-//
-//				}
-//			}
-
-			// title for test
-			String[] titles = new String[] { "¹þÀû²¨ÌØ´óÕ½ºùÂ«ÍÞ", "¹þÀû²¨ÌØ´óÕ½°ÂÌØÂü",
-					"¹þÀû²¨ÌØÓëËïÎò¿Õ", "¹þÀû²¨ÌØÓëòùòðÏÀ", "¹þÀû²¨ÌØÓëºùÂ«ÍÞ²»µÃ²»ËµµÄ¹ÊÊÂ" };
-			// author for test
-			String[] author = new String[] { "author", "author", "author",
-					"author", "author" };
-			// tag for test
-			String[] tags = new String[] { "tag1/tag2", "tag1/tag2",
-					"tag1/tag2", "tag1/tag2", "tag1/tag2" };
-			// description for test
-			String[] description = new String[] {
-					"À²À²À²À²À²À²À²£¬À²À²À²À²À²À²À²À²£¬À²À²À²À²À²À²À²£¬À²À²À²À²À²À²À²¡£\n\rÀ²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²",
-					"‡å", "‡å", "‡å", "‡å" };
-			// image for test
-			int[] images = { R.drawable.ic_launcher, R.drawable.ic_launcher,
-					R.drawable.togglebutton_type_book, R.drawable.search,
-					R.drawable.ic_launcher };
-
-			int[] progress = { 30, 40, 60, 70, 99 };
-
-			for (int i = 0; i < titles.length; i++) {
-				 gridItems.add(new ResourceGridItem(titles[i],author[i], tags[i], images[i], progress[i],description[i]));
 			}
-
-			return (List) gridItems;
-
-		case GRIDTYPE_RESLIST:
-			// title for test
-			String[] listtitles = new String[] { "¹þÀû²¨ÌØµÄÊéµ¥", "ºùÂ«ÍÞµÄÊéµ¥", "Ð¡Ã÷µÄÊéµ¥",
-					"Ð¡Ã÷µÄÊéµ¥", "Ð¡Ã÷µÄÊéµ¥", "Ð¡Ã÷µÄÊéµ¥", "Ð¡Ã÷µÄÊéµ¥", "Ð¡Ã÷µÄÊéµ¥" };
-			// author for test
-			String[] listauthor = new String[] { "¹þÀû²¨ÌØ", "ºùÂ«ÍÞ", "Ð¡Ã÷", "Ð¡Ã÷",
-					"Ð¡Ã÷", "Ð¡Ã÷", "Ð¡Ã÷", "Ð¡Ã÷" };
-			// tag for test
-			String[] listtags = new String[] { "tag1/tag2/tag3/tag4",
-					"tag1/tag2", "tag1/tag2", "tag1/tag2", "tag1/tag2",
-					"tag1/tag2", "tag1/tag2", "tag1/tag2" };
-			// description for test
-			String[] listintro = new String[] {
-					"À²À²À²À²À²À²À²£¬À²À²À²À²À²À²À²À²£¬À²À²À²À²À²À²À²£¬À²À²À²À²À²À²À²¡£\n\rÀ²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²À²",
-					"‡å", "‡å", "‡å", "‡å", "‡å", "‡å", "‡å" };
-
-			int[] count = new int[] { 12, 10, 3, 122, 1, 2, 4, 18 };
-
-			ArrayList<ResourceListGridItem> gridItems2 = new ArrayList<ResourceListGridItem>();
-			for (int i = 0; i < listtitles.length; i++) {
-				gridItems2.add(new ResourceListGridItem(listtitles[i],
-						listauthor[i], listtags[i], count[i], listintro[i]));
-			}
-
-			return (List) gridItems2;
-
-		case GRIDTYPE_CATEGORY:
-
-			String[] cateNames = new String[] { "ÖÐ¹úÎÄÑ§", "ÖÐ¹úÎÄÑ§", "ÖÐ¹úÎÄÑ§", "ÖÐ¹úÎÄÑ§",
-					"ÖÐ¹úÎÄÑ§", "ÖÐ¹úÎÄÑ§", "ÖÐ¹úÎÄÑ§" };
-			int[] cateCount = new int[] { 1, 2, 3, 4, 5, 6, 7, 8 };
-
-			ArrayList<CategoryGridItem> gridItems3 = new ArrayList<CategoryGridItem>();
-			for (int i = 0; i < cateNames.length; i++) {
-				gridItems3.add(new CategoryGridItem(cateNames[i], cateCount[i],
-						0, null));
-			}
-
-			return (List) gridItems3;
-
-		default:
+			
+		case AUDIO:
+			
 			return null;
-
+		case VEDIO:
+			
+			return null;
+		default: 
+			return null;
 		}
-
 	}
 	
 	private String getTags() {

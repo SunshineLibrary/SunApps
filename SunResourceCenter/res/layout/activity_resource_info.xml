@@ -36,15 +36,15 @@
             android:textColor="@color/text"
             android:textSize="@dimen/info_text_large" />
     </RelativeLayout>
-
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="15dp"
         android:paddingLeft="50dp" >
-
+
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/info_cover"
             android:layout_width="@dimen/info_image_width"
             android:layout_height="@dimen/info_image_height"
             android:layout_alignParentLeft="true"
@@ -57,10 +57,10 @@
             android:id="@+id/TableLayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageView1"
-            android:layout_alignTop="@+id/imageView1"
+            android:layout_alignBottom="@+id/info_cover"
+            android:layout_alignTop="@+id/info_cover"
             android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@+id/imageView1" >
+            android:layout_toRightOf="@+id/info_cover" >
 
             <TableRow
                 android:id="@+id/tableRow1"
@@ -100,28 +100,6 @@
 
                 <TextView
                     android:id="@+id/info_author"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_dark"
-                    android:textSize="@dimen/info_text_small" />
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/info_row_marggin" >
-
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/info_translator"
-                    android:textColor="@color/text_dark"
-                    android:textSize="@dimen/info_text_small" />
-
-                <TextView
-                    android:id="@+id/info_translator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_dark"
@@ -171,6 +149,32 @@
                     android:textSize="@dimen/info_text_small" />
             </TableRow>
         </TableLayout>
+
+        <Button
+            android:id="@+id/info_button_down"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_alignBottom="@+id/TableLayout1"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40dp"
+            android:background="@color/chrome"
+            android:text="@string/info_button_down"
+            android:textColor="@color/text"
+            android:textSize="@dimen/info_text_med" />
+
+        <Button
+            android:id="@+id/info_button_read"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_alignBaseline="@+id/info_button_down"
+            android:layout_alignBottom="@+id/info_button_down"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@+id/info_button_down"
+            android:background="@color/info_grey"
+            android:text="@string/info_button_read"
+            android:textColor="@color/text"
+            android:textSize="@dimen/info_text_med" />
+
     </RelativeLayout>
 
     <LinearLayout

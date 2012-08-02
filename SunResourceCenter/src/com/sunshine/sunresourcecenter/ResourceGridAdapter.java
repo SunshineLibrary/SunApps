@@ -69,7 +69,7 @@ public class ResourceGridAdapter extends BaseAdapter {
 			viewHolder.description = (TextView) convertView.findViewById(R.id.description);
 			viewHolder.author = (TextView) convertView.findViewById(R.id.author);
 			viewHolder.tags = (TextView) convertView.findViewById(R.id.tags);
-			viewHolder.progressBar = (ProgressBar) convertView.findViewById(R.id.readingProgress);
+			viewHolder.progressBar = (ProgressBar) convertView.findViewById(R.id.reading_progress);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ResViewHolder) convertView.getTag();
@@ -83,9 +83,9 @@ public class ResourceGridAdapter extends BaseAdapter {
 		viewHolder.progressBar.setProgress(progress);
 		if(showProgress){
 			convertView.findViewById(R.id.tags).setVisibility(View.INVISIBLE);
-			((TextView)convertView.findViewById(R.id.progressCount)).setText(progress + "%");
+			((TextView)convertView.findViewById(R.id.progress_count)).setText(progress + "%");
 		}else{
-			convertView.findViewById(R.id.readingProgress).setVisibility(View.INVISIBLE);
+			convertView.findViewById(R.id.reading_progress).setVisibility(View.INVISIBLE);
 		}
 		
 		// convertView.setMinimumHeight(260);

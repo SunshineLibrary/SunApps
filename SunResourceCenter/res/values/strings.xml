@@ -32,6 +32,8 @@
     <string name="info_restitle">TITLE</string>
     <string name="info_author_intro">作者简介 · · · · ·</string>
     <string name="info_intro">导读 · · · · ·</string>
+    <string name="info_button_down">下载</string>
+    <string name="info_button_read">阅读</string>
     
     
     

@@ -1,22 +1,22 @@
 package com.sunshine.metadata.database.tables;
 
 import com.sunshine.metadata.database.MetadataDBHandler;
-import com.sunshine.metadata.provider.MetadataContract.BookTag;
+import com.sunshine.metadata.provider.MetadataContract.BookTags;
 
 public class BookTagTable extends AbstractTable {
 	
 	public static final String TABLE_NAME = "book_tag";
 	
 	public static final String[] ALL_COLUMNS = {
-		BookTag._ID,
-		BookTag._BOOKID,
-		BookTag._TAGID
+		BookTags._ID,
+		BookTags._BOOK_ID,
+		BookTags._TAG_ID
 	};
 	
 	public static final String[][] COLUMN_DEFINITIONS = {
-		{BookTag._ID, "INTEGER PRIMARY KEY"},
-		{BookTag._BOOKID, "INTEGER"},
-		{BookTag._TAGID, "INTEGER"}
+		{BookTags._ID, "INTEGER PRIMARY KEY"},
+		{BookTags._BOOK_ID, "INTEGER"},
+		{BookTags._TAG_ID, "INTEGER"}
 	};
 	
 	public BookTagTable(MetadataDBHandler db) {
