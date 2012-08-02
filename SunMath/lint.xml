@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="DrawAllocation">
+        <ignore path="src\com\ssl\curriculum\math\component\HorizontalListView.java" />
+    </issue>
+    <issue id="ParserError" severity="ignore">
+        <ignore path="src\com\ssl\curriculum\math\activity\NaviActivity.java" />
+    </issue>
+</lint>

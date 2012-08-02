@@ -110,7 +110,7 @@ public class GalleryFloatingPanel extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        floatingTask.reset();
+//        floatingTask.reset();
         return super.onTouchEvent(event);
     }
 

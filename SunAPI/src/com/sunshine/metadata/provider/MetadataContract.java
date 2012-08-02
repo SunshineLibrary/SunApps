@@ -53,8 +53,6 @@ public final class MetadataContract {
     public static final class GalleryImages extends Downloadable{
         public static final String _ID = BaseColumns._ID;
         public static final String _GALLERY_ID = "gallery_id";
-        public static final String _THUMBNAIL_PATH = "thumbnail";
-        public static final String _IMAGE_PATH = "image";
         public static final String _DESCRIPTION = "description";
 
         public static final Uri CONTENT_URI = Activities.CONTENT_URI.buildUpon().
@@ -97,7 +95,6 @@ public final class MetadataContract {
         public static final String _PARENT_ID = "lesson_id";
         public static final String _NAME = "name";
         public static final String _DESCRIPTION = "description";
-
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("sections").build();
     }
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.listener.NextLevelMenuChangedListener;
 
@@ -38,8 +39,13 @@ public class NavigationMenuItem extends FrameLayout {
                 if (nextLevelChangedListener != null) {
                     nextLevelChangedListener.onNextLevelMenu(getUniqueId());
                 }
+                
+                
             }
         });
+        
+        
+        
     }
 
     public void setMenuName(String name) {

@@ -46,13 +46,13 @@ public class MetadataProvider extends ContentProvider {
                         uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.LESSONS:
                 return dbHandler.getTableManager(LessonTable.TABLE_NAME).query(
-                        uri, projection, selection, selectionArgs, sortOrder);
+                		uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.SECTIONS:
                 return dbHandler.getTableManager(SectionTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.GALLERY_IMAGES:
                 return dbHandler.getTableManager(GalleryImageTable.TABLE_NAME).query(
-                        uri, projection, selection, selectionArgs, sortOrder);
+                		uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.ACTIVITIES:
                 return dbHandler.getTableManager(ActivityTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);

@@ -44,4 +44,5 @@ public class NavigationListView extends ListView {
             ((NavigationMenuItem) getChildAt(index)).deActive();
         }
     }
+
 }
