@@ -63,6 +63,9 @@ public class APISyncService extends Service {
 	}
 
 	protected boolean isConnected() {
-		return cm.getActiveNetworkInfo().isConnected();
+        if (cm != null && cm.getActiveNetworkInfo() != null)
+            return cm.getActiveNetworkInfo().isConnected();
+        else
+            return false;
 	}
 }
