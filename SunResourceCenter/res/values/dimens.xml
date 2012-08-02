@@ -17,7 +17,7 @@
     <dimen name="typenav_width">58dp</dimen>
     <dimen name="info_text_large">23dp</dimen>
     <dimen name="info_text_med">15dp</dimen>
-    <dimen name="info_row_marggin">1dp</dimen>
+    <dimen name="info_row_marggin">2dp</dimen>
     <dimen name="info_text_title">28dp</dimen>
     <dimen name="info_image_height">100dp</dimen>
     <dimen name="info_image_width">66dp</dimen>

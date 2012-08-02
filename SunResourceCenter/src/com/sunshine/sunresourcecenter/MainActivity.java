@@ -55,7 +55,8 @@ public class MainActivity extends Activity {
 		DOWN_LIKE,
 		DOWN_LIST,
 		DOWN_LIST_RES,
-		DOWN_CATEGORY_RES
+		DOWN_CATEGORY_RES,
+		COLLECTION
 	};
 	private gridType currentGridType;
 	private viewType currentViewType;
@@ -67,7 +68,7 @@ public class MainActivity extends Activity {
 	private LinearLayout typenav;
 	private LinearLayout recommandView;
 	private Spinner mainnav;
-	private ContentResolver resolver;
+	private ReasourceContentResolver resolver;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class MainActivity extends Activity {
 		mainnav = (Spinner) findViewById(R.id.mainnav);
 		recommandView = (LinearLayout) findViewById(R.id.recommand_view);
 		
-		resolver = MainActivity.this.getContentResolver();
+		resolver = new ReasourceContentResolver(MainActivity.this.getContentResolver());
 		
 		// change via tab state
 		currentGridType = gridType.GRIDTYPE_RES_INPROGRESS;
@@ -120,21 +121,31 @@ public class MainActivity extends Activity {
 				case DOWN_LIKE:
 				case DOWN_LIST_RES:
 				case DOWN_CATEGORY_RES:
-					//collections
-					intent = new Intent();
-					intent.setClass(MainActivity.this, ResourceInfoActivity.class);
-					startActivity(intent);
+					
+					ResourceGridItem item = (ResourceGridItem)gridItems.get(position);
+					//Toast.makeText(MainActivity.this, String.valueOf(item.getResCount()),Toast.LENGTH_SHORT).show();
+					if(item.getResCount() > 0){
+						//collections
+						currentGridType = gridType.GRIDTYPE_RES_TODOWNLOAD;
+						currentViewType = viewType.COLLECTION;
+						showGridView(gridItems, currentResType, currentGridType, currentViewType, gridItems.get(position).toString());
+					}else{
+						intent = new Intent();
+						intent.setClass(MainActivity.this, ResourceInfoActivity.class);
+						startActivity(intent);
+					}
+					
 					break;
 					
 				case DOWN_CATEGORY:
 					currentGridType = gridType.GRIDTYPE_RES_TODOWNLOAD;
 					currentViewType = viewType.DOWN_CATEGORY_RES;
-					showGridView(gridItems, currentResType, currentGridType, currentViewType,gridItems.get(position).toString(),null);
+					showGridView(gridItems, currentResType, currentGridType, currentViewType,gridItems.get(position).toString());
 					break;
 				case DOWN_LIST:
 					currentGridType = gridType.GRIDTYPE_RES_TODOWNLOAD;
 					currentViewType = viewType.DOWN_LIST_RES;
-					showGridView(gridItems, currentResType, currentGridType, currentViewType,null,gridItems.get(position).toString());
+					showGridView(gridItems, currentResType, currentGridType, currentViewType,gridItems.get(position).toString());
 					break;
 				default:
 					break;
@@ -337,13 +348,14 @@ public class MainActivity extends Activity {
 	
 	private void showGridView(List<Object> itemList, ResourceType resType,
 			gridType theGridType, viewType theViewType){
-		showGridView(itemList, resType, theGridType, theViewType, null, null);
+		showGridView(itemList, resType, theGridType, theViewType, null);
 	}
-
+	
+	//argId could be listId, categoryId or collectionId
 	private void showGridView(List<Object> itemList, ResourceType resType,
-			gridType theGridType, viewType theViewType, String categoryId, String listId) {
+			gridType theGridType, viewType theViewType, String argId) {
 		
-		gridItems = boundGridData(resType, theViewType, categoryId, listId);
+		gridItems = boundGridData(resType, theViewType, argId);
 		itemList = gridItems;
 		
 		switch (theGridType) {
@@ -383,14 +395,9 @@ public class MainActivity extends Activity {
 	}
 	
 	
-	private List<Object> boundGridData(ResourceType resType, viewType theViewType, String categoryId, String listId) {
-		// need modify!! content resolver here
-		ArrayList<ResourceGridItem> resGridItems = new ArrayList<ResourceGridItem>();
-		ArrayList<CategoryGridItem> cateGridItems = new ArrayList<CategoryGridItem>();
-		ArrayList<ResourceListGridItem> listGridItems = new ArrayList<ResourceListGridItem>();
-		Cursor cur = null;
-		Uri contentUri = null;
-		String[] projection = null, cols = null;
+	private List<Object> boundGridData(ResourceType resType, viewType theViewType, String argId) {
+		
+		String[] projection = null;
 		String  selection = null;
 		
 		String s = Books._PROGRESS;
@@ -399,86 +406,53 @@ public class MainActivity extends Activity {
 			switch (theViewType) {
 			//books
 			case RES_READING:
-				if(selection == null) {
-					// AND progress > 0 AND progress < 100
-					//selection = "download_status = 'DOWNLOADED'";
-					}
-				
+				// AND progress > 0 AND progress < 100
+				//selection = "download_status = 'DOWNLOADED'";
+				return resolver.getBooks(projection, selection);
+					
 			case RES_ALL:
-				if(selection == null) {
-					//selection = "download_status = 'DOWNLOADED'";
-					}
+				//selection = "download_status = 'DOWNLOADED'";
+				return resolver.getBooks(projection, selection);
 				
 			case RES_RECENT:
-				if(selection == null) {
-					// AND download_time > ...
-					//selection = "download_status = 'DOWNLOADED' ";
-					}
-				
+				// AND download_time > ...
+				//selection = "download_status = 'DOWNLOADED' ";
+				return resolver.getBooks(projection, selection);
 			
-				
 			case RES_READED:
 				//WEN GU ZHI XIN
-				if(selection == null) {
-					// AND readed
-					//selection = "download_status = 'DOWNLOADED'";
-					}
+				// AND readed
+				//selection = "download_status = 'DOWNLOADED'";
+				return resolver.getBooks(projection, selection);
 				
-				if(contentUri == null){
-					contentUri = Books.CONTENT_URI;
-				}
-				if(cols == null){
-					cols = new String[]{Books._ID, Books._TITLE, Books._AUTHOR, Books._DESCRIPTION, Books._PROGRESS};
-				}
-			//collections
+			case COLLECTION:
+				//
+				return resolver.getBooks(projection, "collection_id = '"+argId+"'");
+			
+				//collections
 			case DOWN_HOT:
-				if(selection == null) {
-					//AND HOT
-					//selection = "download_status = 'NOT_DOWNLOADED'";
-					}
+				//AND HOT
+				//selection = "download_status = 'NOT_DOWNLOADED'";
+				return resolver.getBookCollections(projection, selection);
 				
 			case DOWN_LIKE:
-				if(selection == null) {
-					//AND LIKE
-					//selection = "download_status = 'NOT_DOWNLOADED'";
-					}
+				//AND LIKE
+				//selection = "download_status = 'NOT_DOWNLOADED'";
+				
+				return resolver.getBookCollections(projection, selection);
+			
 			case DOWN_CATEGORY_RES:
-				if(selection == null) {
-					//AND category_id = categoryId
-					//selection = "download_status = 'NOT_DOWNLOADED'";
-					}
+				//nested
+				//AND category_id = categoryId
+				//selection = "download_status = 'NOT_DOWNLOADED'";
+				return resolver.getBookCollections(projection, selection);
+			
 			case DOWN_LIST_RES:
-				if(selection == null) {
-					//AND list_id = listId
-					//selection = "download_status = 'NOT_DOWNLOADED'";
-					}
+				//nested
+				//AND list_id = listId
+				//selection = "download_status = 'NOT_DOWNLOADED'";
+				return resolver.getBookCollections(projection, selection);
 				
-				//
-				if(cols == null){
-					cols = new String[]{BookCollections._ID, BookCollections._NAME, BookCollections._AUTHOR, BookCollections._DESCRIPTION, null};
-				}
-				if(contentUri == null){
-					contentUri = BookCollections.CONTENT_URI;
-				}
-				
-				try {
-					cur = resolver.query(contentUri, projection, selection, null, null);		
-
-					int idCol = cur.getColumnIndexOrThrow(cols[0]);
-					int titleCol = cur.getColumnIndexOrThrow(cols[1]);
-					int authorCol = cur.getColumnIndexOrThrow(cols[2]);
-					int descriptionCol = cur.getColumnIndexOrThrow(cols[3]);
-					//int prgressCol = cur.getColumnIndexOrThrow(cols[4]);
-					
-					while (cur.moveToNext()) {
-						//cur.getInt(prgressCol)
-						resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol),"", R.drawable.ic_launcher, 10, cur.getString(descriptionCol)));
-					}
-				} finally {
-
-				}
-
-				return (List) resGridItems;
 			case RES_READ_HISTORY:
 				//YUE DU LI CHENG
 				return null;
@@ -487,11 +461,11 @@ public class MainActivity extends Activity {
 				return null;
 			case DOWN_CATEGORY:
 
-				return (List) cateGridItems;
+				return null;
 			
 			case DOWN_LIST:
 
-				return (List) listGridItems;
+				return null;
 
 			default:
 				return null;

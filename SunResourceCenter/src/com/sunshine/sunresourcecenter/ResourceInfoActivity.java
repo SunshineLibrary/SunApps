@@ -30,7 +30,7 @@ public class ResourceInfoActivity extends Activity {
         cover = (ImageView) findViewById(R.id.info_cover);
         originname = (TextView) findViewById(R.id.info_originname);
         author = (TextView) findViewById(R.id.info_author);
-        translator = (TextView) findViewById(R.id.info_translator);
+        //translator = (TextView) findViewById(R.id.info_translator);
         publisher = (TextView) findViewById(R.id.info_publisher);
         publish_year = (TextView) findViewById(R.id.info_publish_year);
         title = (TextView) findViewById(R.id.info_restitle);

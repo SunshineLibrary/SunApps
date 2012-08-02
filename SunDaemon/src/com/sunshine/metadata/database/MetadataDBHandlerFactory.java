@@ -22,7 +22,11 @@ public class MetadataDBHandlerFactory {
         dbHandler.addTableManager(ProblemChoiceTable.TABLE_NAME, new ProblemChoiceTable(dbHandler));
         dbHandler.addTableManager(BookCollectionTable.TABLE_NAME, new BookCollectionTable(dbHandler));
         dbHandler.addTableManager(BookListTable.TABLE_NAME, new BookListTable(dbHandler));
-
+        dbHandler.addTableManager(TagTable.TABLE_NAME, new TagTable(dbHandler));
+        dbHandler.addTableManager(BookTagTable.TABLE_NAME, new BookTagTable(dbHandler));
+        dbHandler.addTableManager(BookCollectionTagTable.TABLE_NAME, new BookCollectionTagTable(dbHandler));
+        dbHandler.addTableManager(BookListTagTable.TABLE_NAME, new BookListTagTable(dbHandler));
+        dbHandler.addTableManager(BookListCollectionTable.TABLE_NAME, new BookListCollectionTable(dbHandler));
         // Observable Tables
         TableObserver downloadableObserver = new DownloadableTableObserver(context);
         TableObserver thumbnailObserver = new ThumbnailFetchObserver(context);

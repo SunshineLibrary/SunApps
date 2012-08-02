@@ -33,8 +33,11 @@ public class Matcher {
     public static final int BOOK_COLLECTIONS_ID = 16;
     public static final int BOOK_LISTS = 17;
     public static final int BOOK_LISTS_ID = 18;
-
-    public static final int PROBLEMS = 18;
+    
+    public static final int PROBLEMS = 19;
+    
+    public static final int TAGS = 20;
+    
 
 
     public static class Factory {
@@ -65,6 +68,8 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "book_lists/#", BOOK_LISTS_ID);
 
             matcher.addURI(AUTHORITY, "problems", PROBLEMS);
+            
+            matcher.addURI(AUTHORITY, "tags", TAGS);
 
             return matcher;
         }

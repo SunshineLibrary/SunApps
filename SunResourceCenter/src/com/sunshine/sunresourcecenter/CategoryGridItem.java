@@ -12,9 +12,8 @@ public class CategoryGridItem {
 		super();
 	}
 	
-	public CategoryGridItem(String id, String name, int count, int imageId, String description) {
+	public CategoryGridItem(String name, int count, int imageId, String description) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.count = count;
 		this.imageId = imageId;
