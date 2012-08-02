@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.ssl.curriculum.math.component.HorizontalListView;
 import com.ssl.curriculum.math.component.NavigationListView;
 import com.ssl.curriculum.math.listener.NavigationMenuItemSelectedListener;
 import com.ssl.curriculum.math.listener.NextLevelMenuChangedListener;
@@ -17,7 +18,7 @@ import com.ssl.curriculum.math.task.FetchNavigationMenuTask;
 
 import java.util.List;
 
-public class NavigationMenuPresenter implements NextLevelMenuChangedListener{
+public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 	private NavigationListView navigationListView;
 	private TextView menuTitle;
 	private NavigationMenuProvider provider;
@@ -27,18 +28,20 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener{
 	private LinearLayout test_linear;
 	private ListView desListView;
 	private Context context;
-	
+	private HorizontalListView horizontalListView;
 
 	public NavigationMenuPresenter(Context context,
 			NavigationListView navigationListView, TextView menuTitle,
-			TextView mztext, LinearLayout test_linear,ListView desListView) {
-		this.context=context;
+			TextView mztext, LinearLayout test_linear, ListView desListView,
+			HorizontalListView horizontalListView) {
+		this.context = context;
 		this.navigationListView = navigationListView;
 		this.menuTitle = menuTitle;
 		this.mztext = mztext;
 		this.test_linear = test_linear;
 		this.desListView = desListView;
-		
+		this.horizontalListView = horizontalListView;
+
 		this.navigationListView.setNextLevelMenuChangedListener(this);
 		provider = new NavigationMenuContentProvider(context);
 	}
@@ -75,12 +78,13 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener{
 
 			if (this.menuItemSelectedListener != null) {
 				this.menuItemSelectedListener.onItemSelected(index);
-				
+
 			}
 
 			test_linear.setVisibility(View.VISIBLE);
 			navigationListView.activateMenuItem(index);
-			NaviActivity.loadRightData(context,desListView, index);
+			NaviActivity.loadSectionData(context, desListView, index);
+			NaviActivity.loadActivitiesData(context, horizontalListView, index);
 			mztext.setText(item.getName());
 			return;
 		}

@@ -143,8 +143,9 @@ public class MainActivityPresenter {
 
             this.UIBindings.get(BTN_NAVI).setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
-                    Intent intent = new Intent(self.activity, NaviActivity.class);
-                    self.activity.startActivity(intent);
+                	self.activity.finish();
+                    //Intent intent = new Intent(self.activity, NaviActivity.class);
+                    //self.activity.startActivity(intent);
                 }
             });
         } catch (NullPointerException e) {
