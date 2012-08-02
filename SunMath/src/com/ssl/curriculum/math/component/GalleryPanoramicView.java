@@ -3,6 +3,7 @@ package com.ssl.curriculum.math.component;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import com.ssl.curriculum.math.R;
@@ -36,6 +37,7 @@ public class GalleryPanoramicView extends RelativeLayout implements GalleySlideL
         addView(viewGroup);
         panoramicViewerFlipper = (GalleryPanoramicFlipper) findViewById(R.id.gallery_panoramic_flipper);
         galleryFloatingPanel = (GalleryFloatingPanel) findViewById(R.id.gallery_panoramic_panel);
+        galleryFloatingPanel.setVisibility(View.GONE);
     }
 
     private boolean isShowPrevious(float xDistance) {
