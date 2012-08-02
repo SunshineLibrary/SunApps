@@ -72,7 +72,15 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.TAGS:
                 return dbHandler.getTableManager(TagTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
-
+            case Matcher.BOOK_LIST_TAG:
+            	return dbHandler.getTableManager(BookListTagTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
+            case Matcher.BOOK_COLLECTION_TAG:
+            	return dbHandler.getTableManager(BookCollectionTagTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
+            case Matcher.BOOK_LIST_COLLECTION:
+            	return dbHandler.getTableManager(BookListCollectionTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.PROBLEMS:
                 return dbHandler.getTableManager(ProblemTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
