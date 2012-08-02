@@ -1,8 +1,10 @@
 package com.ssl.curriculum.math.presenter;
 
+import com.ssl.curriculum.math.component.flipperchildren.subviews.QuizFillInSubview;
 import com.ssl.curriculum.math.listener.ProblemLoadedListener;
 import com.ssl.curriculum.math.listener.QuizLoadedListener;
 import com.ssl.curriculum.math.model.activity.QuizActivityData;
+import com.ssl.curriculum.math.model.activity.quiz.QuizFillBlankQuestion;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 import com.ssl.curriculum.math.service.QuizQuestionsProvider;
 
@@ -12,10 +14,11 @@ public class QuizPresenter implements ProblemLoadedListener {
 	private QuizQuestionsProvider provider;
 	private QuizQuestion currentQuestion;
 	private int currentPos = 0;
-	
+    private QuizFillInSubview quizFillInSubview;
+
     public QuizPresenter(QuizActivityData qad, QuizQuestionsProvider qqp) {
     	this.quizData = qad;
-    	this.provider = qqp;
+        this.provider = qqp;
     }
     
     private void setQuizLoadedListener(QuizLoadedListener l){
@@ -34,7 +37,7 @@ public class QuizPresenter implements ProblemLoadedListener {
             }
         }).start();
     }
-    
+
     public QuizQuestion getQuestion(){
     	return this.currentQuestion;
     }
@@ -57,8 +60,20 @@ public class QuizPresenter implements ProblemLoadedListener {
     		return false;
     	}
     }
-    
-	@Override
+
+    public boolean getCurrentAnswerState(String userInput){
+    	if(userInput.equals(null) || this.getCurrentAnswer().equals(null))
+    		return false;
+    	return userInput.equals(this.getCurrentAnswer());
+    }
+
+    public String getCurrentAnswer(){
+    	if(quizData == null || quizData.size() == 0 || currentPos < 0 || currentPos >= quizData.size())
+    		return null;
+    	return ((QuizFillBlankQuestion) quizData.getQuestion(currentPos)).getAnswer();
+    }
+
+    @Override
 	public void onProblemLoaded() {
 		if(this.loadedListener != null){
 			this.loadedListener.onQuizLoaded();
