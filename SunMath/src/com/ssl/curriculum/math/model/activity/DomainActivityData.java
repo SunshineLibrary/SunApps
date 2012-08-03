@@ -1,11 +1,15 @@
 package com.ssl.curriculum.math.model.activity;
 
 public class DomainActivityData {
-	private int id = 0;
-	private int type = 0;
-    private int sectionId;
-
-    private int activityId;
+    public int type;
+    public int sectionId;
+    public int activityId;
+    public int providerId;
+    public int sequence;
+    public String name;
+    public String notes;
+    public int length;
+    public int difficulty;
 
     public DomainActivityData(int type){
 		this.type = type;
@@ -16,23 +20,4 @@ public class DomainActivityData {
         this.activityId = activityId;
     }
 
-    public void setActivityId(int activityId) {
-        this.activityId = activityId;
-    }
-
-    public int getActivityId() {
-        return activityId;
-    }
-
-    public void setId(int id){
-		this.id = id;
-	}
-
-    public int getSectionId(){
-		return sectionId;
-	}
-	
-	public int getType(){
-		return this.type;
-	}
 }

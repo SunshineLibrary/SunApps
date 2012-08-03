@@ -21,7 +21,7 @@ public class FetchEdgeTask extends AsyncTask<Void, Void, ArrayList<Edge>> {
 
     @Override
     protected ArrayList<Edge> doInBackground(Void... voids) {
-        return provider.fetchMatchedEdges(domainActivityData.getActivityId(), domainActivityData.getSectionId());
+        return provider.fetchMatchedEdges(domainActivityData.activityId, domainActivityData.sectionId);
     }
 
     @Override

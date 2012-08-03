@@ -6,9 +6,13 @@ public class VideoDomainActivityData extends DomainActivityData {
 	private String videoTitle = "";
 	private String videoDescription = "";
 	private long videoDuration = 0; //Video Duration in seconds
-	
-	
-	public VideoDomainActivityData(){
+
+
+    public VideoDomainActivityData(int sectionId, int activityId) {
+        super(sectionId, activityId);
+    }
+
+    public VideoDomainActivityData(){
 		super(Activities.TYPE_VIDEO);
 	}
 	

@@ -12,6 +12,7 @@ import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
 import com.ssl.curriculum.math.logic.ActivityFlowController;
 import com.ssl.curriculum.math.presenter.MainActivityPresenter;
 import com.ssl.curriculum.math.service.GalleryContentProvider;
+import com.ssl.curriculum.math.service.mock.MockActivityContentProvider;
 import com.ssl.curriculum.math.service.mock.MockEdgeContentProvider;
 import com.ssl.curriculum.math.task.FetchGalleryContentTask;
 
@@ -61,7 +62,7 @@ public class MainActivity extends Activity {
         presenter.bindUIElement(MainActivityPresenter.FLIPPER, viewFlipper);
         initListeners();
 
-        flipper = new ActivityFlowController(presenter, new MockEdgeContentProvider(this));
+        flipper = new ActivityFlowController(presenter, new MockEdgeContentProvider(this), new MockActivityContentProvider(this));
     }
 
 

@@ -13,7 +13,6 @@ import com.ssl.curriculum.math.listener.PageFlipListener;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.ssl.curriculum.math.model.activity.QuizDomainActivityData;
 import com.ssl.curriculum.math.model.activity.VideoDomainActivityData;
-import com.ssl.curriculum.math.service.ActivityContentProvider;
 
 import java.util.HashMap;
 
@@ -22,14 +21,12 @@ import static com.sunshine.metadata.provider.MetadataContract.Activities.*;
 public class MainActivityPresenter {
     public static String FLIPPER = "view_flipper";
 
-    private ActivityContentProvider activityProvider;
     private PageFlipListener flipListener;
     private HashMap<String, View> UIBindings = new HashMap<String, View>();
     public final MainActivity activity;
 
     public MainActivityPresenter(MainActivity activity) {
         this.activity = activity;
-        this.activityProvider = new ActivityContentProvider(this.activity);
     }
 
     public void bindUIElement(String bindKey, View UIElement) {
@@ -40,10 +37,6 @@ public class MainActivityPresenter {
         this.flipListener = pfl;
     }
 
-    public ActivityContentProvider getActvityProvider() {
-        return this.activityProvider;
-    }
-
     public void present(DomainActivityData domainActivity, int mode) {
         final ViewFlipper viewFlipper = (ViewFlipper) getFlipper();
         if (viewFlipper == null)
@@ -51,7 +44,7 @@ public class MainActivityPresenter {
 
         View activityView = null;
 
-        switch (domainActivity.getType()) {
+        switch (domainActivity.type) {
             case TYPE_VIDEO: {
                 activityView = new VideoFlipperChild(this.activity, null, (VideoDomainActivityData) domainActivity);
             }

@@ -7,6 +7,7 @@ import com.ssl.curriculum.math.model.ActivityStatus;
 import com.ssl.curriculum.math.model.Edge;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.ssl.curriculum.math.presenter.MainActivityPresenter;
+import com.ssl.curriculum.math.service.ActivityContentProvider;
 import com.ssl.curriculum.math.service.EdgeContentProvider;
 import com.ssl.curriculum.math.task.FetchActivityDataTask;
 import com.ssl.curriculum.math.task.FetchEdgeTask;
@@ -15,26 +16,39 @@ import java.util.ArrayList;
 
 public class ActivityFlowController implements EdgeReceiver, ActivityDataReceiver, PageFlipListener {
 	private ArrayList<DomainActivityData> domainActivityStack = new ArrayList<DomainActivityData>();
+
 	private int currentPosition = -1;
+
 	public ActivityStatus curStatus;
 
 	public MainActivityPresenter presenter;
     private EdgeContentProvider edgeContentProvider;
+    private ActivityContentProvider activityContentProvider;
+    private ArrayList<Edge> edges;
+    private int currentActivityId;
+    private int currentSectionId;
 
-    public ActivityFlowController(MainActivityPresenter presenter, EdgeContentProvider edgeContentProvider){
+    public ActivityFlowController(MainActivityPresenter presenter, EdgeContentProvider edgeContentProvider, ActivityContentProvider activityContentProvider){
 		this.presenter = presenter;
         this.presenter.setPageFlipListener(this);
         this.edgeContentProvider = edgeContentProvider;
+        this.activityContentProvider = activityContentProvider;
     }
 	
 	public void loadDomainActivityData(int domainSectionId, int domainActivityId){
-		DomainActivityData pseudoDataDomain = new DomainActivityData(domainSectionId, domainActivityId);
-		pseudoDataDomain.setActivityId(domainActivityId);
-		FetchEdgeTask task = new FetchEdgeTask(this.edgeContentProvider, this, pseudoDataDomain);
-		task.execute();
+        this.currentActivityId = domainSectionId;
+        currentSectionId = domainActivityId;
+        startLoadTask(domainSectionId, domainActivityId);
 	}
-	
-	@Override
+
+    private void startLoadTask(int domainSectionId, int domainActivityId) {
+        DomainActivityData pseudoDataDomain = new DomainActivityData(domainSectionId, domainActivityId);
+        pseudoDataDomain.activityId = domainActivityId;
+        FetchEdgeTask task = new FetchEdgeTask(this.edgeContentProvider, this, pseudoDataDomain);
+        task.execute();
+    }
+
+    @Override
 	public void onShowNext() {
 		if(currentPosition == domainActivityStack.size() - 1){
 			FetchEdgeTask task = new FetchEdgeTask(edgeContentProvider, this, this.domainActivityStack.get(this.currentPosition));
@@ -57,24 +71,9 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
 			 */
 		}
 	}
-	
-	public void getActivityById(int id){
-		FetchActivityDataTask task = new FetchActivityDataTask(this, this.presenter.getActvityProvider(),id);
-		task.execute();
-	}
-	
-	public void decideNextEdge(ArrayList<Edge> edges){
-		for(int i = 0; i < edges.size(); i++){
-			if(decideCondition(edges.get(i).getCondition(), curStatus)){
-				this.getActivityById(edges.get(i).getToActivityId());
-				return;
-			}
-		}
-	}
-	
-	
-	
-	public boolean decideCondition(String condition, ActivityStatus curStatus){
+
+
+    public boolean isPassToNextEdge(String condition, ActivityStatus curStatus){
 		return true;
 	}
 	
@@ -87,7 +86,15 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
 	
 	@Override
 	public void onReceivedEdges(ArrayList<Edge> edges) {
-		this.decideNextEdge(edges);
-	}
+        this.edges = edges;
+        if (edges == null || edges.size() == 0) {
+            return;
+        }
+        fetchActivity(currentActivityId);
+    }
 
+    private void fetchActivity(int currentActivityId) {
+        FetchActivityDataTask task = new FetchActivityDataTask(this, activityContentProvider, currentActivityId, currentSectionId);
+        task.execute();
+    }
 }
