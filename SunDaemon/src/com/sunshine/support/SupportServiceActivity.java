@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import com.sunshine.metadata.database.tables.ActivityTable;
@@ -27,17 +28,18 @@ public class SupportServiceActivity extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.v(getClass().getName(), "Requesting download...");
                 ContentValues values = new ContentValues();
                 values.put(Activities._DOWNLOAD_STATUS, Downloadable.STATUS.QUEUED.ordinal());
                 getContentResolver().update(Activities.CONTENT_URI, values, null, null);
             }
         });
-
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        Log.v(getClass().getName(), "Starting API sync service.");
         startService(new Intent("com.sunshine.support.action.sync"));
     }
 

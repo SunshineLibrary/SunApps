@@ -43,7 +43,9 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
 	protected Integer doInBackground(String... params) {
 		int status = SYNC_SUCCESS;
 		if (isConnected()) {
+            Log.v(getClass().getName(), "Device is connected, starting synchronization...");
 			for (String tableName: SYNCED_TABLES) {
+                Log.v(getClass().getName(), "Synchronizing table: " + tableName);
 				Table table = dbHandler.getTableManager(tableName);
 				TableSyncManager syncManager = new TableSyncManager(table, syncTable);
 				if (!syncManager.sync() ) {
