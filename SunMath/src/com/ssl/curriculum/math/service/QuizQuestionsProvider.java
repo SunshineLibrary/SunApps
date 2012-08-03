@@ -25,7 +25,7 @@ public class QuizQuestionsProvider {
     
     private void loadQuestionChoices(QuizMultichoiceQuestion question, String answer){
     	final String[] columns = new String[]{ProblemChoices._BODY, ProblemChoices._CHOICE};
-    	Cursor cursor = contentResolver.query(ProblemChoices.CONTENT_URI, columns,  ProblemChoices._PARENT_ID + " = " + question.getUniqueId(), null, null);
+    	Cursor cursor = contentResolver.query(ProblemChoices.CONTENT_URI, columns, null, null, null);
     	if(cursor != null && cursor.moveToFirst())
     		do{
     			int bodyIndex = cursor.getColumnIndex(ProblemChoices._BODY);
@@ -37,21 +37,24 @@ public class QuizQuestionsProvider {
     
     public void loadQuizQuestions(QuizActivityData quizData) {
         final String[] columns = new String[]{MetadataContract.Problems._ID, MetadataContract.Problems._TYPE, MetadataContract.Problems._BODY, MetadataContract.Problems._ANSWER};
-        Cursor cursor = contentResolver.query(MetadataContract.Problems.CONTENT_URI, columns,  Problems._PARENT_ID + " = " + quizData.getUniqueId(), null, null);
+        Cursor cursor = contentResolver.query(MetadataContract.Problems.CONTENT_URI, columns,  null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
             	int idIndex = cursor.getColumnIndex(MetadataContract.Problems._ID);
                 int bodyIndex = cursor.getColumnIndex(MetadataContract.Problems._BODY);
                 int answerIndex = cursor.getColumnIndex(MetadataContract.Problems._ANSWER);
                 int typeIndex = cursor.getColumnIndex(MetadataContract.Problems._TYPE);
-                
+
+
                 QuizQuestion question = null;
-                if(Problems.getInternalType(cursor.getString(typeIndex)) == Problems.TYPE_FILLBLANK){
-                	question = createFillBlankQuestion(cursor.getInt(idIndex), cursor.getString(bodyIndex), cursor.getString(answerIndex));
-                }else if(Problems.getInternalType(cursor.getString(typeIndex)) == Problems.TYPE_MULTICHOICE){
-                	question = createMultichoiceQuestion(cursor.getInt(idIndex),cursor.getString(bodyIndex));
-                	loadQuestionChoices( (QuizMultichoiceQuestion)question , cursor.getString(answerIndex));
-                }
+                String string = cursor.getString(bodyIndex);
+                System.out.println("------------string = " + string);
+                question = createFillBlankQuestion(cursor.getInt(idIndex), string, cursor.getString(answerIndex));
+//                if(Problems.getInternalType(cursor.getString(typeIndex)) == Problems.TYPE_FILLBLANK){
+//                }else if(Problems.getInternalType(cursor.getString(typeIndex)) == Problems.TYPE_MULTICHOICE){
+//                	question = createMultichoiceQuestion(cursor.getInt(idIndex),cursor.getString(bodyIndex));
+//                	loadQuestionChoices( (QuizMultichoiceQuestion)question , cursor.getString(answerIndex));
+//                }
                 if (question != null) {
                     quizData.addQuestion(question);
                 }

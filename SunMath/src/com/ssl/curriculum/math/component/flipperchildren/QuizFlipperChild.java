@@ -11,7 +11,6 @@ import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 import com.ssl.curriculum.math.presenter.QuizPresenter;
 import com.ssl.curriculum.math.service.QuizQuestionsProvider;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -19,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-@SuppressLint("ViewConstructor")
 public class QuizFlipperChild extends LinearLayout implements QuizLoadedListener{
 	private QuizPresenter presenter;
 	private QuizActivityData quiz;
@@ -50,7 +48,7 @@ public class QuizFlipperChild extends LinearLayout implements QuizLoadedListener
 	}
 	
 	private void initQuestion(){
-		if(this.presenter.toFirst())
+        if(presenter.toFirst())
 			this.present(presenter.getQuestion());
 	}
 	
@@ -63,7 +61,8 @@ public class QuizFlipperChild extends LinearLayout implements QuizLoadedListener
 			}break;
 			case QuizQuestion.TYPE_FILLBLANKS:{
 				QuizFillInSubview fillin = new QuizFillInSubview(getContext());
-				fillin.loadQuiz((QuizFillBlankQuestion) question);
+                fillin.setQuizPresenter(presenter);
+                fillin.loadQuiz((QuizFillBlankQuestion) question);
 				questionView.addView(fillin);
 			}break;
 			default:break;

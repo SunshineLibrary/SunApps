@@ -1,7 +1,7 @@
 package com.sunshine.metadata.database.tables;
 
 import com.sunshine.metadata.database.MetadataDBHandler;
-import com.sunshine.metadata.provider.MetadataContract.Tags;;
+import com.sunshine.metadata.provider.MetadataContract.Tags;
 
 public class TagTable extends AbstractTable {
 
