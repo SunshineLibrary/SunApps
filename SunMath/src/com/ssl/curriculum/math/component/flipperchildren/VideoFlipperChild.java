@@ -9,14 +9,14 @@ import android.widget.TextView;
 
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.videoview.VideoPlayer;
-import com.ssl.curriculum.math.model.activity.VideoActivityData;
+import com.ssl.curriculum.math.model.activity.VideoDomainActivityData;
 
 public class VideoFlipperChild extends LinearLayout {
 	private VideoPlayer videoPlayer;
 	private Context context;
-	private VideoActivityData instData;
+	private VideoDomainActivityData instData;
 	
-	public VideoFlipperChild(Context context, AttributeSet attrs, VideoActivityData vad) { 
+	public VideoFlipperChild(Context context, AttributeSet attrs, VideoDomainActivityData vad) {
 		super(context, attrs);
 		this.context = context;
 		this.instData = vad;

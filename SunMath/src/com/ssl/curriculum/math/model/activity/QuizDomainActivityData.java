@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
 import com.ssl.curriculum.math.model.activity.quiz.*;
 
-public class QuizActivityData extends ActivityData {
+public class QuizDomainActivityData extends DomainActivityData {
 	private ArrayList<QuizQuestion> questions = new ArrayList<QuizQuestion>();
 	
-	public QuizActivityData() {
+	public QuizDomainActivityData() {
 		super(Activities.TYPE_QUIZ);
 	}
 	

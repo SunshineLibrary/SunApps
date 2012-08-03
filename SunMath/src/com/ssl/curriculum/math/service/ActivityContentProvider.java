@@ -4,10 +4,9 @@ package com.ssl.curriculum.math.service;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import com.ssl.curriculum.math.model.activity.ActivityData;
-import com.ssl.curriculum.math.model.activity.QuizActivityData;
+import com.ssl.curriculum.math.model.activity.DomainActivityData;
+import com.ssl.curriculum.math.model.activity.QuizDomainActivityData;
 import com.ssl.curriculum.math.model.activity.quiz.QuizFillBlankQuestion;
-import com.ssl.curriculum.math.model.activity.quiz.QuizMultichoiceQuestion;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
 
 public class ActivityContentProvider {
@@ -23,7 +22,7 @@ public class ActivityContentProvider {
         return cr.query(Activities.CONTENT_URI, columns, queryString, null, null);
     }
 
-    public ActivityData fetchActivityById(int id) {
+    public DomainActivityData fetchActivityById(int id) {
         /** Debugging use only, this gives an activity by type every node **/
         id = (int) Math.round(Math.random() * 100);
         if (id % 4 == 0) {
@@ -31,7 +30,7 @@ public class ActivityContentProvider {
 //            vad.initVideoMetadata("This is just a test" + id, "Blah", 1000);
 //            return vad;
         } else if (id % 4 == 1 || id % 4 == 2) {
-            QuizActivityData activityData = new QuizActivityData();
+            QuizDomainActivityData activityData = new QuizDomainActivityData();
 //            activityData.addQuestion(new QuizMultichoiceQuestion());
 //            activityData.addQuestion(new QuizMultichoiceQuestion());
             activityData.addQuestion(new QuizFillBlankQuestion());
@@ -39,7 +38,7 @@ public class ActivityContentProvider {
             return activityData;
         } else {
         }
-        return new ActivityData(Activities.TYPE_GALLERY);
+        return new DomainActivityData(Activities.TYPE_GALLERY);
         /*
           Cursor cursor = this.query(new String[] {Activities._ID, Activities._NAME, Activities._TYPE, Activities._NOTES, Activities._DURATION, Activities._SECTION_ID},
                Activities._ID + " = " + id);

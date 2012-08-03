@@ -2,13 +2,13 @@ package com.ssl.curriculum.math.model.activity;
 
 import com.sunshine.metadata.provider.MetadataContract.Activities;
 
-public class VideoActivityData extends ActivityData{
+public class VideoDomainActivityData extends DomainActivityData {
 	private String videoTitle = "";
 	private String videoDescription = "";
 	private long videoDuration = 0; //Video Duration in seconds
 	
 	
-	public VideoActivityData(){
+	public VideoDomainActivityData(){
 		super(Activities.TYPE_VIDEO);
 	}
 	

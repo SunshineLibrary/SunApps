@@ -5,7 +5,7 @@ public class QuizQuestion {
 	public static final int TYPE_FILLBLANKS = 1;
 	
 	private int type;
-	private int dbid = 0;
+	private int id = 0;
 	
 	public QuizQuestion(int type){
 		this.type = type;
@@ -16,10 +16,10 @@ public class QuizQuestion {
 	}
 	
 	public void setUniqueId(int id){
-		this.dbid = id;
+		this.id = id;
 	}
 	
 	public int getUniqueId(){
-		return this.dbid;
+		return this.id;
 	}
 }

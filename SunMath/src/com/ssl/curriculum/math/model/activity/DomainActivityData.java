@@ -1,11 +1,11 @@
 package com.ssl.curriculum.math.model.activity;
 
-public class ActivityData {
+public class DomainActivityData {
 	protected int dbid = 0;
 	protected int type = 0;
 	protected int parent = 0;
 	
-	public ActivityData(int type){
+	public DomainActivityData(int type){
 		this.type = type;
 	}
 	

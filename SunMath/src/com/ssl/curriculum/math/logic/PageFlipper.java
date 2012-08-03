@@ -5,7 +5,7 @@ import com.ssl.curriculum.math.listener.EdgeReceiver;
 import com.ssl.curriculum.math.listener.PageFlipListener;
 import com.ssl.curriculum.math.model.ActivityStatus;
 import com.ssl.curriculum.math.model.Edge;
-import com.ssl.curriculum.math.model.activity.ActivityData;
+import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.ssl.curriculum.math.presenter.MainActivityPresenter;
 import com.ssl.curriculum.math.task.FetchActivityDataTask;
 import com.ssl.curriculum.math.task.FetchEdgeTask;
@@ -13,7 +13,7 @@ import com.ssl.curriculum.math.task.FetchEdgeTask;
 import java.util.ArrayList;
 
 public class PageFlipper implements EdgeReceiver, ActivityDataReceiver, PageFlipListener {
-	private ArrayList<ActivityData> activityStack = new ArrayList<ActivityData>();
+	private ArrayList<DomainActivityData> domainActivityStack = new ArrayList<DomainActivityData>();
 	private int currentPosition = 0;
 	public ActivityStatus curStatus;
 	public MainActivityPresenter presenter;
@@ -23,22 +23,22 @@ public class PageFlipper implements EdgeReceiver, ActivityDataReceiver, PageFlip
 		this.presenter.setPageFlipListener(this);
 	}
 	
-	public void init(int id){
-		ActivityData pseudoData = new ActivityData(-1);
-		pseudoData.setUniqueId(id);
-		FetchEdgeTask task = new FetchEdgeTask(presenter.getEdgeProvider(), pseudoData, this);
+	public void loadDomainActivityData(int domainActivityId){
+		DomainActivityData pseudoDataDomain = new DomainActivityData(-1);
+		pseudoDataDomain.setUniqueId(domainActivityId);
+		FetchEdgeTask task = new FetchEdgeTask(presenter.getEdgeProvider(), pseudoDataDomain, this);
 		task.execute();
 		currentPosition = -1;
 	}
 	
 	@Override
 	public void onShowNext() {
-		if(currentPosition == activityStack.size() - 1){
-			FetchEdgeTask task = new FetchEdgeTask(presenter.getEdgeProvider(), this.activityStack.get(this.currentPosition), this);
+		if(currentPosition == domainActivityStack.size() - 1){
+			FetchEdgeTask task = new FetchEdgeTask(presenter.getEdgeProvider(), this.domainActivityStack.get(this.currentPosition), this);
 			task.execute();
 		}else{
 			currentPosition++;
-			presenter.present(this.activityStack.get(currentPosition),1);
+			presenter.present(this.domainActivityStack.get(currentPosition),1);
 		}
 	}
 	
@@ -46,7 +46,7 @@ public class PageFlipper implements EdgeReceiver, ActivityDataReceiver, PageFlip
 	public void onShowPrevious(){
 		if(currentPosition > 0){
 			currentPosition --;
-			presenter.present(activityStack.get(currentPosition),-1);
+			presenter.present(domainActivityStack.get(currentPosition),-1);
 		}else{
 			/** 
 			 * We are at the start of the stack (download unit) and cannot go back further without extra measures
@@ -72,17 +72,14 @@ public class PageFlipper implements EdgeReceiver, ActivityDataReceiver, PageFlip
 	
 	
 	public boolean decideCondition(String condition, ActivityStatus curStatus){
-		/**
-		 * TODO decide which edge to be selected
-		 */
-		return true;	
+		return true;
 	}
 	
 	@Override
-	public void onReceivedActivityData(ActivityData data){
-		activityStack.add(data);
+	public void onReceivedActivityData(DomainActivityData dataDomain){
+		domainActivityStack.add(dataDomain);
 		currentPosition++;
-		presenter.present(data, 1);
+		presenter.present(dataDomain, 1);
 	}
 	
 	@Override

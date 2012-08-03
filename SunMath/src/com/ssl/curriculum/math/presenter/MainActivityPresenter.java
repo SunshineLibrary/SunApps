@@ -1,22 +1,18 @@
 package com.ssl.curriculum.math.presenter;
 
-import android.content.Intent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.activity.MainActivity;
-import com.ssl.curriculum.math.activity.NaviActivity;
-import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.component.flipperchildren.GalleryThumbnailPageFlipperChild;
 import com.ssl.curriculum.math.component.flipperchildren.QuizFlipperChild;
 import com.ssl.curriculum.math.component.flipperchildren.VideoFlipperChild;
 import com.ssl.curriculum.math.listener.PageFlipListener;
-import com.ssl.curriculum.math.model.activity.ActivityData;
-import com.ssl.curriculum.math.model.activity.QuizActivityData;
-import com.ssl.curriculum.math.model.activity.VideoActivityData;
+import com.ssl.curriculum.math.model.activity.DomainActivityData;
+import com.ssl.curriculum.math.model.activity.QuizDomainActivityData;
+import com.ssl.curriculum.math.model.activity.VideoDomainActivityData;
 import com.ssl.curriculum.math.service.ActivityContentProvider;
 import com.ssl.curriculum.math.service.EdgeContentProvider;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
@@ -40,7 +36,7 @@ public class MainActivityPresenter {
     private ActivityContentProvider activityProvider;
     private PageFlipListener flipListener;
     private HashMap<String, View> UIBindings = new HashMap<String, View>();
-    private final MainActivity activity;
+    public final MainActivity activity;
 
     public MainActivityPresenter(MainActivity activity) {
         this.activity = activity;
@@ -64,16 +60,16 @@ public class MainActivityPresenter {
         return this.activityProvider;
     }
 
-    public void present(ActivityData activity, int mode) {
-        final ViewFlipper viewFlipper = (ViewFlipper) this.UIBindings.get(FLIPPER);
+    public void present(DomainActivityData domainActivity, int mode) {
+        final ViewFlipper viewFlipper = (ViewFlipper) getFlipper();
         if (viewFlipper == null)
             return;
 
         View activityView = null;
 
-        switch (activity.getType()) {
+        switch (domainActivity.getType()) {
             case TYPE_VIDEO: {
-                activityView = new VideoFlipperChild(this.activity, null, (VideoActivityData) activity);
+                activityView = new VideoFlipperChild(this.activity, null, (VideoDomainActivityData) domainActivity);
             }
             break;
             case TYPE_TEXT: {
@@ -92,7 +88,7 @@ public class MainActivityPresenter {
             }
             break;
             case TYPE_QUIZ: {
-                activityView = new QuizFlipperChild(this.activity, null, (QuizActivityData) activity);
+                activityView = new QuizFlipperChild(this.activity, null, (QuizDomainActivityData) domainActivity);
             }
             break;
             case TYPE_GALLERY: {
@@ -120,36 +116,12 @@ public class MainActivityPresenter {
         }
     }
 
-    public void initListeners() {
-        final FlipAnimationManager flipAnimationManager = FlipAnimationManager.getInstance(this.activity);
-        final MainActivityPresenter self = this;
-        final ViewFlipper viewFlipper = (ViewFlipper) this.UIBindings.get(FLIPPER);
-        try {
-            this.UIBindings.get(BTN_LEFT).setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    viewFlipper.setInAnimation(flipAnimationManager.getFlipInFromRightAnimation());
-                    viewFlipper.setOutAnimation(flipAnimationManager.getFlipOutToLeftAnimation());
-                    self.flipListener.onShowPrevious();
-                }
-            });
-
-            this.UIBindings.get(BTN_RIGHT).setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    viewFlipper.setInAnimation(flipAnimationManager.getFlipInFromLeftAnimation());
-                    viewFlipper.setOutAnimation(flipAnimationManager.getFlipOutToRightAnimation());
-                    self.flipListener.onShowNext();
-                }
-            });
-
-            this.UIBindings.get(BTN_NAVI).setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                	self.activity.finish();
-                    //Intent intent = new Intent(self.activity, NaviActivity.class);
-                    //self.activity.startActivity(intent);
-                }
-            });
-        } catch (NullPointerException e) {
-            System.out.println("Exception: Presenter not properly initialized.");
-        }
+    public PageFlipListener getFlipListener(MainActivityPresenter self) {
+        return self.flipListener;
     }
+
+    private View getFlipper() {
+        return this.UIBindings.get(FLIPPER);
+    }
+
 }

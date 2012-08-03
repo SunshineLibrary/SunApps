@@ -3,20 +3,20 @@ package com.ssl.curriculum.math.presenter;
 import com.ssl.curriculum.math.component.flipperchildren.subviews.QuizFillInSubview;
 import com.ssl.curriculum.math.listener.ProblemLoadedListener;
 import com.ssl.curriculum.math.listener.QuizLoadedListener;
-import com.ssl.curriculum.math.model.activity.QuizActivityData;
+import com.ssl.curriculum.math.model.activity.QuizDomainActivityData;
 import com.ssl.curriculum.math.model.activity.quiz.QuizFillBlankQuestion;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 import com.ssl.curriculum.math.service.QuizQuestionsProvider;
 
 public class QuizPresenter implements ProblemLoadedListener {
     private QuizLoadedListener loadedListener = null;
-    private QuizActivityData quizData;
+    private QuizDomainActivityData quizData;
     private QuizQuestionsProvider provider;
     private QuizQuestion currentQuestion;
     private int currentPos = 0;
     private QuizFillInSubview quizFillInSubview;
 
-    public QuizPresenter(QuizActivityData qad, QuizQuestionsProvider qqp) {
+    public QuizPresenter(QuizDomainActivityData qad, QuizQuestionsProvider qqp) {
         this.quizData = qad;
         this.provider = qqp;
         loadQuizQuestions();
