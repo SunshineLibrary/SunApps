@@ -54,12 +54,12 @@ public class ActivityContentProvider {
                   if(type == Activities.T){
                       VideoActivityData vad = new VideoActivityData();
                       vad.initVideoMetadata(cursor.getString(nameIndex), cursor.getString(notesIndex), cursor.getInt(lengthIndex));
-                      vad.setUniqueId(cursor.getInt(idIndex));
+                      vad.setId(cursor.getInt(idIndex));
                       vad.setSectionId(cursor.getInt(sectionIndex));
                       return vad;
                   }else{
                       ActivityData ad = new ActivityData(type);
-                      ad.setUniqueId(cursor.getInt(idIndex));
+                      ad.setId(cursor.getInt(idIndex));
                       ad.setSectionId(cursor.getInt(sectionIndex));
                   }
               }while(cursor.moveToNext());

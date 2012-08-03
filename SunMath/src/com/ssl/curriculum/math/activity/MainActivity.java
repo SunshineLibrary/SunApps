@@ -9,19 +9,21 @@ import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
-import com.ssl.curriculum.math.logic.PageFlipper;
+import com.ssl.curriculum.math.logic.ActivityFlowController;
 import com.ssl.curriculum.math.presenter.MainActivityPresenter;
 import com.ssl.curriculum.math.service.GalleryContentProvider;
+import com.ssl.curriculum.math.service.mock.MockEdgeContentProvider;
 import com.ssl.curriculum.math.task.FetchGalleryContentTask;
 
 public class MainActivity extends Activity {
 
-    private MainActivityPresenter presenter;
-    private PageFlipper flipper;
+    private ActivityFlowController flipper;
     private ImageView leftBtn;
     private ImageView rightBtn;
     private ImageView naviBtn;
     private ViewFlipper viewFlipper;
+
+    private MainActivityPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,8 +45,7 @@ public class MainActivity extends Activity {
     }
 
     private void getDomainActivity(Intent intent) {
-        int domainActivityId = intent.getExtras().getInt("activityId");
-        flipper.loadDomainActivityData(domainActivityId);
+        flipper.loadDomainActivityData(intent.getExtras().getInt("sectionId"), intent.getExtras().getInt("activityId"));
     }
 
     private void initUI() {
@@ -60,7 +61,7 @@ public class MainActivity extends Activity {
         presenter.bindUIElement(MainActivityPresenter.FLIPPER, viewFlipper);
         initListeners();
 
-        flipper = new PageFlipper(presenter);
+        flipper = new ActivityFlowController(presenter, new MockEdgeContentProvider(this));
     }
 
 

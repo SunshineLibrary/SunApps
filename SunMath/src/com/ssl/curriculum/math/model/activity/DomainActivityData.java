@@ -1,28 +1,35 @@
 package com.ssl.curriculum.math.model.activity;
 
 public class DomainActivityData {
-	protected int dbid = 0;
-	protected int type = 0;
-	protected int parent = 0;
-	
-	public DomainActivityData(int type){
+	private int id = 0;
+	private int type = 0;
+    private int sectionId;
+
+    private int activityId;
+
+    public DomainActivityData(int type){
 		this.type = type;
 	}
-	
-	public void setUniqueId(int id){
-		this.dbid = id;
+
+    public DomainActivityData(int sectionId, int activityId) {
+        this.sectionId = sectionId;
+        this.activityId = activityId;
+    }
+
+    public void setActivityId(int activityId) {
+        this.activityId = activityId;
+    }
+
+    public int getActivityId() {
+        return activityId;
+    }
+
+    public void setId(int id){
+		this.id = id;
 	}
-	
-	public int getUniqueId(){
-		return this.dbid;
-	}
-	
-	public void setSectionId(int section){
-		this.parent = section;
-	}
-	
-	public int getSectionId(){
-		return parent;
+
+    public int getSectionId(){
+		return sectionId;
 	}
 	
 	public int getType(){

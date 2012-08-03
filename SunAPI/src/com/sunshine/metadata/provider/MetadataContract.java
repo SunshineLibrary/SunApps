@@ -112,6 +112,7 @@ public final class MetadataContract {
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("activities").build();
 
+        public static final int TYPE_NONE = -1;
         public static final int TYPE_TEXT = 0;
         public static final int TYPE_AUDIO = 1;
         public static final int TYPE_VIDEO = 2;

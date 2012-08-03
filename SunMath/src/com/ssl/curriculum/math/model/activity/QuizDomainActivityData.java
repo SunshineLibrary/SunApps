@@ -1,9 +1,9 @@
 package com.ssl.curriculum.math.model.activity;
 
-import java.util.ArrayList;
-
+import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
-import com.ssl.curriculum.math.model.activity.quiz.*;
+
+import java.util.ArrayList;
 
 public class QuizDomainActivityData extends DomainActivityData {
 	private ArrayList<QuizQuestion> questions = new ArrayList<QuizQuestion>();
