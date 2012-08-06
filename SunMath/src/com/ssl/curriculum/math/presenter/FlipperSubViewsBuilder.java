@@ -28,42 +28,34 @@ public class FlipperSubViewsBuilder {
     }
 
     public void buildViewToFlipper(DomainActivityData domainActivity) {
-        View view = null;
-
+        View view;
         switch (domainActivity.type) {
-            case TYPE_VIDEO: {
+            case TYPE_VIDEO:
                 view = new VideoFlipperChild(this.context, null, (VideoDomainActivityData) domainActivity);
-            }
-            break;
-            case TYPE_TEXT: {
+                break;
+            case TYPE_TEXT:
                 view = new TextView(this.context);
                 ((TextView) view).setText("TextTypedObject - Damn");
-            }
-            break;
-            case TYPE_AUDIO: {
+                break;
+            case TYPE_AUDIO:
                 view = new TextView(this.context);
                 ((TextView) view).setText("Audio - Wahoo!");
-            }
-            break;
-            case TYPE_HTML: {
+                break;
+            case TYPE_HTML:
                 view = new TextView(this.context);
                 ((TextView) view).setText("HTML");
-            }
-            break;
-            case TYPE_QUIZ: {
+                break;
+            case TYPE_QUIZ:
                 view = new QuizFlipperChild(this.context, null, (QuizDomainActivityData) domainActivity);
-            }
-            break;
-            case TYPE_GALLERY: {
+                break;
+            case TYPE_GALLERY:
                 GalleryThumbnailPageFlipperChild galleryThumbnailPage = new GalleryThumbnailPageFlipperChild(this.context);
                 galleryThumbnailPage.setGalleryItemClickedListener(galleryThumbnailItemClickListener);
                 view = galleryThumbnailPage;
-            }
-            break;
-            default: {
+                break;
+            default:
                 view = new TextView(this.context);
                 ((TextView) view).setText("You should never see this. Probably.");
-            }
         }
         viewFlipper.addView(view, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
     }

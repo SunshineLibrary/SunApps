@@ -9,7 +9,7 @@ import com.ssl.curriculum.math.model.activity.quiz.QuizFillBlankQuestion;
 import com.ssl.curriculum.math.service.ActivityContentProvider;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
 
-public class MockActivityContentProvider extends ActivityContentProvider{
+public class MockActivityContentProvider extends ActivityContentProvider {
 
     private Context context;
 
@@ -24,14 +24,14 @@ public class MockActivityContentProvider extends ActivityContentProvider{
             VideoDomainActivityData vad = new VideoDomainActivityData();
             vad.initVideoMetadata("This is just a test" + activityId, "Blah", 1000);
             return vad;
-        } else if (activityId % 4 == 1 || activityId % 4 == 2) {
+        }
+        if (activityId % 4 == 1 || activityId % 4 == 2) {
             QuizDomainActivityData activityData = new QuizDomainActivityData();
 //            activityData.addQuestion(new QuizMultichoiceQuestion());
 //            activityData.addQuestion(new QuizMultichoiceQuestion());
             activityData.addQuestion(new QuizFillBlankQuestion());
             activityData.addQuestion(new QuizFillBlankQuestion());
             return activityData;
-        } else {
         }
         return new DomainActivityData(Activities.TYPE_GALLERY);
     }

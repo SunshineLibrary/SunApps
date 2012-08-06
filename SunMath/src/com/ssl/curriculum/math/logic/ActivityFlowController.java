@@ -3,6 +3,7 @@ package com.ssl.curriculum.math.logic;
 import com.ssl.curriculum.math.listener.ActivityDataReceiver;
 import com.ssl.curriculum.math.listener.EdgeReceiver;
 import com.ssl.curriculum.math.listener.PageFlipListener;
+import com.ssl.curriculum.math.logic.strategy.FetchNextDomainActivityStrategyImpl;
 import com.ssl.curriculum.math.model.Edge;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.ssl.curriculum.math.presenter.FlipperSubViewsBuilder;
@@ -12,56 +13,45 @@ import java.util.ArrayList;
 
 public class ActivityFlowController implements EdgeReceiver, ActivityDataReceiver, PageFlipListener {
     private ArrayList<DomainActivityData> domainActivityStack = new ArrayList<DomainActivityData>();
+    private ArrayList<Edge> edges;
 
     private FlipperSubViewsBuilder flipperSubViewsBuilder;
     private FetchActivityTaskManager fetchActivityTaskManager;
-
-    private ArrayList<Edge> edges;
 
     private int currentActivityId;
     private int currentSectionId;
 
     private int currentPosition = -1;
+    private FetchNextDomainActivityStrategy fetchNextDomainActivityStrategy;
 
     public ActivityFlowController(FlipperSubViewsBuilder flipperSubViewsBuilder, FetchActivityTaskManager fetchActivityTaskManager) {
         this.flipperSubViewsBuilder = flipperSubViewsBuilder;
         this.fetchActivityTaskManager = fetchActivityTaskManager;
+        initStrategy();
+    }
+
+    private void initStrategy() {
+        fetchNextDomainActivityStrategy = new FetchNextDomainActivityStrategyImpl();
     }
 
     public void loadDomainActivityData(int domainSectionId, int domainActivityId) {
         currentActivityId = domainSectionId;
         currentSectionId = domainActivityId;
-        startLoadTask(domainSectionId, domainActivityId);
+        loadActivityAndEdges(domainSectionId, domainActivityId);
     }
 
-    private void startLoadTask(int domainSectionId, int domainActivityId) {
+    private void loadActivityAndEdges(int domainSectionId, int domainActivityId) {
         fetchActivityTaskManager.fetchEdge(this, domainSectionId, domainActivityId);
         fetchActivityTaskManager.fetchDomainActivity(this, currentSectionId, currentActivityId);
     }
 
-    @Override
-    public void onShowNext() {
-        if (isLastActivity() && canGoToNextActivity()) {
-            fetchActivityFromRemote();
-            return;
-        }
-        currentPosition++;
-        flipperSubViewsBuilder.buildViewToFlipper(domainActivityStack.get(currentPosition));
-    }
-
-    private boolean canGoToNextActivity() {
-        return true;
-    }
-
     private void fetchActivityFromRemote() {
-        DomainActivityData nextActivityData = getNextActivityDataFromEdges();
-        fetchActivityTaskManager.fetchDomainActivity(this, nextActivityData.sectionId, nextActivityData.activityId);
-        fetchActivityTaskManager.fetchEdge(this, nextActivityData.activityId, nextActivityData.sectionId);
+        DomainActivityData nextActivityData = fetchNextDomainActivityStrategy.getNextDomainActivityData(getCurrentActivityData(), edges);
+        loadActivityAndEdges(nextActivityData.sectionId, nextActivityData.activityId);
     }
 
-    private DomainActivityData getNextActivityDataFromEdges() {
-        // according to the edges and each condition
-        return new DomainActivityData(1, 2);
+    private DomainActivityData getCurrentActivityData() {
+        return domainActivityStack.get(currentPosition);
     }
 
     private boolean isLastActivity() {
@@ -72,7 +62,17 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     public void onShowPrevious() {
         if(currentPosition == 0) return;
         currentPosition--;
-        flipperSubViewsBuilder.buildViewToFlipper(domainActivityStack.get(currentPosition));
+        flipperSubViewsBuilder.buildViewToFlipper(getCurrentActivityData());
+    }
+
+    @Override
+    public void onShowNext() {
+        if (isLastActivity() && fetchNextDomainActivityStrategy.canGoToNextActivity(getCurrentActivityData(), edges)) {
+            fetchActivityFromRemote();
+            return;
+        }
+        currentPosition++;
+        flipperSubViewsBuilder.buildViewToFlipper(getCurrentActivityData());
     }
 
     @Override
