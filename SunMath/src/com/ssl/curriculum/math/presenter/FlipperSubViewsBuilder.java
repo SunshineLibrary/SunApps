@@ -18,14 +18,17 @@ import java.util.HashMap;
 
 import static com.sunshine.metadata.provider.MetadataContract.Activities.*;
 
-public class MainActivityPresenter {
+public class FlipperSubViewsBuilder {
     public static String FLIPPER = "view_flipper";
+
 
     private PageFlipListener flipListener;
     private HashMap<String, View> UIBindings = new HashMap<String, View>();
     public final MainActivity activity;
 
-    public MainActivityPresenter(MainActivity activity) {
+
+
+    public FlipperSubViewsBuilder(MainActivity activity) {
         this.activity = activity;
     }
 
@@ -93,7 +96,7 @@ public class MainActivityPresenter {
         }
     }
 
-    public PageFlipListener getFlipListener(MainActivityPresenter self) {
+    public PageFlipListener getFlipListener(FlipperSubViewsBuilder self) {
         return self.flipListener;
     }
 

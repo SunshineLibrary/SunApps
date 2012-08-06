@@ -10,7 +10,7 @@ import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
 import com.ssl.curriculum.math.logic.ActivityFlowController;
-import com.ssl.curriculum.math.presenter.MainActivityPresenter;
+import com.ssl.curriculum.math.presenter.FlipperSubViewsBuilder;
 import com.ssl.curriculum.math.service.GalleryContentProvider;
 import com.ssl.curriculum.math.service.mock.MockActivityContentProvider;
 import com.ssl.curriculum.math.service.mock.MockEdgeContentProvider;
@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
     private ImageView naviBtn;
     private ViewFlipper viewFlipper;
 
-    private MainActivityPresenter presenter;
+    private FlipperSubViewsBuilder flipperSubViewsBuilder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,8 @@ public class MainActivity extends Activity {
     }
 
     private void getDomainActivity(Intent intent) {
-        flipper.loadDomainActivityData(intent.getExtras().getInt("sectionId"), intent.getExtras().getInt("activityId"));
+//        flipper.loadDomainActivityData(intent.getExtras().getInt("sectionId"), intent.getExtras().getInt("activityId"));
+        flipper.loadDomainActivityData(0, 0);
     }
 
     private void initUI() {
@@ -58,11 +59,11 @@ public class MainActivity extends Activity {
     }
 
     private void initComponents() {
-        presenter = new MainActivityPresenter(this);
-        presenter.bindUIElement(MainActivityPresenter.FLIPPER, viewFlipper);
+        flipperSubViewsBuilder = new FlipperSubViewsBuilder(this);
+        flipperSubViewsBuilder.bindUIElement(FlipperSubViewsBuilder.FLIPPER, viewFlipper);
         initListeners();
 
-        flipper = new ActivityFlowController(presenter, new MockEdgeContentProvider(this), new MockActivityContentProvider(this));
+        flipper = new ActivityFlowController(flipperSubViewsBuilder, new MockEdgeContentProvider(this), new MockActivityContentProvider(this));
     }
 
 
@@ -83,7 +84,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 viewFlipper.setInAnimation(flipAnimationManager.getFlipInFromRightAnimation());
                 viewFlipper.setOutAnimation(flipAnimationManager.getFlipOutToLeftAnimation());
-                presenter.getFlipListener(presenter).onShowPrevious();
+                flipperSubViewsBuilder.getFlipListener(flipperSubViewsBuilder).onShowPrevious();
             }
         });
 
@@ -91,7 +92,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 viewFlipper.setInAnimation(flipAnimationManager.getFlipInFromLeftAnimation());
                 viewFlipper.setOutAnimation(flipAnimationManager.getFlipOutToRightAnimation());
-                presenter.getFlipListener(presenter).onShowNext();
+                flipperSubViewsBuilder.getFlipListener(flipperSubViewsBuilder).onShowNext();
             }
         });
 

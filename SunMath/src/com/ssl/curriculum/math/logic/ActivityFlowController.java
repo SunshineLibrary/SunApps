@@ -6,7 +6,7 @@ import com.ssl.curriculum.math.listener.PageFlipListener;
 import com.ssl.curriculum.math.model.ActivityStatus;
 import com.ssl.curriculum.math.model.Edge;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
-import com.ssl.curriculum.math.presenter.MainActivityPresenter;
+import com.ssl.curriculum.math.presenter.FlipperSubViewsBuilder;
 import com.ssl.curriculum.math.service.ActivityContentProvider;
 import com.ssl.curriculum.math.service.EdgeContentProvider;
 import com.ssl.curriculum.math.task.FetchActivityDataTask;
@@ -21,16 +21,16 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
 
 	public ActivityStatus curStatus;
 
-	public MainActivityPresenter presenter;
+	public FlipperSubViewsBuilder flipperSubViewsBuilder;
     private EdgeContentProvider edgeContentProvider;
     private ActivityContentProvider activityContentProvider;
     private ArrayList<Edge> edges;
     private int currentActivityId;
     private int currentSectionId;
 
-    public ActivityFlowController(MainActivityPresenter presenter, EdgeContentProvider edgeContentProvider, ActivityContentProvider activityContentProvider){
-		this.presenter = presenter;
-        this.presenter.setPageFlipListener(this);
+    public ActivityFlowController(FlipperSubViewsBuilder flipperSubViewsBuilder, EdgeContentProvider edgeContentProvider, ActivityContentProvider activityContentProvider){
+		this.flipperSubViewsBuilder = flipperSubViewsBuilder;
+        this.flipperSubViewsBuilder.setPageFlipListener(this);
         this.edgeContentProvider = edgeContentProvider;
         this.activityContentProvider = activityContentProvider;
     }
@@ -42,6 +42,11 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
 	}
 
     private void startLoadTask(int domainSectionId, int domainActivityId) {
+        fetchEdgesFromActivity(domainSectionId, domainActivityId);
+        fetchActivity(currentActivityId);
+    }
+
+    private void fetchEdgesFromActivity(int domainSectionId, int domainActivityId) {
         DomainActivityData pseudoDataDomain = new DomainActivityData(domainSectionId, domainActivityId);
         pseudoDataDomain.activityId = domainActivityId;
         FetchEdgeTask task = new FetchEdgeTask(this.edgeContentProvider, this, pseudoDataDomain);
@@ -55,7 +60,7 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
 			task.execute();
 		}else{
 			currentPosition++;
-			presenter.present(this.domainActivityStack.get(currentPosition),1);
+			flipperSubViewsBuilder.present(this.domainActivityStack.get(currentPosition),1);
 		}
 	}
 	
@@ -63,7 +68,7 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
 	public void onShowPrevious(){
 		if(currentPosition > 0){
 			currentPosition --;
-			presenter.present(domainActivityStack.get(currentPosition),-1);
+			flipperSubViewsBuilder.present(domainActivityStack.get(currentPosition),-1);
 		}else{
 			/** 
 			 * We are at the start of the stack (download unit) and cannot go back further without extra measures
@@ -78,10 +83,10 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
 	}
 	
 	@Override
-	public void onReceivedActivityData(DomainActivityData dataDomain){
+	public void onReceivedDomainActivity(DomainActivityData dataDomain){
 		domainActivityStack.add(dataDomain);
 		currentPosition++;
-		presenter.present(dataDomain, 1);
+		flipperSubViewsBuilder.present(dataDomain, 1);
 	}
 	
 	@Override
@@ -90,7 +95,6 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
         if (edges == null || edges.size() == 0) {
             return;
         }
-        fetchActivity(currentActivityId);
     }
 
     private void fetchActivity(int currentActivityId) {

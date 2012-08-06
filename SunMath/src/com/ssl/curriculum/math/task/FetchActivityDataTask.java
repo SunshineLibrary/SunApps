@@ -25,6 +25,6 @@ public class FetchActivityDataTask extends AsyncTask<Void, Void, DomainActivityD
 
 	@Override
 	protected void onPostExecute(DomainActivityData result) {
-		this.activityDataReceiver.onReceivedActivityData(result);
+		this.activityDataReceiver.onReceivedDomainActivity(result);
 	}
 }
