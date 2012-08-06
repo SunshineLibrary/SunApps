@@ -11,11 +11,11 @@ public class FetchActivityDataTask extends AsyncTask<Void, Void, DomainActivityD
 	private int activityId = 0;
     private int sectionId;
 
-    public FetchActivityDataTask(ActivityDataReceiver activityDataReceiver, ActivityContentProvider provider, int activityId, int currentSectionId){
+    public FetchActivityDataTask(ActivityContentProvider provider, ActivityDataReceiver activityDataReceiver, int sectionId, int activityId){
         this.activityDataReceiver = activityDataReceiver;
         contentProvider = provider;
         this.activityId = activityId;
-        sectionId = currentSectionId;
+        this.sectionId = sectionId;
     }
 	
 	@Override

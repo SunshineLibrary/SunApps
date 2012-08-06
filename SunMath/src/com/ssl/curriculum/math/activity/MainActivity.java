@@ -14,6 +14,7 @@ import com.ssl.curriculum.math.presenter.FlipperSubViewsBuilder;
 import com.ssl.curriculum.math.service.GalleryContentProvider;
 import com.ssl.curriculum.math.service.mock.MockActivityContentProvider;
 import com.ssl.curriculum.math.service.mock.MockEdgeContentProvider;
+import com.ssl.curriculum.math.task.FetchActivityTaskManager;
 import com.ssl.curriculum.math.task.FetchGalleryContentTask;
 
 public class MainActivity extends Activity {
@@ -60,7 +61,8 @@ public class MainActivity extends Activity {
 
     private void initComponents() {
         flipperSubViewsBuilder = new FlipperSubViewsBuilder(this, viewFlipper);
-        flowController = new ActivityFlowController(flipperSubViewsBuilder, new MockEdgeContentProvider(this), new MockActivityContentProvider(this));
+        FetchActivityTaskManager fetchActivityTaskManager = new FetchActivityTaskManager(new MockEdgeContentProvider(this), new MockActivityContentProvider(this));
+        flowController = new ActivityFlowController(flipperSubViewsBuilder, fetchActivityTaskManager);
         initListeners();
     }
 
@@ -72,7 +74,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 viewFlipper.setInAnimation(flipAnimationManager.getFlipInFromRightAnimation());
                 viewFlipper.setOutAnimation(flipAnimationManager.getFlipOutToLeftAnimation());
-                flipperSubViewsBuilder.getFlipListener(flipperSubViewsBuilder).onShowPrevious();
+                flowController.onShowPrevious();
             }
         });
 
@@ -80,7 +82,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 viewFlipper.setInAnimation(flipAnimationManager.getFlipInFromLeftAnimation());
                 viewFlipper.setOutAnimation(flipAnimationManager.getFlipOutToRightAnimation());
-                flipperSubViewsBuilder.getFlipListener(flipperSubViewsBuilder).onShowNext();
+                flowController.onShowNext();
             }
         });
 

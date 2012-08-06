@@ -10,7 +10,6 @@ import com.ssl.curriculum.math.component.flipperchildren.GalleryThumbnailPageFli
 import com.ssl.curriculum.math.component.flipperchildren.QuizFlipperChild;
 import com.ssl.curriculum.math.component.flipperchildren.VideoFlipperChild;
 import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
-import com.ssl.curriculum.math.listener.PageFlipListener;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.ssl.curriculum.math.model.activity.QuizDomainActivityData;
 import com.ssl.curriculum.math.model.activity.VideoDomainActivityData;
@@ -18,8 +17,7 @@ import com.ssl.curriculum.math.model.activity.VideoDomainActivityData;
 import static com.sunshine.metadata.provider.MetadataContract.Activities.*;
 
 public class FlipperSubViewsBuilder {
-    private final Context context;
-    private PageFlipListener flipListener;
+    private Context context;
     private ViewFlipper viewFlipper;
     private GalleryItemClickedListener galleryThumbnailItemClickListener;
 
@@ -29,11 +27,7 @@ public class FlipperSubViewsBuilder {
         this.viewFlipper = viewFlipper;
     }
 
-    public void setPageFlipListener(PageFlipListener pfl) {
-        this.flipListener = pfl;
-    }
-
-    public void buildView(DomainActivityData domainActivity) {
+    public void buildViewToFlipper(DomainActivityData domainActivity) {
         View view = null;
 
         switch (domainActivity.type) {
@@ -72,10 +66,6 @@ public class FlipperSubViewsBuilder {
             }
         }
         viewFlipper.addView(view, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
-    }
-
-    public PageFlipListener getFlipListener(FlipperSubViewsBuilder self) {
-        return self.flipListener;
     }
 
     public void setGalleryThumbnailItemClickListener(GalleryItemClickedListener galleryThumbnailItemClickListener) {
