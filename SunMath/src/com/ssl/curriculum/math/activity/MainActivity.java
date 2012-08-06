@@ -18,7 +18,7 @@ import com.ssl.curriculum.math.task.FetchGalleryContentTask;
 
 public class MainActivity extends Activity {
 
-    private ActivityFlowController flipper;
+    private ActivityFlowController flowController;
     private ImageView leftBtn;
     private ImageView rightBtn;
     private ImageView naviBtn;
@@ -46,8 +46,8 @@ public class MainActivity extends Activity {
     }
 
     private void getDomainActivity(Intent intent) {
-//        flipper.loadDomainActivityData(intent.getExtras().getInt("sectionId"), intent.getExtras().getInt("activityId"));
-        flipper.loadDomainActivityData(0, 0);
+//        flowController.loadDomainActivityData(intent.getExtras().getInt("sectionId"), intent.getExtras().getInt("activityId"));
+        flowController.loadDomainActivityData(0, 0);
     }
 
     private void initUI() {
@@ -59,23 +59,11 @@ public class MainActivity extends Activity {
     }
 
     private void initComponents() {
-        flipperSubViewsBuilder = new FlipperSubViewsBuilder(this);
-        flipperSubViewsBuilder.bindUIElement(FlipperSubViewsBuilder.FLIPPER, viewFlipper);
+        flipperSubViewsBuilder = new FlipperSubViewsBuilder(this, viewFlipper);
+        flowController = new ActivityFlowController(flipperSubViewsBuilder, new MockEdgeContentProvider(this), new MockActivityContentProvider(this));
         initListeners();
-
-        flipper = new ActivityFlowController(flipperSubViewsBuilder, new MockEdgeContentProvider(this), new MockActivityContentProvider(this));
     }
 
-
-    public GalleryItemClickedListener getGalleryThumbnailItemClickListener() {
-        return new GalleryItemClickedListener() {
-            @Override
-            public void onGalleryItemClicked() {
-                Intent intent = new Intent(MainActivity.this, GalleryFlipperActivity.class);
-                startActivity(intent);
-            }
-        };
-    }
 
     public void initListeners() {
         final FlipAnimationManager flipAnimationManager = FlipAnimationManager.getInstance(this);
@@ -101,6 +89,14 @@ public class MainActivity extends Activity {
                 finish();
                 //Intent intent = new Intent(self.activity, NaviActivity.class);
                 //self.activity.startActivity(intent);
+            }
+        });
+
+        flipperSubViewsBuilder.setGalleryThumbnailItemClickListener(new GalleryItemClickedListener() {
+            @Override
+            public void onGalleryItemClicked() {
+                Intent intent = new Intent(MainActivity.this, GalleryFlipperActivity.class);
+                startActivity(intent);
             }
         });
     }

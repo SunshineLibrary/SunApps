@@ -2,6 +2,7 @@ package com.ssl.curriculum.math.logic;
 
 import com.ssl.curriculum.math.listener.ActivityDataReceiver;
 import com.ssl.curriculum.math.listener.EdgeReceiver;
+import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
 import com.ssl.curriculum.math.listener.PageFlipListener;
 import com.ssl.curriculum.math.model.ActivityStatus;
 import com.ssl.curriculum.math.model.Edge;
@@ -27,6 +28,7 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     private ArrayList<Edge> edges;
     private int currentActivityId;
     private int currentSectionId;
+    private GalleryItemClickedListener galleryThumbnailItemClickListener;
 
     public ActivityFlowController(FlipperSubViewsBuilder flipperSubViewsBuilder, EdgeContentProvider edgeContentProvider, ActivityContentProvider activityContentProvider){
 		this.flipperSubViewsBuilder = flipperSubViewsBuilder;
@@ -36,7 +38,7 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     }
 	
 	public void loadDomainActivityData(int domainSectionId, int domainActivityId){
-        this.currentActivityId = domainSectionId;
+        currentActivityId = domainSectionId;
         currentSectionId = domainActivityId;
         startLoadTask(domainSectionId, domainActivityId);
 	}
@@ -60,7 +62,7 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
 			task.execute();
 		}else{
 			currentPosition++;
-			flipperSubViewsBuilder.present(this.domainActivityStack.get(currentPosition),1);
+			flipperSubViewsBuilder.buildView(this.domainActivityStack.get(currentPosition));
 		}
 	}
 	
@@ -68,7 +70,7 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
 	public void onShowPrevious(){
 		if(currentPosition > 0){
 			currentPosition --;
-			flipperSubViewsBuilder.present(domainActivityStack.get(currentPosition),-1);
+			flipperSubViewsBuilder.buildView(domainActivityStack.get(currentPosition));
 		}else{
 			/** 
 			 * We are at the start of the stack (download unit) and cannot go back further without extra measures
@@ -86,15 +88,12 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
 	public void onReceivedDomainActivity(DomainActivityData dataDomain){
 		domainActivityStack.add(dataDomain);
 		currentPosition++;
-		flipperSubViewsBuilder.present(dataDomain, 1);
+		flipperSubViewsBuilder.buildView(dataDomain);
 	}
 	
 	@Override
 	public void onReceivedEdges(ArrayList<Edge> edges) {
         this.edges = edges;
-        if (edges == null || edges.size() == 0) {
-            return;
-        }
     }
 
     private void fetchActivity(int currentActivityId) {
