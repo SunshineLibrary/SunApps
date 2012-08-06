@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
 public class APISyncService extends Service {
 
@@ -28,6 +29,7 @@ public class APISyncService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		if (!syncInProgress
 				&& System.currentTimeMillis() > MIN_DELAY + lastSuccessfulSync) {
+            Log.v(getClass().getName(), "Starting API Sync Task...");
 			syncTask.execute();
 			syncInProgress = true;
 		}
@@ -42,8 +44,11 @@ public class APISyncService extends Service {
 			@Override
 			protected void onPostExecute(Integer result) {
 				if (result.intValue() == SYNC_SUCCESS) {
+                    Log.v(getClass().getName(), "API sync completed successfully.");
 					lastSuccessfulSync = System.currentTimeMillis();
-				}
+				} else {
+                    Log.v(getClass().getName(), "API sync failed.");
+                }
 				stopSelf();
 			}
 		};
@@ -63,9 +68,11 @@ public class APISyncService extends Service {
 	}
 
 	protected boolean isConnected() {
-        if (cm != null && cm.getActiveNetworkInfo() != null)
+        if (cm != null && cm.getActiveNetworkInfo() != null) {
             return cm.getActiveNetworkInfo().isConnected();
-        else
+        } else {
+            Log.v(getClass().getName(), "Device is not connected...");
             return false;
+        }
 	}
 }

@@ -14,7 +14,7 @@ public class ActivityTable extends DownloadableTable {
             Activities._SEQUENCE,
             Activities._NAME,
             Activities._NOTES,
-            Activities._LENGTH,
+            Activities._DURATION,
             Activities._DIFFICULTY,
     };
 
@@ -26,7 +26,7 @@ public class ActivityTable extends DownloadableTable {
             {Activities._SEQUENCE, "INTEGER"},
             {Activities._NAME, "TEXT"},
             {Activities._NOTES, "TEXT"},
-            {Activities._LENGTH, "INTEGER"},
+            {Activities._DURATION, "INTEGER"},
             {Activities._DIFFICULTY, "INTEGER"},
     };
 

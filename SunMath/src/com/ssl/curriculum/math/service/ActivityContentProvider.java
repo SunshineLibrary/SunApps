@@ -41,14 +41,14 @@ public class ActivityContentProvider {
         }
         return new ActivityData(Activities.TYPE_GALLERY);
         /*
-          Cursor cursor = this.query(new String[] {Activities._ID, Activities._NAME, Activities._TYPE, Activities._NOTES, Activities._LENGTH, Activities._SECTION_ID},
+          Cursor cursor = this.query(new String[] {Activities._ID, Activities._NAME, Activities._TYPE, Activities._NOTES, Activities._DURATION, Activities._SECTION_ID},
                Activities._ID + " = " + id);
           if(cursor.moveToFirst()){
               int idIndex = cursor.getColumnIndex(Activities._ID);
               int nameIndex = cursor.getColumnIndex(Activities._NAME);
               int typeIndex = cursor.getColumnIndex(Activities._TYPE);
               int notesIndex = cursor.getColumnIndex(Activities._NOTES);
-              int lengthIndex = cursor.getColumnIndex(Activities._LENGTH);
+              int lengthIndex = cursor.getColumnIndex(Activities._DURATION);
               int sectionIndex = cursor.getColumnIndex(Activities._SECTION_ID);
               do{
                   int type = cursor.getInt(typeIndex);

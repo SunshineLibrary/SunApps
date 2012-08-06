@@ -2,6 +2,7 @@ package com.sunshine.metadata.provider;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.test.ActivityTestCase;
 
 public final class MetadataContract {
 
@@ -105,7 +106,7 @@ public final class MetadataContract {
         public static final String _TYPE = "activity_type";
         public static final String _SEQUENCE = "seq";
         public static final String _NAME = "name";
-        public static final String _LENGTH = "length";
+        public static final String _DURATION = "duration";
         public static final String _NOTES = "notes";
         public static final String _DIFFICULTY = "difficulty";
 
