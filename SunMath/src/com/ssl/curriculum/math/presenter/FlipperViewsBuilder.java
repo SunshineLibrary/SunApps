@@ -2,9 +2,6 @@ package com.ssl.curriculum.math.presenter;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.component.flipperchildren.GalleryThumbnailPageFlipperChild;
 import com.ssl.curriculum.math.component.flipperchildren.QuizFlipperChild;
 import com.ssl.curriculum.math.component.flipperchildren.VideoFlipperChild;
@@ -17,34 +14,26 @@ import static com.sunshine.metadata.provider.MetadataContract.Activities.*;
 
 public class FlipperViewsBuilder {
     private Context context;
-    private ViewFlipper viewFlipper;
     private GalleryItemClickedListener galleryThumbnailItemClickListener;
 
 
-    public FlipperViewsBuilder(Context context, ViewFlipper viewFlipper) {
+    public FlipperViewsBuilder(Context context) {
         this.context = context;
-        this.viewFlipper = viewFlipper;
     }
 
-    public void buildViewToFlipper(DomainActivityData domainActivity) {
+    public View buildViewToFlipper(DomainActivityData domainActivity) {
         switch (domainActivity.type) {
             case TYPE_VIDEO:
-                addViewToFlipper(new VideoFlipperChild(this.context, (VideoDomainActivityData) domainActivity));
-                return;
+                return new VideoFlipperChild(this.context, (VideoDomainActivityData) domainActivity);
             case TYPE_QUIZ:
-                addViewToFlipper(new QuizFlipperChild(this.context, (QuizDomainData) domainActivity));
-                return;
+                return new QuizFlipperChild(this.context, (QuizDomainData) domainActivity);
             case TYPE_GALLERY:
                 GalleryThumbnailPageFlipperChild galleryThumbnailPage = new GalleryThumbnailPageFlipperChild(this.context);
                 galleryThumbnailPage.setGalleryItemClickedListener(galleryThumbnailItemClickListener);
-                addViewToFlipper(galleryThumbnailPage);
-                return;
+                return galleryThumbnailPage;
             default:
         }
-    }
-
-    private void addViewToFlipper(View view) {
-        viewFlipper.addView(view, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+        return null;
     }
 
     public void setGalleryThumbnailItemClickListener(GalleryItemClickedListener galleryThumbnailItemClickListener) {

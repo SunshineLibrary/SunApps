@@ -62,9 +62,9 @@ public class MainActivity extends Activity {
     }
 
     private void initComponents() {
-        flipperViewsBuilder = new FlipperViewsBuilder(this, viewFlipper);
+        flipperViewsBuilder = new FlipperViewsBuilder(this);
         FetchActivityTaskManager fetchActivityTaskManager = new FetchActivityTaskManager(new MockEdgeContentProvider(this), new MockActivityContentProvider(this));
-        flowController = new ActivityFlowController(flipperViewsBuilder, fetchActivityTaskManager, new FetchNextDomainActivityStrategyImpl());
+        flowController = new ActivityFlowController(viewFlipper, flipperViewsBuilder, fetchActivityTaskManager, new FetchNextDomainActivityStrategyImpl());
     }
 
 

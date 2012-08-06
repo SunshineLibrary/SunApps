@@ -1,5 +1,9 @@
 package com.ssl.curriculum.math.logic;
 
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.listener.ActivityDataReceiver;
 import com.ssl.curriculum.math.listener.EdgeReceiver;
 import com.ssl.curriculum.math.listener.PageFlipListener;
@@ -15,6 +19,7 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     private ArrayList<DomainActivityData> domainActivityStack = new ArrayList<DomainActivityData>();
     private ArrayList<Edge> edges;
 
+    private ViewFlipper viewFlipper;
     private FlipperViewsBuilder flipperViewsBuilder;
     private FetchActivityTaskManager fetchActivityTaskManager;
 
@@ -24,7 +29,8 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     private int currentPosition = -1;
     private FetchNextDomainActivityStrategy fetchNextDomainActivityStrategy;
 
-    public ActivityFlowController(FlipperViewsBuilder flipperViewsBuilder, FetchActivityTaskManager fetchActivityTaskManager, FetchNextDomainActivityStrategyImpl fetchNextDomainActivityStrategy) {
+    public ActivityFlowController(ViewFlipper viewFlipper, FlipperViewsBuilder flipperViewsBuilder, FetchActivityTaskManager fetchActivityTaskManager, FetchNextDomainActivityStrategyImpl fetchNextDomainActivityStrategy) {
+        this.viewFlipper = viewFlipper;
         this.flipperViewsBuilder = flipperViewsBuilder;
         this.fetchActivityTaskManager = fetchActivityTaskManager;
         this.fetchNextDomainActivityStrategy = fetchNextDomainActivityStrategy;
@@ -56,9 +62,8 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
 
     @Override
     public void onShowPrevious() {
-        if(currentPosition == 0) return;
-        currentPosition--;
-        flipperViewsBuilder.buildViewToFlipper(getCurrentActivityData());
+        if (currentPosition == 0) return;
+        showPrevious();
     }
 
     @Override
@@ -67,19 +72,34 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
             fetchActivityFromRemote();
             return;
         }
+        showNext();
+    }
+
+    private void showPrevious() {
+        viewFlipper.showPrevious();
+        currentPosition--;
+    }
+
+    private void showNext() {
+        viewFlipper.showNext();
         currentPosition++;
-        flipperViewsBuilder.buildViewToFlipper(getCurrentActivityData());
     }
 
     @Override
     public void onReceivedDomainActivity(DomainActivityData dataDomain) {
+        View view = flipperViewsBuilder.buildViewToFlipper(dataDomain);
+        if (view == null) return;
         domainActivityStack.add(dataDomain);
-        currentPosition++;
-        flipperViewsBuilder.buildViewToFlipper(dataDomain);
+        addViewToFlipper(view);
+        showNext();
     }
 
     @Override
     public void onReceivedEdges(ArrayList<Edge> edges) {
         this.edges = edges;
+    }
+
+    private void addViewToFlipper(View view) {
+        viewFlipper.addView(view, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
     }
 }

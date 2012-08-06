@@ -8,7 +8,7 @@ public class DomainActivityData {
     public int sequence;
     public String name;
     public String notes;
-    public int length;
+    public int duration;
     public int difficulty;
 
     public DomainActivityData(int type){

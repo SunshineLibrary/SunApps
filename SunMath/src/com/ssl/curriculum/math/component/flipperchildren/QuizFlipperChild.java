@@ -60,7 +60,12 @@ public class QuizFlipperChild extends LinearLayout implements QuizLoadedListener
     @Override
     public void onQuizLoaded() {
         if (presenter.isToFirst()) {
-            addQuizView();
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    addQuizView();
+                }
+            });
         }
     }
 

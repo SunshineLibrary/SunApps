@@ -3,7 +3,6 @@ package com.ssl.curriculum.math.component.flipperchildren;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import com.ssl.curriculum.math.R;
 
 public class QuizMultiChoiceView extends QuizQuestionView {

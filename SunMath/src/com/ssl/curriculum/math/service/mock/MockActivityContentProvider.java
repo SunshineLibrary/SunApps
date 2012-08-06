@@ -5,7 +5,6 @@ import android.content.Context;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.ssl.curriculum.math.model.activity.QuizDomainData;
 import com.ssl.curriculum.math.model.activity.VideoDomainActivityData;
-import com.ssl.curriculum.math.model.activity.quiz.QuizFillBlankQuestion;
 import com.ssl.curriculum.math.service.ActivityContentProvider;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
 
@@ -27,10 +26,6 @@ public class MockActivityContentProvider extends ActivityContentProvider {
         }
         if (activityId % 4 == 1 || activityId % 4 == 2) {
             QuizDomainData data = new QuizDomainData();
-//            activityData.addQuestion(new QuizMultichoiceQuestion());
-//            activityData.addQuestion(new QuizMultichoiceQuestion());
-            data.addQuestion(new QuizFillBlankQuestion());
-            data.addQuestion(new QuizFillBlankQuestion());
             return data;
         }
         return new DomainActivityData(Activities.TYPE_GALLERY);

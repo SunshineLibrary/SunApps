@@ -44,7 +44,6 @@ public class QuizQuestionsProvider {
 
                 QuizQuestion question = null;
                 String string = cursor.getString(bodyIndex);
-                System.out.println("------------string = " + string);
                 question = createFillBlankQuestion(cursor.getInt(idIndex), string, cursor.getString(answerIndex));
 //                if(Problems.getInternalType(cursor.getString(typeIndex)) == Problems.TYPE_FILLBLANK){
 //                }else if(Problems.getInternalType(cursor.getString(typeIndex)) == Problems.TYPE_MULTICHOICE){
