@@ -3,7 +3,7 @@ package com.ssl.curriculum.math.service.mock;
 
 import android.content.Context;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
-import com.ssl.curriculum.math.model.activity.QuizDomainActivityData;
+import com.ssl.curriculum.math.model.activity.QuizDomainData;
 import com.ssl.curriculum.math.model.activity.VideoDomainActivityData;
 import com.ssl.curriculum.math.model.activity.quiz.QuizFillBlankQuestion;
 import com.ssl.curriculum.math.service.ActivityContentProvider;
@@ -26,12 +26,12 @@ public class MockActivityContentProvider extends ActivityContentProvider {
             return vad;
         }
         if (activityId % 4 == 1 || activityId % 4 == 2) {
-            QuizDomainActivityData activityData = new QuizDomainActivityData();
+            QuizDomainData data = new QuizDomainData();
 //            activityData.addQuestion(new QuizMultichoiceQuestion());
 //            activityData.addQuestion(new QuizMultichoiceQuestion());
-            activityData.addQuestion(new QuizFillBlankQuestion());
-            activityData.addQuestion(new QuizFillBlankQuestion());
-            return activityData;
+            data.addQuestion(new QuizFillBlankQuestion());
+            data.addQuestion(new QuizFillBlankQuestion());
+            return data;
         }
         return new DomainActivityData(Activities.TYPE_GALLERY);
     }

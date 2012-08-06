@@ -1,4 +1,4 @@
-package com.ssl.curriculum.math.component.flipperchildren.subviews;
+package com.ssl.curriculum.math.component.flipperchildren;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,24 +7,21 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.ssl.curriculum.math.R;
-import com.ssl.curriculum.math.model.activity.quiz.QuizFillBlankQuestion;
-import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 import com.ssl.curriculum.math.presenter.QuizPresenter;
-import com.ssl.curriculum.math.service.QuizQuestionsProvider;
 import com.ssl.curriculum.math.utils.QuizHtmlLoader;
 
-public class QuizFillInSubview extends LinearLayout {
+public class QuizFillInView extends QuizQuestionView {
     private WebView questionWebView;
-    private QuizPresenter quizPresenter;
     private TextView showAnswerField;
     private ImageView confirmButton;
+    private EditText answerEditText;
 
-    public QuizFillInSubview(Context context) {
-        super(context);
+    private QuizPresenter presenter;
+
+    public QuizFillInView(Context context, int questionId) {
+        super(context, questionId);
         initUI();
         initWebView();
         initListeners();
@@ -37,6 +34,7 @@ public class QuizFillInSubview extends LinearLayout {
         questionWebView = (WebView) findViewById(R.id.quiz_fill_in_flipper_child_question);
         confirmButton = (ImageView) findViewById(R.id.quiz_fill_in_ok_btn);
         showAnswerField = (TextView) findViewById(R.id.quiz_fill_in_showAnswerField);
+        answerEditText = (EditText) findViewById(R.id.quiz_fill_in_flipper_child_answer);
     }
 
     private void initWebView() {
@@ -48,7 +46,6 @@ public class QuizFillInSubview extends LinearLayout {
 
     private void initListeners() {
         confirmButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 judgeAndDisplayMessage();
@@ -57,18 +54,16 @@ public class QuizFillInSubview extends LinearLayout {
     }
 
     private void judgeAndDisplayMessage() {
-        EditText editText = (EditText) findViewById(R.id.quiz_fill_in_flipper_child_answer);
-        String userInput = editText.getText().toString();
-        boolean correct = quizPresenter.getCurrentAnswerState(userInput.trim());
-        if (correct) {
+        String userInput = answerEditText.getText().toString();
+        if (presenter.isCorrect(userInput, getQuestionId())) {
             showAnswerField.setText("正确！");
-        } else {
-            showAnswerField.setText(quizPresenter.getCurrentAnswer());
+            return;
         }
+        showAnswerField.setText(presenter.getAnswer(getQuestionId()));
     }
 
-    private void loadQuizHtml(String newContent) {
-        final String data = QuizHtmlLoader.getInstance(getContext()).loadQuizHtmlWithNewContent(newContent);
+    private void loadQuizHtml(String quizContent) {
+        final String data = QuizHtmlLoader.getInstance(getContext()).loadQuizHtmlWithNewContent(quizContent);
 
         /*
         * Android thinks file:// schema insecure, so we use http:// here.
@@ -79,11 +74,11 @@ public class QuizFillInSubview extends LinearLayout {
         questionWebView.loadDataWithBaseURL("http://test", data, "text/html", "utf-8", null);
     }
 
-    public void loadQuiz(QuizFillBlankQuestion quizQuestion) {
-        loadQuizHtml(quizQuestion.getQuizContent());
+    public void loadQuiz(String quizContent) {
+        loadQuizHtml(quizContent);
     }
 
     public void setQuizPresenter(QuizPresenter presenter) {
-        quizPresenter = presenter;
+        this.presenter = presenter;
     }
 }

@@ -4,7 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.ssl.curriculum.math.model.activity.QuizDomainActivityData;
+import com.ssl.curriculum.math.model.activity.QuizDomainData;
 import com.ssl.curriculum.math.model.activity.quiz.QuizFillBlankQuestion;
 import com.ssl.curriculum.math.model.activity.quiz.QuizMultiChoiceQuestion;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
@@ -31,7 +31,7 @@ public class QuizQuestionsProvider {
     		}while(cursor.moveToNext());
     }
     
-    public void loadQuizQuestions(QuizDomainActivityData quizData) {
+    public void loadQuizQuestions(QuizDomainData quizData) {
         final String[] columns = new String[]{MetadataContract.Problems._ID, MetadataContract.Problems._TYPE, MetadataContract.Problems._BODY, MetadataContract.Problems._ANSWER};
         Cursor cursor = contentResolver.query(MetadataContract.Problems.CONTENT_URI, columns,  null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
@@ -60,7 +60,7 @@ public class QuizQuestionsProvider {
 
     private QuizFillBlankQuestion createFillBlankQuestion(int id, String body, String answer) {
         QuizFillBlankQuestion question = new QuizFillBlankQuestion();
-        question.setUniqueId(id);
+        question.setId(id);
         question.setAnswer(answer);
         question.setQuizContent(body);
         return question;
@@ -69,7 +69,7 @@ public class QuizQuestionsProvider {
     private QuizMultiChoiceQuestion createMultichoiceQuestion(int id, String body){
     	QuizMultiChoiceQuestion question = new QuizMultiChoiceQuestion();
     	question.initQuestion(body);
-    	question.setUniqueId(id);
+    	question.setId(id);
     	return question;
     }
 }

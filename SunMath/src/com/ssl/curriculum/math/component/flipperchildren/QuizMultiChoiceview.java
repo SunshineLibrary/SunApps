@@ -1,20 +1,15 @@
-package com.ssl.curriculum.math.component.flipperchildren.subviews;
+package com.ssl.curriculum.math.component.flipperchildren;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.ssl.curriculum.math.R;
-import com.ssl.curriculum.math.model.activity.quiz.QuizMultiChoiceQuestion;
 
-public class QuizMultiChoiceSubview extends LinearLayout {
+public class QuizMultiChoiceView extends QuizQuestionView {
 
-    private QuizMultiChoiceQuestion question;
-
-    public QuizMultiChoiceSubview(Context context, AttributeSet attrs, QuizMultiChoiceQuestion question) {
-        super(context, attrs);
-        this.question = question;
+    public QuizMultiChoiceView(Context context, int questionId) {
+        super(context, questionId);
         initUI();
     }
 

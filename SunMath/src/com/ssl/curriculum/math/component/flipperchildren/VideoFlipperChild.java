@@ -2,7 +2,6 @@ package com.ssl.curriculum.math.component.flipperchildren;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -13,15 +12,13 @@ import com.ssl.curriculum.math.model.activity.VideoDomainActivityData;
 
 public class VideoFlipperChild extends LinearLayout {
     private VideoPlayer videoPlayer;
-    private Context context;
     private VideoDomainActivityData domainActivityData;
-    private TextView title;
-    private TextView description;
+    private TextView titleView;
+    private TextView descriptionView;
 
-    public VideoFlipperChild(Context context, AttributeSet attrs, VideoDomainActivityData activityData) {
-        super(context, attrs);
-        this.context = context;
-        this.domainActivityData = activityData;
+    public VideoFlipperChild(Context context, VideoDomainActivityData domainActivity) {
+        super(context);
+        this.domainActivityData = domainActivity;
         initUI();
         initVideoComponent();
     }
@@ -31,15 +28,15 @@ public class VideoFlipperChild extends LinearLayout {
         ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.video_flip_layout, this, false);
         this.addView(viewGroup);
         videoPlayer = (VideoPlayer) findViewById(R.id.content_screen_video_field);
-        title = (TextView) this.findViewById(R.id.video_title);
-        description = (TextView) this.findViewById(R.id.video_descr);
+        titleView = (TextView) this.findViewById(R.id.video_title);
+        descriptionView = (TextView) this.findViewById(R.id.video_descr);
     }
 
     private void initVideoComponent() {
-        Uri video = Uri.parse("android.resource://" + this.context.getPackageName() + "/" + R.raw.speaking);
+        Uri video = Uri.parse("android.resource://" + getContext().getPackageName() + "/" + R.raw.speaking);
         videoPlayer.setVideoURI(video);
-        title.setText(domainActivityData.getTitle());
-        description.setText(domainActivityData.getDescription());
+        titleView.setText(domainActivityData.getTitle());
+        descriptionView.setText(domainActivityData.getDescription());
     }
 
 }

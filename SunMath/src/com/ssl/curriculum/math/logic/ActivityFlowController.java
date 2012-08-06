@@ -6,7 +6,7 @@ import com.ssl.curriculum.math.listener.PageFlipListener;
 import com.ssl.curriculum.math.logic.strategy.FetchNextDomainActivityStrategyImpl;
 import com.ssl.curriculum.math.model.Edge;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
-import com.ssl.curriculum.math.presenter.FlipperSubViewsBuilder;
+import com.ssl.curriculum.math.presenter.FlipperViewsBuilder;
 import com.ssl.curriculum.math.task.FetchActivityTaskManager;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     private ArrayList<DomainActivityData> domainActivityStack = new ArrayList<DomainActivityData>();
     private ArrayList<Edge> edges;
 
-    private FlipperSubViewsBuilder flipperSubViewsBuilder;
+    private FlipperViewsBuilder flipperViewsBuilder;
     private FetchActivityTaskManager fetchActivityTaskManager;
 
     private int currentActivityId;
@@ -24,14 +24,10 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     private int currentPosition = -1;
     private FetchNextDomainActivityStrategy fetchNextDomainActivityStrategy;
 
-    public ActivityFlowController(FlipperSubViewsBuilder flipperSubViewsBuilder, FetchActivityTaskManager fetchActivityTaskManager) {
-        this.flipperSubViewsBuilder = flipperSubViewsBuilder;
+    public ActivityFlowController(FlipperViewsBuilder flipperViewsBuilder, FetchActivityTaskManager fetchActivityTaskManager, FetchNextDomainActivityStrategyImpl fetchNextDomainActivityStrategy) {
+        this.flipperViewsBuilder = flipperViewsBuilder;
         this.fetchActivityTaskManager = fetchActivityTaskManager;
-        initStrategy();
-    }
-
-    private void initStrategy() {
-        fetchNextDomainActivityStrategy = new FetchNextDomainActivityStrategyImpl();
+        this.fetchNextDomainActivityStrategy = fetchNextDomainActivityStrategy;
     }
 
     public void loadDomainActivityData(int domainSectionId, int domainActivityId) {
@@ -62,7 +58,7 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     public void onShowPrevious() {
         if(currentPosition == 0) return;
         currentPosition--;
-        flipperSubViewsBuilder.buildViewToFlipper(getCurrentActivityData());
+        flipperViewsBuilder.buildViewToFlipper(getCurrentActivityData());
     }
 
     @Override
@@ -72,14 +68,14 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
             return;
         }
         currentPosition++;
-        flipperSubViewsBuilder.buildViewToFlipper(getCurrentActivityData());
+        flipperViewsBuilder.buildViewToFlipper(getCurrentActivityData());
     }
 
     @Override
     public void onReceivedDomainActivity(DomainActivityData dataDomain) {
         domainActivityStack.add(dataDomain);
         currentPosition++;
-        flipperSubViewsBuilder.buildViewToFlipper(dataDomain);
+        flipperViewsBuilder.buildViewToFlipper(dataDomain);
     }
 
     @Override
