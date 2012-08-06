@@ -27,7 +27,9 @@ public class QuizViewsBuilder {
     }
 
     private QuizMultiChoiceView buildMultiView(int questionId) {
-        return new QuizMultiChoiceView(context, questionId);
+        QuizMultiChoiceView quizMultiChoiceView = new QuizMultiChoiceView(context, questionId);
+        quizMultiChoiceView.loadQuiz("");
+        return quizMultiChoiceView;
     }
 
     private QuizFillInView buildFillInView(QuizFillBlankQuestion question) {

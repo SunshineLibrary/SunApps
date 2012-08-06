@@ -44,7 +44,9 @@ public class QuizQuestionsProvider {
 
                 QuizQuestion question = null;
                 String string = cursor.getString(bodyIndex);
-                question = createFillBlankQuestion(cursor.getInt(idIndex), string, cursor.getString(answerIndex));
+                question = createMultichoiceQuestion(cursor.getInt(idIndex), "body");
+
+//                question = createFillBlankQuestion(cursor.getInt(idIndex), string, cursor.getString(answerIndex));
 //                if(Problems.getInternalType(cursor.getString(typeIndex)) == Problems.TYPE_FILLBLANK){
 //                }else if(Problems.getInternalType(cursor.getString(typeIndex)) == Problems.TYPE_MULTICHOICE){
 //                	question = createMultichoiceQuestion(cursor.getInt(idIndex),cursor.getString(bodyIndex));
@@ -57,17 +59,17 @@ public class QuizQuestionsProvider {
         }
     }
 
-    private QuizFillBlankQuestion createFillBlankQuestion(int id, String body, String answer) {
+    private QuizFillBlankQuestion createFillBlankQuestion(int id, String quizContent, String answer) {
         QuizFillBlankQuestion question = new QuizFillBlankQuestion();
         question.setId(id);
         question.setAnswer(answer);
-        question.setQuizContent(body);
+        question.setQuizContent(quizContent);
         return question;
     }
     
-    private QuizMultiChoiceQuestion createMultichoiceQuestion(int id, String body){
+    private QuizMultiChoiceQuestion createMultichoiceQuestion(int id, String quizContent){
     	QuizMultiChoiceQuestion question = new QuizMultiChoiceQuestion();
-    	question.initQuestion(body);
+    	question.initQuestion(quizContent);
     	question.setId(id);
     	return question;
     }
