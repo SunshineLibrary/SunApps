@@ -5,7 +5,6 @@ public class DomainActivityData {
     public int sectionId;
     public int activityId;
     public int providerId;
-    public int sequence;
     public String name;
     public String notes;
     public int duration;

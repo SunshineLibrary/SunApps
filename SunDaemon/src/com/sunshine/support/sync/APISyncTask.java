@@ -27,6 +27,8 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
             BookCollectionTable.TABLE_NAME,
             ProblemTable.TABLE_NAME,
             ProblemChoiceTable.TABLE_NAME,
+            QuizComponentsTable.TABLE_NAME,
+            SectionComponentsTable.TABLE_NAME,
     };
 
 	public static final int SYNC_SUCCESS = 0;

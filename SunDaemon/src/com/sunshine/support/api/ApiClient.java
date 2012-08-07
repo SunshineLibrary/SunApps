@@ -3,6 +3,7 @@ package com.sunshine.support.api;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.content.IntentFilter;
 import android.net.Uri;
 import com.sunshine.metadata.database.tables.*;
 import org.apache.http.client.HttpClient;
@@ -16,14 +17,14 @@ public class ApiClient {
 
     private static ThreadSafeClientConnManager connManager;
     private static final Uri ROOT_URI;
-    private static final String HOST = "ssl-mock.herokuapp.com";
-
+    private static final String HOST = "10.0.2.2:3000";
 
     private static final Map<String, String> apiMap;
 
     static {
-        ROOT_URI = new Uri.Builder().scheme("http").authority(HOST).build();
+        ROOT_URI = new Uri.Builder().scheme("http").encodedAuthority(HOST).build();
         apiMap = new HashMap<String, String>();
+        apiMap.put(GalleryImageTable.TABLE_NAME, "images.json");
     }
 
     public static synchronized ThreadSafeClientConnManager getConnManager() {
