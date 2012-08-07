@@ -2,7 +2,6 @@ package com.sunshine.metadata.provider;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.test.ActivityTestCase;
 
 public final class MetadataContract {
 
@@ -29,7 +28,7 @@ public final class MetadataContract {
         public static final String _PARENT_ID = "quiz_activity_id";
         
         public static final int TYPE_FILLBLANK = 1;
-        public static final int TYPE_MULTICHOICE = 0;
+        public static final int TYPE_CHOICE = 0;
         
         public static int getInternalType(String type){
         	return 0;

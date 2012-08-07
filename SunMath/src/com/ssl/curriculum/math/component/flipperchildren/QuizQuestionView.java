@@ -1,7 +1,6 @@
 package com.ssl.curriculum.math.component.flipperchildren;
 
 import android.content.Context;
-import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,6 +11,7 @@ public abstract class QuizQuestionView extends LinearLayout {
     protected WebView questionWebView;
     protected ImageView confirmButton;
     protected QuizPresenter presenter;
+    protected ImageView nextBtn;
 
     private int questionId;
 
@@ -27,15 +27,6 @@ public abstract class QuizQuestionView extends LinearLayout {
         questionWebView.getSettings().setAllowFileAccess(true);
         questionWebView.getSettings().setDomStorageEnabled(true);
         questionWebView.setScrollBarStyle(0);
-    }
-
-    protected void initListeners() {
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onQuestionFinished();
-            }
-        });
     }
 
     public int getQuestionId() {

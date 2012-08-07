@@ -19,14 +19,14 @@ public class QuizViewsBuilder {
     public QuizQuestionView buildQuizView(QuizQuestion question) {
         switch (question.getType()) {
             case QuizQuestion.TYPE_CHOICE:
-                return buildMultiView(question);
+                return buildMultiChoiceView(question);
             case QuizQuestion.TYPE_FILLBLANKS:
                 return buildFillInView((QuizFillBlankQuestion) question);
         }
         return null;
     }
 
-    private QuizChoiceView buildMultiView(QuizQuestion question) {
+    private QuizChoiceView buildMultiChoiceView(QuizQuestion question) {
         QuizChoiceView quizChoiceView = createQuizChoiceView(question);
         quizChoiceView.loadQuiz("");
         quizChoiceView.setQuizPresenter(presenter);

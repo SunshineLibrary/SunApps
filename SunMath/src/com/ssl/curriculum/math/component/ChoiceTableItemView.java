@@ -11,7 +11,7 @@ import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.listener.OnChoiceChangedListener;
 
 public class ChoiceTableItemView extends TableRow {
-
+    private static final String CHOICE_ITEM_DOT = ".";
     private ImageView answerImageView;
     private ChoiceButton answerSelectedBtn;
     private TextView quizContentWebView;
@@ -32,7 +32,7 @@ public class ChoiceTableItemView extends TableRow {
         questionTagView = (TextView) findViewById(R.id.choice_table_item_tag);
 
         quizContentWebView.setText(question);
-        questionTagView.setText(token);
+        questionTagView.setText(token + CHOICE_ITEM_DOT);
     }
 
     @Override
@@ -46,7 +46,8 @@ public class ChoiceTableItemView extends TableRow {
     }
 
     public String getToken() {
-        return questionTagView.getText().toString();
+        String tagString = questionTagView.getText().toString();
+        return tagString.substring(0, tagString.length() - 1);
     }
 
     public void setOnChoiceChangedListener(OnChoiceChangedListener onChoiceChangedListener) {
@@ -55,11 +56,11 @@ public class ChoiceTableItemView extends TableRow {
 
     public void showCorrect() {
         answerImageView.setVisibility(View.VISIBLE);
-        answerImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_multiple_choice_correct));
+        answerImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_choice_correct));
     }
 
     public void showInCorrect() {
         answerImageView.setVisibility(View.VISIBLE);
-        answerImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_multiple_choice_incorrect));
+        answerImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_choice_incorrect));
     }
 }

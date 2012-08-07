@@ -17,6 +17,11 @@ public abstract class ChoiceTableView extends LinearLayout implements OnChoiceCh
         initUI();
     }
 
+    protected ChoiceTableView(Context context) {
+        super(context);
+        initUI();
+    }
+
     private void initUI() {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.choice_table_view_layout, this, false);

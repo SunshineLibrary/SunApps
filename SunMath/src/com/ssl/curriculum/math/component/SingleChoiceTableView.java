@@ -1,12 +1,11 @@
 package com.ssl.curriculum.math.component;
 
 import android.content.Context;
-import android.util.AttributeSet;
 
 public class SingleChoiceTableView extends ChoiceTableView {
 
-    public SingleChoiceTableView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public SingleChoiceTableView(Context context) {
+        super(context);
     }
 
     @Override

@@ -5,43 +5,44 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.ChoiceTableItemView;
 import com.ssl.curriculum.math.component.ChoiceTableView;
-import com.ssl.curriculum.math.listener.MultiChoiceJSInterface;
+import com.ssl.curriculum.math.component.MultipleChoiceTableView;
+import com.ssl.curriculum.math.component.SingleChoiceTableView;
 
 public class QuizChoiceView extends QuizQuestionView {
 
     private ChoiceTableView choiceTableView;
+    private ViewGroup viewGroup;
 
     public QuizChoiceView(Context context, int questionId, boolean isSingleChoice) {
         super(context, questionId);
         initUI(isSingleChoice);
         initWebView();
-        initListeners();
     }
 
     private void initUI(boolean isSingleChoice) {
-        if (isSingleChoice) {
-            initUI(R.layout.quiz_single_choice_flip_layout);
-        } else {
-            initUI(R.layout.quiz_multi_choice_flip_layout);
-        }
-    }
-
-    private void initUI(int layoutResource) {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ViewGroup viewGroup = (ViewGroup) inflater.inflate(layoutResource, this, false);
+        viewGroup = (ViewGroup) inflater.inflate(R.layout.quiz_choice_flip_layout, this, false);
         addView(viewGroup);
         questionWebView = (WebView) findViewById(R.id.quiz_choice_flipper_child_question);
-        choiceTableView = (ChoiceTableView) findViewById(R.id.quiz_choice_table);
         confirmButton = (ImageView) findViewById(R.id.quiz_choice_ok_btn);
+        nextBtn = (ImageView) findViewById(R.id.quiz_next_btn);
+        createChoiceTable(isSingleChoice);
     }
 
-    @Override
-    protected void initWebView() {
-        super.initWebView();
-        questionWebView.addJavascriptInterface(new MultiChoiceJSInterface(), "multiChoice");
+    private void createChoiceTable(boolean isSingleChoice) {
+        if (isSingleChoice) {
+            choiceTableView = new SingleChoiceTableView(getContext());
+        } else {
+            choiceTableView = new MultipleChoiceTableView(getContext());
+        }
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
+                ViewGroup.LayoutParams.FILL_PARENT);
+        layoutParams.addRule(RelativeLayout.BELOW, R.id.quiz_choice_flipper_child_question);
+        viewGroup.addView(choiceTableView, layoutParams);
     }
 
     @Override
@@ -51,12 +52,11 @@ public class QuizChoiceView extends QuizQuestionView {
 
     @Override
     protected void loadQuizHtml(String quizContent) {
-        questionWebView.loadUrl("file:///android_asset/multichoice.html");
+        questionWebView.loadUrl("file:///android_asset/sample-asciimath.html");
         choiceTableView.addChoiceTableRow(new ChoiceTableItemView(getContext(), "test", "A"));
         choiceTableView.addChoiceTableRow(new ChoiceTableItemView(getContext(), "testB", "B"));
         choiceTableView.addChoiceTableRow(new ChoiceTableItemView(getContext(),
                 "Long testLong testLong testLong testLong testLong testLong testLong testLong testLong test" +
-                        "Long testLong testLong testLong testLong testLong test" +
                         "Long testLong testLong test", "C"));
     }
 

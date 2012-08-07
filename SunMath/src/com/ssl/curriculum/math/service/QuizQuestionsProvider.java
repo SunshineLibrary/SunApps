@@ -43,7 +43,7 @@ public class QuizQuestionsProvider {
 
                 QuizQuestion question = null;
                 String string = cursor.getString(bodyIndex);
-                question = createMultichoiceQuestion(cursor.getInt(idIndex), "body");
+                question = createChoiceQuestion(cursor.getInt(idIndex), "body");
 
 //                question = createFillBlankQuestion(cursor.getInt(idIndex), string, cursor.getString(answerIndex));
 //                if(Problems.getInternalType(cursor.getString(typeIndex)) == Problems.TYPE_FILLBLANK){
@@ -66,7 +66,7 @@ public class QuizQuestionsProvider {
         return question;
     }
 
-    private QuizChoiceQuestion createMultichoiceQuestion(int id, String quizContent) {
+    private QuizChoiceQuestion createChoiceQuestion(int id, String quizContent) {
         QuizChoiceQuestion question = new QuizChoiceQuestion();
         question.initQuestion(quizContent);
         question.setAnswer("A,C");

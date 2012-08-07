@@ -12,6 +12,10 @@ public class MultipleChoiceTableView extends ChoiceTableView {
         super(context, attrs);
     }
 
+    public MultipleChoiceTableView(Context context) {
+        super(context);
+    }
+
     @Override
     protected void selectChoice(ChoiceButton choiceButton) {
         choiceButton.toggle();

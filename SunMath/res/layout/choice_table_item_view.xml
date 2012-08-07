@@ -4,6 +4,8 @@
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:padding="10dp"
+              android:layout_marginTop="8dp"
+              android:layout_marginBottom="12dp"
               android:gravity="center_vertical"
               android:orientation="horizontal">
 
@@ -12,7 +14,7 @@
         <ImageView android:id="@+id/choice_table_item_answer_result_indicator"
                    android:layout_height="wrap_content"
                    android:layout_width="wrap_content"
-                   android:src="@drawable/ic_multiple_choice_incorrect"
+                   android:src="@drawable/ic_choice_incorrect"
                    android:visibility="invisible"/>
     </LinearLayout>
 

@@ -17,7 +17,6 @@ public class QuizFillInView extends QuizQuestionView {
         super(context, questionId);
         initUI();
         initWebView();
-        initListeners();
     }
 
     private void initUI() {
@@ -26,6 +25,7 @@ public class QuizFillInView extends QuizQuestionView {
         addView(viewGroup);
         questionWebView = (WebView) findViewById(R.id.quiz_fill_in_flipper_child_question);
         confirmButton = (ImageView) findViewById(R.id.quiz_fill_in_ok_btn);
+        nextBtn = (ImageView) findViewById(R.id.quiz_next_btn);
         showAnswerField = (TextView) findViewById(R.id.quiz_fill_in_showAnswerField);
         answerEditText = (EditText) findViewById(R.id.quiz_fill_in_flipper_child_answer);
     }

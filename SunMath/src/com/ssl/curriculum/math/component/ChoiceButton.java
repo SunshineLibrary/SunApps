@@ -27,13 +27,13 @@ public class ChoiceButton extends ImageView implements View.OnClickListener {
 
     private void deActiveButton() {
         isActivated = false;
-        setImageDrawable(getResources().getDrawable(R.drawable.ic_multiple_choice_blank_selection));
+        setImageDrawable(getResources().getDrawable(R.drawable.ic_choice_blank_selection));
     }
 
 
     private void activateButton() {
         isActivated = true;
-        setImageDrawable(getResources().getDrawable(R.drawable.ic_multiple_choice_selected));
+        setImageDrawable(getResources().getDrawable(R.drawable.ic_choice_selected));
     }
 
     @Override
