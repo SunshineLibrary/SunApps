@@ -69,7 +69,7 @@ public class QuizQuestionsProvider {
     private QuizChoiceQuestion createChoiceQuestion(int id, String quizContent) {
         QuizChoiceQuestion question = new QuizChoiceQuestion();
         question.initQuestion(quizContent);
-        question.setAnswer("A,C");
+        question.setAnswer("A");
         question.setId(id);
         return question;
     }

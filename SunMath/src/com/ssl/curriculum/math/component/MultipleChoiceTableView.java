@@ -1,16 +1,11 @@
 package com.ssl.curriculum.math.component;
 
 import android.content.Context;
-import android.util.AttributeSet;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class MultipleChoiceTableView extends ChoiceTableView {
-
-    public MultipleChoiceTableView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
 
     public MultipleChoiceTableView(Context context) {
         super(context);

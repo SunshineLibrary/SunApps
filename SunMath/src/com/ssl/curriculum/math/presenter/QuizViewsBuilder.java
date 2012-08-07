@@ -19,14 +19,14 @@ public class QuizViewsBuilder {
     public QuizQuestionView buildQuizView(QuizQuestion question) {
         switch (question.getType()) {
             case QuizQuestion.TYPE_CHOICE:
-                return buildMultiChoiceView(question);
+                return buildChoiceView(question);
             case QuizQuestion.TYPE_FILLBLANKS:
                 return buildFillInView((QuizFillBlankQuestion) question);
         }
         return null;
     }
 
-    private QuizChoiceView buildMultiChoiceView(QuizQuestion question) {
+    private QuizChoiceView buildChoiceView(QuizQuestion question) {
         QuizChoiceView quizChoiceView = createQuizChoiceView(question);
         quizChoiceView.loadQuiz("");
         quizChoiceView.setQuizPresenter(presenter);
@@ -34,7 +34,7 @@ public class QuizViewsBuilder {
     }
 
     private QuizChoiceView createQuizChoiceView(QuizQuestion question) {
-        return new QuizChoiceView(context, question.getId(), false);
+        return new QuizChoiceView(context, question.getId(), true);
     }
 
     private QuizFillInView buildFillInView(QuizFillBlankQuestion question) {

@@ -21,17 +21,12 @@ public class SingleChoiceTableView extends ChoiceTableView {
     public void checkAnswer(String answer) {
         for (int index = 0; index < tableLayout.getChildCount(); index++) {
             ChoiceTableItemView itemView = (ChoiceTableItemView) tableLayout.getChildAt(index);
-            if (itemView.isSelected()) {
-                updateSelectedItem(itemView, answer);
+            if (itemView.getToken().equalsIgnoreCase(answer)) {
+                itemView.showCorrect();
+            }
+            if (itemView.isSelected() && !itemView.getToken().equalsIgnoreCase(answer)) {
+                itemView.showInCorrect();
             }
         }
-    }
-
-    private void updateSelectedItem(ChoiceTableItemView itemView, String answer) {
-        if (itemView.getToken().equalsIgnoreCase(answer)) {
-            itemView.showCorrect();
-            return;
-        }
-        itemView.showInCorrect();
     }
 }
