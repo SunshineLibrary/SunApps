@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import com.ssl.curriculum.math.R;
+import com.ssl.curriculum.math.listener.OnChoiceChangedListener;
 
-public class ChoiceTableView extends LinearLayout{
-
-    private TableLayout tableLayout;
+public abstract class ChoiceTableView extends LinearLayout implements OnChoiceChangedListener {
+    protected TableLayout tableLayout;
 
     public ChoiceTableView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -26,6 +26,16 @@ public class ChoiceTableView extends LinearLayout{
 
     public void addChoiceTableRow(ChoiceTableItemView itemView) {
         tableLayout.addView(itemView);
+        itemView.setOnChoiceChangedListener(this);
     }
+
+    @Override
+    public void onChoiceChanged(ChoiceButton choiceButton) {
+        selectChoice(choiceButton);
+    }
+
+    public abstract String getAnswer();
+
+    protected abstract void selectChoice(ChoiceButton choiceButton);
 
 }

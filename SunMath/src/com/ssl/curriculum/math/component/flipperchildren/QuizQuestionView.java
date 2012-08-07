@@ -1,33 +1,49 @@
 package com.ssl.curriculum.math.component.flipperchildren;
 
 import android.content.Context;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import com.ssl.curriculum.math.presenter.QuizPresenter;
 import com.ssl.curriculum.math.utils.QuizHtmlLoader;
 
 public abstract class QuizQuestionView extends LinearLayout {
     protected WebView questionWebView;
+    protected ImageView confirmButton;
+    protected QuizPresenter presenter;
 
     private int questionId;
 
     public QuizQuestionView(Context context, int questionId) {
         super(context);
         this.questionId = questionId;
-        initUI();
-        initWebView();
     }
 
-    protected abstract void initUI();
-
-    public int getQuestionId() {
-        return questionId;
-    }
+    protected abstract void onQuestionFinished();
 
     protected void initWebView() {
         questionWebView.getSettings().setJavaScriptEnabled(true);
         questionWebView.getSettings().setAllowFileAccess(true);
         questionWebView.getSettings().setDomStorageEnabled(true);
         questionWebView.setScrollBarStyle(0);
+    }
+
+    protected void initListeners() {
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onQuestionFinished();
+            }
+        });
+    }
+
+    public int getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuizPresenter(QuizPresenter presenter) {
+        this.presenter = presenter;
     }
 
     protected void loadQuizHtml(String quizContent) {

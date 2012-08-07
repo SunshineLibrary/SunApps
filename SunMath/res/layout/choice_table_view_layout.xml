@@ -5,7 +5,7 @@
               android:layout_height="fill_parent">
 
     <TableLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
-                 android:stretchColumns="*" android:id="@+id/choice_table_layout">
+                 android:stretchColumns="*"  android:shrinkColumns="*" android:id="@+id/choice_table_layout">
     </TableLayout>
 
 </LinearLayout>

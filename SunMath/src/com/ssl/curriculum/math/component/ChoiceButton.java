@@ -9,13 +9,8 @@ import com.ssl.curriculum.math.listener.OnChoiceChangedListener;
 
 public class ChoiceButton extends ImageView implements View.OnClickListener {
 
-    private enum State {
-        ACTIVATE, INACTIVE;
-    }
-
-    private State state;
-
     private OnChoiceChangedListener onChoiceChangedListener;
+    private boolean isActivated;
 
     public ChoiceButton(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -25,27 +20,46 @@ public class ChoiceButton extends ImageView implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (state == State.INACTIVE) {
-            activateButton();
-        } else {
-            deActiveButton();
-        }
         if (onChoiceChangedListener != null) {
-            onChoiceChangedListener.onChoiceChange();
+            onChoiceChangedListener.onChoiceChanged(this);
         }
     }
 
     private void deActiveButton() {
-        state = State.INACTIVE;
+        isActivated = false;
         setImageDrawable(getResources().getDrawable(R.drawable.ic_multiple_choice_blank_selection));
     }
 
+
     private void activateButton() {
-        state = State.ACTIVATE;
+        isActivated = true;
         setImageDrawable(getResources().getDrawable(R.drawable.ic_multiple_choice_selected));
     }
 
-    public void setChoiceChangedListener(OnChoiceChangedListener onChoiceChangedListener) {
+    @Override
+    public boolean isSelected() {
+        return isActivated;
+    }
+
+    @Override
+    public void setSelected(boolean selected) {
+        if (selected) {
+            activateButton();
+            return;
+        }
+        deActiveButton();
+    }
+
+    public void toggle() {
+        if (isSelected()) {
+            deActiveButton();
+        } else {
+            activateButton();
+        }
+    }
+
+    public void setOnChoiceChangedListener(OnChoiceChangedListener onChoiceChangedListener) {
         this.onChoiceChangedListener = onChoiceChangedListener;
     }
 }
+
