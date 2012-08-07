@@ -6,7 +6,7 @@ import android.widget.LinearLayout;
 import com.ssl.curriculum.math.utils.QuizHtmlLoader;
 
 public abstract class QuizQuestionView extends LinearLayout {
-    protected WebView webView;
+    protected WebView questionWebView;
 
     private int questionId;
 
@@ -24,10 +24,10 @@ public abstract class QuizQuestionView extends LinearLayout {
     }
 
     protected void initWebView() {
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setAllowFileAccess(true);
-        webView.getSettings().setDomStorageEnabled(true);
-        webView.setScrollBarStyle(0);
+        questionWebView.getSettings().setJavaScriptEnabled(true);
+        questionWebView.getSettings().setAllowFileAccess(true);
+        questionWebView.getSettings().setDomStorageEnabled(true);
+        questionWebView.setScrollBarStyle(0);
     }
 
     protected void loadQuizHtml(String quizContent) {
@@ -39,7 +39,7 @@ public abstract class QuizQuestionView extends LinearLayout {
        * to tell Android we use the secure schema: http://
        *
        * */
-        webView.loadDataWithBaseURL("http://test", data, "text/html", "utf-8", null);
+        questionWebView.loadDataWithBaseURL("http://test", data, "text/html", "utf-8", null);
     }
 
     public void loadQuiz(String quizContent) {

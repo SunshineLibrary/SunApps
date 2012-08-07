@@ -28,7 +28,7 @@ public class QuizFillInView extends QuizQuestionView {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.quiz_fill_in_flipper_child, this, false);
         addView(viewGroup);
-        webView = (WebView) findViewById(R.id.quiz_fill_in_flipper_child_question);
+        questionWebView = (WebView) findViewById(R.id.quiz_fill_in_flipper_child_question);
         confirmButton = (ImageView) findViewById(R.id.quiz_fill_in_ok_btn);
         showAnswerField = (TextView) findViewById(R.id.quiz_fill_in_showAnswerField);
         answerEditText = (EditText) findViewById(R.id.quiz_fill_in_flipper_child_answer);
