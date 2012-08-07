@@ -4,8 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.listener.QuizLoadedListener;
@@ -14,12 +14,13 @@ import com.ssl.curriculum.math.presenter.QuizPresenter;
 import com.ssl.curriculum.math.presenter.QuizViewsBuilder;
 import com.ssl.curriculum.math.service.QuizQuestionsProvider;
 
-public class QuizFlipperChild extends LinearLayout implements QuizLoadedListener {
-    private TextView nextBtn;
+public class QuizFlipperChild extends RelativeLayout implements QuizLoadedListener {
+    private ImageView nextBtn;
     private ViewFlipper questionFlipper;
 
     private QuizViewsBuilder quizViewsBuilder;
     private QuizPresenter presenter;
+    private ImageView confirmBtn;
 
     public QuizFlipperChild(Context context, QuizDomainData quiz) {
         super(context);
@@ -37,7 +38,8 @@ public class QuizFlipperChild extends LinearLayout implements QuizLoadedListener
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.quiz_flip_layout, this, false);
         addView(viewGroup);
-        nextBtn = (TextView) findViewById(R.id.quiz_next_button);
+        nextBtn = (ImageView) findViewById(R.id.quiz_next_btn);
+        confirmBtn = (ImageView) findViewById(R.id.quiz_choice_ok_btn);
         questionFlipper = (ViewFlipper) findViewById(R.id.quiz_question_view);
     }
 
@@ -46,6 +48,15 @@ public class QuizFlipperChild extends LinearLayout implements QuizLoadedListener
             @Override
             public void onClick(View arg0) {
                 nextQuestion();
+            }
+        });
+        confirmBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                QuizQuestionView quizQuestionView = (QuizQuestionView) questionFlipper.getChildAt(questionFlipper.getDisplayedChild());
+                quizQuestionView.onQuestionFinished();
+                confirmBtn.setVisibility(View.GONE);
+                nextBtn.setVisibility(View.VISIBLE);
             }
         });
         presenter.setQuizLoadedListener(this);
@@ -72,7 +83,9 @@ public class QuizFlipperChild extends LinearLayout implements QuizLoadedListener
     private void addQuizView() {
         QuizQuestionView view = quizViewsBuilder.buildQuizView(presenter.getQuestion());
         if (view == null) return;
-        questionFlipper.addView(view);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
+                ViewGroup.LayoutParams.FILL_PARENT);
+        questionFlipper.addView(view, layoutParams);
         questionFlipper.showNext();
     }
 }

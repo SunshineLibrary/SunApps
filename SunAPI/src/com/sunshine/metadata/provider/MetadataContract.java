@@ -2,7 +2,6 @@ package com.sunshine.metadata.provider;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.test.ActivityTestCase;
 
 public final class MetadataContract {
 
