@@ -24,7 +24,7 @@ public class QuizChoiceView extends QuizQuestionView {
     private void initUI(boolean isSingleChoice) {
         if (isSingleChoice) {
             initUI(R.layout.quiz_single_choice_flip_layout);
-        }else{
+        } else {
             initUI(R.layout.quiz_multi_choice_flip_layout);
         }
     }
@@ -46,7 +46,7 @@ public class QuizChoiceView extends QuizQuestionView {
 
     @Override
     protected void onQuestionFinished() {
-        System.out.println("----------------answer multi: " + choiceTableView.getAnswer());
+        choiceTableView.checkAnswer(presenter.getAnswer(getQuestionId()));
     }
 
     @Override

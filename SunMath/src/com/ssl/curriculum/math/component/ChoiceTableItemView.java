@@ -2,6 +2,7 @@ package com.ssl.curriculum.math.component;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TableRow;
@@ -50,5 +51,15 @@ public class ChoiceTableItemView extends TableRow {
 
     public void setOnChoiceChangedListener(OnChoiceChangedListener onChoiceChangedListener) {
         answerSelectedBtn.setOnChoiceChangedListener(onChoiceChangedListener);
+    }
+
+    public void showCorrect() {
+        answerImageView.setVisibility(View.VISIBLE);
+        answerImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_multiple_choice_correct));
+    }
+
+    public void showInCorrect() {
+        answerImageView.setVisibility(View.VISIBLE);
+        answerImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_multiple_choice_incorrect));
     }
 }

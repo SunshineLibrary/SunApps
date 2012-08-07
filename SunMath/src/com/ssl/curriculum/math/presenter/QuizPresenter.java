@@ -57,6 +57,7 @@ public class QuizPresenter implements ProblemLoadedListener {
     }
 
     public String getAnswer(int questionId) {
-        return quizDomainData.getQuestionById(questionId).getAnswer();
+        QuizQuestion questionById = quizDomainData.getQuestionById(questionId);
+        return questionById.getAnswer();
     }
 }

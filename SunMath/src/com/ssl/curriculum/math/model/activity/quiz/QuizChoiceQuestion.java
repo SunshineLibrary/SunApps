@@ -2,7 +2,7 @@ package com.ssl.curriculum.math.model.activity.quiz;
 
 import java.util.ArrayList;
 
-public class QuizMultiChoiceQuestion extends QuizQuestion {
+public class QuizChoiceQuestion extends QuizQuestion {
 	public static int CHOICE_INCORRECT = 0;
 	public static int CHOICE_CORRECT = 1;
 	
@@ -19,8 +19,8 @@ public class QuizMultiChoiceQuestion extends QuizQuestion {
 	private String source = "";
 	private ArrayList<Choice> choices = new ArrayList<Choice>();
 	
-	public QuizMultiChoiceQuestion() {
-		super(QuizQuestion.TYPE_MULTICHOICE);
+	public QuizChoiceQuestion() {
+		super(QuizQuestion.TYPE_CHOICE);
 	}
 	
 	public void initQuestion(String source){

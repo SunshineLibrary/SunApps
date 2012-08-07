@@ -34,8 +34,7 @@ public abstract class ChoiceTableView extends LinearLayout implements OnChoiceCh
         selectChoice(choiceButton);
     }
 
-    public abstract String getAnswer();
-
     protected abstract void selectChoice(ChoiceButton choiceButton);
 
+    public abstract void checkAnswer(String answer);
 }
