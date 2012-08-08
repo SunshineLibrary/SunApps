@@ -7,8 +7,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import com.sunshine.metadata.provider.Matcher;
+import com.sunshine.metadata.provider.MetadataContract;
 import com.sunshine.support.api.ApiClient;
 import com.sunshine.support.downloader.FileDownloadTask;
+import com.sunshine.support.downloader.MonitoredFileDownloadTask;
 
 import java.util.List;
 import java.util.Vector;
@@ -84,9 +86,9 @@ public class DownloadableTableObserver extends TableObserver {
             int type = cursor.getInt(cursor.getColumnIndex(Activities._TYPE));
             switch (type) {
                 case Activities.TYPE_VIDEO:
-                    new FileDownloadTask(context,
+                    new MonitoredFileDownloadTask(context,
                             ApiClient.getDownloadUri("activities", id),
-                            Activities.getActivityVideoUri(id)).execute();
+                            Activities.getActivityVideoUri(id), uri).execute();
                     break;
                 case Activities.TYPE_GALLERY:
                     ContentValues values = new ContentValues();
@@ -102,8 +104,8 @@ public class DownloadableTableObserver extends TableObserver {
 
     public void downloadGalleryImage(Uri uri) {
         int id = Integer.parseInt(uri.getLastPathSegment());
-        new FileDownloadTask(context,
+        new MonitoredFileDownloadTask(context,
                 ApiClient.getDownloadUri("images", id),
-                GalleryImages.getGalleryImageUri(id)).execute();
+                GalleryImages.getGalleryImageUri(id), uri).execute();
     }
 }
