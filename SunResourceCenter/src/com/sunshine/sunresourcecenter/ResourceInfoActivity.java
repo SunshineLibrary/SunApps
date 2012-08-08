@@ -105,6 +105,7 @@ public class ResourceInfoActivity extends Activity {
     
     private void showResInfo(String id, ResourceType type){
     	Cursor cur = null;
+    	if(id == null) return;
     	
     	switch(type){
     	
