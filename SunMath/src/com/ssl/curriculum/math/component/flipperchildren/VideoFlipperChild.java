@@ -52,4 +52,8 @@ public class VideoFlipperChild extends FlipperChildView {
         videoPlayer.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onDestroy() {
+        videoPlayer.onDestroy();
+    }
 }

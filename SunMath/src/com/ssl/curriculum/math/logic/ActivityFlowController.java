@@ -162,4 +162,11 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     private void addViewToFlipper(View view) {
         viewFlipper.addView(view, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
     }
+
+    public void destroyFlipperSubViews() {
+        for (int index = 0; index < viewFlipper.getChildCount(); index++) {
+            FlipperChildView flipperChildView = (FlipperChildView) viewFlipper.getChildAt(index);
+            flipperChildView.onDestroy();
+        }
+    }
 }
