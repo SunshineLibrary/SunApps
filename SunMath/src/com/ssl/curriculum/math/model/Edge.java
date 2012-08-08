@@ -1,34 +1,22 @@
 package com.ssl.curriculum.math.model;
 
 public class Edge {
-	private int from_id;
-	private int to_id;
+	private int fromActivityId;
+	private int toActivityId;
 	private String condition;
 	
-	public Edge(int fid, int tid, String cdn){
-		from_id = fid;
-		to_id = tid;
-		condition = cdn;
+	public Edge(int fromActivityId, int toActivityId, String condition){
+		this.fromActivityId = fromActivityId;
+		this.toActivityId = toActivityId;
+		this.condition = condition;
+	}
+
+    public int getFromActivityId(){
+		return fromActivityId;
 	}
 	
-	public void setFromId(int fid){
-		from_id = fid;
-	}
-	
-	public void setToId(int tid){
-		to_id = tid;
-	}
-	
-	public void setCondition(String cdn){
-		condition = cdn;
-	}
-	
-	public int getFromId(){
-		return from_id;
-	}
-	
-	public int getToId(){
-		return to_id;
+	public int getToActivityId(){
+		return toActivityId;
 	}
 
 	public String getCondition(){

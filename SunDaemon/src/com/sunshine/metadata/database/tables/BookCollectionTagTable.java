@@ -9,13 +9,13 @@ public class BookCollectionTagTable extends AbstractTable {
 	
 	public static final String[] ALL_COLUMNS = {
 		BookCollectionTags._ID,
-		BookCollectionTags._BOOK_COLLLECTION_ID,
+		BookCollectionTags._BOOK_COLLECTION_ID,
 		BookCollectionTags._TAG_ID
 	};
 	
 	public static final String[][] COLUMN_DEFINITIONS = {
 		{BookCollectionTags._ID, "INTEGER PRIMARY KEY"},
-		{BookCollectionTags._BOOK_COLLLECTION_ID, "INTEGER"},
+		{BookCollectionTags._BOOK_COLLECTION_ID, "INTEGER"},
 		{BookCollectionTags._TAG_ID, "INTEGER"}
 	};
 	

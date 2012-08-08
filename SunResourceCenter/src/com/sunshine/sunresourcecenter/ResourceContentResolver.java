@@ -30,9 +30,9 @@ public class ResourceContentResolver {
 			Cursor cur = resolver.query(BookCollections.CONTENT_URI, projection, selection, null, null);		
 
 			int idCol = cur.getColumnIndex(BookCollections._ID);
-			int titleCol = cur.getColumnIndex(BookCollections._NAME);
+			int titleCol = cur.getColumnIndex(BookCollections._TITLE);
 			int authorCol = cur.getColumnIndex(BookCollections._AUTHOR);
-			int descriptionCol = cur.getColumnIndex(BookCollections._DESCRIPTION);
+			int descriptionCol = cur.getColumnIndex(BookCollections._INTRO);
 			
 			while (cur.moveToNext()) {
 				String tags = getBookCollectionTags(cur.getString(idCol));
@@ -56,7 +56,7 @@ public class ResourceContentResolver {
 			int idCol = cur.getColumnIndex(Books._ID);
 			int titleCol = cur.getColumnIndex(Books._TITLE);
 			int authorCol = cur.getColumnIndex(Books._AUTHOR);
-			int descriptionCol = cur.getColumnIndex(Books._DESCRIPTION);
+			int descriptionCol = cur.getColumnIndex(Books._INTRO);
 			int progressCol = cur.getColumnIndex(Books._PROGRESS);
 			
 			while (cur.moveToNext()) {

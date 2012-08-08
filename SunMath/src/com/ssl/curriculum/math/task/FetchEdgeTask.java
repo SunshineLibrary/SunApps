@@ -1,28 +1,36 @@
 package com.ssl.curriculum.math.task;
 
-import java.util.ArrayList;
-
 import android.os.AsyncTask;
-
 import com.ssl.curriculum.math.listener.EdgeReceiver;
 import com.ssl.curriculum.math.model.Edge;
-import com.ssl.curriculum.math.model.activity.ActivityData;
+import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.ssl.curriculum.math.service.EdgeContentProvider;
+
+import java.util.ArrayList;
 
 public class FetchEdgeTask extends AsyncTask<Void, Void, ArrayList<Edge>> {
     private EdgeContentProvider provider;
     private EdgeReceiver edgeReceiver;
-    private ActivityData currentActivity;
+    private int activityId;
+    private int sectionId;
+    private DomainActivityData domainActivityData;
 
-    public FetchEdgeTask(EdgeContentProvider edgeProvider, ActivityData activity, EdgeReceiver edgeReceiver) {
+    public FetchEdgeTask(EdgeContentProvider edgeProvider, EdgeReceiver edgeReceiver, DomainActivityData domainActivityData) {
         this.provider = edgeProvider;
         this.edgeReceiver = edgeReceiver;
-        this.currentActivity = activity;
+        this.domainActivityData = domainActivityData;
+    }
+
+    public FetchEdgeTask(EdgeContentProvider edgeContentProvider, EdgeReceiver edgeReceiver, int sectionId, int activityId) {
+        this.provider = edgeContentProvider;
+        this.edgeReceiver = edgeReceiver;
+        this.activityId = activityId;
+        this.sectionId = sectionId;
     }
 
     @Override
     protected ArrayList<Edge> doInBackground(Void... voids) {
-        return provider.fetchMatchedEdges(currentActivity.getUniqueId(), currentActivity.getSectionId());
+        return provider.fetchMatchedEdges(activityId, sectionId);
     }
 
     @Override
