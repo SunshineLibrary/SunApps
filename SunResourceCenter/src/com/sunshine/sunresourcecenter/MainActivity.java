@@ -3,6 +3,11 @@ package com.sunshine.sunresourcecenter;
 import com.sunshine.metadata.provider.*;
 import com.sunshine.metadata.provider.MetadataContract.BookCollections;
 import com.sunshine.metadata.provider.MetadataContract.Books;
+import com.sunshine.sunresourcecenter.R;
+import com.sunshine.sunresourcecenter.adapter.CategoryGridAdapter;
+import com.sunshine.sunresourcecenter.adapter.ResourceGridAdapter;
+import com.sunshine.sunresourcecenter.adapter.ResourceListGridAdapter;
+import com.sunshine.sunresourcecenter.griditem.ResourceGridItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +73,7 @@ public class MainActivity extends Activity {
 	private LinearLayout typenav;
 	private LinearLayout recommandView;
 	private Spinner mainnav;
-	private ReasourceContentResolver resolver;
+	private ResourceContentResolver resolver;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +87,7 @@ public class MainActivity extends Activity {
 		mainnav = (Spinner) findViewById(R.id.mainnav);
 		recommandView = (LinearLayout) findViewById(R.id.recommand_view);
 		
-		resolver = new ReasourceContentResolver(MainActivity.this.getContentResolver());
+		resolver = new ResourceContentResolver(MainActivity.this.getContentResolver());
 		
 		// change via tab state
 		currentGridType = gridType.GRIDTYPE_RES_INPROGRESS;
@@ -112,6 +117,7 @@ public class MainActivity extends Activity {
 					//book
 					intent = new Intent();
 					intent.putExtra("bookId", gridItems.get(position).toString());
+					intent.putExtra("type", currentResType);
 					intent.setClass(MainActivity.this, ResourceInfoActivity.class);
 					startActivity(intent);
 					break;
@@ -361,27 +367,22 @@ public class MainActivity extends Activity {
 		switch (theGridType) {
 		case GRIDTYPE_RES_TODOWNLOAD:
 			// res grid in download page
-			ResourceGridAdapter adapter = new ResourceGridAdapter(itemList,
-					false, this);
-			//gridView.
+			ResourceGridAdapter adapter = new ResourceGridAdapter(itemList, false, this);
 			gridView.setAdapter(adapter);
 			break;
 		case GRIDTYPE_RES_INPROGRESS:
 			// res grid in reading page
-			ResourceGridAdapter adapter2 = new ResourceGridAdapter(itemList,
-					true, this);
+			ResourceGridAdapter adapter2 = new ResourceGridAdapter(itemList, true, this);
 			gridView.setAdapter(adapter2);
 			break;
 		case GRIDTYPE_RESLIST:
 			// resource list page
-			ResourceListGridAdapter adapter3 = new ResourceListGridAdapter(
-					itemList, this);
+			ResourceListGridAdapter adapter3 = new ResourceListGridAdapter(itemList, this);
 			gridView.setAdapter(adapter3);
 			break;
 		case GRIDTYPE_CATEGORY:
 			// category page
-			CategoryGridAdapter adapter4 = new CategoryGridAdapter(itemList,
-					this);
+			CategoryGridAdapter adapter4 = new CategoryGridAdapter(itemList, this);
 			gridView.setAdapter(adapter4);
 			break;
 		case GRIDTYPE_RECOMMAND:
@@ -426,10 +427,9 @@ public class MainActivity extends Activity {
 				return resolver.getBooks(projection, selection);
 				
 			case COLLECTION:
-				//
-				return resolver.getBooks(projection, "collection_id = '"+argId+"'");
-			
 				//collections
+				return resolver.getBooks(projection, "collection_id = '"+argId+"'");
+				
 			case DOWN_HOT:
 				//AND HOT
 				//selection = "download_status = 'NOT_DOWNLOADED'";
@@ -438,7 +438,6 @@ public class MainActivity extends Activity {
 			case DOWN_LIKE:
 				//AND LIKE
 				//selection = "download_status = 'NOT_DOWNLOADED'";
-				
 				return resolver.getBookCollections(projection, selection);
 			
 			case DOWN_CATEGORY_RES:

@@ -6,15 +6,19 @@ import java.util.List;
 import com.sunshine.metadata.provider.MetadataContract.BookCollections;
 import com.sunshine.metadata.provider.MetadataContract.BookLists;
 import com.sunshine.metadata.provider.MetadataContract.Books;
+import com.sunshine.sunresourcecenter.R;
+import com.sunshine.sunresourcecenter.griditem.CategoryGridItem;
+import com.sunshine.sunresourcecenter.griditem.ResourceGridItem;
+import com.sunshine.sunresourcecenter.griditem.ResourceListGridItem;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
 
-public class ReasourceContentResolver {
+public class ResourceContentResolver {
 	
 	private ContentResolver resolver;
 		
-	public ReasourceContentResolver(ContentResolver resolver){
+	public ResourceContentResolver(ContentResolver resolver){
 		
 		this.resolver = resolver;		
 	}

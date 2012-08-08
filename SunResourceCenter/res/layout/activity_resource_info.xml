@@ -197,12 +197,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
-        android:baselineAligned="false">
-
+        android:baselineAligned="false"
+        android:weightSum="1"
+        >
+
         <LinearLayout
+            android:id="res_layout_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
             android:orientation="vertical"
             android:padding="5dp" >
 
@@ -228,7 +230,7 @@
                 android:orientation="vertical"
                 android:paddingLeft="40dp"
                 android:paddingRight="40dp" >
-
+
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
@@ -238,7 +240,7 @@
                     android:text="@string/info_author_intro"
                     android:textColor="@color/text_dark"
                     android:textSize="@dimen/info_text_med" />
-
+
                 <TextView
                     android:id="@+id/info_author_intro"
                     android:layout_width="wrap_content"
@@ -249,14 +251,14 @@
             </LinearLayout>
 
         </LinearLayout>
-
+
         <LinearLayout
+            android:id="res_layout_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical"
             android:padding="5dp" >
-
+
             <TextView
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
