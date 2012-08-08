@@ -5,7 +5,6 @@ import android.content.UriMatcher;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
-import com.sunshine.metadata.database.MetadataDBHandler;
 import com.sunshine.metadata.provider.Matcher;
 
 import java.io.File;
@@ -14,8 +13,6 @@ import java.io.IOException;
 
 
 public class SharedStorageManager {
-
-    private MetadataDBHandler dbHandler;
 
     public static final int RO_MODE = 0;
     public static final int WO_MODE = 1;
@@ -58,9 +55,7 @@ public class SharedStorageManager {
 
     private ParcelFileDescriptor getFileDescriptor(Uri uri, String mode) throws FileNotFoundException {
         File directory = getFileDirectory(uri);
-        ParcelFileDescriptor descriptor;
         File file = new File(directory, uri.getLastPathSegment());
-
         switch(getMode(mode)) {
             case RO_MODE:
                 return getReadOnlyDescriptor(file);
