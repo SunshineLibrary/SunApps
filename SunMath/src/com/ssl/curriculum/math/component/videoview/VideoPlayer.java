@@ -15,168 +15,176 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import com.ssl.curriculum.math.R;
+import com.ssl.curriculum.math.listener.TapListener;
 
-public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnCompletionListener,
-        MediaPlayer.OnPreparedListener, SurfaceHolder.Callback {
-
+public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, SurfaceHolder.Callback {
     private static final String TAG = "VideoPlayer";
-    private long lastActionTime = 0L;
-    private View controlPanel;
-    private ProgressBar timeline;
-    private ImageButton playButton;
-    private TappableSurfaceView surface;
-    private SurfaceHolder holder;
-    private MediaPlayer player;
-    private int width;
 
-    private int height;
     private Context context;
-    private Uri uri;
-    private boolean isPaused;
+    private View controlPanel;
+    private ProgressBar playerProgress;
+    private TappableSurfaceView surface;
+    private MediaPlayer player;
+    private SurfaceHolder holder;
+    private ImageButton playButton;
     private ViewGroup content;
     private ViewGroup mFullScreenLayout;
     private View savedContentView;
     private ImageButton fullScreenButton;
+
+    private TapListener tapListener;
+
+    private int width;
+    private int height;
+    private long lastActionTime = 0L;
+
+    private Uri uri;
+    private boolean isPaused;
     private boolean isFullScreen = false;
+
+    private Runnable progressRunnable;
+    private Thread.UncaughtExceptionHandler uncaughtExceptionHandler;
 
     public VideoPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-
-        Thread.setDefaultUncaughtExceptionHandler(onBlooey);
-
+        uncatchException();
         initUI();
         initListener();
+        initRunnable();
+    }
+
+    private void uncatchException() {
+        uncaughtExceptionHandler = new Thread.UncaughtExceptionHandler() {
+            public void uncaughtException(Thread thread, Throwable ex) {
+                Log.e(TAG, "Uncaught exception", ex);
+                showErrorDialog(ex);
+            }
+        };
+        Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
     }
 
     private void initUI() {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         content = (ViewGroup) inflater.inflate(R.layout.video_player, null);
-
-//        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mFullScreenLayout = (ViewGroup) inflater.inflate(R.layout.video_player_full_screen, null);
-
         this.addView(content);
 
         surface = (TappableSurfaceView) findViewById(R.id.video_player_surface);
-        surface.addTapListener(onTap);
-        holder = surface.getHolder();
-        holder.addCallback(this);
-        holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-
         controlPanel = findViewById(R.id.video_player_control_panel);
-        timeline = (ProgressBar) findViewById(R.id.video_player_time_line);
+        playerProgress = (ProgressBar) findViewById(R.id.video_player_time_line);
+        playButton = (ImageButton) findViewById(R.id.video_player_media_btn);
 
-        playButton = (ImageButton) findViewById(R.id.video_player_media);
-        fullScreenButton = (ImageButton) findViewById(R.id.video_player_full_screen);
+        holder = surface.getHolder();
+        holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        fullScreenButton = (ImageButton) findViewById(R.id.video_player_full_screen_btn);
+
+        mFullScreenLayout = (ViewGroup) inflater.inflate(R.layout.video_player_full_screen, null);
     }
 
     private void initListener() {
+        tapListener = new TapListener() {
+            public void onTap(MotionEvent event) {
+                lastActionTime = SystemClock.elapsedRealtime();
+                if (controlPanel.getVisibility() == View.GONE)
+                    controlPanel.setVisibility(View.VISIBLE);
+                else
+                    controlPanel.setVisibility(View.GONE);
+            }
+        };
+        surface.addTapListener(tapListener);
+        holder.addCallback(this);
+
         playButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                lastActionTime = SystemClock.elapsedRealtime();
-
-                if (player == null) {
-                    startVideo();
-                    onStart();
-                    return;
-                }
-
-                if (player.isPlaying())
-                    pause();
-                else
-                    start();
-            }
-
-            private void pause() {
-                playButton.setImageResource(R.drawable.ic_media_play);
-                player.pause();
-            }
-
-            private void start() {
-                playButton.setImageResource(R.drawable.ic_media_pause);
-                player.start();
+                handlePlayBtnClick();
             }
         });
 
         fullScreenButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                isFullScreen = !isFullScreen;
-                setFullscreen(isFullScreen);
+                handleFullScreenBtnClick();
             }
         });
+    }
+
+    private void initRunnable() {
+        progressRunnable = new Runnable() {
+            public void run() {
+                if (lastActionTime > 0 && SystemClock.elapsedRealtime() - lastActionTime > 3000) {
+                    hideControlPanel();
+                }
+
+                if (player != null) {
+                    playerProgress.setProgress(player.getCurrentPosition());
+                }
+
+                if (!isPaused) {
+                    surface.postDelayed(progressRunnable, 1000);
+                }
+            }
+        };
     }
 
     public void setVideoURI(Uri uri) {
         this.uri = uri;
     }
 
-    public void startVideo() {
+    private void handleFullScreenBtnClick() {
+        isFullScreen = !isFullScreen;
+        setFullscreen(isFullScreen);
+    }
+
+    private void handlePlayBtnClick() {
         if (uri == null) return;
+        lastActionTime = SystemClock.elapsedRealtime();
+        if (player == null) play();
+        else if (player.isPlaying()) pause();
+        else resume();
+    }
 
+    private void play() {
         playVideo(uri);
-        clearPanels();
+        hideControlPanel();
+        onStart();
     }
 
-    public void onStart() {
-        isPaused = false;
-        surface.postDelayed(onEverySecond, 1000);
-    }
-
-    private Runnable onEverySecond = new Runnable() {
-        public void run() {
-            if (lastActionTime > 0 &&
-                    SystemClock.elapsedRealtime() - lastActionTime > 3000) {
-                clearPanels();
-            }
-
-            if (player != null) {
-                timeline.setProgress(player.getCurrentPosition());
-            }
-
-            if (!isPaused) {
-                surface.postDelayed(onEverySecond, 1000);
-            }
-        }
-    };
-
-    protected void onPause() {
+    public void pause() {
+        playButton.setImageResource(R.drawable.ic_media_play);
+        player.pause();
         isPaused = true;
     }
 
-    protected void onDestroy() {
+    private void resume() {
+        player.start();
+        onStart();
+    }
+
+    public void onStart() {
+        playButton.setImageResource(R.drawable.ic_media_pause);
+        surface.postDelayed(progressRunnable, 1000);
+        isPaused = false;
+    }
+
+    public void onDestroy() {
         if (player != null) {
             player.release();
             player = null;
         }
-
-        surface.removeTapListener(onTap);
     }
-
 
     private void playVideo(Uri uri) {
         try {
-            playButton.setEnabled(false);
-
-            if (player == null) {
-                player = new MediaPlayer();
-                player.setScreenOnWhilePlaying(true);
-            } else {
-                player.stop();
-                player.reset();
-            }
-
+            player = new MediaPlayer();
+            player.setScreenOnWhilePlaying(true);
             player.setDataSource(this.context, uri);
             player.setDisplay(holder);
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.setOnPreparedListener(this);
             player.prepareAsync();
-//			player.setOnBufferingUpdateListener(this);
             player.setOnCompletionListener(this);
         } catch (Throwable t) {
-            Log.e(TAG, "Exception in media prep", t);
-            goBlooey(t);
+            showErrorDialog(t);
         }
     }
 
@@ -188,7 +196,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
             activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-            if (player!=null && player.isPlaying()) {
+            if (player != null && player.isPlaying()) {
                 player.pause();
                 isOnPause = true;
             }
@@ -201,11 +209,11 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
             container = (FrameLayout) activity.findViewById(R.id.video_player_full_screen_container);
             container.addView(this);
 
-            if(isOnPause) player.start();
+            if (isOnPause) player.start();
         } else {
             activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-            if (player!=null && player.isPlaying()) {
+            if (player != null && player.isPlaying()) {
                 player.pause();
                 isOnPause = true;
             }
@@ -216,26 +224,14 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
             container = (RelativeLayout) activity.findViewById(R.id.content_screen_video_frame);
             container.addView(this);
 
-            if(isOnPause) player.start();
+            if (isOnPause) player.start();
         }
     }
 
-    private void clearPanels() {
+    private void hideControlPanel() {
         lastActionTime = 0;
         controlPanel.setVisibility(View.GONE);
     }
-
-    private TappableSurfaceView.TapListener onTap =
-            new TappableSurfaceView.TapListener() {
-                public void onTap(MotionEvent event) {
-                    lastActionTime = SystemClock.elapsedRealtime();
-
-                    if (controlPanel.getVisibility() == View.GONE)
-                        controlPanel.setVisibility(View.VISIBLE);
-                    else
-                        controlPanel.setVisibility(View.GONE);
-                }
-            };
 
     @Override
     public void onCompletion(MediaPlayer arg0) {
@@ -249,44 +245,30 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
 
         if (width != 0 && height != 0) {
             holder.setFixedSize(width, height);
-            timeline.setProgress(0);
-            timeline.setMax(player.getDuration());
+            playerProgress.setProgress(0);
+            playerProgress.setMax(player.getDuration());
             player.start();
         }
-
         playButton.setEnabled(true);
     }
 
-    private Thread.UncaughtExceptionHandler onBlooey =
-            new Thread.UncaughtExceptionHandler() {
-                public void uncaughtException(Thread thread, Throwable ex) {
-                    Log.e(TAG, "Uncaught exception", ex);
-                    goBlooey(ex);
-                }
-            };
-
-    private void goBlooey(Throwable t) {
+    private void showErrorDialog(Throwable t) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        builder.setTitle("Exception!")
-                .setMessage(t.toString())
-                .setPositiveButton("OK", null)
-                .show();
+        builder.setTitle("Exception!").setMessage(t.toString()).setPositiveButton("OK", null).show();
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        //not implemented
+
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        //not implemented
+
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        //not implemented
     }
 
 }

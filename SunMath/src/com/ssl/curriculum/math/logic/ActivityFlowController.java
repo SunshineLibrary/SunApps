@@ -2,8 +2,11 @@ package com.ssl.curriculum.math.logic;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
+import com.ssl.curriculum.math.anim.FlipAnimationManager;
+import com.ssl.curriculum.math.component.flipperchildren.VideoFlipperChild;
 import com.ssl.curriculum.math.listener.ActivityDataReceiver;
 import com.ssl.curriculum.math.listener.EdgeReceiver;
 import com.ssl.curriculum.math.listener.PageFlipListener;
@@ -22,6 +25,7 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     private ViewFlipper viewFlipper;
     private FlipperViewsBuilder flipperViewsBuilder;
     private FetchActivityTaskManager fetchActivityTaskManager;
+    private FlipAnimationManager flipAnimationManager;
 
     private int currentActivityId;
     private int currentSectionId;
@@ -29,11 +33,51 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     private int currentPosition = -1;
     private FetchNextDomainActivityStrategy fetchNextDomainActivityStrategy;
 
-    public ActivityFlowController(ViewFlipper viewFlipper, FlipperViewsBuilder flipperViewsBuilder, FetchActivityTaskManager fetchActivityTaskManager, FetchNextDomainActivityStrategyImpl fetchNextDomainActivityStrategy) {
+    private Animation flipInFromRightAnimation;
+    private Animation flipOutToLeftAnimation;
+    private Animation flipInFromLeftAnimation;
+    private Animation flipOutToRightAnimation;
+
+    public ActivityFlowController(ViewFlipper viewFlipper, FlipperViewsBuilder flipperViewsBuilder, FetchActivityTaskManager fetchActivityTaskManager, FetchNextDomainActivityStrategyImpl fetchNextDomainActivityStrategy, FlipAnimationManager flipAnimationManager) {
         this.viewFlipper = viewFlipper;
         this.flipperViewsBuilder = flipperViewsBuilder;
         this.fetchActivityTaskManager = fetchActivityTaskManager;
         this.fetchNextDomainActivityStrategy = fetchNextDomainActivityStrategy;
+        this.flipAnimationManager = flipAnimationManager;
+        initAnimation();
+        initListeners();
+    }
+
+    private void initListeners() {
+        Animation.AnimationListener flipperInAnimationListener = new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                View view = viewFlipper.getChildAt(viewFlipper.getDisplayedChild());
+                if (view instanceof VideoFlipperChild) {
+                    VideoFlipperChild videoFlipperChild = (VideoFlipperChild) view;
+                    videoFlipperChild.showPlayer();
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        };
+
+        flipInFromRightAnimation.setAnimationListener(flipperInAnimationListener);
+        flipInFromLeftAnimation.setAnimationListener(flipperInAnimationListener);
+    }
+
+    private void initAnimation() {
+        flipInFromRightAnimation = flipAnimationManager.getFlipInFromRightAnimation();
+        flipOutToLeftAnimation = flipAnimationManager.getFlipOutToLeftAnimation();
+        flipInFromLeftAnimation = flipAnimationManager.getFlipInFromLeftAnimation();
+        flipOutToRightAnimation = flipAnimationManager.getFlipOutToRightAnimation();
     }
 
     public void loadDomainActivityData(int domainSectionId, int domainActivityId) {
@@ -75,12 +119,26 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
         showNext();
     }
 
+    private void hideVideoPlayer() {
+        View view = viewFlipper.getChildAt(viewFlipper.getDisplayedChild());
+        if (view instanceof VideoFlipperChild) {
+            VideoFlipperChild videoFlipperChild = (VideoFlipperChild) view;
+            videoFlipperChild.hidePlayer();
+        }
+    }
+
     private void showPrevious() {
+        viewFlipper.setInAnimation(flipInFromRightAnimation);
+        viewFlipper.setOutAnimation(flipOutToLeftAnimation);
+        hideVideoPlayer();
         viewFlipper.showPrevious();
         currentPosition--;
     }
 
     private void showNext() {
+        viewFlipper.setInAnimation(flipInFromLeftAnimation);
+        viewFlipper.setOutAnimation(flipOutToRightAnimation);
+        hideVideoPlayer();
         viewFlipper.showNext();
         currentPosition++;
     }

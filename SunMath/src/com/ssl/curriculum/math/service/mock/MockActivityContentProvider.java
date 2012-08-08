@@ -6,7 +6,6 @@ import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.ssl.curriculum.math.model.activity.QuizDomainData;
 import com.ssl.curriculum.math.model.activity.VideoDomainActivityData;
 import com.ssl.curriculum.math.service.ActivityContentProvider;
-import com.sunshine.metadata.provider.MetadataContract.Activities;
 
 public class MockActivityContentProvider extends ActivityContentProvider {
 
@@ -28,6 +27,8 @@ public class MockActivityContentProvider extends ActivityContentProvider {
             QuizDomainData data = new QuizDomainData();
             return data;
         }
-        return new DomainActivityData(Activities.TYPE_GALLERY);
+        VideoDomainActivityData vad = new VideoDomainActivityData();
+        vad.initVideoMetadata("This is just a test" + activityId, "Blah", 1000);
+        return vad;
     }
 }

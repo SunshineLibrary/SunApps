@@ -3,6 +3,7 @@ package com.ssl.curriculum.math.component.flipperchildren;
 import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ public class VideoFlipperChild extends LinearLayout {
         videoPlayer = (VideoPlayer) findViewById(R.id.content_screen_video_field);
         titleView = (TextView) this.findViewById(R.id.video_title);
         descriptionView = (TextView) this.findViewById(R.id.video_descr);
+        videoPlayer.setVisibility(View.INVISIBLE);
     }
 
     private void initVideoComponent() {
@@ -39,4 +41,12 @@ public class VideoFlipperChild extends LinearLayout {
         descriptionView.setText(domainActivityData.getDescription());
     }
 
+    public void showPlayer() {
+        videoPlayer.setVisibility(View.VISIBLE);
+    }
+
+    public void hidePlayer() {
+        videoPlayer.pause();
+        videoPlayer.setVisibility(View.INVISIBLE);
+    }
 }
