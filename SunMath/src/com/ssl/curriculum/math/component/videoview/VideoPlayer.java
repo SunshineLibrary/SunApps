@@ -17,6 +17,8 @@ import android.widget.RelativeLayout;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.listener.TapListener;
 
+import java.io.IOException;
+
 public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, SurfaceHolder.Callback {
     private static final String TAG = "VideoPlayer";
 
@@ -40,10 +42,11 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
 
     private Uri uri;
     private boolean isPaused;
-    private boolean isFullScreen = false;
+    private boolean toFullScreen = false;
 
     private Runnable progressRunnable;
     private Thread.UncaughtExceptionHandler uncaughtExceptionHandler;
+    private int savedPlayedPosition;
 
     public VideoPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -131,8 +134,8 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     }
 
     private void handleFullScreenBtnClick() {
-        isFullScreen = !isFullScreen;
-        setFullscreen(isFullScreen);
+        toFullScreen = !toFullScreen;
+        setToFullScreen(toFullScreen);
     }
 
     private void handlePlayBtnClick() {
@@ -150,6 +153,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     }
 
     public void pause() {
+        if (player == null) return;
         playButton.setImageResource(R.drawable.ic_media_play);
         player.pause();
         isPaused = true;
@@ -188,44 +192,33 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         }
     }
 
-    public void setFullscreen(boolean fullscreen) {
-        boolean isOnPause = false;
+    public void setToFullScreen(boolean toFullScreen) {
+        if (player == null || !player.isPlaying()) return;
+        player.pause();
+        savedPlayedPosition = player.getCurrentPosition();
+        if (toFullScreen) toFullScreen();
+        else toOriginalScreen();
+    }
+
+    private void toOriginalScreen() {
         Activity activity = (Activity) getContext();
+        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        ViewGroup container = (ViewGroup) getParent();
+        container.removeView(this);
+        activity.setContentView(savedContentView);
+        container = (RelativeLayout) activity.findViewById(R.id.content_screen_video_frame);
+        container.addView(this);
+    }
 
-        if (fullscreen) {
-            activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-            if (player != null && player.isPlaying()) {
-                player.pause();
-                isOnPause = true;
-            }
-
-            savedContentView = ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
-            ViewGroup container = (ViewGroup) getParent();
-            container.removeView(this);
-            activity.setContentView(mFullScreenLayout);
-
-            container = (FrameLayout) activity.findViewById(R.id.video_player_full_screen_container);
-            container.addView(this);
-
-            if (isOnPause) player.start();
-        } else {
-            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-            if (player != null && player.isPlaying()) {
-                player.pause();
-                isOnPause = true;
-            }
-
-            ViewGroup container = (ViewGroup) getParent();
-            container.removeView(this);
-            activity.setContentView(savedContentView);
-            container = (RelativeLayout) activity.findViewById(R.id.content_screen_video_frame);
-            container.addView(this);
-
-            if (isOnPause) player.start();
-        }
+    private void toFullScreen() {
+        Activity activity = (Activity) getContext();
+        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        savedContentView = ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
+        ViewGroup container = (ViewGroup) getParent();
+        container.removeView(this);
+        activity.setContentView(mFullScreenLayout);
+        container = (FrameLayout) activity.findViewById(R.id.video_player_full_screen_container);
+        container.addView(this);
     }
 
     private void hideControlPanel() {
@@ -242,13 +235,12 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     public void onPrepared(MediaPlayer mediaplayer) {
         width = player.getVideoWidth();
         height = player.getVideoHeight();
+        if(width == 0 || height == 0) return;
 
-        if (width != 0 && height != 0) {
-            holder.setFixedSize(width, height);
-            playerProgress.setProgress(0);
-            playerProgress.setMax(player.getDuration());
-            player.start();
-        }
+        holder.setFixedSize(width, height);
+        playerProgress.setProgress(0);
+        playerProgress.setMax(player.getDuration());
+        player.start();
         playButton.setEnabled(true);
     }
 
@@ -259,12 +251,22 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-
+        if (player == null || player.isPlaying()) return;
+        try {
+            player.reset();
+            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            player.setDataSource(this.context, uri);
+            player.setDisplay(holder);
+            player.prepare();
+            player.start();
+            player.seekTo(savedPlayedPosition);
+        } catch (IOException e) {
+            Log.e(TAG, "when switch to different screen, recreate the media player error!");
+        }
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
     }
 
     @Override

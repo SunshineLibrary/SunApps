@@ -6,7 +6,7 @@ import android.view.animation.Animation;
 import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
-import com.ssl.curriculum.math.component.flipperchildren.VideoFlipperChild;
+import com.ssl.curriculum.math.component.flipperchildren.FlipperChildView;
 import com.ssl.curriculum.math.listener.ActivityDataReceiver;
 import com.ssl.curriculum.math.listener.EdgeReceiver;
 import com.ssl.curriculum.math.listener.PageFlipListener;
@@ -56,11 +56,8 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                View view = viewFlipper.getChildAt(viewFlipper.getDisplayedChild());
-                if (view instanceof VideoFlipperChild) {
-                    VideoFlipperChild videoFlipperChild = (VideoFlipperChild) view;
-                    videoFlipperChild.showPlayer();
-                }
+                FlipperChildView view = (FlipperChildView) viewFlipper.getChildAt(viewFlipper.getDisplayedChild());
+                view.onAfterFlippingIn();
             }
 
             @Override
@@ -119,28 +116,33 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
         showNext();
     }
 
-    private void hideVideoPlayer() {
-        View view = viewFlipper.getChildAt(viewFlipper.getDisplayedChild());
-        if (view instanceof VideoFlipperChild) {
-            VideoFlipperChild videoFlipperChild = (VideoFlipperChild) view;
-            videoFlipperChild.hidePlayer();
-        }
-    }
-
     private void showPrevious() {
-        viewFlipper.setInAnimation(flipInFromRightAnimation);
-        viewFlipper.setOutAnimation(flipOutToLeftAnimation);
-        hideVideoPlayer();
+        setShowPreviousAnimation();
+        onCurrentViewFlipOut();
         viewFlipper.showPrevious();
         currentPosition--;
     }
 
-    private void showNext() {
+    private void setShowPreviousAnimation() {
+        viewFlipper.setInAnimation(flipInFromRightAnimation);
+        viewFlipper.setOutAnimation(flipOutToLeftAnimation);
+    }
+
+    private void setShowNextAnimation() {
         viewFlipper.setInAnimation(flipInFromLeftAnimation);
         viewFlipper.setOutAnimation(flipOutToRightAnimation);
-        hideVideoPlayer();
+    }
+
+    private void showNext() {
+        setShowNextAnimation();
+        onCurrentViewFlipOut();
         viewFlipper.showNext();
         currentPosition++;
+    }
+
+    private void onCurrentViewFlipOut() {
+        FlipperChildView view = (FlipperChildView) viewFlipper.getChildAt(viewFlipper.getDisplayedChild());
+        view.onBeforeFlippingOut();
     }
 
     @Override

@@ -14,7 +14,7 @@ import com.ssl.curriculum.math.presenter.QuizPresenter;
 import com.ssl.curriculum.math.presenter.QuizViewsBuilder;
 import com.ssl.curriculum.math.service.QuizQuestionsProvider;
 
-public class QuizFlipperChild extends RelativeLayout implements QuizLoadedListener {
+public class QuizFlipperChild extends FlipperChildView implements QuizLoadedListener {
     private ImageView nextBtn;
     private ViewFlipper questionFlipper;
 

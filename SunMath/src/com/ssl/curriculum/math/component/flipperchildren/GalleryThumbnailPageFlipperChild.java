@@ -1,13 +1,11 @@
 package com.ssl.curriculum.math.component.flipperchildren;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.adapter.GalleryGridAdapter;
@@ -16,18 +14,11 @@ import com.ssl.curriculum.math.data.GalleryContentManager;
 import com.ssl.curriculum.math.listener.GalleryContentFetchedListener;
 import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
 
-public class GalleryThumbnailPageFlipperChild extends LinearLayout implements GalleryContentFetchedListener {
+public class GalleryThumbnailPageFlipperChild extends FlipperChildView implements GalleryContentFetchedListener {
     private GridView gridview;
     private GalleryGridAdapter gridAdapter;
     private TextView title;
     private GalleryItemClickedListener galleryItemClickedListener;
-
-    public GalleryThumbnailPageFlipperChild(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initUI();
-        initListener();
-        initAdapter();
-    }
 
     public GalleryThumbnailPageFlipperChild(Context context) {
         super(context);

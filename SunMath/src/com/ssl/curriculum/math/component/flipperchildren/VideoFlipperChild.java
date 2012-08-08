@@ -5,13 +5,12 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.videoview.VideoPlayer;
 import com.ssl.curriculum.math.model.activity.VideoDomainActivityData;
 
-public class VideoFlipperChild extends LinearLayout {
+public class VideoFlipperChild extends FlipperChildView {
     private VideoPlayer videoPlayer;
     private VideoDomainActivityData domainActivityData;
     private TextView titleView;
@@ -41,12 +40,16 @@ public class VideoFlipperChild extends LinearLayout {
         descriptionView.setText(domainActivityData.getDescription());
     }
 
-    public void showPlayer() {
-        videoPlayer.setVisibility(View.VISIBLE);
-    }
 
-    public void hidePlayer() {
+    @Override
+    public void onBeforeFlippingOut() {
         videoPlayer.pause();
         videoPlayer.setVisibility(View.INVISIBLE);
     }
+
+    @Override
+    public void onAfterFlippingIn() {
+        videoPlayer.setVisibility(View.VISIBLE);
+    }
+
 }
