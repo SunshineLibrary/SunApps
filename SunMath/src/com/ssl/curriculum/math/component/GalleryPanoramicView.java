@@ -50,7 +50,7 @@ public class GalleryPanoramicView extends RelativeLayout implements GalleySlideL
 
     @Override
     public boolean onSlide(float slideDistance) {
-        flipAnimationManager = FlipAnimationManager.getInstance(getContext());
+        flipAnimationManager = new FlipAnimationManager(getContext());
         if (isShowNext(slideDistance)) {
             panoramicViewerFlipper.setInAnimation(flipAnimationManager.getFlipInFromRightAnimation());
             panoramicViewerFlipper.setOutAnimation(flipAnimationManager.getFlipOutToLeftAnimation());

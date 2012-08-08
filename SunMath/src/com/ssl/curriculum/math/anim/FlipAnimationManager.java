@@ -11,20 +11,12 @@ public class FlipAnimationManager {
     private Animation animFlipInFromLeft;
     private Animation animFlipOutToRight;
     private Animation animFlipOutToLeft;
-    private static FlipAnimationManager flipAnimationManager;
 
-    private FlipAnimationManager(Context context) {
+    public FlipAnimationManager(Context context) {
         animFlipInFromLeft = AnimationUtils.loadAnimation(context, R.anim.flip_in_from_left);
         animFlipInFromRight = AnimationUtils.loadAnimation(context, R.anim.flip_in_from_right);
         animFlipOutToRight = AnimationUtils.loadAnimation(context, R.anim.flip_out_to_right);
         animFlipOutToLeft = AnimationUtils.loadAnimation(context, R.anim.flip_out_to_left);
-    }
-
-    public static FlipAnimationManager getInstance(Context context) {
-        if (flipAnimationManager == null) {
-            flipAnimationManager = new FlipAnimationManager(context);
-        }
-        return flipAnimationManager;
     }
 
     public Animation getFlipInFromLeftAnimation() {

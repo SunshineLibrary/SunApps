@@ -2,8 +2,11 @@ package com.ssl.curriculum.math.logic;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
+import com.ssl.curriculum.math.anim.FlipAnimationManager;
+import com.ssl.curriculum.math.component.flipperchildren.FlipperChildView;
 import com.ssl.curriculum.math.listener.ActivityDataReceiver;
 import com.ssl.curriculum.math.listener.EdgeReceiver;
 import com.ssl.curriculum.math.listener.PageFlipListener;
@@ -22,6 +25,7 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     private ViewFlipper viewFlipper;
     private FlipperViewsBuilder flipperViewsBuilder;
     private FetchActivityTaskManager fetchActivityTaskManager;
+    private FlipAnimationManager flipAnimationManager;
 
     private int currentActivityId;
     private int currentSectionId;
@@ -29,11 +33,48 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     private int currentPosition = -1;
     private FetchNextDomainActivityStrategy fetchNextDomainActivityStrategy;
 
-    public ActivityFlowController(ViewFlipper viewFlipper, FlipperViewsBuilder flipperViewsBuilder, FetchActivityTaskManager fetchActivityTaskManager, FetchNextDomainActivityStrategyImpl fetchNextDomainActivityStrategy) {
+    private Animation flipInFromRightAnimation;
+    private Animation flipOutToLeftAnimation;
+    private Animation flipInFromLeftAnimation;
+    private Animation flipOutToRightAnimation;
+
+    public ActivityFlowController(ViewFlipper viewFlipper, FlipperViewsBuilder flipperViewsBuilder, FetchActivityTaskManager fetchActivityTaskManager, FetchNextDomainActivityStrategyImpl fetchNextDomainActivityStrategy, FlipAnimationManager flipAnimationManager) {
         this.viewFlipper = viewFlipper;
         this.flipperViewsBuilder = flipperViewsBuilder;
         this.fetchActivityTaskManager = fetchActivityTaskManager;
         this.fetchNextDomainActivityStrategy = fetchNextDomainActivityStrategy;
+        this.flipAnimationManager = flipAnimationManager;
+        initAnimation();
+        initListeners();
+    }
+
+    private void initListeners() {
+        Animation.AnimationListener flipperInAnimationListener = new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                FlipperChildView view = (FlipperChildView) viewFlipper.getChildAt(viewFlipper.getDisplayedChild());
+                view.onAfterFlippingIn();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        };
+
+        flipInFromRightAnimation.setAnimationListener(flipperInAnimationListener);
+        flipInFromLeftAnimation.setAnimationListener(flipperInAnimationListener);
+    }
+
+    private void initAnimation() {
+        flipInFromRightAnimation = flipAnimationManager.getFlipInFromRightAnimation();
+        flipOutToLeftAnimation = flipAnimationManager.getFlipOutToLeftAnimation();
+        flipInFromLeftAnimation = flipAnimationManager.getFlipInFromLeftAnimation();
+        flipOutToRightAnimation = flipAnimationManager.getFlipOutToRightAnimation();
     }
 
     public void loadDomainActivityData(int domainSectionId, int domainActivityId) {
@@ -76,13 +117,32 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     }
 
     private void showPrevious() {
+        setShowPreviousAnimation();
+        onCurrentViewFlipOut();
         viewFlipper.showPrevious();
         currentPosition--;
     }
 
+    private void setShowPreviousAnimation() {
+        viewFlipper.setInAnimation(flipInFromRightAnimation);
+        viewFlipper.setOutAnimation(flipOutToLeftAnimation);
+    }
+
+    private void setShowNextAnimation() {
+        viewFlipper.setInAnimation(flipInFromLeftAnimation);
+        viewFlipper.setOutAnimation(flipOutToRightAnimation);
+    }
+
     private void showNext() {
+        setShowNextAnimation();
+        onCurrentViewFlipOut();
         viewFlipper.showNext();
         currentPosition++;
+    }
+
+    private void onCurrentViewFlipOut() {
+        FlipperChildView view = (FlipperChildView) viewFlipper.getChildAt(viewFlipper.getDisplayedChild());
+        view.onBeforeFlippingOut();
     }
 
     @Override
@@ -101,5 +161,12 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
 
     private void addViewToFlipper(View view) {
         viewFlipper.addView(view, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+    }
+
+    public void destroyFlipperSubViews() {
+        for (int index = 0; index < viewFlipper.getChildCount(); index++) {
+            FlipperChildView flipperChildView = (FlipperChildView) viewFlipper.getChildAt(index);
+            flipperChildView.onDestroy();
+        }
     }
 }

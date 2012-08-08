@@ -64,25 +64,19 @@ public class MainActivity extends Activity {
     private void initComponents() {
         flipperViewsBuilder = new FlipperViewsBuilder(this);
         FetchActivityTaskManager fetchActivityTaskManager = new FetchActivityTaskManager(new MockEdgeContentProvider(this), new MockActivityContentProvider(this));
-        flowController = new ActivityFlowController(viewFlipper, flipperViewsBuilder, fetchActivityTaskManager, new FetchNextDomainActivityStrategyImpl());
+        flowController = new ActivityFlowController(viewFlipper, flipperViewsBuilder, fetchActivityTaskManager, new FetchNextDomainActivityStrategyImpl(), new FlipAnimationManager(this));
     }
 
 
     private void initListeners() {
-        final FlipAnimationManager flipAnimationManager = FlipAnimationManager.getInstance(this);
-
         leftBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                viewFlipper.setInAnimation(flipAnimationManager.getFlipInFromRightAnimation());
-                viewFlipper.setOutAnimation(flipAnimationManager.getFlipOutToLeftAnimation());
                 flowController.onShowPrevious();
             }
         });
 
         rightBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                viewFlipper.setInAnimation(flipAnimationManager.getFlipInFromLeftAnimation());
-                viewFlipper.setOutAnimation(flipAnimationManager.getFlipOutToRightAnimation());
                 flowController.onShowNext();
             }
         });
@@ -90,8 +84,6 @@ public class MainActivity extends Activity {
         naviBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 finish();
-                //Intent intent = new Intent(self.activity, NaviActivity.class);
-                //self.activity.startActivity(intent);
             }
         });
 
@@ -102,5 +94,11 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        flowController.destroyFlipperSubViews();
     }
 }

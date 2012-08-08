@@ -52,7 +52,7 @@ public final class MetadataContract {
     */
     public static final class GalleryImages extends Downloadable {
         public static final String _ID = BaseColumns._ID;
-        public static final String _GALLERY_ID = "gallery_id";
+        public static final String _GALLERY_ID = "gallery_activity_id";
         public static final String _INTRO = "intro";
 
         public static final Uri CONTENT_URI = Activities.CONTENT_URI.buildUpon()
@@ -96,7 +96,19 @@ public final class MetadataContract {
         public static final String _NAME = "name";
         public static final String _DESCRIPTION = "description";
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("sections").build();
+
+        public static Uri getSectionActivities(int id) {
+            return CONTENT_URI.buildUpon().appendPath("activities").appendPath(String.valueOf(id)).build();
+        }
     }
+
+    public static final class SectionComponents {
+        public static final String _ID = BaseColumns._ID;
+        public static final String _SECTION_ID = "section_id";
+        public static final String _ACTIVITY_ID = "activity_id";
+        public static final String _SEQUENCE = Activities._SEQUENCE;
+    }
+
 
     public static final class Activities extends Downloadable {
         public static final String _ID = BaseColumns._ID;
@@ -107,7 +119,6 @@ public final class MetadataContract {
         public static final String _NAME = "name";
         public static final String _DURATION = "duration";
         public static final String _NOTES = "notes";
-        public static final String _DIFFICULTY = "difficulty";
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("activities").build();
 
@@ -146,12 +157,10 @@ public final class MetadataContract {
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_collections").build();
 
         public static Uri getTags(String collectionId) {
-            // content://AUTHORITY/book_collections/#book_collection_id/tags
             return CONTENT_URI.buildUpon().appendPath(collectionId).appendPath("tags").build();
         }
 
         public static Uri getBooks(String collectionId) {
-            // content://AUTHORITY/book_collections/#book_collection_id/books
             return CONTENT_URI.buildUpon().appendPath(collectionId).appendPath("books").build();
         }
     }
@@ -226,6 +235,10 @@ public final class MetadataContract {
         public static final String _BOOK_COLLECTION_ID = "book_collection_id";
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_list_collections").build();
+
+        public static Uri getBookCollectionThumbnailUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath("thumbnail").appendPath(String.valueOf(id)).build();
+        }
     }
 
     public static final class Books extends Downloadable {
@@ -244,6 +257,14 @@ public final class MetadataContract {
         public static Uri getTags(String bookId) {
             return CONTENT_URI.buildUpon().appendPath(bookId).appendPath("tags").build();
             // content://AUTHORITY/books/#book_id/tags
+        }
+
+        public static Uri getBookThumbnailUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath("thumbnail").appendPath(String.valueOf(id)).build();
+        }
+
+        public static Uri getBookUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
         }
     }
 
