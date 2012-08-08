@@ -6,6 +6,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -16,10 +17,10 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.listener.TapListener;
+import com.sunshine.metadata.provider.MetadataContract;
 
-import java.io.File;
 import java.io.FileDescriptor;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, SurfaceHolder.Callback {
@@ -50,7 +51,6 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     private Runnable progressRunnable;
     private Thread.UncaughtExceptionHandler uncaughtExceptionHandler;
     private int savedPlayedPosition;
-    private FileDescriptor videoFileDescriptor;
 
     public VideoPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -133,17 +133,12 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         };
     }
 
-    public void setVideoURI(Uri uri) {
-        this.uri = uri;
-    }
-
     private void handleFullScreenBtnClick() {
         toFullScreen = !toFullScreen;
         setToFullScreen(toFullScreen);
     }
 
     private void handlePlayBtnClick() {
-        if (videoFileDescriptor == null) return;
         lastActionTime = SystemClock.elapsedRealtime();
         if (player == null) play();
         else if (player.isPlaying()) pause();
@@ -151,7 +146,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     }
 
     private void play() {
-        playVideo(uri);
+        playVideo();
         hideControlPanel();
         onStart();
     }
@@ -181,19 +176,11 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         }
     }
 
-    private void playVideo(Uri uri) {
+    private void playVideo() {
         try {
             player = new MediaPlayer();
             player.setScreenOnWhilePlaying(true);
-//            player.setDataSource(this.context, uri);
-            String fieName = "/mnt/sdcard/.contents/activities/video/6.mp4";
-            File file = new File(fieName);
-            System.out.println("---------------------file = " + file.exists());
-            FileInputStream fileInputStream = new FileInputStream(file);
-//            player.setDataSource(fileInputStream.getFD());
-
-            System.out.println("---------------------videoFileDescriptor = " + videoFileDescriptor);
-            player.setDataSource(videoFileDescriptor);
+            player.setDataSource(getVideoFileDescriptor());
             player.setDisplay(holder);
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.setOnPreparedListener(this);
@@ -248,7 +235,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     public void onPrepared(MediaPlayer mediaplayer) {
         width = player.getVideoWidth();
         height = player.getVideoHeight();
-        if(width == 0 || height == 0) return;
+        if (width == 0 || height == 0) return;
 
         holder.setFixedSize(width, height);
         playerProgress.setProgress(0);
@@ -268,8 +255,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         try {
             player.reset();
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//            player.setDataSource(this.context, uri);
-            player.setDataSource(videoFileDescriptor);
+            player.setDataSource(getVideoFileDescriptor());
             player.setDisplay(holder);
             player.prepare();
             player.start();
@@ -287,7 +273,13 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     public void surfaceDestroyed(SurfaceHolder holder) {
     }
 
-    public void setVideoFileDescriptor(FileDescriptor videoFileDescriptor) {
-        this.videoFileDescriptor = videoFileDescriptor;
+    public FileDescriptor getVideoFileDescriptor() {
+        ParcelFileDescriptor pfdInput = null;
+        try {
+            pfdInput = getContext().getContentResolver().openFileDescriptor(MetadataContract.Activities.getActivityVideoUri(1), "r");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return pfdInput.getFileDescriptor();
     }
 }

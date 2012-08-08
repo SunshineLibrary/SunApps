@@ -130,10 +130,6 @@ public final class MetadataContract {
         public static Uri getActivityUri(int id) {
             return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
         }
-
-        public static Uri getActivityVideoUri(String fileName) {
-            return CONTENT_URI.buildUpon().appendPath("video").appendPath(fileName).build();
-        }
     }
 
 

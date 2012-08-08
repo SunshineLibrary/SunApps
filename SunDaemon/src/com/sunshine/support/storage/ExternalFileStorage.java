@@ -1,7 +1,6 @@
 package com.sunshine.support.storage;
 
 import android.os.Environment;
-import com.sunshine.metadata.provider.MetadataContract;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +10,8 @@ public class ExternalFileStorage implements FileStorage{
     private static final String BASE_PATH = ".contents";
 
     public ExternalFileStorage() {
-        externalStorageRoot = new File(Environment.getExternalStorageDirectory(), BASE_PATH);
+//        externalStorageRoot = new File(Environment.getExternalStorageDirectory(), BASE_PATH);
+        externalStorageRoot = Environment.getExternalStorageDirectory();
         externalStorageRoot.mkdirs();
     }
 
