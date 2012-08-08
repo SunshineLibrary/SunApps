@@ -74,6 +74,7 @@ public class SharedStorageManager {
 
     private ParcelFileDescriptor getWriteOnlyDescriptor(Uri uri, File file) {
         try {
+            System.out.println("------------writing file:" + uri);
             if (file.exists()) {
                 file.delete();
             }
@@ -86,9 +87,12 @@ public class SharedStorageManager {
     }
 
     private ParcelFileDescriptor getReadOnlyDescriptor(File file) throws FileNotFoundException {
+        System.out.println("------------reading file:" + file.getAbsolutePath());
         if (file.exists()) {
+            System.out.println("------------returning descriptor.");
             return ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
         } else {
+            System.out.println("------------file not found.");
             throw new FileNotFoundException();
         }
     }

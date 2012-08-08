@@ -92,7 +92,7 @@ public class DownloadableTableObserver extends TableObserver {
                     ContentValues values = new ContentValues();
                     values.put(Activities._DOWNLOAD_STATUS, STATUS.QUEUED.ordinal());
                     context.getContentResolver().update(GalleryImages.CONTENT_URI, values,
-                            "gallery_id = ?", new String[]{String.valueOf(id)});
+                            GalleryImages._GALLERY_ID + "=?", new String[]{String.valueOf(id)});
                     break;
                 default:
             }

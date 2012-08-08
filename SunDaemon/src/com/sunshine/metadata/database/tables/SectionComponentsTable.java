@@ -1,5 +1,8 @@
 package com.sunshine.metadata.database.tables;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.provider.BaseColumns;
 import com.sunshine.metadata.database.MetadataDBHandler;
 import com.sunshine.metadata.provider.MetadataContract;

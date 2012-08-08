@@ -52,7 +52,7 @@ public final class MetadataContract {
     */
     public static final class GalleryImages extends Downloadable {
         public static final String _ID = BaseColumns._ID;
-        public static final String _GALLERY_ID = "gallery_id";
+        public static final String _GALLERY_ID = "gallery_activity_id";
         public static final String _INTRO = "description";
 
         public static final Uri CONTENT_URI = Activities.CONTENT_URI.buildUpon()
