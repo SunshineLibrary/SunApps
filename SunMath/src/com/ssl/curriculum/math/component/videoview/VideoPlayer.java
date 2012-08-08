@@ -17,6 +17,9 @@ import android.widget.RelativeLayout;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.listener.TapListener;
 
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, SurfaceHolder.Callback {
@@ -47,6 +50,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     private Runnable progressRunnable;
     private Thread.UncaughtExceptionHandler uncaughtExceptionHandler;
     private int savedPlayedPosition;
+    private FileDescriptor videoFileDescriptor;
 
     public VideoPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -139,7 +143,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     }
 
     private void handlePlayBtnClick() {
-        if (uri == null) return;
+        if (videoFileDescriptor == null) return;
         lastActionTime = SystemClock.elapsedRealtime();
         if (player == null) play();
         else if (player.isPlaying()) pause();
@@ -181,13 +185,22 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         try {
             player = new MediaPlayer();
             player.setScreenOnWhilePlaying(true);
-            player.setDataSource(this.context, uri);
+//            player.setDataSource(this.context, uri);
+            String fieName = "/mnt/sdcard/.contents/activities/video/6.mp4";
+            File file = new File(fieName);
+            System.out.println("---------------------file = " + file.exists());
+            FileInputStream fileInputStream = new FileInputStream(file);
+//            player.setDataSource(fileInputStream.getFD());
+
+            System.out.println("---------------------videoFileDescriptor = " + videoFileDescriptor);
+            player.setDataSource(videoFileDescriptor);
             player.setDisplay(holder);
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.setOnPreparedListener(this);
             player.prepareAsync();
             player.setOnCompletionListener(this);
-        } catch (Throwable t) {
+        } catch (Exception t) {
+            t.printStackTrace();
             showErrorDialog(t);
         }
     }
@@ -255,7 +268,8 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         try {
             player.reset();
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setDataSource(this.context, uri);
+//            player.setDataSource(this.context, uri);
+            player.setDataSource(videoFileDescriptor);
             player.setDisplay(holder);
             player.prepare();
             player.start();
@@ -273,4 +287,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     public void surfaceDestroyed(SurfaceHolder holder) {
     }
 
+    public void setVideoFileDescriptor(FileDescriptor videoFileDescriptor) {
+        this.videoFileDescriptor = videoFileDescriptor;
+    }
 }

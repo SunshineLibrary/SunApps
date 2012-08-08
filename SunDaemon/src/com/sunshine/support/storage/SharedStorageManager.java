@@ -49,14 +49,17 @@ public class SharedStorageManager {
             case Matcher.GALLERY_IMAGES_THUMBNAIL:
                 return getFileDescriptor(uri, mode);
             default:
-                throw new FileNotFoundException();
+                return getFileDescriptor(uri, mode);
         }
     }
 
     private ParcelFileDescriptor getFileDescriptor(Uri uri, String mode) throws FileNotFoundException {
+        System.out.println("-------------------uri = " + uri.toString());
         File directory = getFileDirectory(uri);
         ParcelFileDescriptor descriptor;
         File file = new File(directory, uri.getLastPathSegment());
+
+        System.out.println("-------------file = " + file.getAbsolutePath());
 
         switch(getMode(mode)) {
             case RO_MODE:

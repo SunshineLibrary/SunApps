@@ -1,7 +1,7 @@
 package com.ssl.curriculum.math.component.flipperchildren;
 
 import android.content.Context;
-import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.videoview.VideoPlayer;
 import com.ssl.curriculum.math.model.activity.VideoDomainActivityData;
+import com.sunshine.metadata.provider.MetadataContract;
+
+import java.io.FileNotFoundException;
 
 public class VideoFlipperChild extends FlipperChildView {
     private VideoPlayer videoPlayer;
@@ -34,8 +37,17 @@ public class VideoFlipperChild extends FlipperChildView {
     }
 
     private void initVideoComponent() {
-        Uri video = Uri.parse("android.resource://" + getContext().getPackageName() + "/" + R.raw.speaking);
-        videoPlayer.setVideoURI(video);
+        ParcelFileDescriptor pfdInput;
+        try {
+            pfdInput = getContext().getContentResolver().openFileDescriptor(
+                    MetadataContract.Activities.getActivityVideoUri("6.mp4"), "r");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
+//        Uri video = Uri.parse("android.resource://" + getContext().getPackageName() + "/" + R.raw.speaking);
+//        videoPlayer.setVideoURI(video);
+        videoPlayer.setVideoFileDescriptor(pfdInput.getFileDescriptor());
         titleView.setText(domainActivityData.getTitle());
         descriptionView.setText(domainActivityData.getDescription());
     }

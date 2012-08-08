@@ -57,7 +57,7 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "activities/#", ACTIVITIES_ID);
             matcher.addURI(AUTHORITY, "activities/gallery/images", GALLERY_IMAGES);
 
-            matcher.addURI(AUTHORITY, "activities/video/#", ACTIVITIES_VIDEO);
+            matcher.addURI(AUTHORITY, "activities/video/(.?)*", ACTIVITIES_VIDEO);
             matcher.addURI(AUTHORITY, "activities/thumbnail/#", ACTIVITIES_THUMBNAIL);
             matcher.addURI(AUTHORITY, "activities/gallery/images/#", GALLERY_IMAGES_ID);
             matcher.addURI(AUTHORITY, "activities/gallery/images/thumbnail/#", GALLERY_IMAGES_THUMBNAIL);
