@@ -13,8 +13,13 @@
         android:layout_height="wrap_content"
         android:background="@color/chrome"
         android:padding="@dimen/padding_zero" >
-
-        <EditText
+		
+        <LinearLayout
+        android:focusable="true" android:focusableInTouchMode="true"
+        android:layout_width="0px" android:layout_height="0px">
+        	<requestFocus />
+        </LinearLayout>
+       	<EditText
             android:id="@+id/searchbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,12 +28,11 @@
             android:background="@drawable/search"
             android:ems="10"
             android:hint="@string/search_resources"
+            android:inputType="text"
             android:paddingBottom="0dp"
             android:paddingLeft="40dp"
             android:paddingRight="10dp"
             android:paddingTop="0dp" >
-
-            <requestFocus />
         </EditText>
 
         <Spinner

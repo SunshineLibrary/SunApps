@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ public class ResourceInfoActivity extends Activity {
 	TextView originname, author, translator, publisher, publish_year, title, author_intro, intro;
 	Button readButton, downButton;
 	ContentResolver resolver;
+	LinearLayout resLayoutAll, resLayoutLeft, resLayoutRight;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,8 +44,14 @@ public class ResourceInfoActivity extends Activity {
         title = (TextView) findViewById(R.id.info_restitle);
         author_intro = (TextView) findViewById(R.id.info_author_intro);
         intro = (TextView) findViewById(R.id.info_intro);
+        resLayoutAll = (LinearLayout) findViewById(R.id.res_layout_all);
+        resLayoutLeft = (LinearLayout) findViewById(R.id.res_layout_left);
+        resLayoutRight = (LinearLayout) findViewById(R.id.res_layout_right);
         resolver = this.getContentResolver();
         
+        int width = resLayoutAll.getWidth();
+        resLayoutLeft.setMinimumWidth(width/2);
+        resLayoutRight.setMinimumWidth(width/2);
         Intent intent = this.getIntent();
         String id = intent.getStringExtra("bookId");
         ResourceType type = (ResourceType)intent.getExtras().get("type");
@@ -56,6 +64,32 @@ public class ResourceInfoActivity extends Activity {
         setButtonEnable(readButton, true);
         
         backButton.setOnClickListener(new OnClickListener(){
+        	
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub   
+                
+				v.setBackgroundResource(R.drawable.back02);       
+				
+				ResourceInfoActivity.this.finish();
+			}
+        	
+        });
+        
+        downButton.setOnClickListener(new OnClickListener(){
+        	
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub   
+                
+				v.setBackgroundResource(R.drawable.back02);       
+				
+				ResourceInfoActivity.this.finish();
+			}
+        	
+        });
+        
+        readButton.setOnClickListener(new OnClickListener(){
         	
 			@Override
 			public void onClick(View v) {
@@ -82,9 +116,9 @@ public class ResourceInfoActivity extends Activity {
     			int idCol = cur.getColumnIndex(Books._ID);
     			int titleCol = cur.getColumnIndex(Books._TITLE);
     			int authorCol = cur.getColumnIndex(Books._AUTHOR);
-    			int descriptionCol = cur.getColumnIndex(Books._DESCRIPTION);
+    			int descriptionCol = cur.getColumnIndex(Books._INTRO);
     			int progressCol = cur.getColumnIndex(Books._PROGRESS);
-    			int originalCol = cur.getColumnIndex(Books._ORIGINAL_TITLE);
+    			//int originalCol = cur.getColumnIndex(Books.);
     			
     			
     			while (cur.moveToNext()) {

@@ -16,16 +16,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -73,6 +78,7 @@ public class MainActivity extends Activity {
 	private LinearLayout typenav;
 	private LinearLayout recommandView;
 	private Spinner mainnav;
+	private EditText searchBar;
 	private ResourceContentResolver resolver;
 
 	@Override
@@ -86,6 +92,7 @@ public class MainActivity extends Activity {
 		typenav = (LinearLayout) findViewById(R.id.typenav);
 		mainnav = (Spinner) findViewById(R.id.mainnav);
 		recommandView = (LinearLayout) findViewById(R.id.recommand_view);
+		searchBar = (EditText) findViewById(R.id.searchbar);
 		
 		resolver = new ResourceContentResolver(MainActivity.this.getContentResolver());
 		
@@ -130,7 +137,7 @@ public class MainActivity extends Activity {
 					
 					ResourceGridItem item = (ResourceGridItem)gridItems.get(position);
 					//Toast.makeText(MainActivity.this, String.valueOf(item.getResCount()),Toast.LENGTH_SHORT).show();
-					if(item.getResCount() > 0){
+					if(item.getResCount() > 1){
 						//collections
 						currentGridType = gridType.GRIDTYPE_RES_TODOWNLOAD;
 						currentViewType = viewType.COLLECTION;
@@ -161,6 +168,24 @@ public class MainActivity extends Activity {
 //						Toast.LENGTH_SHORT).show();
 
 			}
+		});
+		
+		searchBar.setOnKeyListener(new OnKeyListener(){
+
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if(keyCode == KeyEvent.KEYCODE_ENTER){
+					searchCurrentGrid(searchBar.getText().toString());
+					InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);   
+					if(imm.isActive()){  
+						imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0 );  
+					}
+					Toast.makeText(MainActivity.this, searchBar.getText().toString(),Toast.LENGTH_SHORT).show();
+					return true;
+				}
+				return false;
+			}
+			
 		});
 		
 		final TabSwitched resnav_switch = new TabSwitched() {
@@ -282,7 +307,8 @@ public class MainActivity extends Activity {
 
 			}
 		});
-	
+		
+		
 	}
 
 	@Override
@@ -350,6 +376,10 @@ public class MainActivity extends Activity {
 			}
 		}
 		return selected;
+	}
+	
+	private void searchCurrentGrid(String key){
+		
 	}
 	
 	private void showGridView(List<Object> itemList, ResourceType resType,
