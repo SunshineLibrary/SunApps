@@ -56,12 +56,10 @@ public class ApiClient {
     }
 
     public static Uri getDownloadUri(String type, long id) {
-        return ROOT_URI.buildUpon().appendPath("download")
-                .appendQueryParameter("type", type).appendQueryParameter("id", String.valueOf(id)).build();
+        return ROOT_URI.buildUpon().appendPath("download").appendPath(type).appendPath(String.valueOf(id)).build();
     }
 
     public static Uri getThumbnailUri(String type, int id) {
-        return ROOT_URI.buildUpon().appendPath("thumbnail")
-                .appendQueryParameter("type", type).appendQueryParameter("id", String.valueOf(id)).build();
+        return ROOT_URI.buildUpon().appendPath("download").appendPath(type + "_thumb").appendPath(String.valueOf(id)).build();
     }
 }

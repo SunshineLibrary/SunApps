@@ -85,7 +85,7 @@ public class DownloadableTableObserver extends TableObserver {
             switch (type) {
                 case Activities.TYPE_VIDEO:
                     new FileDownloadTask(context,
-                            ApiClient.getDownloadUri("video_activity", id),
+                            ApiClient.getDownloadUri("activities", id),
                             Activities.getActivityVideoUri(id)).execute();
                     break;
                 case Activities.TYPE_GALLERY:
@@ -103,7 +103,7 @@ public class DownloadableTableObserver extends TableObserver {
     public void downloadGalleryImage(Uri uri) {
         int id = Integer.parseInt(uri.getLastPathSegment());
         new FileDownloadTask(context,
-                ApiClient.getDownloadUri("gallery_image", id),
+                ApiClient.getDownloadUri("images", id),
                 GalleryImages.getGalleryImageUri(id)).execute();
     }
 }
