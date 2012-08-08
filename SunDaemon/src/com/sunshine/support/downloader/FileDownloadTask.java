@@ -87,15 +87,19 @@ public class FileDownloadTask extends AsyncTask<Uri, Integer, Integer> {
 
     private InputStream getInputStreamForUri(Uri uri) {
         HttpGet get = new HttpGet(uri.toString());
+        HttpResponse response;
         try {
-            HttpResponse response = httpClient.execute(get);
+            response = httpClient.execute(get);
             this.contentLength = Long.parseLong(response.getFirstHeader("Content-Length").getValue());
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                Log.w(getClass().getName(), "Bad HTTP Response: SC " + response.getStatusLine().getStatusCode());
+                get.abort();
                 return null;
             } else {
                 return response.getEntity().getContent();
             }
         } catch (IOException e) {
+            get.abort();
             Log.e(getClass().getName(), "Failed to download file for " + uri, e);
             return null;
         }

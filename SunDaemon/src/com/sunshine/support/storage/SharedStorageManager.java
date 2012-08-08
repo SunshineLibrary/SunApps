@@ -47,6 +47,9 @@ public class SharedStorageManager {
             case Matcher.ACTIVITIES_THUMBNAIL:
             case Matcher.GALLERY_IMAGES_ID:
             case Matcher.GALLERY_IMAGES_THUMBNAIL:
+            case Matcher.BOOKS_ID:
+            case Matcher.BOOKS_THUMBNAIL:
+            case Matcher.BOOK_COLLECTIONS_THUMBNAIL:
                 return getFileDescriptor(uri, mode);
             default:
                 return getFileDescriptor(uri, mode);
@@ -54,12 +57,9 @@ public class SharedStorageManager {
     }
 
     private ParcelFileDescriptor getFileDescriptor(Uri uri, String mode) throws FileNotFoundException {
-        System.out.println("-------------------uri = " + uri.toString());
         File directory = getFileDirectory(uri);
         ParcelFileDescriptor descriptor;
         File file = new File(directory, uri.getLastPathSegment());
-
-        System.out.println("-------------file = " + file.getAbsolutePath());
 
         switch(getMode(mode)) {
             case RO_MODE:
@@ -74,7 +74,6 @@ public class SharedStorageManager {
 
     private ParcelFileDescriptor getWriteOnlyDescriptor(Uri uri, File file) {
         try {
-            System.out.println("------------writing file:" + uri);
             if (file.exists()) {
                 file.delete();
             }
@@ -87,12 +86,9 @@ public class SharedStorageManager {
     }
 
     private ParcelFileDescriptor getReadOnlyDescriptor(File file) throws FileNotFoundException {
-        System.out.println("------------reading file:" + file.getAbsolutePath());
         if (file.exists()) {
-            System.out.println("------------returning descriptor.");
             return ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
         } else {
-            System.out.println("------------file not found.");
             throw new FileNotFoundException();
         }
     }

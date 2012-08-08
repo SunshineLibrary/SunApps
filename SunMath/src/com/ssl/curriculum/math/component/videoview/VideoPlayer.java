@@ -6,6 +6,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -16,11 +17,9 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.listener.TapListener;
+import com.sunshine.metadata.provider.MetadataContract;
 
-import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 
 public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, SurfaceHolder.Callback {
     private static final String TAG = "VideoPlayer";
@@ -51,6 +50,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     private Thread.UncaughtExceptionHandler uncaughtExceptionHandler;
     private int savedPlayedPosition;
     private FileDescriptor videoFileDescriptor;
+    private ParcelFileDescriptor videoParcelFileDescriptor;
 
     public VideoPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -143,7 +143,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     }
 
     private void handlePlayBtnClick() {
-        if (videoFileDescriptor == null) return;
+//        if (videoFileDescriptor == null) return;
         lastActionTime = SystemClock.elapsedRealtime();
         if (player == null) play();
         else if (player.isPlaying()) pause();
@@ -186,14 +186,13 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
             player = new MediaPlayer();
             player.setScreenOnWhilePlaying(true);
 //            player.setDataSource(this.context, uri);
-            String fieName = "/mnt/sdcard/.contents/activities/video/6.mp4";
-            File file = new File(fieName);
-            System.out.println("---------------------file = " + file.exists());
-            FileInputStream fileInputStream = new FileInputStream(file);
+//            String fieName = "/mnt/sdcard/.contents/activities/video/6.mp4";
+//            File file = new File(fieName);
+//            System.out.println("---------------------file = " + file.exists());
+//            FileInputStream fileInputStream = new FileInputStream(file);
 //            player.setDataSource(fileInputStream.getFD());
 
-            System.out.println("---------------------videoFileDescriptor = " + videoFileDescriptor);
-            player.setDataSource(videoFileDescriptor);
+            player.setDataSource(getVideoParcelFileDescriptor().getFileDescriptor());
             player.setDisplay(holder);
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.setOnPreparedListener(this);
@@ -289,5 +288,22 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
 
     public void setVideoFileDescriptor(FileDescriptor videoFileDescriptor) {
         this.videoFileDescriptor = videoFileDescriptor;
+    }
+
+    public ParcelFileDescriptor getVideoParcelFileDescriptor () {
+        if (videoParcelFileDescriptor == null) {
+            try {
+                videoParcelFileDescriptor = getContext().getContentResolver().openFileDescriptor(
+                        MetadataContract.Activities.getActivityVideoUri("1"), "r");
+            } catch (FileNotFoundException e) {
+                return null;
+            }
+        }
+        return videoParcelFileDescriptor;
+    }
+
+
+    public void setVideoFileDescriptor(ParcelFileDescriptor pfdInput) {
+        this.videoParcelFileDescriptor = pfdInput;
     }
 }

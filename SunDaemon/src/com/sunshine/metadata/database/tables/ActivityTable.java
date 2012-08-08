@@ -13,7 +13,6 @@ public class ActivityTable extends DownloadableTable {
             Activities._NAME,
             Activities._NOTES,
             Activities._DURATION,
-            Activities._DIFFICULTY,
     };
 
     public static final String[][] COLUMN_DEFINITIONS = {
@@ -23,7 +22,6 @@ public class ActivityTable extends DownloadableTable {
             {Activities._NAME, "TEXT"},
             {Activities._NOTES, "TEXT"},
             {Activities._DURATION, "INTEGER"},
-            {Activities._DIFFICULTY, "INTEGER"},
     };
 
     public ActivityTable(MetadataDBHandler db) {

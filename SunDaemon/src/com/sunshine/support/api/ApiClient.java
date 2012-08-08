@@ -17,8 +17,9 @@ public class ApiClient {
 
     private static ThreadSafeClientConnManager connManager;
     private static final Uri ROOT_URI;
-    //private static final String HOST = "10.0.2.2:3000";
-    private static final String HOST = "192.168.2.128:3000";
+    // private static final String HOST = "10.0.2.2:3000";
+    // private static final String HOST = "192.168.2.128:3000";
+    private static final String HOST = "42.121.65.247";
 
     private static final Map<String, String> apiMap;
 

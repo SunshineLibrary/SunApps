@@ -37,19 +37,20 @@ public class VideoFlipperChild extends FlipperChildView {
     }
 
     private void initVideoComponent() {
-        ParcelFileDescriptor pfdInput;
-        try {
-            pfdInput = getContext().getContentResolver().openFileDescriptor(
-                    MetadataContract.Activities.getActivityVideoUri("6.mp4"), "r");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
-//        Uri video = Uri.parse("android.resource://" + getContext().getPackageName() + "/" + R.raw.speaking);
-//        videoPlayer.setVideoURI(video);
-        videoPlayer.setVideoFileDescriptor(pfdInput.getFileDescriptor());
-        titleView.setText(domainActivityData.getTitle());
-        descriptionView.setText(domainActivityData.getDescription());
+//        ParcelFileDescriptor pfdInput;
+//        try {
+//            pfdInput = getContext().getContentResolver().openFileDescriptor(
+//                    MetadataContract.Activities.getActivityVideoUri("1"), "r");
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//            return;
+//        }
+////        Uri video = Uri.parse("android.resource://" + getContext().getPackageName() + "/" + R.raw.speaking);
+////        videoPlayer.setVideoURI(video);
+//        videoPlayer.setVideoFileDescriptor(pfdInput.getFileDescriptor());
+//        videoPlayer.setVideoFileDescriptor(pfdInput);
+//        titleView.setText(domainActivityData.getTitle());
+//        descriptionView.setText(domainActivityData.getDescription());
     }
 
 

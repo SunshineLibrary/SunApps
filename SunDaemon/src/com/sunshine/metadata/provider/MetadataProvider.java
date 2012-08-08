@@ -14,6 +14,8 @@ import com.sunshine.support.storage.SharedStorageManager;
 
 import java.io.FileNotFoundException;
 
+import static com.sunshine.metadata.provider.MetadataContract.SectionComponents;
+
 public class MetadataProvider extends ContentProvider {
 
     private static final String AUTHORITY = MetadataContract.AUTHORITY;
@@ -50,6 +52,10 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.SECTIONS:
                 return dbHandler.getTableManager(SectionTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
+            case Matcher.SECTIONS_ACTIVITIES:
+                return dbHandler.getTableViewManager(SectionActivitiesView.VIEW_NAME).query(
+                        uri, projection, SectionComponents._SECTION_ID + "=?",
+                        new String[] {uri.getLastPathSegment()}, sortOrder);
             case Matcher.GALLERY_IMAGES:
                 return dbHandler.getTableManager(GalleryImageTable.TABLE_NAME).query(
                 		uri, projection, selection, selectionArgs, sortOrder);

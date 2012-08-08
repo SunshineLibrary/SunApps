@@ -7,14 +7,9 @@ import android.provider.BaseColumns;
 import com.sunshine.metadata.database.MetadataDBHandler;
 import com.sunshine.metadata.provider.MetadataContract;
 
-public class SectionComponentsTable extends AbstractTable {
+import static com.sunshine.metadata.provider.MetadataContract.SectionComponents;
 
-    private static final class SectionComponents {
-        public static final String _ID = BaseColumns._ID;
-        public static final String _SECTION_ID = "section_id";
-        public static final String _ACTIVITY_ID = "activity_id";
-        public static final String _SEQUENCE = MetadataContract.Activities._SEQUENCE;
-    }
+public class SectionComponentsTable extends AbstractTable {
 
     public static final String TABLE_NAME = "section_components";
 

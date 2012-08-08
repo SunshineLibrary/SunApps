@@ -19,8 +19,7 @@ public class ActivityContentProvider {
         ContentResolver contentResolver = context.getContentResolver();
         Cursor cursor = contentResolver.query(Activities.CONTENT_URI, new String[]{
                 Activities._ID, Activities._NAME, Activities._TYPE,
-                Activities._DIFFICULTY, Activities._PROVIDER_ID,
-                Activities._NOTES, Activities._DURATION},
+                Activities._PROVIDER_ID, Activities._NOTES, Activities._DURATION},
                 Activities._ID + " =" + activityId, null, null);
 
         if (cursor.moveToFirst()) {
@@ -32,7 +31,6 @@ public class ActivityContentProvider {
     private DomainActivityData createActivityData(int activityId, int sectionId, Cursor cursor) {
         DomainActivityData domainActivityData = new DomainActivityData(activityId, sectionId);
         domainActivityData.type = cursor.getInt(getIndex(cursor, Activities._TYPE));
-        domainActivityData.difficulty = cursor.getInt(getIndex(cursor, Activities._DIFFICULTY));
         domainActivityData.duration = cursor.getInt(getIndex(cursor, Activities._DURATION));
         domainActivityData.name = cursor.getString(getIndex(cursor, Activities._NAME));
         domainActivityData.notes = cursor.getString(getIndex(cursor, Activities._NOTES));
