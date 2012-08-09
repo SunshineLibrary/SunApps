@@ -7,22 +7,24 @@ import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.component.flipperchildren.FlipperChildView;
-import com.ssl.curriculum.math.listener.ActivityDataReceiver;
 import com.ssl.curriculum.math.listener.PageFlipListener;
+import com.ssl.curriculum.math.listener.SectionActivityDataReceiver;
 import com.ssl.curriculum.math.logic.strategy.FetchNextDomainActivityStrategyImpl;
 import com.ssl.curriculum.math.model.Edge;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.ssl.curriculum.math.model.activity.SectionActivitiesData;
+import com.ssl.curriculum.math.model.activity.SectionActivityData;
 import com.ssl.curriculum.math.presenter.FlipperViewsBuilder;
 import com.ssl.curriculum.math.task.FetchActivityTaskManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityFlowController implements ActivityDataReceiver, PageFlipListener {
+public class ActivityFlowController implements SectionActivityDataReceiver, PageFlipListener {
     private ArrayList<DomainActivityData> domainActivityStack = new ArrayList<DomainActivityData>();
     private SectionActivitiesData sectionActivitiesData;
     private List<Edge> edges;
+    private int sectionId;
 
     private ViewFlipper viewFlipper;
     private FlipperViewsBuilder flipperViewsBuilder;
@@ -30,9 +32,8 @@ public class ActivityFlowController implements ActivityDataReceiver, PageFlipLis
     private FlipAnimationManager flipAnimationManager;
 
     private int currentActivityId;
-    private int currentSectionId;
-
     private int currentPosition = -1;
+
     private FetchNextDomainActivityStrategy fetchNextDomainActivityStrategy;
 
     private Animation flipInFromRightAnimation;
@@ -58,8 +59,7 @@ public class ActivityFlowController implements ActivityDataReceiver, PageFlipLis
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                FlipperChildView view = (FlipperChildView) viewFlipper.getChildAt(viewFlipper.getDisplayedChild());
-                view.onAfterFlippingIn();
+                getCurrentFlippingView().onAfterFlippingIn();
             }
 
             @Override
@@ -80,17 +80,13 @@ public class ActivityFlowController implements ActivityDataReceiver, PageFlipLis
     }
 
     public void loadDomainActivityData(int domainSectionId, int domainActivityId) {
+        sectionId = domainSectionId;
         currentActivityId = domainActivityId;
-        currentSectionId = domainSectionId;
-        loadDomainData();
+        fetchActivityTaskManager.fetchSectionActivities(this, sectionId, currentActivityId);
     }
 
-    private void loadDomainData() {
-        fetchActivityTaskManager.fetchSectionActivities(this, currentSectionId, currentActivityId);
-    }
-
-    private void fetchActivityFromRemote() {
-        loadDomainData();
+    private void fetchActivityFromRemote(int activityId) {
+        fetchActivityTaskManager.fetchActivityData(this, sectionId, activityId);
     }
 
     private DomainActivityData getCurrentActivityData() {
@@ -109,11 +105,10 @@ public class ActivityFlowController implements ActivityDataReceiver, PageFlipLis
 
     @Override
     public void onShowNext() {
-        if (isLastActivity() && fetchNextDomainActivityStrategy.canGoToNextActivity(getCurrentActivityData(), edges)) {
-            fetchActivityFromRemote();
-            return;
-        }
-        showNext();
+        if (!isLastActivity()) showNext();
+        SectionActivityData nextSectionActivity = fetchNextDomainActivityStrategy.findNextSectionActivity(getCurrentActivityData(), edges, sectionActivitiesData);
+        if (nextSectionActivity == null) return;
+        fetchActivityFromRemote(nextSectionActivity.activityId);
     }
 
     private void showPrevious() {
@@ -141,8 +136,11 @@ public class ActivityFlowController implements ActivityDataReceiver, PageFlipLis
     }
 
     private void onCurrentViewFlipOut() {
-        FlipperChildView view = (FlipperChildView) viewFlipper.getChildAt(viewFlipper.getDisplayedChild());
-        view.onBeforeFlippingOut();
+        getCurrentFlippingView().onBeforeFlippingOut();
+    }
+
+    private FlipperChildView getCurrentFlippingView() {
+        return (FlipperChildView) viewFlipper.getChildAt(viewFlipper.getDisplayedChild());
     }
 
     @Override

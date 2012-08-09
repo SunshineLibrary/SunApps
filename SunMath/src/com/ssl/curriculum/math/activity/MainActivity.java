@@ -13,8 +13,8 @@ import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
 import com.ssl.curriculum.math.logic.ActivityFlowController;
 import com.ssl.curriculum.math.logic.strategy.FetchNextDomainActivityStrategyImpl;
 import com.ssl.curriculum.math.presenter.FlipperViewsBuilder;
+import com.ssl.curriculum.math.service.mock.MockSectionActivityContentProvider;
 import com.ssl.curriculum.math.service.mock.MockActivityContentProvider;
-import com.ssl.curriculum.math.service.mock.MockEdgeContentProvider;
 import com.ssl.curriculum.math.task.FetchActivityTaskManager;
 public class MainActivity extends Activity {
 
@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
 
     private void initComponents() {
         flipperViewsBuilder = new FlipperViewsBuilder(this);
-        FetchActivityTaskManager fetchActivityTaskManager = new FetchActivityTaskManager(new MockEdgeContentProvider(this), new MockActivityContentProvider(this));
+        FetchActivityTaskManager fetchActivityTaskManager = new FetchActivityTaskManager(new MockActivityContentProvider(this), new MockSectionActivityContentProvider(this));
         flowController = new ActivityFlowController(viewFlipper, flipperViewsBuilder, fetchActivityTaskManager, new FetchNextDomainActivityStrategyImpl(), new FlipAnimationManager(this));
     }
 

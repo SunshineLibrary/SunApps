@@ -8,10 +8,6 @@ public class VideoDomainActivityData extends DomainActivityData {
 	private long videoDuration = 0;
 
 
-    public VideoDomainActivityData(int sectionId, int activityId) {
-        super(sectionId, activityId);
-    }
-
     public VideoDomainActivityData(){
 		super(Activities.TYPE_VIDEO);
 	}

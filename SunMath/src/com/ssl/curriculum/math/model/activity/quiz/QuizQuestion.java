@@ -7,6 +7,7 @@ public class QuizQuestion {
     private int type;
     private int id = 0;
     private String answer;
+    private boolean isPass = false;
 
     public QuizQuestion(int type) {
         this.type = type;
@@ -32,4 +33,11 @@ public class QuizQuestion {
         this.answer = answer;
     }
 
+    public void setPass(boolean pass) {
+        isPass = pass;
+    }
+
+    public boolean isPass() {
+        return isPass;
+    }
 }

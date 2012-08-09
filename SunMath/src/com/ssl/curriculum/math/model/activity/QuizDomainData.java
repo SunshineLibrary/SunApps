@@ -23,4 +23,15 @@ public class QuizDomainData extends DomainActivityData {
 	public QuizQuestion getQuestionById(int id){
 		return this.questions.get(id);
 	}
+
+    @Override
+    public String getResult() {
+        int correctCount = 0;
+        for (QuizQuestion question : questions) {
+            if (question.isPass()) {
+                correctCount++;
+            }
+        }
+        return String.valueOf(correctCount);
+    }
 }
