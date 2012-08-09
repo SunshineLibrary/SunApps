@@ -81,10 +81,7 @@ public class ResourceInfoActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub   
-                
-				v.setBackgroundResource(R.drawable.back02);       
-				
-				ResourceInfoActivity.this.finish();
+                //v.setDrawingCacheBackgroundColor(color);
 			}
         	
         });
@@ -95,9 +92,6 @@ public class ResourceInfoActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub   
                 
-				v.setBackgroundResource(R.drawable.back02);       
-				
-				ResourceInfoActivity.this.finish();
 			}
         	
         });
@@ -130,7 +124,7 @@ public class ResourceInfoActivity extends Activity {
     				//publisher.setText();
     				//publish_year.setText();
     				//author_intro.setText();
-    				//cover
+    				cover.setImageResource(R.drawable.ic_launcher);
     				author.setText(cur.getString(authorCol));
     				title.setText(cur.getString(titleCol));
     				intro.setText(cur.getString(descriptionCol));

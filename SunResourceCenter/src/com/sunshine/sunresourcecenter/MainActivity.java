@@ -23,6 +23,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -32,9 +33,12 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.AdapterView.OnItemClickListener;
@@ -59,17 +63,17 @@ public class MainActivity extends Activity {
 		RES_RECENT,
 		RES_READED,
 		RES_READ_HISTORY,
-		DOWN_RECOMMAND,
-		DOWN_HOT,
-		DOWN_CATEGORY,
-		DOWN_LIKE,
-		DOWN_LIST,
-		DOWN_LIST_RES,
-		DOWN_CATEGORY_RES,
-		COLLECTION
+		DOWN_RECOMMAND, 
+		DOWN_HOT, //show collections hot
+		DOWN_CATEGORY, //show cates
+		DOWN_LIKE, //show collections like
+		DOWN_LIST, //show lists
+		DOWN_LIST_RES, //show collections in list
+		DOWN_CATEGORY_RES, //show collections in cate
+		COLLECTION //show res in collection
 	};
-	private gridType currentGridType;
-	private viewType currentViewType;
+	private gridType currentGridType, formerGridType;
+	private viewType currentViewType, formerViewType;
 	private ResourceType currentResType;
 	private List<Object> gridItems;
 	private GridView gridView;
@@ -77,9 +81,13 @@ public class MainActivity extends Activity {
 	private LinearLayout downnav;
 	private LinearLayout typenav;
 	private LinearLayout recommandView;
+	private RelativeLayout collectionBack;
 	private Spinner mainnav;
 	private EditText searchBar;
 	private ResourceContentResolver resolver;
+	private TextView collctionTitle;
+	private ImageButton btnCollectionBack;
+	private int fomerSelectedItem;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -91,9 +99,12 @@ public class MainActivity extends Activity {
 		downnav = (LinearLayout) findViewById(R.id.downnav);
 		typenav = (LinearLayout) findViewById(R.id.typenav);
 		mainnav = (Spinner) findViewById(R.id.mainnav);
+		collectionBack = (RelativeLayout) findViewById(R.id.collection_back);
 		recommandView = (LinearLayout) findViewById(R.id.recommand_view);
+		collctionTitle = (TextView) findViewById(R.id.title_collction);
+		btnCollectionBack = (ImageButton) findViewById(R.id.btn_collection_back);
 		searchBar = (EditText) findViewById(R.id.searchbar);
-		
+				
 		resolver = new ResourceContentResolver(MainActivity.this.getContentResolver());
 		
 		// change via tab state
@@ -106,7 +117,7 @@ public class MainActivity extends Activity {
 		//gridItems = boundGridData(currentResType, currentGridType);
 
 		// show gridView of different types
-		showGridView(gridItems, currentResType, currentGridType, currentViewType);
+		showGridView(currentResType, currentGridType, currentViewType);
 
 		// grid listener
 		gridView.setOnItemClickListener(new OnItemClickListener() {
@@ -121,6 +132,7 @@ public class MainActivity extends Activity {
 				case RES_RECENT:
 				case RES_READED:
 				case RES_READ_HISTORY:
+				case COLLECTION:
 					//book
 					intent = new Intent();
 					intent.putExtra("bookId", gridItems.get(position).toString());
@@ -136,12 +148,21 @@ public class MainActivity extends Activity {
 				case DOWN_CATEGORY_RES:
 					
 					ResourceGridItem item = (ResourceGridItem)gridItems.get(position);
+					
 					//Toast.makeText(MainActivity.this, String.valueOf(item.getResCount()),Toast.LENGTH_SHORT).show();
 					if(item.getResCount() > 1){
-						//collections
+						//show res in a collection
+						formerGridType = currentGridType;
+						formerViewType = currentViewType;
+						fomerSelectedItem = gridView.getSelectedItemPosition();
+						
 						currentGridType = gridType.GRIDTYPE_RES_TODOWNLOAD;
 						currentViewType = viewType.COLLECTION;
-						showGridView(gridItems, currentResType, currentGridType, currentViewType, gridItems.get(position).toString());
+						downnav.setVisibility(View.INVISIBLE);
+						typenav.setVisibility(View.INVISIBLE);
+						collectionBack.setVisibility(View.VISIBLE);
+						collctionTitle.setText(item.getTitle());
+						showGridView(currentResType, currentGridType, currentViewType, gridItems.get(position).toString());
 					}else{
 						intent = new Intent();
 						intent.setClass(MainActivity.this, ResourceInfoActivity.class);
@@ -155,12 +176,12 @@ public class MainActivity extends Activity {
 				case DOWN_CATEGORY:
 					currentGridType = gridType.GRIDTYPE_RES_TODOWNLOAD;
 					currentViewType = viewType.DOWN_CATEGORY_RES;
-					showGridView(gridItems, currentResType, currentGridType, currentViewType,gridItems.get(position).toString());
+					showGridView(currentResType, currentGridType, currentViewType,gridItems.get(position).toString());
 					break;
 				case DOWN_LIST:
 					currentGridType = gridType.GRIDTYPE_RES_TODOWNLOAD;
 					currentViewType = viewType.DOWN_LIST_RES;
-					showGridView(gridItems, currentResType, currentGridType, currentViewType,gridItems.get(position).toString());
+					showGridView(currentResType, currentGridType, currentViewType,gridItems.get(position).toString());
 					break;
 				default:
 					break;
@@ -172,6 +193,26 @@ public class MainActivity extends Activity {
 			}
 		});
 		
+		btnCollectionBack.setOnClickListener(new OnClickListener(){
+        	
+			@Override
+			public void onClick(View v) {    
+				downnav.setVisibility(View.VISIBLE);
+				typenav.setVisibility(View.VISIBLE);
+				collectionBack.setVisibility(View.INVISIBLE);
+				
+				if(formerGridType!=null && formerViewType!=null){
+					
+					showGridView(currentResType, formerGridType, formerViewType);
+					
+					currentGridType = formerGridType;
+					currentViewType = formerViewType;
+					gridView.setSelection(fomerSelectedItem);
+				}
+			}
+        	
+        });
+
 		searchBar.setOnKeyListener(new OnKeyListener(){
 
 			@Override
@@ -182,7 +223,10 @@ public class MainActivity extends Activity {
 					if(imm.isActive()){  
 						imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0 );  
 					}
+					
+					//TODO
 					Toast.makeText(MainActivity.this, searchBar.getText().toString(),Toast.LENGTH_SHORT).show();
+					
 					return true;
 				}
 				return false;
@@ -218,7 +262,7 @@ public class MainActivity extends Activity {
 				}
 				gridView.setVisibility(View.VISIBLE);
 				recommandView.setVisibility(View.INVISIBLE);
-				showGridView(gridItems, currentResType, currentGridType, currentViewType);
+				showGridView(currentResType, currentGridType, currentViewType);
 
 			}
 		};
@@ -240,7 +284,7 @@ public class MainActivity extends Activity {
 				}
 				gridView.setVisibility(View.VISIBLE);
 				recommandView.setVisibility(View.INVISIBLE);
-				showGridView(gridItems, currentResType, currentGridType, currentViewType);
+				showGridView(currentResType, currentGridType, currentViewType);
 			}
 		};
 		final TabSwitched downnav_switch = new TabSwitched() {
@@ -274,7 +318,7 @@ public class MainActivity extends Activity {
 				}
 				gridView.setVisibility(View.VISIBLE);
 				recommandView.setVisibility(View.INVISIBLE);
-				showGridView(gridItems, currentResType, currentGridType, currentViewType);
+				showGridView(currentResType, currentGridType, currentViewType);
 			}
 		};
 
@@ -293,11 +337,13 @@ public class MainActivity extends Activity {
 				if (position == 0) {
 					resnav.setVisibility(View.VISIBLE);
 					downnav.setVisibility(View.INVISIBLE);
+					collectionBack.setVisibility(View.INVISIBLE);
 					resnav_switch
 							.OnTabSwitched(getSimulatedTabSelected(resnav));
 				} else {
 					resnav.setVisibility(View.INVISIBLE);
 					downnav.setVisibility(View.VISIBLE);
+					collectionBack.setVisibility(View.INVISIBLE);
 					downnav_switch.OnTabSwitched(getSimulatedTabSelected(downnav));
 				}
 
@@ -309,7 +355,6 @@ public class MainActivity extends Activity {
 
 			}
 		});
-		
 		
 	}
 
@@ -384,17 +429,16 @@ public class MainActivity extends Activity {
 		
 	}
 	
-	private void showGridView(List<Object> itemList, ResourceType resType,
-			gridType theGridType, viewType theViewType){
-		showGridView(itemList, resType, theGridType, theViewType, null);
+	private void showGridView(ResourceType resType, gridType theGridType, viewType theViewType){
+		showGridView(resType, theGridType, theViewType, null);
 	}
 	
 	//argId could be listId, categoryId or collectionId
-	private void showGridView(List<Object> itemList, ResourceType resType,
+	private void showGridView(ResourceType resType,
 			gridType theGridType, viewType theViewType, String argId) {
 		
 		gridItems = boundGridData(resType, theViewType, argId);
-		itemList = gridItems;
+		List<Object> itemList = gridItems;
 		
 		switch (theGridType) {
 		case GRIDTYPE_RES_TODOWNLOAD:
@@ -424,9 +468,7 @@ public class MainActivity extends Activity {
 		default:
 			break;
 		}
-
 	}
-	
 	
 	private List<Object> boundGridData(ResourceType resType, viewType theViewType, String argId) {
 		
@@ -460,7 +502,7 @@ public class MainActivity extends Activity {
 				
 			case COLLECTION:
 				//collections
-				return resolver.getBooks(projection, "collection_id = '"+argId+"'");
+				return resolver.getBooks(projection, Books._COLLECTION_ID + " = '"+argId+"'");
 				
 			case DOWN_HOT:
 				//AND HOT
