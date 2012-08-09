@@ -27,7 +27,7 @@ public class FlipperViewsBuilder {
             case TYPE_QUIZ:
                 return new QuizFlipperChild(this.context, (QuizDomainData) domainActivity);
             case TYPE_GALLERY:
-                GalleryThumbnailPageFlipperChild galleryThumbnailPage = new GalleryThumbnailPageFlipperChild(this.context);
+                GalleryThumbnailPageFlipperChild galleryThumbnailPage = new GalleryThumbnailPageFlipperChild(this.context, domainActivity);
                 galleryThumbnailPage.setGalleryItemClickedListener(galleryThumbnailItemClickListener);
                 return galleryThumbnailPage;
             default:
