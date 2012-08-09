@@ -7,9 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import com.sunshine.metadata.provider.Matcher;
-import com.sunshine.metadata.provider.MetadataContract;
 import com.sunshine.support.api.ApiClient;
-import com.sunshine.support.downloader.FileDownloadTask;
 import com.sunshine.support.downloader.MonitoredFileDownloadTask;
 
 import java.util.List;

@@ -8,7 +8,6 @@ public class DomainActivityData {
     public String name;
     public String notes;
     public int duration;
-    public int difficulty;
 
     public DomainActivityData(int type){
 		this.type = type;
