@@ -63,28 +63,6 @@
             android:layout_toRightOf="@+id/info_cover" >
 
             <TableRow
-                android:id="@+id/tableRow1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/info_row_marggin" >
-
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/info_originname"
-                    android:textColor="@color/text_dark"
-                    android:textSize="@dimen/info_text_small" />
-
-                <TextView
-                    android:id="@+id/info_originname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_dark"
-                    android:textSize="@dimen/info_text_small" />
-            </TableRow>
-
-            <TableRow
                 android:id="@+id/tableRow2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -148,6 +126,30 @@
                     android:textColor="@color/text_dark"
                     android:textSize="@dimen/info_text_small" />
             </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/info_row_marggin"
+                android:visibility="invisible" >
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/info_originname"
+                    android:textColor="@color/text_dark"
+                    android:textSize="@dimen/info_text_small" />
+
+                <TextView
+                    android:id="@+id/info_originname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_dark"
+                    android:textSize="@dimen/info_text_small" />
+            </TableRow>
+
         </TableLayout>
 
         <Button
@@ -193,16 +195,18 @@
             android:textColor="@color/text"
             android:textSize="@dimen/info_text_title" />
     </LinearLayout>
-
+
     <LinearLayout
+        android:id="@+id/res_layout_all"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:baselineAligned="false">
-
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:weightSum="1" >
+
         <LinearLayout
+            android:id="@+id/res_layout_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
             android:orientation="vertical"
             android:padding="5dp" >
 
@@ -228,7 +232,7 @@
                 android:orientation="vertical"
                 android:paddingLeft="40dp"
                 android:paddingRight="40dp" >
-
+
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
@@ -238,7 +242,7 @@
                     android:text="@string/info_author_intro"
                     android:textColor="@color/text_dark"
                     android:textSize="@dimen/info_text_med" />
-
+
                 <TextView
                     android:id="@+id/info_author_intro"
                     android:layout_width="wrap_content"
@@ -249,14 +253,14 @@
             </LinearLayout>
 
         </LinearLayout>
-
+
         <LinearLayout
+            android:id="@+id/res_layout_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical"
             android:padding="5dp" >
-
+
             <TextView
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"

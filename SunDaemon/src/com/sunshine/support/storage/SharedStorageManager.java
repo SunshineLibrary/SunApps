@@ -25,7 +25,6 @@ public class SharedStorageManager {
 
     public SharedStorageManager(Context context) {
         this.context = context;
-        fileStorage = FileStorageManager.getInstance().getReadableFileStorage();
     }
 
     public String getType(Uri uri) {
@@ -101,12 +100,19 @@ public class SharedStorageManager {
     private File getFileDirectory(Uri uri) throws FileNotFoundException {
         String path = uri.getPath();
         String directoryPath = path.substring(0, path.lastIndexOf("/"));
-        File directory = fileStorage.mkdir(directoryPath);
+        File directory = getFileStorage().mkdir(directoryPath);
         if (directory.exists()) {
             return directory;
         } else {
             Log.e(getClass().getName(), "Could not create file directory: " + directoryPath);
             throw new FileNotFoundException();
         }
+    }
+    
+    private FileStorage getFileStorage() {
+    	if (fileStorage == null) {
+    		fileStorage = FileStorageManager.getInstance().getWritableFileStorage();
+    	} 
+    	return fileStorage;
     }
 }
