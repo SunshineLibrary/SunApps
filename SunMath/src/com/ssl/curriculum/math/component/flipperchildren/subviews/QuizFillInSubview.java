@@ -61,7 +61,7 @@ public class QuizFillInSubview extends LinearLayout {
         String userInput = editText.getText().toString();
         boolean correct = quizPresenter.getCurrentAnswerState(userInput.trim());
         if (correct) {
-            showAnswerField.setText("正确！");
+            showAnswerField.setText("姝ｇ‘锛�");
         } else {
             showAnswerField.setText(quizPresenter.getCurrentAnswer());
         }

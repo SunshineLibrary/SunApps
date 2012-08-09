@@ -1,6 +1,7 @@
 package com.ssl.curriculum.math.presenter;
 
-import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.os.ParcelFileDescriptor;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -8,7 +9,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.activity.MainActivity;
-import com.ssl.curriculum.math.activity.NaviActivity;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.component.flipperchildren.GalleryThumbnailPageFlipperChild;
 import com.ssl.curriculum.math.component.flipperchildren.QuizFlipperChild;
@@ -19,8 +19,10 @@ import com.ssl.curriculum.math.model.activity.QuizActivityData;
 import com.ssl.curriculum.math.model.activity.VideoActivityData;
 import com.ssl.curriculum.math.service.ActivityContentProvider;
 import com.ssl.curriculum.math.service.EdgeContentProvider;
+import com.sunshine.metadata.provider.MetadataContract;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 public class MainActivityPresenter {
@@ -46,6 +48,8 @@ public class MainActivityPresenter {
         this.activity = activity;
         this.edgeProvider = new EdgeContentProvider(this.activity);
         this.activityProvider = new ActivityContentProvider(this.activity);
+        
+        
     }
 
     public void bindUIElement(String bindKey, View UIElement) {

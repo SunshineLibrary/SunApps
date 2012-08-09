@@ -14,26 +14,44 @@
             android:id="@+id/navi_activity_top_container"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:paddingBottom="8dp"
-            android:paddingLeft="4dp"
-            android:paddingTop="4dp" >
-
-            <TextView
-                android:id="@+id/navigation_menu_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textColor="@color/navi_activity_navi_list_view_text"
-                android:textSize="20sp" />
+            android:layout_alignParentTop="true" >
 
             <ImageView
                 android:id="@+id/navigation_menu_back_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
                 android:src="@drawable/ic_side_list_back" />
+
+            <TextView
+                android:id="@+id/navigation_menu_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/small_green_square"
+                android:layout_toRightOf="@+id/navigation_menu_back_btn"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:textColor="@color/navi_activity_navi_list_view_text"
+                android:textSize="20sp" >
+
+                <requestFocus />
+            </TextView>
+
+            <ImageView
+                android:id="@+id/small_green_square"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:paddingTop="11dp"
+                android:src="@drawable/ic_side_green" />
         </RelativeLayout>
 
         <com.ssl.curriculum.math.component.NavigationListView
@@ -50,6 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_alignParentRight="true"
+            android:layout_below="@+id/small_green_square"
             android:scaleType="fitXY"
             android:src="@drawable/ic_side_shadow" />
     </RelativeLayout>
@@ -69,6 +88,13 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:paddingTop="11dp"
+                android:src="@drawable/ic_navi_activity_curri" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:src="@drawable/bg_main_activity_no_item_selected" />
         </RelativeLayout>
@@ -82,36 +108,50 @@
             android:visibility="invisible" >
 
             <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_main_title_banner" >
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
 
-                <ImageButton
-                    android:id="@+id/btn_navi_activity_restart"
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_toLeftOf="@+id/btn_navi_activity_continue"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_main_start_over_selector" />
+                    android:layout_alignParentLeft="true"
+                    android:paddingTop="11dp"
+                    android:src="@drawable/ic_main_title_banner" />
 
-                <ImageButton
-                    android:id="@+id/btn_navi_activity_continue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_toLeftOf="@+id/btn_navi_activity_practice"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_main_continue_course_pressed" />
-
-                <ImageButton
-                    android:id="@+id/btn_navi_activity_practice"
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_main_start_practice_pressed" />
+                    android:layout_centerVertical="true"
+                    android:paddingRight="70dp" >
+
+                    <ImageButton
+                        android:id="@+id/btn_navi_activity_download"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/btn_navi_activity_start"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_navi_download_selector" />
+
+                    <ImageButton
+                        android:id="@+id/btn_navi_activity_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/btn_navi_activity_statistic"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_navi_start_selector" />
+
+                    <ImageButton
+                        android:id="@+id/btn_navi_activity_statistic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_navi_statistic_selector" />
+                </RelativeLayout>
             </RelativeLayout>
 
             <LinearLayout
@@ -123,8 +163,7 @@
                     android:id="@+id/imageview_navi_activity_lesson_icon"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:src="@drawable/ic_launcher" />
+                    android:layout_weight="1" />
 
                 <LinearLayout
                     android:layout_width="0dp"

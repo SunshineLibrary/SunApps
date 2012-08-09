@@ -1,5 +1,6 @@
 package com.ssl.curriculum.math.activity;
 
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,16 +10,17 @@ import com.ssl.curriculum.math.logic.PageFlipper;
 import com.ssl.curriculum.math.presenter.MainActivityPresenter;
 import com.ssl.curriculum.math.service.GalleryContentProvider;
 import com.ssl.curriculum.math.task.FetchGalleryContentTask;
-
 public class MainActivity extends Activity {
 
     private MainActivityPresenter presenter;
     private PageFlipper flipper;
     
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initUI();
+        
     }
 
     @Override
