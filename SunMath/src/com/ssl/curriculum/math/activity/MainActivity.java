@@ -13,11 +13,9 @@ import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
 import com.ssl.curriculum.math.logic.ActivityFlowController;
 import com.ssl.curriculum.math.logic.strategy.FetchNextDomainActivityStrategyImpl;
 import com.ssl.curriculum.math.presenter.FlipperViewsBuilder;
-import com.ssl.curriculum.math.service.GalleryContentProvider;
 import com.ssl.curriculum.math.service.mock.MockActivityContentProvider;
 import com.ssl.curriculum.math.service.mock.MockEdgeContentProvider;
 import com.ssl.curriculum.math.task.FetchActivityTaskManager;
-import com.ssl.curriculum.math.task.FetchGalleryContentTask;
 public class MainActivity extends Activity {
 
 
@@ -41,17 +39,10 @@ public class MainActivity extends Activity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        loadGalleryData();
-    }
-
-    private void loadGalleryData() {
-        FetchGalleryContentTask task = new FetchGalleryContentTask(new GalleryContentProvider(this));
-        task.execute();
     }
 
     private void getDomainActivity(Intent intent) {
         flowController.loadDomainActivityData(intent.getExtras().getInt("sectionId"), intent.getExtras().getInt("activityId"));
-        //flowController.loadDomainActivityData(0, 0);
     }
 
     private void initUI() {

@@ -2,10 +2,9 @@ package com.ssl.curriculum.math.task;
 
 import android.os.AsyncTask;
 import com.ssl.curriculum.math.listener.ActivityDataReceiver;
-import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.ssl.curriculum.math.service.ActivityContentProvider;
 
-public class FetchActivityDataTask extends AsyncTask<Void, Void, DomainActivityData> {
+public class FetchActivityDataTask extends AsyncTask<Void, Void, Void> {
 	private ActivityContentProvider contentProvider;
 	private ActivityDataReceiver activityDataReceiver;
 	private int activityId = 0;
@@ -19,12 +18,8 @@ public class FetchActivityDataTask extends AsyncTask<Void, Void, DomainActivityD
     }
 	
 	@Override
-	protected DomainActivityData doInBackground(Void... voids) {
-		return contentProvider.fetchActivityById(this.activityId, sectionId);
-	}
-
-	@Override
-	protected void onPostExecute(DomainActivityData result) {
-		this.activityDataReceiver.onReceivedDomainActivity(result);
-	}
+	protected Void doInBackground(Void... voids) {
+        contentProvider.fetchSectionActivityData(activityDataReceiver, sectionId, activityId);
+        return null;
+    }
 }

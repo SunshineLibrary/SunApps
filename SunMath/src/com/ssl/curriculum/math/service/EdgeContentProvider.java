@@ -3,6 +3,7 @@ package com.ssl.curriculum.math.service;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import com.ssl.curriculum.math.model.Edge;
 import com.sunshine.metadata.provider.MetadataContract;
 
@@ -34,6 +35,7 @@ public class EdgeContentProvider {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        Log.i("@FetchedEdges", fetchedEdges.toString());
         return fetchedEdges;
     }
 }

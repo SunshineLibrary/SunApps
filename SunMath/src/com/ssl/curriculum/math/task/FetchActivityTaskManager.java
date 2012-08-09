@@ -20,7 +20,7 @@ public class FetchActivityTaskManager {
         task.execute();
     }
 
-    public void fetchDomainActivity(ActivityDataReceiver activityDataReceiver, int fetchedSectionId, int fetchedActivityId) {
+    public void fetchSectionActivities(ActivityDataReceiver activityDataReceiver, int fetchedSectionId, int fetchedActivityId) {
         FetchActivityDataTask task = new FetchActivityDataTask(activityContentProvider, activityDataReceiver, fetchedSectionId, fetchedActivityId);
         task.execute();
     }

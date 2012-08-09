@@ -5,15 +5,16 @@ import com.ssl.curriculum.math.model.Edge;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FetchNextDomainActivityStrategyImpl implements FetchNextDomainActivityStrategy{
     @Override
     public DomainActivityData getNextDomainActivityData(DomainActivityData currentDomainActivity, ArrayList<Edge> edges) {
-        return new DomainActivityData(1, 1);
+        return new DomainActivityData();
     }
 
     @Override
-    public boolean canGoToNextActivity(DomainActivityData currentActivityData, ArrayList<Edge> edges) {
+    public boolean canGoToNextActivity(DomainActivityData currentActivityData, List<Edge> edges) {
         return true;
     }
 }

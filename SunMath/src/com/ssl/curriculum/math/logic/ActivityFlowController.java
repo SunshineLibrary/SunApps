@@ -8,19 +8,21 @@ import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.component.flipperchildren.FlipperChildView;
 import com.ssl.curriculum.math.listener.ActivityDataReceiver;
-import com.ssl.curriculum.math.listener.EdgeReceiver;
 import com.ssl.curriculum.math.listener.PageFlipListener;
 import com.ssl.curriculum.math.logic.strategy.FetchNextDomainActivityStrategyImpl;
 import com.ssl.curriculum.math.model.Edge;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
+import com.ssl.curriculum.math.model.activity.SectionActivitiesData;
 import com.ssl.curriculum.math.presenter.FlipperViewsBuilder;
 import com.ssl.curriculum.math.task.FetchActivityTaskManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ActivityFlowController implements EdgeReceiver, ActivityDataReceiver, PageFlipListener {
+public class ActivityFlowController implements ActivityDataReceiver, PageFlipListener {
     private ArrayList<DomainActivityData> domainActivityStack = new ArrayList<DomainActivityData>();
-    private ArrayList<Edge> edges;
+    private SectionActivitiesData sectionActivitiesData;
+    private List<Edge> edges;
 
     private ViewFlipper viewFlipper;
     private FlipperViewsBuilder flipperViewsBuilder;
@@ -80,17 +82,15 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     public void loadDomainActivityData(int domainSectionId, int domainActivityId) {
         currentActivityId = domainActivityId;
         currentSectionId = domainSectionId;
-        loadActivityAndEdges(domainSectionId, domainActivityId);
+        loadDomainData();
     }
 
-    private void loadActivityAndEdges(int domainSectionId, int domainActivityId) {
-        fetchActivityTaskManager.fetchEdge(this, domainSectionId, domainActivityId);
-        fetchActivityTaskManager.fetchDomainActivity(this, currentSectionId, currentActivityId);
+    private void loadDomainData() {
+        fetchActivityTaskManager.fetchSectionActivities(this, currentSectionId, currentActivityId);
     }
 
     private void fetchActivityFromRemote() {
-        DomainActivityData nextActivityData = fetchNextDomainActivityStrategy.getNextDomainActivityData(getCurrentActivityData(), edges);
-        loadActivityAndEdges(nextActivityData.sectionId, nextActivityData.activityId);
+        loadDomainData();
     }
 
     private DomainActivityData getCurrentActivityData() {
@@ -155,7 +155,12 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     }
 
     @Override
-    public void onReceivedEdges(ArrayList<Edge> edges) {
+    public void onReceivedSectionActivities(SectionActivitiesData sectionActivitiesData) {
+        this.sectionActivitiesData = sectionActivitiesData;
+    }
+
+    @Override
+    public void onReceivedEdges(List<Edge> edges) {
         this.edges = edges;
     }
 
