@@ -78,8 +78,8 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     }
 
     public void loadDomainActivityData(int domainSectionId, int domainActivityId) {
-        currentActivityId = domainSectionId;
-        currentSectionId = domainActivityId;
+        currentActivityId = domainActivityId;
+        currentSectionId = domainSectionId;
         loadActivityAndEdges(domainSectionId, domainActivityId);
     }
 

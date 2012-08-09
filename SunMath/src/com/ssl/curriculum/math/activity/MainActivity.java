@@ -50,8 +50,8 @@ public class MainActivity extends Activity {
     }
 
     private void getDomainActivity(Intent intent) {
-//        flowController.loadDomainActivityData(intent.getExtras().getInt("sectionId"), intent.getExtras().getInt("activityId"));
-        flowController.loadDomainActivityData(0, 0);
+        flowController.loadDomainActivityData(intent.getExtras().getInt("sectionId"), intent.getExtras().getInt("activityId"));
+        //flowController.loadDomainActivityData(0, 0);
     }
 
     private void initUI() {

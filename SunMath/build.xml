@@ -94,7 +94,7 @@
             <arg value="am"/>
             <arg value="start"/>
             <arg value="-n"/>
-            <arg value="com.ssl.curriculum.math/com.ssl.curriculum.math.activity.MainActivity"/>
+            <arg value="com.ssl.curriculum.math/com.ssl.curriculum.math.activity.NaviActivity"/>
         </exec>
     </target>
 

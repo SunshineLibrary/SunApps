@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -107,6 +106,7 @@ public class NaviActivity extends Activity {
 						    context.getContentResolver().update(uri, values, null, null);
 						  } while (cursor.moveToNext());
 						}
+						
 					}
 					
 				});
@@ -171,7 +171,21 @@ public class NaviActivity extends Activity {
 					public void onItemClick(AdapterView<?> parent, View view,
 
 					int position, long id) {
-						Intent intent = new Intent();
+						
+						cursor.moveToPosition(position);
+						
+			        	int a = cursor.getColumnIndex(SectionComponents._ACTIVITY_ID);
+			        	
+			        	int activityId = cursor.getInt(a);
+			        	
+			        	Intent intent = new Intent();
+			        	
+			        	intent.putExtra("sectionId",sectionId);
+			        	
+						intent.putExtra("activityId",activityId);
+						//System.out.println(sectionId);
+						//System.out.println(activityId);
+						
 						intent.setClass(context, MainActivity.class);
 						((NaviActivity) context).startLearn(intent);
 
