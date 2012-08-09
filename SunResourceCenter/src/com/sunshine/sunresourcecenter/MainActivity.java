@@ -145,7 +145,7 @@ public class MainActivity extends Activity {
 					}else{
 						intent = new Intent();
 						intent.setClass(MainActivity.this, ResourceInfoActivity.class);
-						intent.putExtra("bookId", gridItems.get(position).toString());
+						intent.putExtra("bookId", resolver.getSingleResIdOfCollection(gridItems.get(position).toString()));
 						intent.putExtra("type", currentResType);
 						startActivity(intent);
 					}

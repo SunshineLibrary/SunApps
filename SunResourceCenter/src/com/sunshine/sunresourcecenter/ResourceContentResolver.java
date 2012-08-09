@@ -37,7 +37,7 @@ public class ResourceContentResolver {
 			while (cur.moveToNext()) {
 				String tags = getBookCollectionTags(cur.getString(idCol));
 				//
-				Cursor bookcur = resolver.query(Books.CONTENT_URI, null, "book_collection_id = '" + cur.getString(idCol) +"'", null, null);
+				Cursor bookcur = resolver.query(Books.CONTENT_URI, null, Books._COLLECTION_ID + " = '" + cur.getString(idCol) +"'", null, null);
 				int count = bookcur.getCount();
 				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,tags , R.drawable.ic_launcher, 0, cur.getString(descriptionCol), count));	
 			}
@@ -48,10 +48,10 @@ public class ResourceContentResolver {
 		return (List)resGridItems;
 	}
 	
-	public String getSingleResIdOfCollection(String ColId) throws Exception{
+	public String getSingleResIdOfCollection(String ColId) {
 		String ResId = null;
 		//case book:
-		Cursor bookcur = resolver.query(Books.CONTENT_URI, null, "book_collection_id = '" + ColId +"'", null, null);
+		Cursor bookcur = resolver.query(Books.CONTENT_URI, null, Books._COLLECTION_ID + " = '" + ColId +"'", null, null);
 		
 		if(bookcur.getCount()>1) 
 			return null;
