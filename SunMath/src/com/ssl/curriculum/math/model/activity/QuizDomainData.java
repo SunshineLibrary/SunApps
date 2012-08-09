@@ -11,10 +11,6 @@ public class QuizDomainData extends DomainActivityData {
 	public QuizDomainData() {
 		super(Activities.TYPE_QUIZ);
 	}
-	
-	public void addQuestion(QuizQuestion q){
-		this.questions.add(q);
-	}
 
     public int size(){
 		return this.questions.size();

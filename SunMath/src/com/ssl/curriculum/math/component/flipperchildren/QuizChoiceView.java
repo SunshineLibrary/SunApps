@@ -7,10 +7,11 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.ssl.curriculum.math.R;
-import com.ssl.curriculum.math.component.ChoiceTableItemView;
 import com.ssl.curriculum.math.component.ChoiceTableView;
 import com.ssl.curriculum.math.component.MultipleChoiceTableView;
 import com.ssl.curriculum.math.component.SingleChoiceTableView;
+import com.ssl.curriculum.math.model.activity.quiz.QuizChoiceQuestion;
+import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 
 public class QuizChoiceView extends QuizQuestionView {
 
@@ -51,13 +52,10 @@ public class QuizChoiceView extends QuizQuestionView {
     }
 
     @Override
-    protected void loadQuizHtml(String quizContent) {
-        questionWebView.loadUrl("file:///android_asset/sample-asciimath.html");
-        choiceTableView.addChoiceTableRow(new ChoiceTableItemView(getContext(), "test", "A"));
-        choiceTableView.addChoiceTableRow(new ChoiceTableItemView(getContext(), "testB", "B"));
-        choiceTableView.addChoiceTableRow(new ChoiceTableItemView(getContext(),
-                "Long testLong testLong testLong testLong testLong testLong testLong testLong testLong test" +
-                        "Long testLong testLong test", "C"));
+    public void loadQuiz(QuizQuestion question) {
+        QuizChoiceQuestion quizChoiceQuestion = (QuizChoiceQuestion) question;
+        questionWebView.loadDataWithBaseURL("http://test", quizChoiceQuestion.getQuizContent(), "text/html", "utf-8", null);
+        choiceTableView.loadChoices(quizChoiceQuestion.getChoices());
     }
 
 }

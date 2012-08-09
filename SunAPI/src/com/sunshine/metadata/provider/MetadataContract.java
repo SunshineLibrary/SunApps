@@ -29,8 +29,8 @@ public final class MetadataContract {
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problems").build();
 
         public static final int TYPE_FB = 0;
-        public static final int TYPE_MC = 1;
-        public static final int TYPE_MAMC = 2;
+        public static final int TYPE_SC = 1;
+        public static final int TYPE_MC = 2;
 
         public static int getInternalType(String type) {
             return 0;
@@ -45,6 +45,16 @@ public final class MetadataContract {
         public static final String _PARENT_ID = "problem_id";
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problem_choices").build();
+    }
+
+
+    public static final class QuizComponents {
+        public static final String _QUIZ_ACTIVITY_ID = "quiz_activity_id";
+        public static final String _PROBLEM_ID = "problem_id";
+
+        public static Uri getProblemToQuizActivityUri(int id) {
+            return Problems.CONTENT_URI.buildUpon().appendPath("quiz").appendPath(String.valueOf(id)).build();
+        }
     }
 
     /*

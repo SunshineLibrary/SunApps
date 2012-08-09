@@ -1,11 +1,12 @@
 package com.ssl.curriculum.math.presenter;
 
 import android.content.Context;
-import com.ssl.curriculum.math.component.flipperchildren.QuizFillInView;
 import com.ssl.curriculum.math.component.flipperchildren.QuizChoiceView;
+import com.ssl.curriculum.math.component.flipperchildren.QuizFillInView;
 import com.ssl.curriculum.math.component.flipperchildren.QuizQuestionView;
-import com.ssl.curriculum.math.model.activity.quiz.QuizFillBlankQuestion;
+import com.ssl.curriculum.math.model.activity.quiz.QuizChoiceQuestion;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
+import com.sunshine.metadata.provider.MetadataContract;
 
 public class QuizViewsBuilder {
     private Context context;
@@ -18,29 +19,31 @@ public class QuizViewsBuilder {
 
     public QuizQuestionView buildQuizView(QuizQuestion question) {
         switch (question.getType()) {
-            case QuizQuestion.TYPE_CHOICE:
-                return buildChoiceView(question);
-            case QuizQuestion.TYPE_FILLBLANKS:
-                return buildFillInView((QuizFillBlankQuestion) question);
+            case MetadataContract.Problems.TYPE_FB:
+                return buildFillInView(question);
+            case MetadataContract.Problems.TYPE_MC:
+            case MetadataContract.Problems.TYPE_SC:
+                return buildChoiceView((QuizChoiceQuestion) question);
+
         }
         return null;
     }
 
-    private QuizChoiceView buildChoiceView(QuizQuestion question) {
+    private QuizChoiceView buildChoiceView(QuizChoiceQuestion question) {
         QuizChoiceView quizChoiceView = createQuizChoiceView(question);
-        quizChoiceView.loadQuiz("");
+        quizChoiceView.loadQuiz(question);
         quizChoiceView.setQuizPresenter(presenter);
         return quizChoiceView;
     }
 
-    private QuizChoiceView createQuizChoiceView(QuizQuestion question) {
-        return new QuizChoiceView(context, question.getId(), true);
+    private QuizChoiceView createQuizChoiceView(QuizChoiceQuestion question) {
+        return new QuizChoiceView(context, question.getId(), question.getType() == MetadataContract.Problems.TYPE_SC);
     }
 
-    private QuizFillInView buildFillInView(QuizFillBlankQuestion question) {
+    private QuizFillInView buildFillInView(QuizQuestion question) {
         QuizFillInView fillIn = new QuizFillInView(context, question.getId());
         fillIn.setQuizPresenter(presenter);
-        fillIn.loadQuiz(question.getQuizContent());
+        fillIn.loadQuiz(question);
         return fillIn;
     }
 

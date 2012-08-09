@@ -1,6 +1,7 @@
 package com.ssl.curriculum.math.component;
 
 import android.content.Context;
+import com.ssl.curriculum.math.utils.Constants;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +20,7 @@ public class MultipleChoiceTableView extends ChoiceTableView {
     @Override
     public void checkAnswer(String answer) {
         if (answer == null) return;
-        List<String> answers = Arrays.asList(answer.split(","));
+        List<String> answers = Arrays.asList(answer.split(Constants.ANSWER_SEPARATOR));
         if (answers == null || answers.size() == 0) return;
 
         for (int index = 0; index < tableLayout.getChildCount(); index++) {

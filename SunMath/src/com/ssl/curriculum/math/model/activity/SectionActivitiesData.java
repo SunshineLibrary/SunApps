@@ -41,4 +41,9 @@ public class SectionActivitiesData {
         if(minSequenceId == -1) return null;
         return getSectionActivity(minSequenceId);
     }
+
+    @Override
+    public String toString() {
+        return "Section Activities--" + sectionActivityDataList.toString();
+    }
 }

@@ -48,17 +48,21 @@ public class MetadataProvider extends ContentProvider {
                         uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.LESSONS:
                 return dbHandler.getTableManager(LessonTable.TABLE_NAME).query(
-                		uri, projection, selection, selectionArgs, sortOrder);
+                        uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.SECTIONS:
                 return dbHandler.getTableManager(SectionTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.SECTIONS_ACTIVITIES:
                 return dbHandler.getTableViewManager(SectionActivitiesView.VIEW_NAME).query(
                         uri, projection, SectionComponents._SECTION_ID + "=?",
-                        new String[] {uri.getLastPathSegment()}, sortOrder);
+                        new String[]{uri.getLastPathSegment()}, sortOrder);
+            case Matcher.PROBLEMS_BELONG_TO_QUIZ_ACTIVITY:
+                return dbHandler.getTableViewManager(QuizComponentsTable.TABLE_NAME).query(
+                        uri, projection, MetadataContract.QuizComponents._QUIZ_ACTIVITY_ID + "=?",
+                        new String[]{uri.getLastPathSegment()}, sortOrder);
             case Matcher.GALLERY_IMAGES:
                 return dbHandler.getTableManager(GalleryImageTable.TABLE_NAME).query(
-                		uri, projection, selection, selectionArgs, sortOrder);
+                        uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.ACTIVITIES:
                 return dbHandler.getTableManager(ActivityTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
@@ -79,13 +83,13 @@ public class MetadataProvider extends ContentProvider {
                 return dbHandler.getTableManager(TagTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.BOOK_LIST_TAG:
-            	return dbHandler.getTableManager(BookListTagTable.TABLE_NAME).query(
+                return dbHandler.getTableManager(BookListTagTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.BOOK_COLLECTION_TAG:
-            	return dbHandler.getTableManager(BookCollectionTagTable.TABLE_NAME).query(
+                return dbHandler.getTableManager(BookCollectionTagTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.BOOK_LIST_COLLECTION:
-            	return dbHandler.getTableManager(BookListCollectionTable.TABLE_NAME).query(
+                return dbHandler.getTableManager(BookListCollectionTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.PROBLEMS:
                 return dbHandler.getTableManager(ProblemTable.TABLE_NAME).query(
@@ -112,7 +116,7 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.GALLERY_IMAGES:
                 return MimeType.GALLERY_IMAGES_MIME_TYPE;
             case Matcher.PROBLEMS:
-                            return MimeType.METADATA_MIME_TYPE;
+                return MimeType.METADATA_MIME_TYPE;
             default:
                 return sharedStorageManager.getType(uri);
         }
@@ -146,13 +150,13 @@ public class MetadataProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
             case Matcher.ACTIVITIES_ID:
                 selection = MetadataContract.Activities._ID + " = ?";
-                selectionArgs = new String[] {uri.getLastPathSegment()};
+                selectionArgs = new String[]{uri.getLastPathSegment()};
             case Matcher.ACTIVITIES:
                 return dbHandler.getTableManager(ActivityTable.TABLE_NAME).update(
                         uri, values, selection, selectionArgs);
             case Matcher.GALLERY_IMAGES_ID:
                 selection = MetadataContract.GalleryImages._ID + " = ?";
-                selectionArgs = new String[] {uri.getLastPathSegment()};
+                selectionArgs = new String[]{uri.getLastPathSegment()};
             case Matcher.GALLERY_IMAGES:
                 return dbHandler.getTableManager(GalleryImageTable.TABLE_NAME).update(
                         uri, values, selection, selectionArgs);

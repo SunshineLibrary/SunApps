@@ -8,4 +8,9 @@ public class SectionActivityData {
         this.activityId = activityId;
         this.sequence = sequence;
     }
+
+    @Override
+    public String toString() {
+        return "[" + activityId + ", " + sequence + "]";
+    }
 }

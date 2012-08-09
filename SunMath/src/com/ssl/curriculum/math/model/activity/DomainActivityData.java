@@ -2,6 +2,7 @@ package com.ssl.curriculum.math.model.activity;
 
 public class DomainActivityData {
     private static final String EMPTY_RESULT = "";
+
     public int type;
     public int activityId;
     public int providerId;
@@ -14,7 +15,6 @@ public class DomainActivityData {
     }
 
     public DomainActivityData() {
-
     }
 
     public String getResult() {
