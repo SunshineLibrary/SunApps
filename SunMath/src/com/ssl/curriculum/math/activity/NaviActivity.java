@@ -5,17 +5,23 @@ import java.io.InputStream;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -26,15 +32,14 @@ import com.ssl.curriculum.math.component.HorizontalListView;
 import com.ssl.curriculum.math.component.NavigationListView;
 import com.sunshine.metadata.provider.MetadataContract;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
+import com.sunshine.metadata.provider.MetadataContract.Downloadable;
+import com.sunshine.metadata.provider.MetadataContract.SectionComponents;
 import com.sunshine.metadata.provider.MetadataContract.Sections;
 import com.ssl.curriculum.math.presenter.NavigationMenuPresenter;
 
 public class NaviActivity extends Activity {
 
-
-	private static String[] ActivitiesInfo = new String[] { Activities._ID,
-			Activities._NAME, Activities._SECTION_ID};
-
+    private static String[] ActivitiesInfo = new String[] {SectionComponents._ACTIVITY_ID,Activities._NAME};
 	private static String[] SectionInfo = new String[] { Sections._ID,
 			Sections._DESCRIPTION };
 
@@ -49,6 +54,9 @@ public class NaviActivity extends Activity {
 	private static ImageView mImageView;
 	private static ContentResolver contentResolver;
 	private static Context context;
+	private ImageButton btn_download;
+	private ImageButton btn_study;
+	private ImageButton btn_stat;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -81,11 +89,37 @@ public class NaviActivity extends Activity {
 	
 	
 
-	public static void loadActivitiesData(final Context context,HorizontalListView horizontalListView, final int sectionId, final ImageView mImageView){
+	public static void loadActivitiesData(final Context context,HorizontalListView horizontalListView, final int sectionId, final ImageView mImageView,ImageButton btn_download,
+			ImageButton btn_study, ImageButton btn_stat){
 		 
 		NaviActivity.context=context; contentResolver = context.getContentResolver();
+       	
+		final Cursor cursor = contentResolver.query(Sections.getSectionActivities(sectionId),ActivitiesInfo,null,null, null);
 		
-		SimpleCursorAdapter thumbAdapter = new SimpleCursorAdapter(context,R.layout.navi_activity_horizontal_item, contentResolver.query(Activities.CONTENT_URI,ActivitiesInfo, Activities._SECTION_ID + "=?",new String[] { String.valueOf(sectionId) }, null),new String[] { Activities._NAME }, new int[] { R.id.title}){
+		    btn_download.setOnClickListener(new OnClickListener() {
+					public void onClick(View v){
+						
+						ContentValues values = new ContentValues();
+						values.put(Downloadable._DOWNLOAD_STATUS, Downloadable.STATUS.QUEUED.ordinal());
+						if (cursor.moveToFirst()){
+						  do {
+						    Uri uri = Activities.getActivityUri(cursor.getInt(cursor.getColumnIndex(SectionComponents._ACTIVITY_ID)));
+						    context.getContentResolver().update(uri, values, null, null);
+						  } while (cursor.moveToNext());
+						}
+					}
+					
+				});
+		
+		BaseAdapter thumbAdapter = new BaseAdapter(){
+	
+			private int c=cursor.getCount();
+
+			@Override
+			public int getCount() {
+				// TODO Auto-generated method stub
+				return c;
+			}
 			
 			public Object getItem(int position) {
 		        return position;
@@ -105,9 +139,6 @@ public class NaviActivity extends Activity {
 				
 				
 	        	InputStream is = null;
-	        	
-	        	 Cursor cursor = contentResolver.query(Activities.CONTENT_URI,ActivitiesInfo, Activities._SECTION_ID + "=?",new String[] { String.valueOf(sectionId) }, null);
-	        	
 	        	cursor.moveToPosition(position); 
 	        	int actname = cursor.getColumnIndex(Activities._NAME);
 	        	String activityname = cursor.getString(actname);
@@ -117,21 +148,21 @@ public class NaviActivity extends Activity {
 	        	
 				try {
 					is = NaviActivity.context.getContentResolver().openInputStream(MetadataContract.Activities.getActivityThumbnailUri(sectionId));
-					System.out.println("could find it");
+					//System.out.println("could find it");
 					
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
-					System.out.println("could not find it");
+					//System.out.println("could not find it");
 				}
 				
 	    		Bitmap bitmap = BitmapFactory.decodeStream(is);    
 	    		BitmapDrawable bd = new BitmapDrawable(bitmap);
  	    		thumbimage.setBackgroundDrawable(bd);
- 	    		
+ 	    		thumbimage.setImageResource(R.drawable.ic_main_thumbnail_photo_album);
 	        	mImageView.setImageResource(R.drawable.ic_navi_section_thumbnail);
+	        	
 				return retval;
-		    }	
-			
+		    }
 		};
 		
         horizontalListView.setAdapter(thumbAdapter);
@@ -164,12 +195,15 @@ public class NaviActivity extends Activity {
 		desListView = (ListView) this.findViewById(R.id.listview_navi_activity_lesson_description);
 		horizontalListView = (HorizontalListView) findViewById(R.id.listview);
 		mImageView=(ImageView)findViewById(R.id.imageview_navi_activity_lesson_icon);
+		btn_download = (ImageButton)findViewById(R.id.btn_navi_activity_download);
+		btn_study = (ImageButton)findViewById(R.id.btn_navi_activity_study);
+		btn_stat = (ImageButton)findViewById(R.id.btn_navi_activity_statistic);
 
 	}
 
 	private void initComponent() {
 		menuPresenter = new NavigationMenuPresenter(this, navigationListView,
-				menuTitle, mztext, test_linear, desListView, horizontalListView,mImageView/*,thumbimage*/);
+				menuTitle, mztext, test_linear, desListView, horizontalListView,mImageView,btn_download,btn_study,btn_stat);
 		navigationListView.setNextLevelMenuChangedListener(menuPresenter);
 		backImageView.setOnClickListener(new View.OnClickListener() {
 			@Override

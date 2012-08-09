@@ -123,34 +123,66 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:paddingRight="70dp" >
+                    android:paddingRight="30dp" >
+
+                    <ImageView
+                        android:id="@+id/navi_top_divider_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/btn_navi_activity_download"
+                        android:src="@drawable/ic_main_top_single_divider" />
 
                     <ImageButton
                         android:id="@+id/btn_navi_activity_download"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/btn_navi_activity_start"
+                        android:layout_toLeftOf="@+id/navi_top_divider_2"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_navi_download_selector" />
 
+                    <ImageView
+                        android:id="@+id/navi_top_divider_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/btn_navi_activity_study"
+                        android:src="@drawable/ic_main_top_single_divider" />
+
                     <ImageButton
-                        android:id="@+id/btn_navi_activity_start"
+                        android:id="@+id/btn_navi_activity_study"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/navi_top_divider_3"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_navi_start_selector" />
+
+                    <ImageView
+                        android:id="@+id/navi_top_divider_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_toLeftOf="@+id/btn_navi_activity_statistic"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/ic_navi_start_selector" />
+                        android:src="@drawable/ic_main_top_single_divider" />
 
                     <ImageButton
                         android:id="@+id/btn_navi_activity_statistic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/navi_top_divider_4"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_navi_statistic_selector" />
+
+                    <ImageView
+                        android:id="@+id/navi_top_divider_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_main_top_single_divider" />
                 </RelativeLayout>
             </RelativeLayout>
 

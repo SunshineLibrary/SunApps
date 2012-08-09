@@ -3,6 +3,8 @@ package com.ssl.curriculum.math.presenter;
 import com.ssl.curriculum.math.activity.NaviActivity;
 import android.content.Context;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -30,11 +32,14 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 	private Context context;
 	private HorizontalListView horizontalListView;
 	private ImageView mImageView;
+	private ImageButton btn_download;
+	private ImageButton btn_study;
+	private ImageButton btn_stat;
 	
 	public NavigationMenuPresenter(Context context,
 			NavigationListView navigationListView, TextView menuTitle,
 			TextView mztext, LinearLayout test_linear, ListView desListView,
-			HorizontalListView horizontalListView, ImageView mImageView) {
+			HorizontalListView horizontalListView, ImageView mImageView, ImageButton btn_download, ImageButton btn_study, ImageButton btn_stat) {
 		this.context = context;
 		this.navigationListView = navigationListView;
 		this.menuTitle = menuTitle;
@@ -43,6 +48,9 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 		this.desListView = desListView;
 		this.horizontalListView = horizontalListView;
 		this.mImageView=mImageView;
+		this.btn_download=btn_download;
+		this.btn_study= btn_study;
+		this.btn_stat=btn_stat;
 		this.navigationListView.setNextLevelMenuChangedListener(this);
 		provider = new NavigationMenuContentProvider(context);
 	}
@@ -85,7 +93,7 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 			test_linear.setVisibility(View.VISIBLE);
 			navigationListView.activateMenuItem(index);
 			NaviActivity.loadSectionData(context, desListView, index);
-			NaviActivity.loadActivitiesData(context, horizontalListView, index,mImageView);
+			NaviActivity.loadActivitiesData(context, horizontalListView, index,mImageView,btn_download,btn_study,btn_stat);
 			mztext.setText(item.getName());
 			return;
 		}

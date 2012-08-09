@@ -11,7 +11,7 @@ import com.sunshine.metadata.provider.MetadataContract.*;
 import java.util.HashMap;
 
 public class NavigationMenuContentProvider implements NavigationMenuProvider {
-    private static final String ROOT_MENU_NAME = "Courses";
+    private static final String ROOT_MENU_NAME = "¿Î³Ì";
     private Context context;
     private final ContentResolver contentResolver;
 
