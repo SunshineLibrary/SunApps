@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.listener.TapListener;
+import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.sunshine.metadata.provider.MetadataContract;
 
 import java.io.FileDescriptor;
@@ -51,6 +52,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     private Runnable progressRunnable;
     private Thread.UncaughtExceptionHandler uncaughtExceptionHandler;
     private int savedPlayedPosition;
+    private DomainActivityData domainActivityData;
 
     public VideoPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -276,10 +278,14 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     public FileDescriptor getVideoFileDescriptor() {
         ParcelFileDescriptor pfdInput = null;
         try {
-            pfdInput = getContext().getContentResolver().openFileDescriptor(MetadataContract.Activities.getActivityVideoUri(1), "r");
+            pfdInput = getContext().getContentResolver().openFileDescriptor(MetadataContract.Activities.getActivityVideoUri(domainActivityData.activityId), "r");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return pfdInput.getFileDescriptor();
+    }
+
+    public void setVideoData(DomainActivityData domainActivityData) {
+        this.domainActivityData = domainActivityData;
     }
 }

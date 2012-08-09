@@ -7,15 +7,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.videoview.VideoPlayer;
-import com.ssl.curriculum.math.model.activity.VideoDomainActivityData;
+import com.ssl.curriculum.math.model.activity.DomainActivityData;
 
 public class VideoFlipperChild extends FlipperChildView {
     private VideoPlayer videoPlayer;
-    private VideoDomainActivityData domainActivityData;
+    private DomainActivityData domainActivityData;
     private TextView titleView;
     private TextView descriptionView;
 
-    public VideoFlipperChild(Context context, VideoDomainActivityData domainActivity) {
+    public VideoFlipperChild(Context context, DomainActivityData domainActivity) {
         super(context);
         this.domainActivityData = domainActivity;
         initUI();
@@ -33,8 +33,9 @@ public class VideoFlipperChild extends FlipperChildView {
     }
 
     private void initVideoComponent() {
-        titleView.setText(domainActivityData.getTitle());
-        descriptionView.setText(domainActivityData.getDescription());
+        videoPlayer.setVideoData(domainActivityData);
+        titleView.setText(domainActivityData.name);
+        descriptionView.setText(domainActivityData.notes);
     }
 
     @Override

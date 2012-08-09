@@ -8,7 +8,6 @@ import com.ssl.curriculum.math.component.flipperchildren.VideoFlipperChild;
 import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.ssl.curriculum.math.model.activity.QuizDomainData;
-import com.ssl.curriculum.math.model.activity.VideoDomainActivityData;
 
 import static com.sunshine.metadata.provider.MetadataContract.Activities.*;
 
@@ -24,7 +23,7 @@ public class FlipperViewsBuilder {
     public View buildViewToFlipper(DomainActivityData domainActivity) {
         switch (domainActivity.type) {
             case TYPE_VIDEO:
-                return new VideoFlipperChild(this.context, (VideoDomainActivityData) domainActivity);
+                return new VideoFlipperChild(this.context, domainActivity);
             case TYPE_QUIZ:
                 return new QuizFlipperChild(this.context, (QuizDomainData) domainActivity);
             case TYPE_GALLERY:
