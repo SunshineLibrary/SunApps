@@ -30,11 +30,11 @@ public class ThumbnailFetchObserver extends TableObserver {
             int id = values.getAsInteger(BaseColumns._ID);
             if (table.getTableName().equals(ActivityTable.TABLE_NAME)) {
                 new FileDownloadTask(context,
-                        ApiClient.getThumbnailUri("activity", id),
+                        ApiClient.getThumbnailUri("activities", id),
                         Activities.getActivityThumbnailUri(id)).execute();
             } else if (table.getTableName().equals(GalleryImageTable.TABLE_NAME)) {
                 new FileDownloadTask(context,
-                        ApiClient.getThumbnailUri("gallery_image", id),
+                        ApiClient.getThumbnailUri("images", id),
                         GalleryImages.getGalleryImageThumbnailUri(id)).execute();
             }
         }

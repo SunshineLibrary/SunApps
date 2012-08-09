@@ -19,13 +19,13 @@ public class GalleryContentProvider {
     public List<GalleryItem> loadGalleryContent() {
         List<GalleryItem> list = new ArrayList<GalleryItem>();
         ContentResolver contentResolver = context.getContentResolver();
-        String[] columns = {MetadataContract.GalleryImages._ID, MetadataContract.GalleryImages._GALLERY_ID, MetadataContract.GalleryImages._DESCRIPTION};
+        String[] columns = {MetadataContract.GalleryImages._ID, MetadataContract.GalleryImages._GALLERY_ID, MetadataContract.GalleryImages._INTRO};
         Cursor cursor = contentResolver.query(MetadataContract.GalleryImages.CONTENT_URI, columns, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 int idIndex = cursor.getColumnIndex(MetadataContract.GalleryImages._ID);
                 int galleryIdIndex = cursor.getColumnIndex(MetadataContract.GalleryImages._GALLERY_ID);
-                int descriptionIndex = cursor.getColumnIndex(MetadataContract.GalleryImages._DESCRIPTION);
+                int descriptionIndex = cursor.getColumnIndex(MetadataContract.GalleryImages._INTRO);
                 GalleryItem item = new GalleryItem(cursor.getInt(idIndex), cursor.getString(descriptionIndex));
                 list.add(item);
             } while (cursor.moveToNext());

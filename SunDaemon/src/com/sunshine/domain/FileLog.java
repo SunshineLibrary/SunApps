@@ -1,4 +1,4 @@
-package com.sunshine.utils;
+package com.sunshine.domain;
 
 import android.content.Context;
 

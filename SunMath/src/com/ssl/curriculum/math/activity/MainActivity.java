@@ -4,23 +4,38 @@ package com.ssl.curriculum.math.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.R;
+import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
-import com.ssl.curriculum.math.logic.PageFlipper;
-import com.ssl.curriculum.math.presenter.MainActivityPresenter;
+import com.ssl.curriculum.math.logic.ActivityFlowController;
+import com.ssl.curriculum.math.logic.strategy.FetchNextDomainActivityStrategyImpl;
+import com.ssl.curriculum.math.presenter.FlipperViewsBuilder;
 import com.ssl.curriculum.math.service.GalleryContentProvider;
+import com.ssl.curriculum.math.service.mock.MockActivityContentProvider;
+import com.ssl.curriculum.math.service.mock.MockEdgeContentProvider;
+import com.ssl.curriculum.math.task.FetchActivityTaskManager;
 import com.ssl.curriculum.math.task.FetchGalleryContentTask;
 public class MainActivity extends Activity {
 
-    private MainActivityPresenter presenter;
-    private PageFlipper flipper;
-    
-    
+
+    private ActivityFlowController flowController;
+    private ImageView leftBtn;
+    private ImageView rightBtn;
+    private ImageView naviBtn;
+    private ViewFlipper viewFlipper;
+
+    private FlipperViewsBuilder flipperViewsBuilder;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initUI();
-        
+        initComponents();
+        initListeners();
+        getDomainActivity(getIntent());
     }
 
     @Override
@@ -34,58 +49,57 @@ public class MainActivity extends Activity {
         task.execute();
     }
 
-    private void initUI() {
-        setContentView(R.layout.main_layout);
-        presenter = new MainActivityPresenter(this);
-        flipper = new PageFlipper(presenter);
-        flipper.init(1);
-
-        presenter.bindUIElement(MainActivityPresenter.BTN_LEFT, this.findViewById(R.id.main_activity_left_btn));
-        presenter.bindUIElement(MainActivityPresenter.BTN_RIGHT, this.findViewById(R.id.main_activity_right_btn));
-        presenter.bindUIElement(MainActivityPresenter.BTN_NAVI, this.findViewById(R.id.main_activity_navi_btn));
-        presenter.bindUIElement(MainActivityPresenter.FLIPPER, this.findViewById(R.id.main_activity_view_flipper));
-
-        presenter.initListeners();
-
-//        getWindow().setFormat(PixelFormat.TRANSLUCENT);
-//        RelativeLayout videoFrame = (RelativeLayout) findViewById(R.id.content_screen_video_frame);
-//        videoPlayer = (SunLibVideoView) findViewById(R.id.content_screen_video_field);
-//        Uri video = Uri.parse("android.resource://" + getPackageName() + "/"
-//                + R.raw.speaking);
-//        videoPlayer.setMediaController(new SunLibMediaController(this));
-//        videoPlayer.setVideoURI(video);
-//        videoPlayer.setDimensions(655, 437);
-
-//        videoPlayer.start();
-
+    private void getDomainActivity(Intent intent) {
+//        flowController.loadDomainActivityData(intent.getExtras().getInt("sectionId"), intent.getExtras().getInt("activityId"));
+        flowController.loadDomainActivityData(0, 0);
     }
 
-//    @Override
-//    public void onConfigurationChanged(Configuration newConfig) {
-//        super.onConfigurationChanged(newConfig);
-//
-//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//
-//            videoPlayer.setDimensions(displayHeight, displayWidth);
-//            videoPlayer.getHolder().setFixedSize(displayHeight, displayWidth);
-//
-//        } else {
-//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-//
-//            videoPlayer.setDimensions(displayWidth, smallHeight);
-//            videoPlayer.getHolder().setFixedSize(displayWidth, smallHeight);
-//        }
-//    }
+    private void initUI() {
+        setContentView(R.layout.main_layout);
+        leftBtn = (ImageView) this.findViewById(R.id.main_activity_left_btn);
+        rightBtn = (ImageView) this.findViewById(R.id.main_activity_right_btn);
+        naviBtn = (ImageView) this.findViewById(R.id.main_activity_navi_btn);
+        viewFlipper = (ViewFlipper) this.findViewById(R.id.main_activity_view_flipper);
+    }
 
-    public GalleryItemClickedListener getGalleryThumbnailItemClickListener() {
-        return new GalleryItemClickedListener() {
+    private void initComponents() {
+        flipperViewsBuilder = new FlipperViewsBuilder(this);
+        FetchActivityTaskManager fetchActivityTaskManager = new FetchActivityTaskManager(new MockEdgeContentProvider(this), new MockActivityContentProvider(this));
+        flowController = new ActivityFlowController(viewFlipper, flipperViewsBuilder, fetchActivityTaskManager, new FetchNextDomainActivityStrategyImpl(), new FlipAnimationManager(this));
+    }
+
+
+    private void initListeners() {
+        leftBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                flowController.onShowPrevious();
+            }
+        });
+
+        rightBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                flowController.onShowNext();
+            }
+        });
+
+        naviBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        flipperViewsBuilder.setGalleryThumbnailItemClickListener(new GalleryItemClickedListener() {
             @Override
             public void onGalleryItemClicked() {
                 Intent intent = new Intent(MainActivity.this, GalleryFlipperActivity.class);
                 startActivity(intent);
             }
-        };
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        flowController.destroyFlipperSubViews();
     }
 }

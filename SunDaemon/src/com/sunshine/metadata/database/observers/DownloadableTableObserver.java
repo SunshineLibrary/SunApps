@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import com.sunshine.metadata.provider.Matcher;
 import com.sunshine.support.api.ApiClient;
-import com.sunshine.support.downloader.FileDownloadTask;
+import com.sunshine.support.downloader.MonitoredFileDownloadTask;
 
 import java.util.List;
 import java.util.Vector;
@@ -84,15 +84,15 @@ public class DownloadableTableObserver extends TableObserver {
             int type = cursor.getInt(cursor.getColumnIndex(Activities._TYPE));
             switch (type) {
                 case Activities.TYPE_VIDEO:
-                    new FileDownloadTask(context,
-                            ApiClient.getDownloadUri("video_activity", id),
-                            Activities.getActivityVideoUri(id)).execute();
+                    new MonitoredFileDownloadTask(context,
+                            ApiClient.getDownloadUri("activities", id),
+                            Activities.getActivityVideoUri(id), uri).execute();
                     break;
                 case Activities.TYPE_GALLERY:
                     ContentValues values = new ContentValues();
                     values.put(Activities._DOWNLOAD_STATUS, STATUS.QUEUED.ordinal());
                     context.getContentResolver().update(GalleryImages.CONTENT_URI, values,
-                            "gallery_id = ?", new String[]{String.valueOf(id)});
+                            GalleryImages._GALLERY_ID + "=?", new String[]{String.valueOf(id)});
                     break;
                 default:
             }
@@ -102,8 +102,8 @@ public class DownloadableTableObserver extends TableObserver {
 
     public void downloadGalleryImage(Uri uri) {
         int id = Integer.parseInt(uri.getLastPathSegment());
-        new FileDownloadTask(context,
-                ApiClient.getDownloadUri("gallery_image", id),
-                GalleryImages.getGalleryImageUri(id)).execute();
+        new MonitoredFileDownloadTask(context,
+                ApiClient.getDownloadUri("images", id),
+                GalleryImages.getGalleryImageUri(id), uri).execute();
     }
 }

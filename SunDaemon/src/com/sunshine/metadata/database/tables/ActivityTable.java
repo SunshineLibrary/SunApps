@@ -8,26 +8,20 @@ public class ActivityTable extends DownloadableTable {
 
     public static final String[] ALL_COLUMNS = {
             Activities._ID,
-            Activities._SECTION_ID,
             Activities._PROVIDER_ID,
             Activities._TYPE,
-            Activities._SEQUENCE,
             Activities._NAME,
             Activities._NOTES,
             Activities._DURATION,
-            Activities._DIFFICULTY,
     };
 
     public static final String[][] COLUMN_DEFINITIONS = {
             {Activities._ID, "INTEGER PRIMARY KEY"},
-            {Activities._SECTION_ID, "INTEGER"},
             {Activities._PROVIDER_ID, "INTEGER"},
             {Activities._TYPE, "INTEGER"},
-            {Activities._SEQUENCE, "INTEGER"},
             {Activities._NAME, "TEXT"},
             {Activities._NOTES, "TEXT"},
             {Activities._DURATION, "INTEGER"},
-            {Activities._DIFFICULTY, "INTEGER"},
     };
 
     public ActivityTable(MetadataDBHandler db) {

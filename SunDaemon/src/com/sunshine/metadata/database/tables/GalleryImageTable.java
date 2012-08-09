@@ -9,13 +9,13 @@ public class GalleryImageTable extends DownloadableTable {
     private static final String[] ALL_COLUMNS = {
             MetadataContract.GalleryImages._ID,
             MetadataContract.GalleryImages._GALLERY_ID,
-            MetadataContract.GalleryImages._DESCRIPTION
+            MetadataContract.GalleryImages._INTRO
     };
 
     private static final String[][] COLUMN_DEFINITIONS = {
             {MetadataContract.GalleryImages._ID, "INTEGER PRIMARY KEY"},
             {MetadataContract.GalleryImages._GALLERY_ID, "INTEGER"},
-            {MetadataContract.GalleryImages._DESCRIPTION, "TEXT"}
+            {MetadataContract.GalleryImages._INTRO, "TEXT"}
     };
 
     public GalleryImageTable(MetadataDBHandler handler) {

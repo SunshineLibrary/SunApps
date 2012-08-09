@@ -3,6 +3,7 @@ package com.sunshine.support.api;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.content.IntentFilter;
 import android.net.Uri;
 import com.sunshine.metadata.database.tables.*;
 import org.apache.http.client.HttpClient;
@@ -16,14 +17,16 @@ public class ApiClient {
 
     private static ThreadSafeClientConnManager connManager;
     private static final Uri ROOT_URI;
-    private static final String HOST = "ssl-mock.herokuapp.com";
-
+    // private static final String HOST = "10.0.2.2:3000";
+    // private static final String HOST = "192.168.2.128:3000";
+    private static final String HOST = "42.121.65.247";
 
     private static final Map<String, String> apiMap;
 
     static {
-        ROOT_URI = new Uri.Builder().scheme("http").authority(HOST).build();
+        ROOT_URI = new Uri.Builder().scheme("http").encodedAuthority(HOST).build();
         apiMap = new HashMap<String, String>();
+        apiMap.put(GalleryImageTable.TABLE_NAME, "images.json");
     }
 
     public static synchronized ThreadSafeClientConnManager getConnManager() {
@@ -55,12 +58,10 @@ public class ApiClient {
     }
 
     public static Uri getDownloadUri(String type, long id) {
-        return ROOT_URI.buildUpon().appendPath("download")
-                .appendQueryParameter("type", type).appendQueryParameter("id", String.valueOf(id)).build();
+        return ROOT_URI.buildUpon().appendPath("download").appendPath(type).appendPath(String.valueOf(id)).build();
     }
 
     public static Uri getThumbnailUri(String type, int id) {
-        return ROOT_URI.buildUpon().appendPath("thumbnail")
-                .appendQueryParameter("type", type).appendQueryParameter("id", String.valueOf(id)).build();
+        return ROOT_URI.buildUpon().appendPath("download").appendPath(type + "_thumb").appendPath(String.valueOf(id)).build();
     }
 }

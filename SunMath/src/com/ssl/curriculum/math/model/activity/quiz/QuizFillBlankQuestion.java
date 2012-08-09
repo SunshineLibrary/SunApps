@@ -2,7 +2,7 @@ package com.ssl.curriculum.math.model.activity.quiz;
 
 public class QuizFillBlankQuestion extends QuizQuestion{
     private String quizContent;
-    private String answer;
+
 
     public QuizFillBlankQuestion() {
         super(QuizQuestion.TYPE_FILLBLANKS);
@@ -16,11 +16,5 @@ public class QuizFillBlankQuestion extends QuizQuestion{
         this.quizContent = quizContent;
     }
 
-    public String getAnswer() {
-        return answer;
-    }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
 }
