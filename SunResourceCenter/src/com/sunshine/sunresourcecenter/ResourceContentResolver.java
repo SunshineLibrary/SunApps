@@ -35,12 +35,18 @@ public class ResourceContentResolver {
 			int descriptionCol = cur.getColumnIndex(BookCollections._INTRO);
 			
 			int imageId = R.drawable.ic_launcher;
+			Cursor bookcur = null;
 			while (cur.moveToNext()) {
 				String tags = getBookCollectionTags(cur.getString(idCol));
 				//tooo slow, try put into view
-				int count = resolver.query(Books.CONTENT_URI, null, Books._COLLECTION_ID + " = '" + cur.getString(idCol) +"'", null, null).getCount();
+				bookcur = resolver.query(Books.CONTENT_URI, null, Books._COLLECTION_ID + " = '" + cur.getString(idCol) +"'", null, null);
+				int count = bookcur.getCount();
 				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,tags , imageId, 0, cur.getString(descriptionCol), count));	
+				
 			}
+			
+			bookcur.close();
+			cur.close();
 		} finally {
 			
 		}
@@ -53,12 +59,17 @@ public class ResourceContentResolver {
 		//case book:
 		Cursor bookcur = resolver.query(Books.CONTENT_URI, null, Books._COLLECTION_ID + " = '" + ColId +"'", null, null);
 		
-		if(bookcur.getCount()>1) 
+		if(bookcur.getCount()>1) {
+			bookcur.close();
 			return null;
+		}
 		while(bookcur.moveToNext()){
 			ResId =  bookcur.getString(bookcur.getColumnIndex(Books._ID));
 		}
+		
 		//other cases:
+		
+		bookcur.close();
 		return ResId;
 	}
 	
@@ -80,6 +91,8 @@ public class ResourceContentResolver {
 				//
 				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,tags , imageId, 20, cur.getString(descriptionCol), 0));	
 			}
+			cur.close();
+			
 		} finally {
 			
 		}
