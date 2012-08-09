@@ -32,6 +32,8 @@ public class Matcher {
 
     public static final int PROBLEMS_BELONG_TO_QUIZ_ACTIVITY = 308;
 
+    public static final int EDGES = 309;
+
     public static final int BOOKS = 400;
     public static final int BOOKS_ID = 401;
     public static final int BOOKS_THUMBNAIL = 402;
@@ -59,6 +61,8 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "lessons", LESSONS);
             matcher.addURI(AUTHORITY, "sections", SECTIONS);
             matcher.addURI(AUTHORITY, "sections/activities/#", SECTIONS_ACTIVITIES);
+
+            matcher.addURI(AUTHORITY, "edges", EDGES);
 
             matcher.addURI(AUTHORITY, "activities", ACTIVITIES);
             matcher.addURI(AUTHORITY, "activities/#", ACTIVITIES_ID);

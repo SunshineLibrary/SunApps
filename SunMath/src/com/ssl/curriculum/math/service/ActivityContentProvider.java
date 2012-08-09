@@ -32,7 +32,7 @@ public class ActivityContentProvider {
         ArrayList<Edge> fetchedEdges = new ArrayList<Edge>();
         String[] columns = {MetadataContract.Edges._FROM_ID, MetadataContract.Edges._TO_ID, MetadataContract.Edges._CONDITION};
         Cursor cursor = contentResolver.query(MetadataContract.Edges.CONTENT_URI, columns,
-                "SECTION_ID = " + sectionId + " AND " + "_FROM_ID = " + activityId, null, null);
+                "SECTION_ID = ?" + " AND " + "_FROM_ID = ?", new String[]{String.valueOf(sectionId), String.valueOf(activityId)}, null);
         if (cursor.moveToFirst()) {
             int fromIdIndex = cursor.getColumnIndex(MetadataContract.Edges._FROM_ID);
             int toIdIndex = cursor.getColumnIndex(MetadataContract.Edges._TO_ID);

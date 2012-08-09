@@ -14,9 +14,8 @@ public class MockActivityContentProvider extends ActivityContentProvider {
     }
 
     @Override
-    public ArrayList<Edge> fetchMatchedActivityData(ActivityDataReceiver activityDataReceiver, int activityId, int sectionId) {
+    public void fetchMatchedActivityData(ActivityDataReceiver activityDataReceiver, int activityId, int sectionId) {
         ArrayList<Edge> fetchedEdges = new ArrayList<Edge>();
         fetchedEdges.add(new Edge(1, 2, "Cond"));
-        return fetchedEdges;
     }
 }

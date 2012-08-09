@@ -47,7 +47,7 @@ public class ChoiceTableItemView extends TableRow {
 
     public String getToken() {
         String tagString = questionTagView.getText().toString();
-        return tagString.substring(0, tagString.length() - 1);
+        return tagString.substring(0, tagString.lastIndexOf(".") - 1);
     }
 
     public void setOnChoiceChangedListener(OnChoiceChangedListener onChoiceChangedListener) {

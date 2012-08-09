@@ -66,6 +66,9 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.ACTIVITIES:
                 return dbHandler.getTableManager(ActivityTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
+            case Matcher.EDGES:
+                return dbHandler.getTableManager(EdgeTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.ACTIVITIES_ID:
                 return dbHandler.getTableManager(ActivityTable.TABLE_NAME).query(
                         uri, projection, BaseColumns._ID + "=?",
