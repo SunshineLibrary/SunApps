@@ -108,7 +108,10 @@ public class ActivityFlowController implements SectionActivityDataReceiver, Page
 
     @Override
     public void onShowNext() {
-        if (!isLastActivity()) showNext();
+        if (!isLastActivity()) {
+            showNext();
+            return;
+        }
         SectionActivityData nextSectionActivity = fetchNextDomainActivityStrategy.findNextSectionActivity(getCurrentActivityData(), edges, sectionActivitiesData);
         if (nextSectionActivity == null) return;
         fetchActivityFromRemote(nextSectionActivity.activityId);
