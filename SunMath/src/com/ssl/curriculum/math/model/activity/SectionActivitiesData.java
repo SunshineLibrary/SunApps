@@ -25,21 +25,24 @@ public class SectionActivitiesData {
     }
 
     public SectionActivityData getSectionActivityBySequence(int sequence) {
-        int minSequenceId = -1;
+        int id = -1;
+        int minSequence = -1;
         for (SectionActivityData sectionActivityData : sectionActivityDataList) {
             if (sectionActivityData.sequence > sequence) {
-                if (minSequenceId == -1) {
-                    minSequenceId = sectionActivityData.activityId;
+                if (minSequence == -1) {
+                    minSequence = sectionActivityData.sequence;
+                    id = sectionActivityData.activityId;
                     continue;
                 }
-                if (sectionActivityData.sequence < minSequenceId) {
-                    minSequenceId = sectionActivityData.activityId;
+                if (sectionActivityData.sequence < minSequence) {
+                    minSequence = sectionActivityData.sequence;
+                    id = sectionActivityData.activityId;
                 }
             }
         }
 
-        if(minSequenceId == -1) return null;
-        return getSectionActivity(minSequenceId);
+        if(minSequence == -1) return null;
+        return getSectionActivity(id);
     }
 
     @Override

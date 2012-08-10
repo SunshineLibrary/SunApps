@@ -33,10 +33,10 @@ public class QuizQuestionsProvider {
         }
         Log.i("fetch problems id", allProblemIds.toString());
 
-        fetchAllProblems(allProblemIds);
+        quizData.setQuestions(fetchAllProblems(allProblemIds));
     }
 
-    private void fetchAllProblems(List<Integer> allProblemIds) {
+    private List<QuizQuestion> fetchAllProblems(List<Integer> allProblemIds) {
         List<QuizQuestion> quizQuestions = new ArrayList<QuizQuestion>();
         final String[] columns = new String[]{MetadataContract.Problems._ID, MetadataContract.Problems._BODY, MetadataContract.Problems._TYPE, MetadataContract.Problems._ANSWER};
         Cursor cursor = contentResolver.query(MetadataContract.Problems.CONTENT_URI, columns, null, null, null);
@@ -57,9 +57,11 @@ public class QuizQuestionsProvider {
 
         loadMultiChoices(quizQuestions);
         Log.i("load all problems", quizQuestions.toString());
+        return quizQuestions;
     }
 
     private void loadMultiChoices(List<QuizQuestion> quizQuestions) {
+        convertQuestionToChoiceQuestion(quizQuestions);
         final String[] columns = new String[]{ProblemChoices._PARENT_ID, MetadataContract.ProblemChoices._BODY, ProblemChoices._CHOICE};
         Cursor cursor = contentResolver.query(MetadataContract.ProblemChoices.CONTENT_URI, columns, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
@@ -73,13 +75,29 @@ public class QuizQuestionsProvider {
                 if (problemContainsChoice == null) {
                     continue;
                 }
-                QuizChoiceQuestion quizChoiceQuestion = new QuizChoiceQuestion(problemContainsChoice);
+                QuizChoiceQuestion quizChoiceQuestion = (QuizChoiceQuestion) problemContainsChoice;
                 quizChoiceQuestion.addChoice(new QuizChoiceQuestion.Choice(cursor.getString(choiceIndex), cursor.getString(bodyIndex)));
-
-                quizQuestions.remove(problemContainsChoice);
-                quizQuestions.add(quizChoiceQuestion);
-
             } while (cursor.moveToNext());
+        }
+    }
+
+    private void convertQuestionToChoiceQuestion(List<QuizQuestion> quizQuestions) {
+        List<QuizQuestion> removedQuestions = new ArrayList<QuizQuestion>();
+        List<QuizQuestion> addedQuestions = new ArrayList<QuizQuestion>();
+        for (QuizQuestion quizQuestion : quizQuestions) {
+            if (quizQuestion.getType() != MetadataContract.Problems.TYPE_FB) {
+                QuizChoiceQuestion quizChoiceQuestion = new QuizChoiceQuestion(quizQuestion);
+                addedQuestions.add(quizChoiceQuestion);
+                removedQuestions.add(quizQuestion);
+            }
+        }
+
+        for (QuizQuestion quizQuestion : removedQuestions) {
+            quizQuestions.remove(quizQuestion);
+        }
+
+        for (QuizQuestion quizQuestion : addedQuestions) {
+            quizQuestions.add(quizQuestion);
         }
     }
 

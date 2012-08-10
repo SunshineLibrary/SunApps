@@ -34,7 +34,7 @@ public class QuizPresenter implements ProblemLoadedListener {
     }
 
     public QuizQuestion getQuestion() {
-        return quizDomainData.getQuestionById(currentPos++);
+        return quizDomainData.getQuestionByPosition(currentPos++);
     }
 
     public boolean isToNext() {
@@ -53,7 +53,7 @@ public class QuizPresenter implements ProblemLoadedListener {
     }
 
     public boolean isCorrect(String userInput, int questionId) {
-        boolean result = userInput != null && !userInput.trim().equals(userInput) && userInput.equalsIgnoreCase(getAnswer(questionId));
+        boolean result = userInput != null && !userInput.trim().equals("") && userInput.equalsIgnoreCase(getAnswer(questionId));
         if (result) {
             recordResult(questionId);
         }

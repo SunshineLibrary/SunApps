@@ -36,7 +36,7 @@ public class QuizFillInView extends QuizQuestionView {
     protected void onQuestionFinished() {
         String userInput = answerEditText.getText().toString();
         if (presenter.isCorrect(userInput, getQuestionId())) {
-            showAnswerField.setText("姝ｇ‘锛�");
+            showAnswerField.setText(getResources().getText(R.string.correct));
             return;
         }
         showAnswerField.setText(presenter.getAnswer(getQuestionId()));

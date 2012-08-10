@@ -4,9 +4,10 @@ import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class QuizDomainData extends DomainActivityData {
-	private ArrayList<QuizQuestion> questions = new ArrayList<QuizQuestion>();
+	private List<QuizQuestion> questions = new ArrayList<QuizQuestion>();
 	
 	public QuizDomainData() {
 		super(Activities.TYPE_QUIZ);
@@ -16,9 +17,14 @@ public class QuizDomainData extends DomainActivityData {
 		return this.questions.size();
 	}
 	
-	public QuizQuestion getQuestionById(int id){
-		return this.questions.get(id);
-	}
+	public QuizQuestion getQuestionById(int id) {
+        for (QuizQuestion quizQuestion : questions) {
+            if (quizQuestion.getId() == id) {
+                return quizQuestion;
+            }
+        }
+        return null;
+    }
 
     @Override
     public String getResult() {
@@ -29,5 +35,13 @@ public class QuizDomainData extends DomainActivityData {
             }
         }
         return String.valueOf(correctCount);
+    }
+
+    public void setQuestions(List<QuizQuestion> quizQuestions) {
+        this.questions = quizQuestions;
+    }
+
+    public QuizQuestion getQuestionByPosition(int position) {
+        return questions.get(position);
     }
 }

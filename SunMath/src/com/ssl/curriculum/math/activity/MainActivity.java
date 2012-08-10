@@ -4,6 +4,7 @@ package com.ssl.curriculum.math.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ViewFlipper;
@@ -42,7 +43,10 @@ public class MainActivity extends Activity {
     }
 
     private void getDomainActivity(Intent intent) {
-        flowController.loadDomainActivityData(intent.getExtras().getInt("sectionId"), intent.getExtras().getInt("activityId"));
+        int sectionId = intent.getExtras().getInt("sectionId");
+        int activityId = intent.getExtras().getInt("activityId");
+        Log.i("open activity", "sectionId=" + sectionId + "," + "activityId" + activityId);
+        flowController.loadDomainActivityData(sectionId, activityId);
     }
 
     private void initUI() {

@@ -4,16 +4,17 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-
-import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.model.menu.MenuItem;
-import com.sunshine.metadata.provider.MetadataContract.*;
+import com.sunshine.metadata.provider.MetadataContract.Chapters;
+import com.sunshine.metadata.provider.MetadataContract.Courses;
+import com.sunshine.metadata.provider.MetadataContract.Lessons;
+import com.sunshine.metadata.provider.MetadataContract.Sections;
 
 import java.util.HashMap;
 
 public class NavigationMenuContentProvider implements NavigationMenuProvider {
-    private static final String ROOT_MENU_NAME = "¿Î³Ì";
+    private static final String ROOT_MENU_NAME = "Root Menu Name";
     private Context context;
     private final ContentResolver contentResolver;
 

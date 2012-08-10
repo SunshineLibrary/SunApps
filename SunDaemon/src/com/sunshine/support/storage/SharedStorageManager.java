@@ -48,7 +48,7 @@ public class SharedStorageManager {
             case Matcher.BOOK_COLLECTIONS_THUMBNAIL:
                 return getFileDescriptor(uri, mode);
             default:
-                return getFileDescriptor(uri, mode);
+                throw new FileNotFoundException();
         }
     }
 

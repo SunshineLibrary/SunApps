@@ -42,7 +42,7 @@ public abstract class ChoiceTableView extends LinearLayout implements OnChoiceCh
 
     public void loadChoices(List<QuizChoiceQuestion.Choice> choices) {
         for (QuizChoiceQuestion.Choice choice : choices) {
-            addChoiceTableRow(new ChoiceTableItemView(getContext(), choice.choice, choice.body));
+            addChoiceTableRow(new ChoiceTableItemView(getContext(), choice.body, choice.choice));
         }
     }
 }

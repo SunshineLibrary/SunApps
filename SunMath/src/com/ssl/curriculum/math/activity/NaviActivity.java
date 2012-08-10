@@ -1,8 +1,5 @@
 package com.ssl.curriculum.math.activity;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -16,25 +13,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
+import android.view.ViewGroup;
+import android.widget.*;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.HorizontalListView;
 import com.ssl.curriculum.math.component.NavigationListView;
+import com.ssl.curriculum.math.presenter.NavigationMenuPresenter;
 import com.sunshine.metadata.provider.MetadataContract;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
 import com.sunshine.metadata.provider.MetadataContract.Downloadable;
 import com.sunshine.metadata.provider.MetadataContract.SectionComponents;
 import com.sunshine.metadata.provider.MetadataContract.Sections;
-import com.ssl.curriculum.math.presenter.NavigationMenuPresenter;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class NaviActivity extends Activity {
 
@@ -93,7 +86,7 @@ public class NaviActivity extends Activity {
 		 
 		NaviActivity.context=context; contentResolver = context.getContentResolver();
        	
-		final Cursor cursor = contentResolver.query(Sections.getSectionActivities(sectionId),ActivitiesInfo,null,null, null);
+		final Cursor cursor = contentResolver.query(Sections.getActivitiesBelongToSection(sectionId),ActivitiesInfo,null,null, null);
 		
 		    btn_download.setOnClickListener(new OnClickListener() {
 					public void onClick(View v){

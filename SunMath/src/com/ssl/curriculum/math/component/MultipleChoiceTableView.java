@@ -20,7 +20,7 @@ public class MultipleChoiceTableView extends ChoiceTableView {
     @Override
     public void checkAnswer(String answer) {
         if (answer == null) return;
-        List<String> answers = Arrays.asList(answer.split(Constants.ANSWER_SEPARATOR));
+        List<String> answers = Arrays.asList(answer.split(Constants.MULTIPLE_CHOICE_ANSWER_SEPARATOR));
         if (answers == null || answers.size() == 0) return;
 
         for (int index = 0; index < tableLayout.getChildCount(); index++) {

@@ -1,5 +1,6 @@
 package com.ssl.curriculum.math.logic.strategy;
 
+import android.util.Log;
 import com.ssl.curriculum.math.logic.EdgeConditionMatcher;
 import com.ssl.curriculum.math.logic.FetchNextDomainActivityStrategy;
 import com.ssl.curriculum.math.model.Edge;
@@ -20,8 +21,6 @@ public class FetchNextDomainActivityStrategyImpl implements FetchNextDomainActiv
 
     @Override
     public SectionActivityData findNextSectionActivity(DomainActivityData currentActivityData, List<Edge> edges, SectionActivitiesData sectionActivitiesData) {
-        System.out.println("-----------------------currentActivityData = " + currentActivityData);
-        System.out.println("-----------------------sectionA = " + sectionActivitiesData);
         if (edges == null || edges.size() == 0) return fetchFromActivitiesGroup(sectionActivitiesData, sectionActivitiesData.getSectionActivity(currentActivityData.activityId));
         int activityId = currentActivityData.activityId;
         for (Edge edge : edges) {
@@ -44,7 +43,15 @@ public class FetchNextDomainActivityStrategyImpl implements FetchNextDomainActiv
     }
 
     private SectionActivityData fetchFromActivitiesGroup(SectionActivitiesData sectionActivitiesData, SectionActivityData currentSectionActivity) {
-        return sectionActivitiesData.getSectionActivityBySequence(currentSectionActivity.sequence);
+        Log.i("@fetch activity by order. fetch from all activities:", sectionActivitiesData.toString());
+        Log.i("@fetch activity by order. fetch from the:", currentSectionActivity.toString());
+        SectionActivityData sectionActivityBySequence = sectionActivitiesData.getSectionActivityBySequence(currentSectionActivity.sequence);
+        String msg = null;
+        if (sectionActivityBySequence != null) {
+            msg = sectionActivityBySequence.toString();
+        }
+        Log.i("@fetch activity by order. to the:", msg);
+        return sectionActivityBySequence;
     }
 
 }
