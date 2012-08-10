@@ -7,6 +7,7 @@ import android.util.Log;
 import com.ssl.curriculum.math.listener.ActivityDataReceiver;
 import com.ssl.curriculum.math.model.Edge;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
+import com.ssl.curriculum.math.model.activity.QuizDomainData;
 import com.sunshine.metadata.provider.MetadataContract;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class ActivityContentProvider {
         ArrayList<Edge> fetchedEdges = new ArrayList<Edge>();
         String[] columns = {MetadataContract.Edges._FROM_ID, MetadataContract.Edges._TO_ID, MetadataContract.Edges._CONDITION};
         Cursor cursor = contentResolver.query(MetadataContract.Edges.CONTENT_URI, columns,
-                "SECTION_ID = ?" + " AND " + "_FROM_ID = ?", new String[]{String.valueOf(sectionId), String.valueOf(activityId)}, null);
+                MetadataContract.Edges._SECTION_ID + " = ?" + " AND " +  MetadataContract.Edges._FROM_ID + " = ?", new String[]{String.valueOf(sectionId), String.valueOf(activityId)}, null);
         if (cursor.moveToFirst()) {
             int fromIdIndex = cursor.getColumnIndex(MetadataContract.Edges._FROM_ID);
             int toIdIndex = cursor.getColumnIndex(MetadataContract.Edges._TO_ID);
@@ -63,9 +64,13 @@ public class ActivityContentProvider {
     }
 
     private DomainActivityData createActivityData(int activityId, Cursor cursor) {
+        int type = cursor.getInt(getIndex(cursor, MetadataContract.Activities._TYPE));
         DomainActivityData domainActivityData = new DomainActivityData();
+        if (type == MetadataContract.Activities.TYPE_QUIZ) {
+            domainActivityData = new QuizDomainData();
+        }
         domainActivityData.activityId = activityId;
-        domainActivityData.type = cursor.getInt(getIndex(cursor, MetadataContract.Activities._TYPE));
+        domainActivityData.type = type;
         domainActivityData.duration = cursor.getInt(getIndex(cursor, MetadataContract.Activities._DURATION));
         domainActivityData.name = cursor.getString(getIndex(cursor, MetadataContract.Activities._NAME));
         domainActivityData.notes = cursor.getString(getIndex(cursor, MetadataContract.Activities._NOTES));

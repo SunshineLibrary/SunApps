@@ -20,6 +20,8 @@ public class FetchNextDomainActivityStrategyImpl implements FetchNextDomainActiv
 
     @Override
     public SectionActivityData findNextSectionActivity(DomainActivityData currentActivityData, List<Edge> edges, SectionActivitiesData sectionActivitiesData) {
+        System.out.println("-----------------------currentActivityData = " + currentActivityData);
+        System.out.println("-----------------------sectionA = " + sectionActivitiesData);
         if (edges == null || edges.size() == 0) return fetchFromActivitiesGroup(sectionActivitiesData, sectionActivitiesData.getSectionActivity(currentActivityData.activityId));
         int activityId = currentActivityData.activityId;
         for (Edge edge : edges) {

@@ -57,7 +57,7 @@ public class MetadataProvider extends ContentProvider {
                         uri, projection, SectionComponents._SECTION_ID + "=?",
                         new String[]{uri.getLastPathSegment()}, sortOrder);
             case Matcher.PROBLEMS_BELONG_TO_QUIZ_ACTIVITY:
-                return dbHandler.getTableViewManager(QuizComponentsTable.TABLE_NAME).query(
+                return dbHandler.getTableManager(QuizComponentsTable.TABLE_NAME).query(
                         uri, projection, MetadataContract.QuizComponents._QUIZ_ACTIVITY_ID + "=?",
                         new String[]{uri.getLastPathSegment()}, sortOrder);
             case Matcher.GALLERY_IMAGES:
@@ -96,6 +96,9 @@ public class MetadataProvider extends ContentProvider {
                         uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.PROBLEMS:
                 return dbHandler.getTableManager(ProblemTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
+            case Matcher.PROBLEMS_CHOICE:
+                return dbHandler.getTableManager(ProblemChoiceTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
 
             default:

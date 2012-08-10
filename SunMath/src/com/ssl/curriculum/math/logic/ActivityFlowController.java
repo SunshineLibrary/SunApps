@@ -1,5 +1,6 @@
 package com.ssl.curriculum.math.logic;
 
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -40,6 +41,7 @@ public class ActivityFlowController implements SectionActivityDataReceiver, Page
     private Animation flipOutToLeftAnimation;
     private Animation flipInFromLeftAnimation;
     private Animation flipOutToRightAnimation;
+    private Handler handler;
 
     public ActivityFlowController(ViewFlipper viewFlipper, FlipperViewsBuilder flipperViewsBuilder, FetchActivityTaskManager fetchActivityTaskManager, FetchNextDomainActivityStrategyImpl fetchNextDomainActivityStrategy, FlipAnimationManager flipAnimationManager) {
         this.viewFlipper = viewFlipper;
@@ -49,6 +51,7 @@ public class ActivityFlowController implements SectionActivityDataReceiver, Page
         this.flipAnimationManager = flipAnimationManager;
         initAnimation();
         initListeners();
+        handler = new Handler();
     }
 
     private void initListeners() {
@@ -144,12 +147,17 @@ public class ActivityFlowController implements SectionActivityDataReceiver, Page
     }
 
     @Override
-    public void onReceivedDomainActivity(DomainActivityData dataDomain) {
-        View view = flipperViewsBuilder.buildViewToFlipper(dataDomain);
-        if (view == null) return;
-        domainActivityStack.add(dataDomain);
-        addViewToFlipper(view);
-        showNext();
+    public void onReceivedDomainActivity(final DomainActivityData dataDomain) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                View view = flipperViewsBuilder.buildViewToFlipper(dataDomain);
+                if (view == null) return;
+                domainActivityStack.add(dataDomain);
+                addViewToFlipper(view);
+                showNext();
+            }
+        });
     }
 
     @Override

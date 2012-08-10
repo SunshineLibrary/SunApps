@@ -23,9 +23,9 @@ public class SectionActivityContentProvider {
     }
 
     public void fetchSectionActivityData(SectionActivityDataReceiver sectionActivityDataReceiver, int sectionId, int activityId) {
-        activityContentProvider.fetchMatchedActivityData(sectionActivityDataReceiver, activityId, sectionId);
         SectionActivitiesData sectionActivitiesData = fetchSectionActivities(sectionId);
         sectionActivityDataReceiver.onReceivedSectionActivities(sectionActivitiesData);
+        activityContentProvider.fetchMatchedActivityData(sectionActivityDataReceiver, activityId, sectionId);
     }
 
     public SectionActivitiesData fetchSectionActivities(int sectionId) {
@@ -36,10 +36,12 @@ public class SectionActivityContentProvider {
         if (cursor.moveToFirst()) {
             do {
                 int fetchedActivityId = cursor.getInt(getIndex(cursor, SectionComponents._ACTIVITY_ID));
-                int sequence = cursor.getInt(getIndex(cursor, SectionComponents._SECTION_ID));
+                int sequence = cursor.getInt(getIndex(cursor, SectionComponents._SEQUENCE));
                 sectionActivitiesData.addSectionActivity(new SectionActivityData(fetchedActivityId, sequence));
             } while (cursor.moveToNext());
         }
+
+        cursor.close();
 
         Log.i("@fetch section activities", sectionActivitiesData.toString());
         

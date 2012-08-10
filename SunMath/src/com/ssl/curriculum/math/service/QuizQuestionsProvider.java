@@ -61,7 +61,7 @@ public class QuizQuestionsProvider {
 
     private void loadMultiChoices(List<QuizQuestion> quizQuestions) {
         final String[] columns = new String[]{ProblemChoices._PARENT_ID, MetadataContract.ProblemChoices._BODY, ProblemChoices._CHOICE};
-        Cursor cursor = contentResolver.query(MetadataContract.Problems.CONTENT_URI, columns, null, null, null);
+        Cursor cursor = contentResolver.query(MetadataContract.ProblemChoices.CONTENT_URI, columns, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 int parentIdIndex = cursor.getColumnIndex(ProblemChoices._PARENT_ID);
