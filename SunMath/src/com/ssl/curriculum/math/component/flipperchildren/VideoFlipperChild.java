@@ -53,4 +53,10 @@ public class VideoFlipperChild extends FlipperChildView {
     public void onDestroy() {
         videoPlayer.onDestroy();
     }
+
+    public void resetDomainActivityData(DomainActivityData domainActivity) {
+        titleView.setText(domainActivity.name);
+        descriptionView.setText(domainActivity.notes);
+        videoPlayer.resetWithActivity(domainActivity);
+    }
 }

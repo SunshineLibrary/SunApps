@@ -182,7 +182,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         try {
             player = new MediaPlayer();
             player.setScreenOnWhilePlaying(true);
-            player.setDataSource(getVideoFileDescriptor());
+            player.setDataSource(getVideoFileDescriptor(domainActivityData.activityId));
             player.setDisplay(holder);
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.setOnPreparedListener(this);
@@ -257,11 +257,11 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         try {
             player.reset();
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setDataSource(getVideoFileDescriptor());
+            player.setDataSource(getVideoFileDescriptor(domainActivityData.activityId));
             player.setDisplay(holder);
             player.prepare();
-            player.start();
             player.seekTo(savedPlayedPosition);
+            player.start();
         } catch (IOException e) {
             Log.e(TAG, "when switch to different screen, recreate the media player error!");
         }
@@ -275,10 +275,10 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     public void surfaceDestroyed(SurfaceHolder holder) {
     }
 
-    public FileDescriptor getVideoFileDescriptor() {
+    public FileDescriptor getVideoFileDescriptor(int activityId) {
         ParcelFileDescriptor pfdInput = null;
         try {
-            pfdInput = getContext().getContentResolver().openFileDescriptor(MetadataContract.Activities.getActivityVideoUri(domainActivityData.activityId), "r");
+            pfdInput = getContext().getContentResolver().openFileDescriptor(MetadataContract.Activities.getActivityVideoUri(activityId), "r");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -287,5 +287,20 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
 
     public void setVideoData(DomainActivityData domainActivityData) {
         this.domainActivityData = domainActivityData;
+    }
+
+    public void resetWithActivity(DomainActivityData domainActivity) {
+        this.domainActivityData = domainActivity;
+        if (player == null) return;
+        try {
+            player.stop();
+            player.reset();
+            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            player.setDataSource(getVideoFileDescriptor(domainActivity.activityId));
+            player.setDisplay(holder);
+            player.prepareAsync();
+        } catch (IOException e) {
+            Log.e(TAG, "when switch to different screen, recreate the media player error!");
+        }
     }
 }

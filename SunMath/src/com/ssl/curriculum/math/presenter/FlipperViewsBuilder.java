@@ -1,7 +1,7 @@
 package com.ssl.curriculum.math.presenter;
 
 import android.content.Context;
-import android.view.View;
+import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.component.flipperchildren.GalleryThumbnailPageFlipperChild;
 import com.ssl.curriculum.math.component.flipperchildren.QuizFlipperChild;
 import com.ssl.curriculum.math.component.flipperchildren.VideoFlipperChild;
@@ -14,28 +14,45 @@ import static com.sunshine.metadata.provider.MetadataContract.Activities.*;
 public class FlipperViewsBuilder {
     private Context context;
     private GalleryItemClickedListener galleryThumbnailItemClickListener;
+    private VideoFlipperChild videoFlipperChild;
+    private int videoFlipperChildPosition;
 
 
     public FlipperViewsBuilder(Context context) {
         this.context = context;
     }
 
-    public View buildViewToFlipper(DomainActivityData domainActivity) {
+    public boolean buildViewToFlipper(ViewFlipper viewFlipper, DomainActivityData domainActivity) {
         switch (domainActivity.type) {
             case TYPE_VIDEO:
-                return new VideoFlipperChild(this.context, domainActivity);
+                if (videoFlipperChild == null) {
+                    videoFlipperChild = new VideoFlipperChild(this.context, domainActivity);
+                    viewFlipper.addView(videoFlipperChild);
+                    videoFlipperChildPosition = viewFlipper.getChildCount() - 1;
+                    return true;
+                }
+                videoFlipperChild.resetDomainActivityData(domainActivity);
+                return true;
             case TYPE_QUIZ:
-                return new QuizFlipperChild(this.context, (QuizDomainData) domainActivity);
+                viewFlipper.addView(new QuizFlipperChild(this.context, (QuizDomainData) domainActivity));
+                return true;
             case TYPE_GALLERY:
                 GalleryThumbnailPageFlipperChild galleryThumbnailPage = new GalleryThumbnailPageFlipperChild(this.context, domainActivity);
                 galleryThumbnailPage.setGalleryItemClickedListener(galleryThumbnailItemClickListener);
-                return galleryThumbnailPage;
+                viewFlipper.addView(galleryThumbnailPage);
+                return true;
             default:
         }
-        return null;
+        return false;
     }
 
     public void setGalleryThumbnailItemClickListener(GalleryItemClickedListener galleryThumbnailItemClickListener) {
         this.galleryThumbnailItemClickListener = galleryThumbnailItemClickListener;
+    }
+
+    public void updateFlipperVideoPlayer(ViewFlipper viewFlipper, DomainActivityData nextDomainActivityData) {
+        if(videoFlipperChild == null) return;
+        videoFlipperChild.resetDomainActivityData(nextDomainActivityData);
+        viewFlipper.setDisplayedChild(videoFlipperChildPosition);
     }
 }

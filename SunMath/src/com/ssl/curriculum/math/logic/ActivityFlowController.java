@@ -17,6 +17,7 @@ import com.ssl.curriculum.math.model.activity.SectionActivitiesData;
 import com.ssl.curriculum.math.model.activity.SectionActivityData;
 import com.ssl.curriculum.math.presenter.FlipperViewsBuilder;
 import com.ssl.curriculum.math.task.FetchActivityTaskManager;
+import com.sunshine.metadata.provider.MetadataContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +98,7 @@ public class ActivityFlowController implements SectionActivityDataReceiver, Page
     }
 
     private boolean isLastActivity() {
-        return currentPosition == domainActivityStack.size() - 1;
+        return domainActivityStack.size() == 0 || currentPosition == domainActivityStack.size() - 1;
     }
 
     @Override
@@ -118,10 +119,14 @@ public class ActivityFlowController implements SectionActivityDataReceiver, Page
     }
 
     private void showPrevious() {
+        currentPosition--;
+        if (getCurrentActivityData().type == MetadataContract.Activities.TYPE_VIDEO) {
+            flipperViewsBuilder.updateFlipperVideoPlayer(viewFlipper, getPreviousDomainActivityData());
+            return;
+        }
         setShowPreviousAnimation();
         onCurrentViewFlipOut();
         viewFlipper.showPrevious();
-        currentPosition--;
     }
 
     private void setShowPreviousAnimation() {
@@ -135,11 +140,24 @@ public class ActivityFlowController implements SectionActivityDataReceiver, Page
     }
 
     private void showNext() {
+        currentPosition++;
+        if (getCurrentActivityData().type == MetadataContract.Activities.TYPE_VIDEO) {
+            flipperViewsBuilder.updateFlipperVideoPlayer(viewFlipper, getNextDomainActivityData());
+            return;
+        }
         setShowNextAnimation();
         onCurrentViewFlipOut();
-        viewFlipper.showNext();
-        currentPosition++;
+        viewFlipper.setDisplayedChild(currentPosition);
     }
+
+    private DomainActivityData getNextDomainActivityData() {
+        return domainActivityStack.get((currentPosition + 1) >= domainActivityStack.size() ? currentPosition : currentPosition + 1);
+    }
+
+    private DomainActivityData getPreviousDomainActivityData() {
+        return domainActivityStack.get((currentPosition - 1) < 0 ? 0 : currentPosition - 1);
+    }
+
 
     private void onCurrentViewFlipOut() {
         getCurrentFlippingView().onBeforeFlippingOut();
@@ -154,10 +172,8 @@ public class ActivityFlowController implements SectionActivityDataReceiver, Page
         handler.post(new Runnable() {
             @Override
             public void run() {
-                View view = flipperViewsBuilder.buildViewToFlipper(dataDomain);
-                if (view == null) return;
-                domainActivityStack.add(dataDomain);
-                addViewToFlipper(view);
+                boolean isAdded = flipperViewsBuilder.buildViewToFlipper(viewFlipper, dataDomain);
+                if (isAdded) domainActivityStack.add(dataDomain);
                 showNext();
             }
         });
