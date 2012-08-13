@@ -32,14 +32,14 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initUI();
-        initComponents();
-        initListeners();
-        getDomainActivity(getIntent());
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        initComponents();
+        initListeners();
+        getDomainActivity(getIntent());
     }
 
     private void getDomainActivity(Intent intent) {

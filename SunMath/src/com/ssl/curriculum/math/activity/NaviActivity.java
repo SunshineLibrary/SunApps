@@ -54,13 +54,13 @@ public class NaviActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		initUI();
-		initComponent();
 	}
 	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		menuPresenter.loadMenuData();
+        initComponent();
+        menuPresenter.loadMenuData();
 	}
 
 	public static void loadSectionData(Context context, ListView someListView,

@@ -41,8 +41,7 @@
             	  android:textColor="@color/green"
             	  android:textSize="22sp"
             	  android:id="@+id/quiz_fill_in_showAnswerField"/>
-        </LinearLayout>
-
+    </LinearLayout>
 
     <WebView android:layout_height="fill_parent"
              android:layout_width="fill_parent"

@@ -51,7 +51,7 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 		this.btn_download=btn_download;
 		this.btn_study= btn_study;
 		this.btn_stat=btn_stat;
-		this.navigationListView.setNextLevelMenuChangedListener(this);
+		//this.navigationListView.setNextLevelMenuChangedListener(this);
 		provider = new NavigationMenuContentProvider(context);
 	}
 
