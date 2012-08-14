@@ -1,6 +1,6 @@
 package com.sunshine.metadata.database.tables;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.provider.MetadataContract.Packages;
 
 /**
@@ -23,7 +23,7 @@ public class PackageTable extends AbstractTable {
 		{Packages._VERSION, "INTEGER"}
 	};
 
-	public PackageTable(MetadataDBHandler db) {
+	public PackageTable(DBHandler db) {
 		super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
 	}
 }

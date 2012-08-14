@@ -1,6 +1,6 @@
 package com.sunshine.metadata.database.tables;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.provider.MetadataContract;
 
 public class GalleryImageTable extends DownloadableTable {
@@ -18,7 +18,7 @@ public class GalleryImageTable extends DownloadableTable {
             {MetadataContract.GalleryImages._INTRO, "TEXT"}
     };
 
-    public GalleryImageTable(MetadataDBHandler handler) {
+    public GalleryImageTable(DBHandler handler) {
         super(handler, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
     }
 }

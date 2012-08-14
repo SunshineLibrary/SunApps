@@ -1,6 +1,6 @@
 package com.sunshine.metadata.database.tables;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.provider.MetadataContract.Downloadable;
 
 public abstract class DownloadableTable extends AbstractTable {
@@ -16,7 +16,7 @@ public abstract class DownloadableTable extends AbstractTable {
             Downloadable._DOWNLOAD_STATUS,
     };
 
-    public DownloadableTable(MetadataDBHandler handler,
+    public DownloadableTable(DBHandler handler,
                              String tableName,
                              String[][] columnDefinitions,
                              String[] columns) {

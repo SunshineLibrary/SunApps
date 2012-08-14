@@ -1,6 +1,6 @@
 package com.sunshine.metadata.database.tables;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 
 import static com.sunshine.metadata.provider.MetadataContract.Courses;
 
@@ -19,7 +19,7 @@ public class CourseTable extends AbstractTable {
     };
 
 
-    public CourseTable(MetadataDBHandler handler) {
+    public CourseTable(DBHandler handler) {
         super(handler, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
     }
 }

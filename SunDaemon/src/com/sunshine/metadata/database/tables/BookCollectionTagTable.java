@@ -1,6 +1,6 @@
 package com.sunshine.metadata.database.tables;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.provider.MetadataContract.BookCollectionTags;
 
 public class BookCollectionTagTable extends AbstractTable {
@@ -19,7 +19,7 @@ public class BookCollectionTagTable extends AbstractTable {
 		{BookCollectionTags._TAG_ID, "INTEGER"}
 	};
 	
-	public BookCollectionTagTable(MetadataDBHandler db) {
+	public BookCollectionTagTable(DBHandler db) {
 		super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
 		// TODO Auto-generated constructor stub
 	}

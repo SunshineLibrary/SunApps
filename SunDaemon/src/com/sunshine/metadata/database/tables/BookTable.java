@@ -1,6 +1,6 @@
 package com.sunshine.metadata.database.tables;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.provider.MetadataContract.Books;
 
 /**
@@ -31,7 +31,7 @@ public class BookTable extends DownloadableTable {
 		{Books._PUBLICATION_YEAR, "TEXT"},
 	};
 
-	public BookTable(MetadataDBHandler db) {
+	public BookTable(DBHandler db) {
 		super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
 	}
 }

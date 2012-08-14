@@ -1,6 +1,6 @@
 package com.sunshine.metadata.database.tables;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
 
 public class ActivityTable extends DownloadableTable {
@@ -24,7 +24,7 @@ public class ActivityTable extends DownloadableTable {
             {Activities._DURATION, "INTEGER"},
     };
 
-    public ActivityTable(MetadataDBHandler db) {
+    public ActivityTable(DBHandler db) {
         super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
     }
 }

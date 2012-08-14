@@ -2,7 +2,7 @@ package com.sunshine.metadata.database.tables;
 
 import android.provider.BaseColumns;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 
 /**
  * @author Bowen Sun
@@ -30,7 +30,7 @@ public class APISyncStateTable extends AbstractTable {
 		{APISyncState._LAST_UPDATE, "INTEGER"}
 	};
 
-	public APISyncStateTable(MetadataDBHandler db) {
+	public APISyncStateTable(DBHandler db) {
 		super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
 	}
 }

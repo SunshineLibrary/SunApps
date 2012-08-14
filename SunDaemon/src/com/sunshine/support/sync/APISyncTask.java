@@ -1,19 +1,17 @@
 package com.sunshine.support.sync;
 
 import android.util.Log;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.MetadataDBHandlerFactory;
 import com.sunshine.metadata.database.Table;
-import com.sunshine.metadata.database.tables.AbstractTable;
 import com.sunshine.metadata.database.tables.*;
 
 import android.os.AsyncTask;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
-
 public class APISyncTask extends AsyncTask<String, String, Integer> {
 
 	private Table syncTable;
-	private MetadataDBHandler dbHandler;
+	private DBHandler dbHandler;
 	private APISyncService context;
 
 	private static final String[] SYNCED_TABLES = {

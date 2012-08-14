@@ -1,6 +1,6 @@
 package com.sunshine.metadata.database.tables;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.provider.MetadataContract.Edges;
 
 public class EdgeTable extends DownloadableTable {
@@ -22,7 +22,7 @@ public class EdgeTable extends DownloadableTable {
             {Edges._SECTION_ID, "INTEGER"}
     };
 
-    public EdgeTable(MetadataDBHandler db) {
+    public EdgeTable(DBHandler db) {
         super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
     }
 }
