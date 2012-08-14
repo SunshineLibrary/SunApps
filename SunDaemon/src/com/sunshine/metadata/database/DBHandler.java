@@ -11,7 +11,7 @@ import java.util.HashMap;
  *
  * Manages the meta-data database,
  */
-public class MetadataDBHandler extends SQLiteOpenHelper {
+public class DBHandler extends SQLiteOpenHelper {
 
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "metadb";
@@ -21,8 +21,8 @@ public class MetadataDBHandler extends SQLiteOpenHelper {
     /**
      * @param context
      */
-    public MetadataDBHandler(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
+    public DBHandler(Context context, String dbName, int dbVersion) {
+        super(context, dbName, null, dbVersion);
         tableManagers = new HashMap<String, Table>();
         tableViewManagers = new HashMap<String, TableView>();
     }

@@ -3,7 +3,7 @@ package com.sunshine.metadata.database.tables;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.TableView;
 
 import static com.sunshine.metadata.provider.MetadataContract.Activities;
@@ -13,9 +13,9 @@ public class SectionActivitiesView implements TableView {
 
     public static final String VIEW_NAME = "sections_activities";
 
-    private MetadataDBHandler dbHandler;
+    private DBHandler dbHandler;
 
-    public SectionActivitiesView(MetadataDBHandler dbHandler) {
+    public SectionActivitiesView(DBHandler dbHandler) {
         this.dbHandler = dbHandler;
     }
 

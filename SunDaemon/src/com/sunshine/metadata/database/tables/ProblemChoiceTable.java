@@ -1,6 +1,6 @@
 package com.sunshine.metadata.database.tables;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.provider.MetadataContract.ProblemChoices;
 
 public class ProblemChoiceTable extends DownloadableTable {
@@ -20,7 +20,7 @@ public class ProblemChoiceTable extends DownloadableTable {
             {ProblemChoices._PARENT_ID, "INTEGER"},
     };
 
-    public ProblemChoiceTable(MetadataDBHandler db) {
+    public ProblemChoiceTable(DBHandler db) {
         super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
     }
 }

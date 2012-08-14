@@ -1,6 +1,6 @@
 package com.sunshine.metadata.database.tables;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.provider.MetadataContract;
 
 import static com.sunshine.metadata.provider.MetadataContract.Lessons;
@@ -23,7 +23,7 @@ public class SectionTable extends MenuWithForeignKeyTable {
             {Sections._DESCRIPTION, "TEXT"},
     };
 
-    public SectionTable(MetadataDBHandler handler) {
+    public SectionTable(DBHandler handler) {
         super(handler, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
     }
 

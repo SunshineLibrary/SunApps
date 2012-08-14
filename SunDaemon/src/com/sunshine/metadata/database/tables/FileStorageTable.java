@@ -1,7 +1,7 @@
 package com.sunshine.metadata.database.tables;
 
 import android.provider.BaseColumns;
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 
 public class FileStorageTable extends AbstractTable {
 
@@ -28,7 +28,7 @@ public class FileStorageTable extends AbstractTable {
             {FileEntry._SIZE, "INTEGER NOT NULL"}
     };
 
-    public FileStorageTable(MetadataDBHandler handler) {
+    public FileStorageTable(DBHandler handler) {
         super(handler, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
     }
 }

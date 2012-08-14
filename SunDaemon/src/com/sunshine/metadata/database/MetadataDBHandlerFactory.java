@@ -7,22 +7,21 @@ import com.sunshine.metadata.database.observers.ThumbnailFetchObserver;
 import com.sunshine.metadata.database.tables.*;
 
 public class MetadataDBHandlerFactory {
-    public static MetadataDBHandler newMetadataDBHandler(Context context) {
-        MetadataDBHandler dbHandler = new MetadataDBHandler(context);
 
-        // Non-observable tables
+    private static final int DB_VERSION = 1;
+    private static final String DB_NAME = "metadata";
+
+    public static DBHandler newMetadataDBHandler(Context context) {
+        DBHandler dbHandler = new DBHandler(context, DB_NAME, DB_VERSION);
+
         initNormalTables(dbHandler);
-
-        // Observable Tables
         initObservableTables(dbHandler, context);
-
-        // Table views
         initTableViews(dbHandler);
 
         return dbHandler;
     }
 
-    private static void initNormalTables(MetadataDBHandler dbHandler) {
+    private static void initNormalTables(DBHandler dbHandler) {
         dbHandler.addTableManager(APISyncStateTable.TABLE_NAME, new APISyncStateTable(dbHandler));
         dbHandler.addTableManager(PackageTable.TABLE_NAME, new PackageTable(dbHandler));
         dbHandler.addTableManager(CourseTable.TABLE_NAME, new CourseTable(dbHandler));
@@ -42,7 +41,7 @@ public class MetadataDBHandlerFactory {
         dbHandler.addTableManager(SectionComponentsTable.TABLE_NAME, new SectionComponentsTable(dbHandler));
     }
 
-    private static void initObservableTables(MetadataDBHandler dbHandler, Context context){
+    private static void initObservableTables(DBHandler dbHandler, Context context){
         TableObserver downloadableObserver = new DownloadableTableObserver(context);
         TableObserver thumbnailObserver = new ThumbnailFetchObserver(context);
         ObservableTable table = new ObservableTable(new ActivityTable(dbHandler));
@@ -66,7 +65,7 @@ public class MetadataDBHandlerFactory {
         dbHandler.addTableManager(BookCollectionTable.TABLE_NAME, table);
     }
 
-    private static void initTableViews(MetadataDBHandler dbHandler) {
+    private static void initTableViews(DBHandler dbHandler) {
         dbHandler.addTableViewManager(SectionActivitiesView.VIEW_NAME, new SectionActivitiesView(dbHandler));
     }
 

@@ -1,6 +1,6 @@
 package com.sunshine.metadata.database.tables;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.provider.MetadataContract.Problems;
 
 public class ProblemTable extends DownloadableTable {
@@ -20,7 +20,7 @@ public class ProblemTable extends DownloadableTable {
             {Problems._ANSWER, "TEXT"},
     };
 
-    public ProblemTable(MetadataDBHandler db) {
+    public ProblemTable(DBHandler db) {
         super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
     }
 }

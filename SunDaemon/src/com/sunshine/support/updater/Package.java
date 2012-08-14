@@ -1,4 +1,4 @@
-package com.sunshine.support.pkgmgr;
+package com.sunshine.support.updater;
 
 public class Package {
 	
@@ -62,7 +62,4 @@ public class Package {
 			return false;
 		return true;
 	}
-	
-	
-	
 }

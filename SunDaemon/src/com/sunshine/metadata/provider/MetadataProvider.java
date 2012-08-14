@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.BaseColumns;
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.MetadataDBHandlerFactory;
 import com.sunshine.metadata.database.tables.*;
 import com.sunshine.support.storage.SharedStorageManager;
@@ -22,7 +22,7 @@ public class MetadataProvider extends ContentProvider {
 
     private static final UriMatcher sUriMatcher = Matcher.Factory.getMatcher();
 
-    private MetadataDBHandler dbHandler;
+    private DBHandler dbHandler;
 
     private SharedStorageManager sharedStorageManager;
 

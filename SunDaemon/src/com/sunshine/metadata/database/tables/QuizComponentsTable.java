@@ -1,7 +1,7 @@
 package com.sunshine.metadata.database.tables;
 
 import android.provider.BaseColumns;
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 
 public class QuizComponentsTable extends AbstractTable{
 
@@ -25,7 +25,7 @@ public class QuizComponentsTable extends AbstractTable{
             {QuizComponents._QUIZ_ACTIVITY_ID, "INTEGER"},
     };
 
-    public QuizComponentsTable(MetadataDBHandler db) {
+    public QuizComponentsTable(DBHandler db) {
         super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
     }
 }

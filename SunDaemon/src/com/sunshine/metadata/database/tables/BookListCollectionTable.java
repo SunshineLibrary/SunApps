@@ -1,6 +1,6 @@
 package com.sunshine.metadata.database.tables;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.provider.MetadataContract.BookListCollections;
 
 public class BookListCollectionTable extends AbstractTable {
@@ -19,7 +19,7 @@ public static final String TABLE_NAME = "book_list_collection";
 		{BookListCollections._BOOK_COLLECTION_ID, "INTEGER"}
 	};
 	
-	public BookListCollectionTable(MetadataDBHandler db) {
+	public BookListCollectionTable(DBHandler db) {
 		super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
 	}
 

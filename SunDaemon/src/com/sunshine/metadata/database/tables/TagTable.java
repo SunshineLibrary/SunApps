@@ -1,6 +1,6 @@
 package com.sunshine.metadata.database.tables;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.provider.MetadataContract.Tags;
 
 public class TagTable extends AbstractTable {
@@ -19,7 +19,7 @@ public class TagTable extends AbstractTable {
 		{Tags._TYPE, "TEXT"},
 	};
 	
-	public TagTable(MetadataDBHandler db) {
+	public TagTable(DBHandler db) {
 		super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
 		// TODO Auto-generated constructor stub
 	}
