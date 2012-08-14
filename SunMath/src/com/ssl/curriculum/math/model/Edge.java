@@ -22,4 +22,9 @@ public class Edge {
 	public String getCondition(){
 		return condition;
 	}
+
+    @Override
+    public String toString() {
+        return "@Edge, from_id:" + fromActivityId + ", to_id:" + toActivityId + ", condition:" + condition;
+    }
 }

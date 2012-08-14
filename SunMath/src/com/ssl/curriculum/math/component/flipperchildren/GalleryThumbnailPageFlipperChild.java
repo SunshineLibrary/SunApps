@@ -13,15 +13,20 @@ import com.ssl.curriculum.math.data.GalleryContentData;
 import com.ssl.curriculum.math.data.GalleryContentManager;
 import com.ssl.curriculum.math.listener.GalleryContentFetchedListener;
 import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
+import com.ssl.curriculum.math.model.activity.DomainActivityData;
+import com.ssl.curriculum.math.service.GalleryContentProvider;
+import com.ssl.curriculum.math.task.FetchGalleryContentTask;
 
 public class GalleryThumbnailPageFlipperChild extends FlipperChildView implements GalleryContentFetchedListener {
     private GridView gridview;
     private GalleryGridAdapter gridAdapter;
     private TextView title;
     private GalleryItemClickedListener galleryItemClickedListener;
+    private DomainActivityData domainActivity;
 
-    public GalleryThumbnailPageFlipperChild(Context context) {
+    public GalleryThumbnailPageFlipperChild(Context context, DomainActivityData domainActivity) {
         super(context);
+        this.domainActivity = domainActivity;
         initUI();
         initListener();
         initAdapter();
@@ -42,11 +47,9 @@ public class GalleryThumbnailPageFlipperChild extends FlipperChildView implement
     }
 
     private void fetchGalleryContent() {
-        if (GalleryContentManager.getInstance().isDataFetched()) {
-            gridAdapter.setGalleryData(GalleryContentManager.getInstance().getGalleryContent());
-            return;
-        }
         GalleryContentManager.getInstance().registerGalleyContentChangedListener(this);
+        FetchGalleryContentTask fetchGalleryContentTask = new FetchGalleryContentTask(new GalleryContentProvider(getContext()), domainActivity);
+        fetchGalleryContentTask.execute();
     }
 
     private void initListener() {

@@ -31,6 +31,8 @@ public class SharedStorageManager {
         switch (sUriMatcher.match(uri)) {
             case Matcher.ACTIVITIES_VIDEO:
                 return "video/mp4";
+            case Matcher.ACTIVITIES_TEXT:
+                return "text";
             default:
                 return null;
         }
@@ -40,6 +42,7 @@ public class SharedStorageManager {
         Log.i(context.toString(), "openFile Uri:" + uri.toString());
         switch (sUriMatcher.match(uri)) {
             case Matcher.ACTIVITIES_VIDEO:
+            case Matcher.ACTIVITIES_TEXT:
             case Matcher.ACTIVITIES_THUMBNAIL:
             case Matcher.GALLERY_IMAGES_ID:
             case Matcher.GALLERY_IMAGES_THUMBNAIL:
@@ -48,7 +51,7 @@ public class SharedStorageManager {
             case Matcher.BOOK_COLLECTIONS_THUMBNAIL:
                 return getFileDescriptor(uri, mode);
             default:
-                return getFileDescriptor(uri, mode);
+                throw new FileNotFoundException();
         }
     }
 

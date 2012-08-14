@@ -1,21 +1,18 @@
 package com.ssl.curriculum.math.component;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.listener.OnChoiceChangedListener;
+import com.ssl.curriculum.math.model.activity.quiz.QuizChoiceQuestion;
+
+import java.util.List;
 
 public abstract class ChoiceTableView extends LinearLayout implements OnChoiceChangedListener {
     protected TableLayout tableLayout;
-
-    public ChoiceTableView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initUI();
-    }
 
     protected ChoiceTableView(Context context) {
         super(context);
@@ -42,4 +39,10 @@ public abstract class ChoiceTableView extends LinearLayout implements OnChoiceCh
     protected abstract void selectChoice(ChoiceButton choiceButton);
 
     public abstract void checkAnswer(String answer);
+
+    public void loadChoices(List<QuizChoiceQuestion.Choice> choices) {
+        for (QuizChoiceQuestion.Choice choice : choices) {
+            addChoiceTableRow(new ChoiceTableItemView(getContext(), choice.body, choice.choice));
+        }
+    }
 }

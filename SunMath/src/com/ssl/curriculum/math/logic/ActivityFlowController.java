@@ -1,5 +1,6 @@
 package com.ssl.curriculum.math.logic;
 
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -7,20 +8,25 @@ import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.component.flipperchildren.FlipperChildView;
-import com.ssl.curriculum.math.listener.ActivityDataReceiver;
-import com.ssl.curriculum.math.listener.EdgeReceiver;
 import com.ssl.curriculum.math.listener.PageFlipListener;
+import com.ssl.curriculum.math.listener.SectionActivityDataReceiver;
 import com.ssl.curriculum.math.logic.strategy.FetchNextDomainActivityStrategyImpl;
 import com.ssl.curriculum.math.model.Edge;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
+import com.ssl.curriculum.math.model.activity.SectionActivitiesData;
+import com.ssl.curriculum.math.model.activity.SectionActivityData;
 import com.ssl.curriculum.math.presenter.FlipperViewsBuilder;
 import com.ssl.curriculum.math.task.FetchActivityTaskManager;
+import com.sunshine.metadata.provider.MetadataContract;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ActivityFlowController implements EdgeReceiver, ActivityDataReceiver, PageFlipListener {
+public class ActivityFlowController implements SectionActivityDataReceiver, PageFlipListener {
     private ArrayList<DomainActivityData> domainActivityStack = new ArrayList<DomainActivityData>();
-    private ArrayList<Edge> edges;
+    private SectionActivitiesData sectionActivitiesData;
+    private List<Edge> edges;
+    private int sectionId;
 
     private ViewFlipper viewFlipper;
     private FlipperViewsBuilder flipperViewsBuilder;
@@ -28,15 +34,15 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     private FlipAnimationManager flipAnimationManager;
 
     private int currentActivityId;
-    private int currentSectionId;
-
     private int currentPosition = -1;
+
     private FetchNextDomainActivityStrategy fetchNextDomainActivityStrategy;
 
     private Animation flipInFromRightAnimation;
     private Animation flipOutToLeftAnimation;
     private Animation flipInFromLeftAnimation;
     private Animation flipOutToRightAnimation;
+    private Handler handler;
 
     public ActivityFlowController(ViewFlipper viewFlipper, FlipperViewsBuilder flipperViewsBuilder, FetchActivityTaskManager fetchActivityTaskManager, FetchNextDomainActivityStrategyImpl fetchNextDomainActivityStrategy, FlipAnimationManager flipAnimationManager) {
         this.viewFlipper = viewFlipper;
@@ -46,6 +52,7 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
         this.flipAnimationManager = flipAnimationManager;
         initAnimation();
         initListeners();
+        handler = new Handler();
     }
 
     private void initListeners() {
@@ -56,8 +63,7 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                FlipperChildView view = (FlipperChildView) viewFlipper.getChildAt(viewFlipper.getDisplayedChild());
-                view.onAfterFlippingIn();
+                getCurrentFlippingView().onAfterFlippingIn();
             }
 
             @Override
@@ -78,19 +84,13 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     }
 
     public void loadDomainActivityData(int domainSectionId, int domainActivityId) {
-        currentActivityId = domainSectionId;
-        currentSectionId = domainActivityId;
-        loadActivityAndEdges(domainSectionId, domainActivityId);
+        sectionId = domainSectionId;
+        currentActivityId = domainActivityId;
+        fetchActivityTaskManager.fetchSectionActivities(this, sectionId, currentActivityId);
     }
 
-    private void loadActivityAndEdges(int domainSectionId, int domainActivityId) {
-        fetchActivityTaskManager.fetchEdge(this, domainSectionId, domainActivityId);
-        fetchActivityTaskManager.fetchDomainActivity(this, currentSectionId, currentActivityId);
-    }
-
-    private void fetchActivityFromRemote() {
-        DomainActivityData nextActivityData = fetchNextDomainActivityStrategy.getNextDomainActivityData(getCurrentActivityData(), edges);
-        loadActivityAndEdges(nextActivityData.sectionId, nextActivityData.activityId);
+    private void fetchActivityFromRemote(int activityId) {
+        fetchActivityTaskManager.fetchActivityData(this, sectionId, activityId);
     }
 
     private DomainActivityData getCurrentActivityData() {
@@ -98,7 +98,7 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     }
 
     private boolean isLastActivity() {
-        return currentPosition == domainActivityStack.size() - 1;
+        return domainActivityStack.size() == 0 || currentPosition == domainActivityStack.size() - 1;
     }
 
     @Override
@@ -109,18 +109,24 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
 
     @Override
     public void onShowNext() {
-        if (isLastActivity() && fetchNextDomainActivityStrategy.canGoToNextActivity(getCurrentActivityData(), edges)) {
-            fetchActivityFromRemote();
+        if (!isLastActivity()) {
+            showNext();
             return;
         }
-        showNext();
+        SectionActivityData nextSectionActivity = fetchNextDomainActivityStrategy.findNextSectionActivity(getCurrentActivityData(), edges, sectionActivitiesData);
+        if (nextSectionActivity == null) return;
+        fetchActivityFromRemote(nextSectionActivity.activityId);
     }
 
     private void showPrevious() {
+        currentPosition--;
+        if (getCurrentActivityData().type == MetadataContract.Activities.TYPE_VIDEO) {
+            flipperViewsBuilder.updateFlipperVideoPlayer(viewFlipper, getPreviousDomainActivityData());
+            return;
+        }
         setShowPreviousAnimation();
         onCurrentViewFlipOut();
         viewFlipper.showPrevious();
-        currentPosition--;
     }
 
     private void setShowPreviousAnimation() {
@@ -134,28 +140,52 @@ public class ActivityFlowController implements EdgeReceiver, ActivityDataReceive
     }
 
     private void showNext() {
+        currentPosition++;
+        if (getCurrentActivityData().type == MetadataContract.Activities.TYPE_VIDEO) {
+            flipperViewsBuilder.updateFlipperVideoPlayer(viewFlipper, getNextDomainActivityData());
+            return;
+        }
         setShowNextAnimation();
         onCurrentViewFlipOut();
-        viewFlipper.showNext();
-        currentPosition++;
+        viewFlipper.setDisplayedChild(currentPosition);
     }
+
+    private DomainActivityData getNextDomainActivityData() {
+        return domainActivityStack.get((currentPosition + 1) >= domainActivityStack.size() ? currentPosition : currentPosition + 1);
+    }
+
+    private DomainActivityData getPreviousDomainActivityData() {
+        return domainActivityStack.get((currentPosition - 1) < 0 ? 0 : currentPosition - 1);
+    }
+
 
     private void onCurrentViewFlipOut() {
-        FlipperChildView view = (FlipperChildView) viewFlipper.getChildAt(viewFlipper.getDisplayedChild());
-        view.onBeforeFlippingOut();
+        getCurrentFlippingView().onBeforeFlippingOut();
+    }
+
+    private FlipperChildView getCurrentFlippingView() {
+        return (FlipperChildView) viewFlipper.getChildAt(viewFlipper.getDisplayedChild());
     }
 
     @Override
-    public void onReceivedDomainActivity(DomainActivityData dataDomain) {
-        View view = flipperViewsBuilder.buildViewToFlipper(dataDomain);
-        if (view == null) return;
-        domainActivityStack.add(dataDomain);
-        addViewToFlipper(view);
-        showNext();
+    public void onReceivedDomainActivity(final DomainActivityData dataDomain) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                boolean isAdded = flipperViewsBuilder.buildViewToFlipper(viewFlipper, dataDomain);
+                if (isAdded) domainActivityStack.add(dataDomain);
+                showNext();
+            }
+        });
     }
 
     @Override
-    public void onReceivedEdges(ArrayList<Edge> edges) {
+    public void onReceivedSectionActivities(SectionActivitiesData sectionActivitiesData) {
+        this.sectionActivitiesData = sectionActivitiesData;
+    }
+
+    @Override
+    public void onReceivedEdges(List<Edge> edges) {
         this.edges = edges;
     }
 

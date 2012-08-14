@@ -3,6 +3,9 @@ package com.ssl.curriculum.math.presenter;
 import com.ssl.curriculum.math.activity.NaviActivity;
 import android.content.Context;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,7 +18,6 @@ import com.ssl.curriculum.math.model.menu.MenuItem;
 import com.ssl.curriculum.math.service.NavigationMenuContentProvider;
 import com.ssl.curriculum.math.service.NavigationMenuProvider;
 import com.ssl.curriculum.math.task.FetchNavigationMenuTask;
-
 import java.util.List;
 
 public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
@@ -29,11 +31,15 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 	private ListView desListView;
 	private Context context;
 	private HorizontalListView horizontalListView;
-
+	private ImageView mImageView;
+	private ImageButton btn_download;
+	private ImageButton btn_study;
+	private ImageButton btn_stat;
+	
 	public NavigationMenuPresenter(Context context,
 			NavigationListView navigationListView, TextView menuTitle,
 			TextView mztext, LinearLayout test_linear, ListView desListView,
-			HorizontalListView horizontalListView) {
+			HorizontalListView horizontalListView, ImageView mImageView, ImageButton btn_download, ImageButton btn_study, ImageButton btn_stat) {
 		this.context = context;
 		this.navigationListView = navigationListView;
 		this.menuTitle = menuTitle;
@@ -41,8 +47,11 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 		this.test_linear = test_linear;
 		this.desListView = desListView;
 		this.horizontalListView = horizontalListView;
-
-		this.navigationListView.setNextLevelMenuChangedListener(this);
+		this.mImageView=mImageView;
+		this.btn_download=btn_download;
+		this.btn_study= btn_study;
+		this.btn_stat=btn_stat;
+		//this.navigationListView.setNextLevelMenuChangedListener(this);
 		provider = new NavigationMenuContentProvider(context);
 	}
 
@@ -63,7 +72,7 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 	}
 
 	@Override
-	public void onNextLevelMenu(int currentMenuId) {
+	public void onNextLevelMenu(int currentMenuId){
 		List<MenuItem> children = currentMenu.getChildren();
 		for (int index = 0; index < children.size(); index++) {
 			MenuItem item = children.get(index);
@@ -73,7 +82,7 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 		}
 	}
 
-	private void handleMenuItem(MenuItem item, int index) {
+	private void handleMenuItem(MenuItem item, int index){
 		if (!item.isMenuGroup()) {
 
 			if (this.menuItemSelectedListener != null) {
@@ -84,7 +93,7 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 			test_linear.setVisibility(View.VISIBLE);
 			navigationListView.activateMenuItem(index);
 			NaviActivity.loadSectionData(context, desListView, index);
-			NaviActivity.loadActivitiesData(context, horizontalListView, index);
+			NaviActivity.loadActivitiesData(context, horizontalListView, index,mImageView,btn_download,btn_study,btn_stat);
 			mztext.setText(item.getName());
 			return;
 		}
@@ -102,7 +111,6 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 
 	private void updateMenu() {
 		menuTitle.setText(currentMenu.getName());
-
 		navigationListView.updateMenu(currentMenu);
 	}
 }

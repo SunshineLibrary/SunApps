@@ -4,8 +4,8 @@ import android.content.Context;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 import com.ssl.curriculum.math.presenter.QuizPresenter;
-import com.ssl.curriculum.math.utils.QuizHtmlLoader;
 
 public abstract class QuizQuestionView extends LinearLayout {
     protected WebView questionWebView;
@@ -37,19 +37,5 @@ public abstract class QuizQuestionView extends LinearLayout {
         this.presenter = presenter;
     }
 
-    protected void loadQuizHtml(String quizContent) {
-        final String data = QuizHtmlLoader.getInstance(getContext()).loadQuizHtmlWithNewContent(quizContent);
-
-        /*
-       * Android thinks file:// schema insecure, so we use http:// here.
-       * And for loadDataWithBaseUrl, the first parameter baseUrl has no exact meaning, we just use it
-       * to tell Android we use the secure schema: http://
-       *
-       * */
-        questionWebView.loadDataWithBaseURL("http://test", data, "text/html", "utf-8", null);
-    }
-
-    public void loadQuiz(String quizContent) {
-        loadQuizHtml(quizContent);
-    }
+    public abstract void loadQuiz(QuizQuestion question);
 }

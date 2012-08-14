@@ -55,8 +55,7 @@ public class QuizFlipperChild extends FlipperChildView implements QuizLoadedList
             public void onClick(View view) {
                 QuizQuestionView quizQuestionView = (QuizQuestionView) questionFlipper.getChildAt(questionFlipper.getDisplayedChild());
                 quizQuestionView.onQuestionFinished();
-                confirmBtn.setVisibility(View.GONE);
-                nextBtn.setVisibility(View.VISIBLE);
+                toggleToNextButton();
             }
         });
         presenter.setQuizLoadedListener(this);
@@ -87,5 +86,16 @@ public class QuizFlipperChild extends FlipperChildView implements QuizLoadedList
                 ViewGroup.LayoutParams.FILL_PARENT);
         questionFlipper.addView(view, layoutParams);
         questionFlipper.showNext();
+        toggleToConfirmBtn();
+    }
+
+    private void toggleToNextButton() {
+        confirmBtn.setVisibility(View.GONE);
+        nextBtn.setVisibility(View.VISIBLE);
+    }
+
+    private void toggleToConfirmBtn() {
+        confirmBtn.setVisibility(View.VISIBLE);
+        nextBtn.setVisibility(View.GONE);
     }
 }
