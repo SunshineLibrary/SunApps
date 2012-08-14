@@ -9,9 +9,8 @@ public class InstallerReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		
-		Intent i = new Intent("sunshine.supportservice.installactual");
+		Intent i = new Intent("com.sunshine.support.action.install");
 		i.setClass(context, InstallerService.class);
 		context.startService(i);
 	}
-
 }
