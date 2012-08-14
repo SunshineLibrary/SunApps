@@ -48,7 +48,8 @@
             android:layout_alignParentTop="true"
             android:background="@drawable/main_spinner_bg"
             android:entries="@array/main_menu"
-            android:padding="@dimen/padding_small" />
+            android:padding="@dimen/padding_small" 
+            />
     </RelativeLayout>
 
     <RelativeLayout
