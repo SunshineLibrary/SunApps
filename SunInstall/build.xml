@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="SunDaemon" basedir=".">
+<project name="SunInstall" basedir=".">
 
     <exec executable="hostname" outputproperty="host.name"/>
     <property file="../SunMath/build/local_properties/${host.name}.properties"/>
@@ -77,18 +77,25 @@
         <ant antfile="./build.xml" target="release" usenativebasedir="true"/>
         <exec executable="${sdk.dir}/platform-tools/adb">
             <arg value="uninstall"/>
-            <arg value="com.sunshine.support"/>
+            <arg value="com.sunshine.support.installer"/>
         </exec>
         <exec executable="${sdk.dir}/platform-tools/adb">
             <arg value="install"/>
-            <arg value="./bin/SunDaemon-release.apk"/>
+            <arg value="./bin/SunInstall-release.apk"/>
+        </exec>
+        <exec executable="${sdk.dir}/platform-tools/adb">
+            <arg value="push"/>
+            <arg value="../SunDaemon/bin/SunDaemon-release.apk"/>
+            <arg value="/sdcard/SunDaemon-release.apk"/>
         </exec>
         <exec executable="${sdk.dir}/platform-tools/adb">
             <arg value="shell"/>
             <arg value="am"/>
-            <arg value="start"/>
-            <arg value="-n"/>
-            <arg value="com.sunshine.support/com.sunshine.support.SupportServiceActivity"/>
+            <arg value="startservice"/>
+            <arg value="-a"/>
+            <arg value="com.sunshine.support.action.scheduleInstall"/>
+            <arg value="-d"/>
+            <arg value="file:///sdcard/SunDaemon-release.apk"/>
         </exec>
     </target>
 
