@@ -41,6 +41,7 @@ public class ResourceContentResolver {
 				//tooo slow, try put into view
 				bookcur = resolver.query(Books.CONTENT_URI, null, Books._COLLECTION_ID + " = '" + cur.getString(idCol) +"'", null, null);
 				int count = bookcur.getCount();
+				
 				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,tags , imageId, 0, cur.getString(descriptionCol), count));	
 				
 			}
