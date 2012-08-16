@@ -476,7 +476,6 @@ public class MainActivity extends Activity {
 		String[] projection = null;
 		String  selection = null;
 		
-		String s = Books._PROGRESS;
 		switch(resType){
 		case BOOK:
 			switch (theViewType) {

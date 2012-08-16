@@ -47,9 +47,7 @@ public class Matcher {
     public static final int BOOK_COLLECTIONS_THUMBNAIL = 406;
     public static final int BOOK_LISTS = 407;
     public static final int BOOK_LISTS_ID = 408;
-    public static final int BOOK_COVER_IMAGES = 409;
-    public static final int BOOK_COVER_IMAGES_ID = 410;
-    public static final int BOOK_COVER_IMAGES_THUMBNAIL = 411;
+    public static final int BOOK_INFO = 409;
     
     public static final int TAGS = 500;
     public static final int BOOK_TAG = 501;
@@ -96,9 +94,7 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "book_collections/thumbnail/#", BOOK_COLLECTIONS_THUMBNAIL);
             matcher.addURI(AUTHORITY, "book_lists", BOOK_LISTS);
             matcher.addURI(AUTHORITY, "book_lists/#", BOOK_LISTS_ID);
-            matcher.addURI(AUTHORITY, "books/covers", BOOK_COVER_IMAGES);
-            matcher.addURI(AUTHORITY, "books/covers/#", BOOK_COVER_IMAGES_ID);
-            matcher.addURI(AUTHORITY, "books/covers/thumbnail/#", BOOK_COVER_IMAGES_THUMBNAIL);
+            matcher.addURI(AUTHORITY, "book_info", BOOK_INFO);
             
             matcher.addURI(AUTHORITY, "problems", PROBLEMS);
             matcher.addURI(AUTHORITY, "problems/quiz/#", PROBLEMS_BELONG_TO_QUIZ_ACTIVITY);

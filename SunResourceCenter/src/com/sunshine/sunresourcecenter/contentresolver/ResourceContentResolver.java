@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sunshine.metadata.provider.MetadataContract.BookCollections;
+import com.sunshine.metadata.provider.MetadataContract.BookInfo;
 import com.sunshine.metadata.provider.MetadataContract.BookLists;
 import com.sunshine.metadata.provider.MetadataContract.Books;
 import com.sunshine.sunresourcecenter.R;
@@ -39,25 +40,27 @@ public class ResourceContentResolver {
 			int authorCol = cur.getColumnIndex(BookCollections._AUTHOR);
 			int descriptionCol = cur.getColumnIndex(BookCollections._INTRO);
 			
-			Bitmap bm = getBitmap(cur.getString(idCol));
+			//Bitmap bm = getBitmap(cur.getString(idCol));
 			Cursor bookcur = null;
 			while (cur.moveToNext()) {
-				String tags = getBookCollectionTags(cur.getString(idCol));
+				String tags = "";
 				//tooo slow, try put into view
 				bookcur = resolver.query(Books.CONTENT_URI, null, Books._COLLECTION_ID + " = '" + cur.getString(idCol) +"'", null, null);
 				int count = bookcur.getCount();
 				
-				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,tags , bm, 0, cur.getString(descriptionCol), count));	
+				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,tags , null, 0, cur.getString(descriptionCol), count));	
 				
 			}
 			if(bookcur != null)
 				bookcur.close();
 			if(cur != null)
 				cur.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
+		} 
+//		catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} 
+		finally {
 			
 		}
 		
@@ -67,14 +70,14 @@ public class ResourceContentResolver {
 	public String getSingleResIdOfCollection(String ColId) {
 		String ResId = null;
 		//case book:
-		Cursor bookcur = resolver.query(Books.CONTENT_URI, null, Books._COLLECTION_ID + " = '" + ColId +"'", null, null);
+		Cursor bookcur = resolver.query(BookInfo.CONTENT_URI, null, BookInfo._COLLECTION_ID + " = '" + ColId +"'", null, null);
 		
 		if(bookcur.getCount()>1) {
 			bookcur.close();
 			return null;
 		}
 		while(bookcur.moveToNext()){
-			ResId =  bookcur.getString(bookcur.getColumnIndex(Books._ID));
+			ResId =  bookcur.getString(bookcur.getColumnIndex(BookInfo._ID));
 		}
 		
 		//other cases:
@@ -86,30 +89,29 @@ public class ResourceContentResolver {
 	public List<Object> getBooks(String[] projection, String selection){
 		ArrayList<ResourceGridItem> resGridItems = new ArrayList<ResourceGridItem>();
 		try {
-			Cursor cur = resolver.query(Books.CONTENT_URI, projection, selection, null, null);		
+			Cursor cur = resolver.query(BookInfo.CONTENT_URI, projection, selection, null, null);		
 
-			int idCol = cur.getColumnIndex(Books._ID);
-			int titleCol = cur.getColumnIndex(Books._TITLE);
-			int authorCol = cur.getColumnIndex(Books._AUTHOR);
-			int descriptionCol = cur.getColumnIndex(Books._INTRO);
+			int idCol = cur.getColumnIndex(BookInfo._BOOK_ID);
+			int titleCol = cur.getColumnIndex(BookInfo._TITLE);
+			int authorCol = cur.getColumnIndex(BookInfo._AUTHOR);
+			int descriptionCol = cur.getColumnIndex(BookInfo._INTRO);
+			int tagCol = cur.getColumnIndex(BookInfo._TAGS);
 			//int progressCol = cur.getColumnIndex(Books._PROGRESS);
 			
-			Bitmap bm = getBitmap(cur.getString(idCol));
+			//Bitmap bm = getBitmap(cur.getString(idCol));
 			while (cur.moveToNext()) {
-				String tags = getBookTags(cur.getString(idCol));
-				
 				//
-				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,tags , bm, 20, cur.getString(descriptionCol), 0));	
+				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,cur.getString(tagCol) , null, 20, cur.getString(descriptionCol), 0));	
 			
-				cur.close();
-				
 			}
+			cur.close();
 			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
+		} 
+//		catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} 
+		finally {
 			
 		}
 		
@@ -128,28 +130,14 @@ public class ResourceContentResolver {
 		return (List)cateGridItems;
 	}
 	
-	private String getBookTags(String id){
-		
-		return "";
+	private Bitmap getBitmap(String bookId) throws IOException {
+		ItemBookCover cover = new ItemBookCover(bookId);
+		ParcelFileDescriptor pfdInput = resolver.openFileDescriptor(cover.getThumbnailUri(), "r");
+		if (pfdInput == null)
+			return null;
+		Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null);
+		pfdInput.close();
+		return bitmap;
 	}
-	
-	private String getBookCollectionTags(String id){
-		//BookCollections.
-		return "";
-	}
-	
-	private String getBookListTags(String id){
-		
-		return "";
-	}
-	
-	 private Bitmap getBitmap(String bookId) throws IOException {
-	     ItemBookCover cover = new ItemBookCover(bookId);   
-		 ParcelFileDescriptor pfdInput = resolver.openFileDescriptor(cover.getThumbnailUri(), "r");
-	        if(pfdInput == null) return null;
-	        Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null);
-	        pfdInput.close();
-	        return bitmap;
-	   }
 
 }

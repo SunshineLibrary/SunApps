@@ -76,6 +76,9 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.AUTHORS:
             	return dbHandler.getTableManager(AuthorTable.TABLE_NAME).query(
             			uri, projection, selection, selectionArgs, sortOrder);
+            case Matcher.BOOK_INFO:
+            	return dbHandler.getTableViewManager(BookInfoView.VIEW_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.BOOKS:
                 return dbHandler.getTableManager(BookTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
