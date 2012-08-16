@@ -165,6 +165,7 @@ public final class MetadataContract {
         public static final String _ID = BaseColumns._ID;
         public static final String _TITLE = "title";
         public static final String _AUTHOR = "author";
+        public static final String _AUTHOR_ID = "author_id";
         public static final String _INTRO = "intro";
         public static final String _PUBLISHER = "publisher";
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_collections").build();
@@ -220,7 +221,7 @@ public final class MetadataContract {
         }
     }
 
-    public static final class BookLists {
+    public static final class BookLists extends Downloadable{
 
         public static final String _ID = BaseColumns._ID;
         public static final String _NAME = "name";
@@ -259,6 +260,7 @@ public final class MetadataContract {
         public static final String _ID = BaseColumns._ID;
         public static final String _TITLE = "title";
         public static final String _AUTHOR = "author";
+        public static final String _AUTHOR_ID = "author_id";
         public static final String _INTRO = "intro";
         public static final String _PROGRESS = "progress";
         public static final String _TAGS = "tags";
@@ -312,7 +314,14 @@ public final class MetadataContract {
             // content://AUTHORITY/books/#book_id/tags
         }
     }
-
+    
+    public static final class Authors extends Downloadable {
+    	
+    	public static final String _ID = BaseColumns._ID;
+    	public static final String _NAME = "name";
+    	public static final String _INTRO = "intro";
+    }
+    
     public static final class Tags {
 
         public static final String _ID = BaseColumns._ID;
