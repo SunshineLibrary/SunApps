@@ -103,7 +103,9 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.PROBLEMS_CHOICE:
                 return dbHandler.getTableManager(ProblemChoiceTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
-
+            case Matcher.USER_BOOK:
+            	return dbHandler.getTableManager(UserBookTable.TABLE_NAME).query( 
+            			uri, projection, selection, selectionArgs, sortOrder);
             default:
                 throw new IllegalArgumentException();
         }

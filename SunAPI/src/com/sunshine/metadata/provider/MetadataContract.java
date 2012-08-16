@@ -376,7 +376,16 @@ public final class MetadataContract {
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_list_tag").build();
     }
-
+    
+    public static final class UserBook {
+    	
+    	public static final String _ID = BaseColumns._ID;
+    	public static final String _USER_ID = "user_id";
+    	public static final String _BOOK_ID = "book_id";
+    	public static final String _PROGRESS = "progress";
+    	public static final String _START_AT = "start_at";
+    	
+    }
 
     public static final class Packages extends Downloadable {
         public static final String _ID = BaseColumns._ID;

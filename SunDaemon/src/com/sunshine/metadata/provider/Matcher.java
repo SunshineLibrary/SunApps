@@ -54,6 +54,9 @@ public class Matcher {
     public static final int BOOK_COLLECTION_TAG = 502;
     public static final int BOOK_LIST_TAG = 503;
     public static final int BOOK_LIST_COLLECTION = 504;
+    
+    //public static final int USER = 600;
+    public static final int USER_BOOK = 601;
 
     public static class Factory {
         public static UriMatcher getMatcher() {
@@ -99,7 +102,8 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "book_list_tag", BOOK_LIST_TAG);
             matcher.addURI(AUTHORITY, "book_list_collection", BOOK_LIST_COLLECTION);
             
-
+            matcher.addURI(AUTHORITY, "user_book", USER_BOOK);
+            
             return matcher;
         }
     }

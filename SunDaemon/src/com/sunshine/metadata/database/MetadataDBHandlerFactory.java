@@ -40,6 +40,7 @@ public class MetadataDBHandlerFactory {
         dbHandler.addTableManager(AuthorTable.TABLE_NAME, new AuthorTable(dbHandler));
         dbHandler.addTableManager(QuizComponentsTable.TABLE_NAME, new QuizComponentsTable(dbHandler));
         dbHandler.addTableManager(SectionComponentsTable.TABLE_NAME, new SectionComponentsTable(dbHandler));
+        dbHandler.addTableManager(UserBookTable.TABLE_NAME, new UserBookTable(dbHandler));
     }
 
     private static void initObservableTables(DBHandler dbHandler, Context context){

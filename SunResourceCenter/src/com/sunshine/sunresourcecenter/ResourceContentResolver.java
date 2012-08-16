@@ -45,9 +45,10 @@ public class ResourceContentResolver {
 				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,tags , imageId, 0, cur.getString(descriptionCol), count));	
 				
 			}
-			
-			bookcur.close();
-			cur.close();
+			if(bookcur != null)
+				bookcur.close();
+			if(cur != null)
+				cur.close();
 		} finally {
 			
 		}
