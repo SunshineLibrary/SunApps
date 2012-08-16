@@ -1,4 +1,4 @@
-package com.sunshine.sunresourcecenter.griditem;
+package com.sunshine.sunresourcecenter.model;
 
 public class ResourceGridItem   
 {   

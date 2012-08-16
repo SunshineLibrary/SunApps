@@ -2,7 +2,7 @@ package com.sunshine.sunresourcecenter;
 
 import com.sunshine.metadata.provider.MetadataContract.Books;
 import com.sunshine.sunresourcecenter.R;
-import com.sunshine.sunresourcecenter.griditem.ResourceGridItem;
+import com.sunshine.sunresourcecenter.model.ResourceGridItem;
 
 import android.os.Bundle;
 import android.app.Activity;

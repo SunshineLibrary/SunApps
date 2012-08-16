@@ -65,6 +65,11 @@ public class MetadataDBHandlerFactory {
         table.addObserver(downloadableObserver);
         table.addObserver(thumbnailObserver);
         dbHandler.addTableManager(BookCollectionTable.TABLE_NAME, table);
+        
+        table = new ObservableTable(new BookCoverImageTable(dbHandler));
+        table.addObserver(downloadableObserver);
+        table.addObserver(thumbnailObserver);
+        dbHandler.addTableManager(BookCoverImageTable.TABLE_NAME, table);
     }
 
     private static void initTableViews(DBHandler dbHandler) {

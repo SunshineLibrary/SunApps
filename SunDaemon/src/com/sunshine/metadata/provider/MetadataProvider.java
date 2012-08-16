@@ -85,6 +85,9 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.BOOK_LISTS:
                 return dbHandler.getTableManager(BookListTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
+            case Matcher.BOOK_COVER_IMAGES:
+            	return dbHandler.getTableManager(BookCoverImageTable.TABLE_NAME).query(
+            			uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.TAGS:
                 return dbHandler.getTableManager(TagTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);

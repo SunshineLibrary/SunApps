@@ -6,7 +6,7 @@ import java.util.List;
 import com.sunshine.sunresourcecenter.R;
 import com.sunshine.sunresourcecenter.R.id;
 import com.sunshine.sunresourcecenter.R.layout;
-import com.sunshine.sunresourcecenter.griditem.ResourceListGridItem;
+import com.sunshine.sunresourcecenter.model.ResourceListGridItem;
 
 import android.content.Context;
 import android.view.LayoutInflater;

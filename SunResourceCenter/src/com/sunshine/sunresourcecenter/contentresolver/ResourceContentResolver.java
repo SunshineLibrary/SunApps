@@ -1,5 +1,6 @@
-package com.sunshine.sunresourcecenter;
+package com.sunshine.sunresourcecenter.contentresolver;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +8,17 @@ import com.sunshine.metadata.provider.MetadataContract.BookCollections;
 import com.sunshine.metadata.provider.MetadataContract.BookLists;
 import com.sunshine.metadata.provider.MetadataContract.Books;
 import com.sunshine.sunresourcecenter.R;
-import com.sunshine.sunresourcecenter.griditem.CategoryGridItem;
-import com.sunshine.sunresourcecenter.griditem.ResourceGridItem;
-import com.sunshine.sunresourcecenter.griditem.ResourceListGridItem;
+import com.sunshine.sunresourcecenter.R.drawable;
+import com.sunshine.sunresourcecenter.model.CategoryGridItem;
+import com.sunshine.sunresourcecenter.model.ItemCover;
+import com.sunshine.sunresourcecenter.model.ResourceGridItem;
+import com.sunshine.sunresourcecenter.model.ResourceListGridItem;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.ParcelFileDescriptor;
 
 public class ResourceContentResolver {
 	
@@ -128,4 +134,14 @@ public class ResourceContentResolver {
 		
 		return "";
 	}
+	
+	 private Bitmap getBitmap(String coverId) throws IOException {
+	     ItemCover cover = new ItemCover(coverId);   
+		 ParcelFileDescriptor pfdInput = resolver.openFileDescriptor(cover.getThumbnailUri(), "r");
+	        if(pfdInput == null) return null;
+	        Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null);
+	        pfdInput.close();
+	        return bitmap;
+	   }
+
 }

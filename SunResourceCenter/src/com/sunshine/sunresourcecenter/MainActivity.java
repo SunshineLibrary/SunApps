@@ -7,7 +7,8 @@ import com.sunshine.sunresourcecenter.R;
 import com.sunshine.sunresourcecenter.adapter.CategoryGridAdapter;
 import com.sunshine.sunresourcecenter.adapter.ResourceGridAdapter;
 import com.sunshine.sunresourcecenter.adapter.ResourceListGridAdapter;
-import com.sunshine.sunresourcecenter.griditem.ResourceGridItem;
+import com.sunshine.sunresourcecenter.contentresolver.ResourceContentResolver;
+import com.sunshine.sunresourcecenter.model.ResourceGridItem;
 
 import java.util.ArrayList;
 import java.util.List;

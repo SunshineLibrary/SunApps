@@ -315,7 +315,24 @@ public final class MetadataContract {
         }
     }
     
-    public static final class Authors extends Downloadable {
+    public static final class BookCoverImages extends Downloadable {
+    	
+        public static final String _ID = BaseColumns._ID;
+        public static final String _BOOK_ID = "book_id";
+
+        public static final Uri CONTENT_URI = Books.CONTENT_URI.buildUpon()
+                .appendPath("covers").build();
+
+        public static Uri getCoverImageUri(String id) {
+            return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
+        }
+
+        public static Uri getCoverImageThumbnailUri(String id) {
+            return CONTENT_URI.buildUpon().appendPath("thumbnail").appendPath(String.valueOf(id)).build();
+        }
+    }
+    
+    public static final class Authors {
     	
     	public static final String _ID = BaseColumns._ID;
     	public static final String _NAME = "name";
