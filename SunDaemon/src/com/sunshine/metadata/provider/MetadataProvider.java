@@ -73,6 +73,9 @@ public class MetadataProvider extends ContentProvider {
                 return dbHandler.getTableManager(ActivityTable.TABLE_NAME).query(
                         uri, projection, BaseColumns._ID + "=?",
                         new String[]{uri.getLastPathSegment()}, sortOrder);
+            case Matcher.AUTHORS:
+            	return dbHandler.getTableManager(AuthorTable.TABLE_NAME).query(
+            			uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.BOOKS:
                 return dbHandler.getTableManager(BookTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);

@@ -37,6 +37,7 @@ public class MetadataDBHandlerFactory {
         dbHandler.addTableManager(BookCollectionTagTable.TABLE_NAME, new BookCollectionTagTable(dbHandler));
         dbHandler.addTableManager(BookListTagTable.TABLE_NAME, new BookListTagTable(dbHandler));
         dbHandler.addTableManager(BookListCollectionTable.TABLE_NAME, new BookListCollectionTable(dbHandler));
+        dbHandler.addTableManager(AuthorTable.TABLE_NAME, new AuthorTable(dbHandler));
         dbHandler.addTableManager(QuizComponentsTable.TABLE_NAME, new QuizComponentsTable(dbHandler));
         dbHandler.addTableManager(SectionComponentsTable.TABLE_NAME, new SectionComponentsTable(dbHandler));
     }

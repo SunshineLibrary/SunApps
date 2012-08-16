@@ -11,6 +11,7 @@ public class BookCollectionTable extends DownloadableTable {
 		BookCollections._ID,
 		BookCollections._TITLE,
 		BookCollections._AUTHOR,
+		BookCollections._AUTHOR_ID,
 		BookCollections._INTRO,
 		BookCollections._PUBLISHER,
 	};
@@ -20,6 +21,7 @@ public class BookCollectionTable extends DownloadableTable {
 		{BookCollections._TITLE, "TEXT"},
 		{BookCollections._INTRO, "TEXT"},
 		{BookCollections._AUTHOR, "TEXT"},
+		{BookCollections._AUTHOR_ID, "INTEGER"},
 		{BookCollections._PUBLISHER, "TEXT"},
 	};
 

@@ -16,6 +16,7 @@ public class BookTable extends DownloadableTable {
 		Books._TITLE,
 		Books._INTRO,
 		Books._AUTHOR,
+		Books._AUTHOR_ID,
 		Books._COLLECTION_ID,
 		Books._PUBLISHER,
 		Books._PUBLICATION_YEAR,
@@ -26,7 +27,8 @@ public class BookTable extends DownloadableTable {
 		{Books._TITLE, "TEXT"},
 		{Books._INTRO, "TEXT"},
 		{Books._AUTHOR, "TEXT"},
-		{Books._COLLECTION_ID, "TEXT"},
+		{Books._AUTHOR_ID, "INTEGER"},
+		{Books._COLLECTION_ID, "INTEGER"},
 		{Books._PUBLISHER, "TEXT"},
 		{Books._PUBLICATION_YEAR, "TEXT"},
 	};

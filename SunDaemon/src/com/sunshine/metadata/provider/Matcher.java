@@ -38,14 +38,15 @@ public class Matcher {
 
     public static final int ACTIVITIES_TEXT = 311;
 
-    public static final int BOOKS = 400;
-    public static final int BOOKS_ID = 401;
-    public static final int BOOKS_THUMBNAIL = 402;
-    public static final int BOOK_COLLECTIONS = 403;
-    public static final int BOOK_COLLECTIONS_ID = 404;
-    public static final int BOOK_COLLECTIONS_THUMBNAIL = 405;
-    public static final int BOOK_LISTS = 406;
-    public static final int BOOK_LISTS_ID = 407;
+    public static final int AUTHORS = 400;
+    public static final int BOOKS = 401;
+    public static final int BOOKS_ID = 402;
+    public static final int BOOKS_THUMBNAIL = 403;
+    public static final int BOOK_COLLECTIONS = 404;
+    public static final int BOOK_COLLECTIONS_ID = 405;
+    public static final int BOOK_COLLECTIONS_THUMBNAIL = 406;
+    public static final int BOOK_LISTS = 407;
+    public static final int BOOK_LISTS_ID = 408;
     
 
     public static final int TAGS = 500;
@@ -78,6 +79,7 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "activities/gallery/images/#", GALLERY_IMAGES_ID);
             matcher.addURI(AUTHORITY, "activities/gallery/images/thumbnail/#", GALLERY_IMAGES_THUMBNAIL);
 
+            matcher.addURI(AUTHORITY, "authors", AUTHORS);
             matcher.addURI(AUTHORITY, "books", BOOKS);
             matcher.addURI(AUTHORITY, "books/#", BOOKS_ID);
             matcher.addURI(AUTHORITY, "books/thumbnail/#", BOOKS_THUMBNAIL);
