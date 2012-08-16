@@ -6,6 +6,7 @@ import android.net.Uri;
 import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.TableView;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
+import com.sunshine.metadata.provider.MetadataContract.Books;
 import com.sunshine.metadata.provider.MetadataContract.SectionComponents;
 
 public class BookInfoView implements TableView {
@@ -28,12 +29,14 @@ public class BookInfoView implements TableView {
     }
 
     private String createViewQuery() {
-    	String query = "";
-//        String query = "CREATE VIEW " + VIEW_NAME + " AS SELECT ";
+    	
+        StringBuffer query = new StringBuffer("CREATE VIEW " + VIEW_NAME + " AS SELECT ");
+        query.append(String.format("b.%s, b.%s, b.%s, b.%s", Books._ID, Books._TITLE, Books._INTRO, Books._AUTHOR));
+        
 //        query += String.format("s.%s, s.%s, s.%s, a.%s, a.%s", );
 //        query += String.format(" FROM %s s left join %s a ", SectionComponentsTable.TABLE_NAME, ActivityTable.TABLE_NAME);
 //        query += String.format("ON s.%s = a.%s;", SectionComponents._ACTIVITY_ID, Activities._ID);
-        return query;
+        return query.toString();
     }
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,

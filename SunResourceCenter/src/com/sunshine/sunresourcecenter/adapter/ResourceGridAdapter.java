@@ -84,7 +84,7 @@ public class ResourceGridAdapter extends BaseAdapter {
 		viewHolder.author.setText(((ResourceGridItem) gridItemList.get(position)).getAuthor());
 		viewHolder.tags.setText(((ResourceGridItem) gridItemList.get(position)).getTags());
 		viewHolder.description.setText(((ResourceGridItem) gridItemList.get(position)).getDescription());
-		viewHolder.image.setImageResource(((ResourceGridItem) gridItemList.get(position)).getImageId());
+		viewHolder.image.setImageBitmap(((ResourceGridItem) gridItemList.get(position)).getImageBitmap());
 		progress = ((ResourceGridItem) gridItemList.get(position)).getProgress();
 		viewHolder.progressBar.setProgress(progress);
 		if(showProgress){

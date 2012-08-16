@@ -160,7 +160,7 @@ public final class MetadataContract {
     /*
      * English comments only
      */
-    public static final class BookCollections {
+    public static final class BookCollections extends Downloadable{
 
         public static final String _ID = BaseColumns._ID;
         public static final String _TITLE = "title";
@@ -176,6 +176,14 @@ public final class MetadataContract {
 
         public static Uri getBooks(String collectionId) {
             return CONTENT_URI.buildUpon().appendPath(collectionId).appendPath("books").build();
+        }
+        
+        public static Uri getBookCollectionThumbnailUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath("thumbnail").appendPath(String.valueOf(id)).build();
+        }
+
+        public static Uri getBookCollectionUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
         }
     }
 
@@ -315,23 +323,6 @@ public final class MetadataContract {
         }
     }
     
-    public static final class BookCoverImages extends Downloadable {
-    	
-        public static final String _ID = BaseColumns._ID;
-        public static final String _BOOK_ID = "book_id";
-
-        public static final Uri CONTENT_URI = Books.CONTENT_URI.buildUpon()
-                .appendPath("covers").build();
-
-        public static Uri getCoverImageUri(String id) {
-            return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
-        }
-
-        public static Uri getCoverImageThumbnailUri(String id) {
-            return CONTENT_URI.buildUpon().appendPath("thumbnail").appendPath(String.valueOf(id)).build();
-        }
-    }
-    
     public static final class Authors {
     	
     	public static final String _ID = BaseColumns._ID;
@@ -400,8 +391,10 @@ public final class MetadataContract {
     	public static final String _USER_ID = "user_id";
     	public static final String _BOOK_ID = "book_id";
     	public static final String _PROGRESS = "progress";
-    	public static final String _START_AT = "start_at";
+    	public static final String _FIRST_READ_AT = "first_read_at";
+    	public static final String _LAST_READ_AT = "last_read_at";
     	
+    	public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("user_book").build();
     }
 
     public static final class Packages extends Downloadable {

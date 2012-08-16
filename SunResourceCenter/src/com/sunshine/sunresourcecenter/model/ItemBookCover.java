@@ -4,13 +4,13 @@ import android.net.Uri;
 
 import com.sunshine.metadata.provider.MetadataContract;
 
-public class ItemCover {
+public class ItemBookCover {
 	private Uri imageUri;
 	private Uri thumbnailUri;
 
-	public ItemCover(String coverId) {
-		imageUri = MetadataContract.BookCoverImages.getCoverImageUri(coverId);
-		thumbnailUri = MetadataContract.BookCoverImages.getCoverImageThumbnailUri(coverId);
+	public ItemBookCover(String bookId) {
+		imageUri = MetadataContract.Books.getBookUri(Integer.valueOf(bookId));
+		thumbnailUri = MetadataContract.Books.getBookThumbnailUri(Integer.valueOf(bookId));
 		
 	}
 

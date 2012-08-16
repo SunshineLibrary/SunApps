@@ -12,7 +12,8 @@ public class UserBookTable extends AbstractTable {
 		UserBook._USER_ID,
 		UserBook._BOOK_ID,
 		UserBook._PROGRESS,
-		UserBook._START_AT
+		UserBook._FIRST_READ_AT,
+		UserBook._LAST_READ_AT,
 	};
 	
 	public static final String[][] COLUMN_DEFINITIONS = {
@@ -20,7 +21,8 @@ public class UserBookTable extends AbstractTable {
 		{UserBook._USER_ID, "TEXT"},
 		{UserBook._BOOK_ID, "TEXT"},
 		{UserBook._PROGRESS, "TEXT"},
-		{UserBook._START_AT, "TEXT"}
+		{UserBook._FIRST_READ_AT, "TEXT"},
+		{UserBook._LAST_READ_AT, "TEXT"},
 	};
 	
 	public UserBookTable(DBHandler db) {

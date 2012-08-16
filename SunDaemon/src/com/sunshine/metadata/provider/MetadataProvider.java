@@ -85,9 +85,6 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.BOOK_LISTS:
                 return dbHandler.getTableManager(BookListTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
-            case Matcher.BOOK_COVER_IMAGES:
-            	return dbHandler.getTableManager(BookCoverImageTable.TABLE_NAME).query(
-            			uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.TAGS:
                 return dbHandler.getTableManager(TagTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
@@ -145,6 +142,9 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.ACTIVITIES:
                 return dbHandler.getTableManager(ActivityTable.TABLE_NAME).insert(
                         uri, values);
+            case Matcher.USER_BOOK:
+            	return dbHandler.getTableManager(UserBookTable.TABLE_NAME).insert(
+            			uri, values);
             default:
                 throw new IllegalArgumentException();
         }
@@ -173,6 +173,18 @@ public class MetadataProvider extends ContentProvider {
                 selectionArgs = new String[]{uri.getLastPathSegment()};
             case Matcher.GALLERY_IMAGES:
                 return dbHandler.getTableManager(GalleryImageTable.TABLE_NAME).update(
+                        uri, values, selection, selectionArgs);
+            case Matcher.BOOKS_ID:
+            	selection = MetadataContract.Books._ID + " = ?";
+            	selectionArgs = new String[]{uri.getLastPathSegment()};
+            case Matcher.BOOKS:
+            	return dbHandler.getTableManager(BookTable.TABLE_NAME).update(
+                        uri, values, selection, selectionArgs);
+            case Matcher.USER_BOOK_ID:
+            	selection = MetadataContract.UserBook._ID + " = ?";
+            	selectionArgs = new String[]{uri.getLastPathSegment()};
+            case Matcher.USER_BOOK:
+            	return dbHandler.getTableManager(UserBookTable.TABLE_NAME).update(
                         uri, values, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException();

@@ -61,6 +61,7 @@ public class Matcher {
     
     //public static final int USER = 600;
     public static final int USER_BOOK = 601;
+    public static final int USER_BOOK_ID = 602;
 
     public static class Factory {
         public static UriMatcher getMatcher() {
@@ -110,6 +111,7 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "book_list_collection", BOOK_LIST_COLLECTION);
             
             matcher.addURI(AUTHORITY, "user_book", USER_BOOK);
+            matcher.addURI(AUTHORITY, "user_book/#", USER_BOOK_ID);
             
             return matcher;
         }
