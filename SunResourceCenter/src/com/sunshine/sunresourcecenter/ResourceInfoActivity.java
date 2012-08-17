@@ -2,7 +2,7 @@ package com.sunshine.sunresourcecenter;
 
 import com.sunshine.metadata.provider.MetadataContract.Books;
 import com.sunshine.sunresourcecenter.R;
-import com.sunshine.sunresourcecenter.griditem.ResourceGridItem;
+import com.sunshine.sunresourcecenter.model.ResourceGridItem;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -112,7 +112,7 @@ public class ResourceInfoActivity extends Activity {
     			int titleCol = cur.getColumnIndex(Books._TITLE);
     			int authorCol = cur.getColumnIndex(Books._AUTHOR);
     			int descriptionCol = cur.getColumnIndex(Books._INTRO);
-    			int progressCol = cur.getColumnIndex(Books._PROGRESS);
+    			//int progressCol = cur.getColumnIndex(Books._PROGRESS);
     			//int originalCol = cur.getColumnIndex(Books.);
     			
     			

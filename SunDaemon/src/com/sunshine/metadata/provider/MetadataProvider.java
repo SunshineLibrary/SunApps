@@ -73,6 +73,12 @@ public class MetadataProvider extends ContentProvider {
                 return dbHandler.getTableManager(ActivityTable.TABLE_NAME).query(
                         uri, projection, BaseColumns._ID + "=?",
                         new String[]{uri.getLastPathSegment()}, sortOrder);
+            case Matcher.AUTHORS:
+            	return dbHandler.getTableManager(AuthorTable.TABLE_NAME).query(
+            			uri, projection, selection, selectionArgs, sortOrder);
+            case Matcher.BOOK_INFO:
+            	return dbHandler.getTableViewManager(BookInfoView.VIEW_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.BOOKS:
                 return dbHandler.getTableManager(BookTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
@@ -100,7 +106,9 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.PROBLEMS_CHOICE:
                 return dbHandler.getTableManager(ProblemChoiceTable.TABLE_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
-
+            case Matcher.USER_BOOK:
+            	return dbHandler.getTableManager(UserBookTable.TABLE_NAME).query( 
+            			uri, projection, selection, selectionArgs, sortOrder);
             default:
                 throw new IllegalArgumentException();
         }
@@ -137,6 +145,9 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.ACTIVITIES:
                 return dbHandler.getTableManager(ActivityTable.TABLE_NAME).insert(
                         uri, values);
+            case Matcher.USER_BOOK:
+            	return dbHandler.getTableManager(UserBookTable.TABLE_NAME).insert(
+            			uri, values);
             default:
                 throw new IllegalArgumentException();
         }
@@ -165,6 +176,18 @@ public class MetadataProvider extends ContentProvider {
                 selectionArgs = new String[]{uri.getLastPathSegment()};
             case Matcher.GALLERY_IMAGES:
                 return dbHandler.getTableManager(GalleryImageTable.TABLE_NAME).update(
+                        uri, values, selection, selectionArgs);
+            case Matcher.BOOKS_ID:
+            	selection = MetadataContract.Books._ID + " = ?";
+            	selectionArgs = new String[]{uri.getLastPathSegment()};
+            case Matcher.BOOKS:
+            	return dbHandler.getTableManager(BookTable.TABLE_NAME).update(
+                        uri, values, selection, selectionArgs);
+            case Matcher.USER_BOOK_ID:
+            	selection = MetadataContract.UserBook._ID + " = ?";
+            	selectionArgs = new String[]{uri.getLastPathSegment()};
+            case Matcher.USER_BOOK:
+            	return dbHandler.getTableManager(UserBookTable.TABLE_NAME).update(
                         uri, values, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException();

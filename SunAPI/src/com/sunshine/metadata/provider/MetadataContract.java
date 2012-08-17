@@ -160,11 +160,12 @@ public final class MetadataContract {
     /*
      * English comments only
      */
-    public static final class BookCollections {
+    public static final class BookCollections extends Downloadable{
 
         public static final String _ID = BaseColumns._ID;
         public static final String _TITLE = "title";
         public static final String _AUTHOR = "author";
+        public static final String _AUTHOR_ID = "author_id";
         public static final String _INTRO = "intro";
         public static final String _PUBLISHER = "publisher";
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_collections").build();
@@ -175,6 +176,14 @@ public final class MetadataContract {
 
         public static Uri getBooks(String collectionId) {
             return CONTENT_URI.buildUpon().appendPath(collectionId).appendPath("books").build();
+        }
+        
+        public static Uri getBookCollectionThumbnailUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath("thumbnail").appendPath(String.valueOf(id)).build();
+        }
+
+        public static Uri getBookCollectionUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
         }
     }
 
@@ -220,7 +229,7 @@ public final class MetadataContract {
         }
     }
 
-    public static final class BookLists {
+    public static final class BookLists extends Downloadable{
 
         public static final String _ID = BaseColumns._ID;
         public static final String _NAME = "name";
@@ -259,9 +268,8 @@ public final class MetadataContract {
         public static final String _ID = BaseColumns._ID;
         public static final String _TITLE = "title";
         public static final String _AUTHOR = "author";
+        public static final String _AUTHOR_ID = "author_id";
         public static final String _INTRO = "intro";
-        public static final String _PROGRESS = "progress";
-        public static final String _TAGS = "tags";
         public static final String _PUBLISHER = "publisher";
         public static final String _PUBLICATION_YEAR = "publication_year";
         public static final String _COLLECTION_ID = "book_collection_id";
@@ -279,6 +287,24 @@ public final class MetadataContract {
         public static Uri getBookUri(int id) {
             return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
         }
+    }
+    
+    /*
+     *  for BookInfoView
+     */
+    public static final class BookInfo{
+    	public static final String _ID = BaseColumns._ID;
+    	public static final String _BOOK_ID = "book_id";
+        public static final String _TITLE = "title";
+        public static final String _AUTHOR = "author";
+        public static final String _AUTHOR_INTRO = "author_intro";
+        public static final String _INTRO = "intro";
+        public static final String _PUBLISHER = "publisher";
+        public static final String _PUBLICATION_YEAR = "publication_year";
+        public static final String _COLLECTION_ID = "book_collection_id";
+        public static final String _TAGS = "tags";
+        
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_info").build();
     }
 
     public static final class Videos extends Downloadable {
@@ -312,7 +338,14 @@ public final class MetadataContract {
             // content://AUTHORITY/books/#book_id/tags
         }
     }
-
+    
+    public static final class Authors {
+    	
+    	public static final String _ID = BaseColumns._ID;
+    	public static final String _NAME = "name";
+    	public static final String _INTRO = "intro";
+    }
+    
     public static final class Tags {
 
         public static final String _ID = BaseColumns._ID;
@@ -367,7 +400,18 @@ public final class MetadataContract {
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_list_tag").build();
     }
-
+    
+    public static final class UserBook {
+    	
+    	public static final String _ID = BaseColumns._ID;
+    	public static final String _USER_ID = "user_id";
+    	public static final String _BOOK_ID = "book_id";
+    	public static final String _PROGRESS = "progress";
+    	public static final String _FIRST_READ_AT = "first_read_at";
+    	public static final String _LAST_READ_AT = "last_read_at";
+    	
+    	public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("user_book").build();
+    }
 
     public static final class Packages extends Downloadable {
         public static final String _ID = BaseColumns._ID;

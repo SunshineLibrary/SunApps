@@ -38,7 +38,7 @@ public class SharedStorageManager {
         }
     }
 
-    public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
+    public synchronized ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
         Log.i(context.toString(), "openFile Uri:" + uri.toString());
         switch (sUriMatcher.match(uri)) {
             case Matcher.ACTIVITIES_VIDEO:

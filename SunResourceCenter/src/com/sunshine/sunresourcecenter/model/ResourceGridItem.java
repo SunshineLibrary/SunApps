@@ -1,4 +1,6 @@
-package com.sunshine.sunresourcecenter.griditem;
+package com.sunshine.sunresourcecenter.model;
+
+import android.graphics.Bitmap;
 
 public class ResourceGridItem   
 {   
@@ -7,8 +9,10 @@ public class ResourceGridItem
     private String author;
     private String tags;
     private int progress;
-    private int imageId;   
     private int resCount;
+    private Bitmap imageBitmap;
+	
+
 	private String description;  
       
     public ResourceGridItem()   
@@ -16,12 +20,12 @@ public class ResourceGridItem
         super();   
     }   
     
-    public ResourceGridItem(String ID, String title, String author, String tags, int imageId, int progress, String description, int resCount)   
+    public ResourceGridItem(String ID, String title, String author, String tags, Bitmap image, int progress, String description, int resCount)   
     {   
         super();   
         this.ID = ID;
         this.title = title;   
-        this.imageId = imageId;   
+        this.imageBitmap = image;   
         this.author = author;
         this.tags = tags;
         this.description = description;  
@@ -32,7 +36,11 @@ public class ResourceGridItem
     public int getResCount() {
 		return resCount;
 	}
-
+    
+    public Bitmap getImageBitmap() {
+		return imageBitmap;
+	}
+    
 	public void setResCount(int resCount) {
 		this.resCount = resCount;
 	}
@@ -47,11 +55,6 @@ public class ResourceGridItem
         return title;   
     }   
    
-    public int getImageId()   
-    {   
-        return imageId;   
-    }  
-    
     public String getAuthor(){
     	return author;
     }

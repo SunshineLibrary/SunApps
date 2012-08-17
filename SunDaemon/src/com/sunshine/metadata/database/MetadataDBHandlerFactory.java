@@ -36,8 +36,10 @@ public class MetadataDBHandlerFactory {
         dbHandler.addTableManager(BookCollectionTagTable.TABLE_NAME, new BookCollectionTagTable(dbHandler));
         dbHandler.addTableManager(BookListTagTable.TABLE_NAME, new BookListTagTable(dbHandler));
         dbHandler.addTableManager(BookListCollectionTable.TABLE_NAME, new BookListCollectionTable(dbHandler));
+        dbHandler.addTableManager(AuthorTable.TABLE_NAME, new AuthorTable(dbHandler));
         dbHandler.addTableManager(QuizComponentsTable.TABLE_NAME, new QuizComponentsTable(dbHandler));
         dbHandler.addTableManager(SectionComponentsTable.TABLE_NAME, new SectionComponentsTable(dbHandler));
+        dbHandler.addTableManager(UserBookTable.TABLE_NAME, new UserBookTable(dbHandler));
     }
 
     private static void initObservableTables(DBHandler dbHandler, Context context){
@@ -62,10 +64,13 @@ public class MetadataDBHandlerFactory {
         table.addObserver(downloadableObserver);
         table.addObserver(thumbnailObserver);
         dbHandler.addTableManager(BookCollectionTable.TABLE_NAME, table);
+
     }
 
     private static void initTableViews(DBHandler dbHandler) {
         dbHandler.addTableViewManager(SectionActivitiesView.VIEW_NAME, new SectionActivitiesView(dbHandler));
+        dbHandler.addTableViewManager(BookInfoView.VIEW_NAME, new BookInfoView(dbHandler));
+        
     }
 
 }
