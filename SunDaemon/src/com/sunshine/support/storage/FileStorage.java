@@ -8,5 +8,5 @@ public interface FileStorage {
 
     File createFile(File dir, String fileName) throws IOException;
 
-    File readFile(String filePath);
+    File getFile(String filePath);
 }

@@ -2,10 +2,10 @@ package com.sunshine.support.downloader;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
-import com.sunshine.support.storage.SharedStorageManager;
+import com.sunshine.support.utils.IOUtils;
+import com.sunshine.support.utils.ListenableAsyncTask;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -13,23 +13,18 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.*;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
-public class FileDownloadTask extends AsyncTask<Uri, Integer, Integer> {
+public class FileDownloadTask extends ListenableAsyncTask<Uri, Integer, Integer> {
 
     private HttpClient httpClient;
     Context context;
     private Uri remoteUri;
+
     Uri localUri;
     private long contentLength;
-    private long lastProgress;
-    private boolean extractFiles;
-    private MessageDigest digest;
 
     public static final int SUCCESS = 0;
     public static final int FAILURE = 1;
-    private static final int PROGRESS_SAMPLE_RATE = 20;
     private static final int RETRY_COUNT = 3;
 
     public FileDownloadTask(Context context, Uri remoteUri, Uri localUri) {
@@ -37,16 +32,10 @@ public class FileDownloadTask extends AsyncTask<Uri, Integer, Integer> {
         this.localUri = localUri;
         this.httpClient = new DefaultHttpClient();
         this.context = context;
-        this.lastProgress = 0 - PROGRESS_SAMPLE_RATE;
     }
 
     @Override
     protected Integer doInBackground(Uri... uris) {
-        int count, offset;
-        int bufferSize = 1024;
-        long total;
-        byte[] buffer = new byte[1024];
-
         int retryLimit = RETRY_COUNT;
         while (retryLimit-- > 0) {
             Log.d(getClass().getName(), "Requesting file: " + remoteUri);
@@ -54,31 +43,10 @@ public class FileDownloadTask extends AsyncTask<Uri, Integer, Integer> {
             OutputStream output = getOutputStreamForUri(localUri);
 
             try {
-                if (input == null || output == null) {
-                    throw new IOException();
-                }
-
-                total = 0;
-                count = offset = 0;
-                while ((count = input.read(buffer, offset, bufferSize - offset)) > 0) {
-                    output.write(buffer, offset, count);
-                    offset = (offset + count) % bufferSize;
-                    total += count;
-                    if (total * 100 / contentLength >= lastProgress + PROGRESS_SAMPLE_RATE) {
-                        Log.d(getClass().getName(), String.format("Downloading[%d]: %s)", total * 100 / contentLength, remoteUri.toString()));
-                        lastProgress += PROGRESS_SAMPLE_RATE;
-                    }
-                }
-                input.close();
-                output.close();
+                IOUtils.copy(input, output, new DownloadProgressUpdater(contentLength));
                 return SUCCESS;
             } catch (IOException e) {
                 Log.w(getClass().getName(), "Failed during download for uris." + remoteUri + "," + localUri);
-                try {
-                    if (input != null) input.close();
-                    if (output != null) output.close();
-                } catch (IOException e1) {}
-
                 continue;
             }
         }
@@ -90,7 +58,7 @@ public class FileDownloadTask extends AsyncTask<Uri, Integer, Integer> {
         HttpResponse response;
         try {
             response = httpClient.execute(get);
-            this.contentLength = Long.parseLong(response.getFirstHeader("Content-Length").getValue());
+            contentLength = Long.parseLong(response.getFirstHeader("Content-Length").getValue());
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
                 Log.w(getClass().getName(), "Bad HTTP Response: SC " + response.getStatusLine().getStatusCode());
                 get.abort();
@@ -117,12 +85,27 @@ public class FileDownloadTask extends AsyncTask<Uri, Integer, Integer> {
         return null;
     }
 
-    private MessageDigest getDigest() {
-        try {
-            return MessageDigest.getInstance("md5");
-        } catch (NoSuchAlgorithmException e) {
-            Log.e(getClass().getName(), "Could not find md5 digest algorithm.");
-            return null;
+    public Uri getLocalUri() {
+        return localUri;
+    }
+
+    public class DownloadProgressUpdater extends IOUtils.ProgressUpdater {
+        private static final int PROGRESS_SAMPLE_RATE = 20;
+
+        private long contentLength;
+        private long lastProgress;
+
+        public DownloadProgressUpdater(long contentLength) {
+            this.contentLength = contentLength;
+            this.lastProgress = 0 - PROGRESS_SAMPLE_RATE;
+        }
+
+        public void onProgressUpdate(long totalBytesProcessed) {
+            if (totalBytesProcessed * 100 / contentLength >= lastProgress + PROGRESS_SAMPLE_RATE) {
+                Log.d(getClass().getName(), String.format("Downloading[%d]: %s)", totalBytesProcessed * 100 / contentLength, remoteUri.toString()));
+                lastProgress += PROGRESS_SAMPLE_RATE;
+            }
         }
     }
 }
+

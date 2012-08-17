@@ -56,8 +56,14 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
  		}
 		return status;
 	}
-	
-	protected boolean isConnected() {
+
+    @Override
+    protected void onPostExecute(Integer integer) {
+        super.onPostExecute(integer);
+        dbHandler.close();
+    }
+
+    protected boolean isConnected() {
 		return context.isConnected();
 	}
 }

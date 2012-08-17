@@ -56,6 +56,10 @@ public class DatabaseQueue<T extends JSONSerializable> {
         return null;
     }
 
+    public void release() {
+        dbHandler.close();
+    }
+
     private static class DatabaseQueueDBHandler extends SQLiteOpenHelper {
 
         private static String[] COLUMNS = {"id", "value"};
@@ -79,7 +83,7 @@ public class DatabaseQueue<T extends JSONSerializable> {
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 
-        public void insert(String value) {
+        public synchronized void insert(String value) {
             if (value != null) {
                 getWritableDatabase().insert(queueName, null, getNewContentValues(value));
             }
@@ -91,7 +95,7 @@ public class DatabaseQueue<T extends JSONSerializable> {
             return values;
         }
 
-        public String getFirst() {
+        public synchronized String getFirst() {
             Cursor cursor = getWritableDatabase().query(queueName, COLUMNS, null, null, null, null, null);
             String value = null;
             if(cursor.moveToFirst()) {
@@ -102,7 +106,7 @@ public class DatabaseQueue<T extends JSONSerializable> {
             return value;
         }
 
-        public String getAndRemoveFirst() {
+        public synchronized String getAndRemoveFirst() {
             SQLiteDatabase db = getWritableDatabase();
             Cursor cursor = db.query(queueName, COLUMNS, null, null, null, null, null);
             String value = null;

@@ -41,6 +41,7 @@ public class SupportServiceActivity extends Activity {
         super.onPostCreate(savedInstanceState);
         Log.v(getClass().getName(), "Starting API sync service.");
         startService(new Intent("com.sunshine.support.action.sync"));
+        startService(new Intent("com.sunshine.support.action.update"));
     }
 
     private void prepareData(int id, int type) {
