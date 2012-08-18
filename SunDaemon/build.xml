@@ -39,6 +39,10 @@
             <arg value="shell" />
             <arg value="rm -r /sdcard/.contents" />
         </exec>
+        <exec executable="${sdk.dir}/platform-tools/adb">
+            <arg value="shell" />
+            <arg value="rm -r /sdcard/.apks" />
+        </exec>
     </target>
 
     <taskdef name="aapt" classname="com.android.ant.AaptExecTask" classpathref="android.antlibs"/>

@@ -37,7 +37,8 @@ public class ApiClient {
     }
 
     public static synchronized HttpClient newHttpClient() {
-        return new DefaultHttpClient(getConnManager(), null);
+        // return new DefaultHttpClient(getConnManager(), null);
+        return new DefaultHttpClient();
     }
 
     public static String getSyncRequestUrl(String tableName, long lastUpdateTime) {

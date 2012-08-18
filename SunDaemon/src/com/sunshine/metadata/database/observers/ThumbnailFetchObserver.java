@@ -46,7 +46,7 @@ public class ThumbnailFetchObserver extends TableObserver {
                         Books.getBookThumbnailUri(id)).execute();
             } else if (table.getTableName().equals(BookCollectionTable.TABLE_NAME)) {
                 new FileDownloadTask(context,
-                        ApiClient.getThumbnailUri("bookCollections", id),
+                        ApiClient.getThumbnailUri("book_collections", id),
                         BookCollections.getBookCollectionThumbnailUri(id)).execute();
             }
         }

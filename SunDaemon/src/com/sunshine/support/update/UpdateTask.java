@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.Log;
 import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.SystemDBHandlerFactory;
@@ -37,7 +38,10 @@ public class UpdateTask extends AsyncTask {
     private Context context;
     private FileStorage fileStorage;
 
-    private static final Uri PKG_DIR = new Uri.Builder().scheme("file").appendPath("/sdcard").appendPath(".apks").build();
+    private static final String PKG_DIR_NAME = ".apks";
+    private static final Uri PKG_DIR = Uri.parse(
+            "file://" + Environment.getExternalStorageDirectory().getAbsolutePath()).buildUpon()
+            .appendPath(PKG_DIR_NAME).build();
 
     public UpdateTask(Context context) {
         this.context = context;
@@ -119,12 +123,13 @@ public class UpdateTask extends AsyncTask {
     }
 
     private void downloadAndInstallApk(Package pkg) {
-        Uri remoteUri = ApiClient.getDownloadUri("packages", pkg.getId());
+        Uri remoteUri = ApiClient.getDownloadUri("apks", pkg.getId());
         Uri localUri = getLocalFilePath(pkg);
 
-        Log.v(getClass().getName(), "Download package: " + pkg);
         FileDownloadTask task = new FileDownloadTask(context, remoteUri, localUri);
-        task.addListener(new InstallListener(pkgTable, pkg, localUri));
+        task.addListener(new InstallListener(dbHandler,pkgTable, pkg, localUri));
+        Log.v(getClass().getName(), "Start downloading package: " + pkg);
+        task.execute();
     }
 
     private Uri getLocalFilePath(Package pkg) {
@@ -135,7 +140,7 @@ public class UpdateTask extends AsyncTask {
 
     private void createNewFileSafely(Uri filePath) {
         FileStorage storage = getExternalStorage();
-        File file = storage.getFile(filePath.getPath());
+        File file = new File(storage.getFile(PKG_DIR_NAME), filePath.getLastPathSegment());
         if (file.exists()) {
             file.delete();
         }
@@ -149,11 +154,17 @@ public class UpdateTask extends AsyncTask {
     private FileStorage getExternalStorage() {
         if (fileStorage == null) {
             fileStorage = FileStorageManager.getInstance().getWritableFileStorage();
-            if (!fileStorage.getFile(PKG_DIR.getPath()).exists()) {
-                fileStorage.mkdir(PKG_DIR.getPath());
+            if (!fileStorage.getFile(PKG_DIR_NAME).exists()) {
+                fileStorage.mkdir(PKG_DIR_NAME);
             }
         }
         return fileStorage;
+    }
+
+    @Override
+    protected void onPostExecute(Object o) {
+        super.onPostExecute(o);
+        dbHandler.close();
     }
 
     private class InstallListener extends Listener<Integer> {
@@ -161,8 +172,10 @@ public class UpdateTask extends AsyncTask {
         private PackageTable table;
         private Package pkg;
         private Uri filePath;
+        private DBHandler dbHandler;
 
-        public InstallListener(PackageTable table, Package pkg, Uri filePath) {
+        public InstallListener(DBHandler dbHandler, PackageTable table, Package pkg, Uri filePath) {
+            this.dbHandler = dbHandler;
             this.table = table;
             this.pkg = pkg;
             this.filePath = filePath;
@@ -173,7 +186,7 @@ public class UpdateTask extends AsyncTask {
             if (integer == FileDownloadTask.SUCCESS) {
                 Log.v(getClass().getName(), "Sending install request for package: " + pkg);
                 Intent intent = new Intent();
-                intent.setAction("com.sunshine.support.installer.scheduleInstall");
+                intent.setAction("com.sunshine.support.action.scheduleInstall");
                 intent.setData(filePath);
                 context.startService(intent);
                 createInstallRecord();
@@ -186,6 +199,7 @@ public class UpdateTask extends AsyncTask {
             values.put(MetadataContract.Packages._VERSION, pkg.getVersion());
             values.put(MetadataContract.Packages._NAME, pkg.getName());
             table.insert(null, values);
+            dbHandler.close();
         }
     }
 }
