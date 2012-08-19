@@ -1,21 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              >
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello" />
 
-    <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
+    <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Start download">
+            android:padding="5dp"
+            android:orientation="vertical"
+            >
 
-    </Button>
+        <TextView android:id="@+id/tv_view_metadata_updates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查看 Metadata 更新"
+                android:textSize="24dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="24dp"
+                android:paddingLeft="48dp"
+                android:clickable="true"
+                />
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="2dip"
+                android:background="#222"
+                />
+
+        <TextView android:id="@+id/tv_view_app_updates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="24dp"
+                android:paddingBottom="24dp"
+                android:paddingLeft="48dp"
+                android:text="查看 App 更新"
+                android:textSize="24dp"
+                android:clickable="true"
+                />
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="2dip"
+                android:background="#222"
+                />
+
+        <TextView android:id="@+id/tv_view_system_config"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:paddingTop="24dp"
+                  android:paddingBottom="24dp"
+                  android:paddingLeft="48dp"
+                  android:text="本机参数设置"
+                  android:textSize="24dp"
+                  android:clickable="true"
+                />
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="2dip"
+                android:background="#222"
+                />
+
+    </LinearLayout>
 
 
-</LinearLayout>
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:padding="24dp"
+            >
+
+        <Button android:id="@+id/btn_update_metadata"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="24dp"
+                android:padding="24dp"
+                android:text="更新 Metadata"
+                />
+
+        <Button android:id="@+id/btn_update_app"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="24dp"
+                android:layout_marginTop="24dp"
+                android:padding="24dp"
+                android:text="更新 App"
+                />
+
+    </LinearLayout>
+</RelativeLayout>

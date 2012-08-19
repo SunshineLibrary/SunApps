@@ -1,12 +1,11 @@
 package com.sunshine.support.sync;
 
+import android.os.AsyncTask;
 import android.util.Log;
 import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.MetadataDBHandlerFactory;
 import com.sunshine.metadata.database.Table;
 import com.sunshine.metadata.database.tables.*;
-
-import android.os.AsyncTask;
 
 public class APISyncTask extends AsyncTask<String, String, Integer> {
 

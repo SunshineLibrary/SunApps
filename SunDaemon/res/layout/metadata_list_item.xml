@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+        >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="fill_parent"
+                  android:layout_height="60dp"
+                  android:padding="10dp"
+            >
+
+        <TextView android:id="@+id/tv_table_name"
+                  android:layout_height="fill_parent"
+                  android:layout_width="fill_parent"
+                  android:layout_weight="1"
+                  android:text="Activities"
+                  android:gravity="center_vertical"
+                />
+
+        <TextView android:id="@+id/tv_table_last_update"
+                  android:layout_height="fill_parent"
+                  android:layout_width="160dp"
+                  android:text="2010-10-17 23:56:48"
+                  android:gravity="center_vertical"
+                />
+
+        <TextView android:id="@+id/tv_table_last_sync"
+                  android:layout_height="fill_parent"
+                  android:layout_width="160dp"
+                  android:text="2010-10-17 11:42:32"
+                  android:gravity="center_vertical"
+                />
+
+        <TextView android:id="@+id/tv_table_last_sync_status"
+                  android:layout_height="fill_parent"
+                  android:layout_width="70dp"
+                  android:text="同步成功"
+                  android:gravity="center_vertical"
+                />
+
+    </LinearLayout>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:background="#222"
+            />
+
+</LinearLayout>
+

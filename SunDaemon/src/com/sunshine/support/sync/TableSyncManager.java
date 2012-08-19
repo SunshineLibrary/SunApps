@@ -1,15 +1,11 @@
 package com.sunshine.support.sync;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.provider.BaseColumns;
+import android.util.Log;
 import com.sunshine.metadata.database.Table;
-import com.sunshine.metadata.database.tables.AbstractTable;
+import com.sunshine.metadata.database.tables.APISyncStateTable.APISyncState;
 import com.sunshine.support.api.ApiClient;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -17,12 +13,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.provider.BaseColumns;
-import android.util.Log;
-
-import com.sunshine.metadata.database.tables.APISyncStateTable.APISyncState;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class TableSyncManager {
 

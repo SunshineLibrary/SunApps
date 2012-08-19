@@ -1,7 +1,6 @@
 package com.sunshine.metadata.database.tables;
 
 import android.provider.BaseColumns;
-
 import com.sunshine.metadata.database.DBHandler;
 
 /**

@@ -63,9 +63,6 @@
               nonConstantId="false">
             <res refid="project.res"/>
         </aapt>
-        <copy todir="${classes.dir}">
-            <fileset dir="${gen.dir}"/>
-        </copy>
     </target>
 
     <target name="compile" depends="clean, init, generate-R">
@@ -96,7 +93,7 @@
             <arg value="am"/>
             <arg value="start"/>
             <arg value="-n"/>
-            <arg value="com.sunshine.support/com.sunshine.support.SupportServiceActivity"/>
+            <arg value="com.sunshine.support/com.sunshine.support.activities.MainActivity"/>
         </exec>
     </target>
 

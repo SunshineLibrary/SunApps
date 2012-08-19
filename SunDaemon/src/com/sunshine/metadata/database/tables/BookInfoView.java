@@ -5,11 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.TableView;
-import com.sunshine.metadata.provider.MetadataContract.Activities;
 import com.sunshine.metadata.provider.MetadataContract.Authors;
 import com.sunshine.metadata.provider.MetadataContract.BookTags;
 import com.sunshine.metadata.provider.MetadataContract.Books;
-import com.sunshine.metadata.provider.MetadataContract.SectionComponents;
 import com.sunshine.metadata.provider.MetadataContract.Tags;
 
 public class BookInfoView implements TableView {
