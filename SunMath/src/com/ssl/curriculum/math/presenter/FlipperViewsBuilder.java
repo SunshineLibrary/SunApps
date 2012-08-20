@@ -2,10 +2,7 @@ package com.ssl.curriculum.math.presenter;
 
 import android.content.Context;
 import android.widget.ViewFlipper;
-import com.ssl.curriculum.math.component.flipperchildren.FlipperTextView;
-import com.ssl.curriculum.math.component.flipperchildren.GalleryThumbnailPageFlipperChild;
-import com.ssl.curriculum.math.component.flipperchildren.QuizFlipperChild;
-import com.ssl.curriculum.math.component.flipperchildren.VideoFlipperChild;
+import com.ssl.curriculum.math.component.flipperchildren.*;
 import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.ssl.curriculum.math.model.activity.QuizDomainData;
@@ -44,6 +41,9 @@ public class FlipperViewsBuilder {
                 return true;
             case TYPE_TEXT:
                 viewFlipper.addView(new FlipperTextView(this.context, domainActivity));
+                return true;
+            case TYPE_HTML:
+                viewFlipper.addView(new FlipperHTMLView(this.context, domainActivity));
                 return true;
             default:
         }
