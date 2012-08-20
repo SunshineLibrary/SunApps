@@ -25,8 +25,8 @@ public class InstallTimer extends CountDownTimer{
     @Override
     public void onFinish() {
         if(!pm.isScreenOn()){
-            Intent i = new Intent(InstallerService.ACTION_INSTALL);
-            i.setClass(context, InstallerService.class);
+            Intent i = new Intent(context, InstallerService.class);
+            i.setAction(InstallerService.ACTION_INSTALL);
             context.startService(i);
         }
     }

@@ -10,7 +10,10 @@ import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.sunshine.metadata.provider.MetadataContract;
 
-import java.io.*;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.

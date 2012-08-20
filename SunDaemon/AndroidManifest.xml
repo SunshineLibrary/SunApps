@@ -20,7 +20,7 @@
                   android:authorities="com.sunshine.metadata.provider"
                   android:permission="com.sunshine.metadata.provider.READ_WRITE_PERMISSION"/>
 
-        <activity android:name=".activities.MainActivity"
+        <activity android:name=".manager.activities.MainActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait">
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -31,7 +31,7 @@
         </activity>
 
         <activity
-                android:name=".activities.ViewMetadataUpdatesActivity"
+                android:name=".manager.activities.ViewMetadataUpdatesActivity"
                 android:label="@string/app_name"
                 android:screenOrientation="portrait" >
         </activity>

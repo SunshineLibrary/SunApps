@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
     private void getDomainActivity(Intent intent) {
         int sectionId = intent.getExtras().getInt("sectionId");
         int activityId = intent.getExtras().getInt("activityId");
-        Log.i("open activity", "sectionId=" + sectionId + "," + "activityId" + activityId);
+        Log.i("open activities", "sectionId=" + sectionId + "," + "activityId" + activityId);
         flowController.loadDomainActivityData(sectionId, activityId);
     }
 

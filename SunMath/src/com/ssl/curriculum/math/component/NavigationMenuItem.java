@@ -1,7 +1,5 @@
 package com.ssl.curriculum.math.component;
 
-import java.io.FileNotFoundException;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.listener.NextLevelMenuChangedListener;
 
@@ -40,15 +37,9 @@ public class NavigationMenuItem extends FrameLayout {
             public void onClick(View view) {
                 if (nextLevelChangedListener != null) {
 						nextLevelChangedListener.onNextLevelMenu(getUniqueId());
-					
                 }
-                
-                
             }
         });
-        
-        
-        
     }
 
     public void setMenuName(String name) {

@@ -1,4 +1,4 @@
-package com.sunshine.support.activities;
+package com.sunshine.support.manager.activities;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -19,7 +19,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private PackageManager localPackageManager;
 
     /**
-     * Called when the activity is first created.
+     * Called when the activities is first created.
      */
 
     private TextView tvViewMetadataUpdates, tvViewAppUpdates, tvViewSystemConfigs;
@@ -81,10 +81,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, ViewMetadataUpdatesActivity.class));
                 break;
             case R.id.btn_update_app:
-                startActivity(new Intent("com.sunshine.support.action.sync"));
+                startService(new Intent("com.sunshine.support.action.update"));
                 break;
             case R.id.btn_update_metadata:
-                startActivity(new Intent("com.sunshine.support.action.update"));
+                startService(new Intent("com.sunshine.support.action.sync"));
                 break;
             default:
                 return;

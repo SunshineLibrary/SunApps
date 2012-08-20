@@ -1,4 +1,4 @@
-package com.sunshine.support.sync;
+package com.sunshine.support.sync.managers;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -20,7 +20,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class TableSyncManager {
+public class BasicTableSyncManager implements TableSyncManager {
 
 	private static final int MAX_RETRY_COUNT = 3;
 	private static final int BATCH_SIZE = 100;
@@ -30,7 +30,7 @@ public class TableSyncManager {
 	private Table table;
 	private long lastUpdateTime;
 
-	public TableSyncManager(Table table, Table syncStatesTable) {
+	public BasicTableSyncManager(Table table, Table syncStatesTable) {
 		this.table = table;
 		this.syncStateTable = syncStatesTable;
 		lastUpdateTime = getLastUpdateTimeFromDB();
