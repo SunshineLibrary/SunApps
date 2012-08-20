@@ -81,10 +81,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, ViewMetadataUpdatesActivity.class));
                 break;
             case R.id.btn_update_app:
-                startActivity(new Intent("com.sunshine.support.action.sync"));
+                startService(new Intent("com.sunshine.support.action.update"));
                 break;
             case R.id.btn_update_metadata:
-                startActivity(new Intent("com.sunshine.support.action.update"));
+                startService(new Intent("com.sunshine.support.action.sync"));
                 break;
             default:
                 return;

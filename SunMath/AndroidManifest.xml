@@ -28,6 +28,11 @@
             android:label="@string/gallery_flipper_activity_title"
             android:screenOrientation="landscape" >
         </activity>
+        <activity
+            android:name=".activity.WebViewActivity"
+            android:label="@string/web_view_activity_title"
+            android:screenOrientation="landscape" >
+        </activity>
     </application>
 
     <uses-permission android:name="com.sunshine.metadata.provider.READ_WRITE_PERMISSION" />

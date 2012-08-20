@@ -35,7 +35,6 @@ public class FlipperTextView extends FlipperChildView {
         notesTextView = (TextView) findViewById(R.id.flipper_text_notes);
         notesTextView.setText(data.notes);
         mainTextView = (TextView) findViewById(R.id.flipper_text_main);
-
         FileDescriptor descriptor = getTextFileDescriptor(data.activityId);
         if (descriptor == null)
             Log.d("Descriptor", "Descriptor is null");

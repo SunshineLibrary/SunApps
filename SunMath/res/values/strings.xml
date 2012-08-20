@@ -10,5 +10,6 @@
     <string name="gallery_flipper_activity_title">Gallery Image</string>
 
     <string name="correct">正确</string>
+    <string name="web_view_activity_title">我是WebView</string>
 
 </resources>
