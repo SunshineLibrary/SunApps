@@ -1,14 +1,9 @@
 package com.ssl.curriculum.math.presenter;
 
-import com.ssl.curriculum.math.activity.NaviActivity;
 import android.content.Context;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
+import com.ssl.curriculum.math.activity.NaviActivity;
 import com.ssl.curriculum.math.component.HorizontalListView;
 import com.ssl.curriculum.math.component.NavigationListView;
 import com.ssl.curriculum.math.listener.NavigationMenuItemSelectedListener;
@@ -18,6 +13,7 @@ import com.ssl.curriculum.math.model.menu.MenuItem;
 import com.ssl.curriculum.math.service.NavigationMenuContentProvider;
 import com.ssl.curriculum.math.service.NavigationMenuProvider;
 import com.ssl.curriculum.math.task.FetchNavigationMenuTask;
+
 import java.util.List;
 
 public class NavigationMenuPresenter implements NextLevelMenuChangedListener {

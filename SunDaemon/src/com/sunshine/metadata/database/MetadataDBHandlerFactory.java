@@ -23,7 +23,6 @@ public class MetadataDBHandlerFactory {
 
     private static void initNormalTables(DBHandler dbHandler) {
         dbHandler.addTableManager(APISyncStateTable.TABLE_NAME, new APISyncStateTable(dbHandler));
-        dbHandler.addTableManager(PackageTable.TABLE_NAME, new PackageTable(dbHandler));
         dbHandler.addTableManager(CourseTable.TABLE_NAME, new CourseTable(dbHandler));
         dbHandler.addTableManager(ChapterTable.TABLE_NAME, new ChapterTable(dbHandler));
         dbHandler.addTableManager(LessonTable.TABLE_NAME, new LessonTable(dbHandler));

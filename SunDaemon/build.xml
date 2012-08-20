@@ -39,6 +39,10 @@
             <arg value="shell" />
             <arg value="rm -r /sdcard/.contents" />
         </exec>
+        <exec executable="${sdk.dir}/platform-tools/adb">
+            <arg value="shell" />
+            <arg value="rm -r /sdcard/.apks" />
+        </exec>
     </target>
 
     <taskdef name="aapt" classname="com.android.ant.AaptExecTask" classpathref="android.antlibs"/>
@@ -59,9 +63,6 @@
               nonConstantId="false">
             <res refid="project.res"/>
         </aapt>
-        <copy todir="${classes.dir}">
-            <fileset dir="${gen.dir}"/>
-        </copy>
     </target>
 
     <target name="compile" depends="clean, init, generate-R">
@@ -92,7 +93,7 @@
             <arg value="am"/>
             <arg value="start"/>
             <arg value="-n"/>
-            <arg value="com.sunshine.support/com.sunshine.support.SupportServiceActivity"/>
+            <arg value="com.sunshine.support/com.sunshine.support.manager.activities.MainActivity"/>
         </exec>
     </target>
 

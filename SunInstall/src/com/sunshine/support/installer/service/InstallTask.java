@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStream;
 
 public class InstallTask extends AsyncTask<Uri, Integer, Boolean>{
@@ -45,6 +47,7 @@ public class InstallTask extends AsyncTask<Uri, Integer, Boolean>{
 
             if(result.equals("Success\n")) {
                 Log.i(getClass().getName(), "Successfully Installed APK: " + uri.toString());
+                new File(fileName).delete();
                 return true;
             } else {
                 Log.e(getClass().getName(), "Failed to install APK: " + uri.toString());

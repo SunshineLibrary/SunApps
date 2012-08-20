@@ -1,15 +1,11 @@
-package com.sunshine.support.sync;
+package com.sunshine.support.sync.managers;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.provider.BaseColumns;
+import android.util.Log;
 import com.sunshine.metadata.database.Table;
-import com.sunshine.metadata.database.tables.AbstractTable;
+import com.sunshine.metadata.database.tables.APISyncStateTable.APISyncState;
 import com.sunshine.support.api.ApiClient;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -17,14 +13,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.provider.BaseColumns;
-import android.util.Log;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
-import com.sunshine.metadata.database.tables.APISyncStateTable.APISyncState;
-
-public class TableSyncManager {
+public class BasicTableSyncManager implements TableSyncManager {
 
 	private static final int MAX_RETRY_COUNT = 3;
 	private static final int BATCH_SIZE = 100;
@@ -34,7 +30,7 @@ public class TableSyncManager {
 	private Table table;
 	private long lastUpdateTime;
 
-	public TableSyncManager(Table table, Table syncStatesTable) {
+	public BasicTableSyncManager(Table table, Table syncStatesTable) {
 		this.table = table;
 		this.syncStateTable = syncStatesTable;
 		lastUpdateTime = getLastUpdateTimeFromDB();

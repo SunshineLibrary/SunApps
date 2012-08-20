@@ -40,7 +40,7 @@ public class ExternalFileStorage implements FileStorage{
         return file;
     }
 
-    public File readFile(String filePath) {
+    public File getFile(String filePath) {
         return new File(externalStorageRoot, filePath);
     }
 }

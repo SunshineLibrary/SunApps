@@ -13,10 +13,8 @@
     <application android:icon="@drawable/icon" android:label="@string/app_name">
 
         <service android:name=".service.InstallerService"
-                android:enabled="true">
-            <intent-filter>
-                <action android:name="com.sunshine.support.action.install"/>
-            </intent-filter>
+                 android:permission="com.sunshine.support.installer.INSTALL_PERMISSION"
+                 android:enabled="true">
             <intent-filter>
                 <action android:name="com.sunshine.support.action.scheduleInstall"/>
                 <data android:scheme="file"/>
@@ -24,4 +22,7 @@
         </service>
 
     </application>
+
+    <permission android:protectionLevel="normal" android:name="com.sunshine.support.installer.INSTALL_PERMISSION"/>
+
 </manifest>

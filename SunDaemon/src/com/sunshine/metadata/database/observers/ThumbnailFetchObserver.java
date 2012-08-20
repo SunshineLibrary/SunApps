@@ -5,11 +5,7 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import com.sunshine.metadata.database.tables.ActivityTable;
-import com.sunshine.metadata.database.tables.BookCollectionTable;
-import com.sunshine.metadata.database.tables.BookTable;
-import com.sunshine.metadata.database.tables.GalleryImageTable;
-import com.sunshine.metadata.database.tables.ObservableTable;
+import com.sunshine.metadata.database.tables.*;
 import com.sunshine.metadata.provider.Matcher;
 import com.sunshine.metadata.provider.MetadataContract.BookCollections;
 import com.sunshine.metadata.provider.MetadataContract.Books;
@@ -46,7 +42,7 @@ public class ThumbnailFetchObserver extends TableObserver {
                         Books.getBookThumbnailUri(id)).execute();
             } else if (table.getTableName().equals(BookCollectionTable.TABLE_NAME)) {
                 new FileDownloadTask(context,
-                        ApiClient.getThumbnailUri("bookCollections", id),
+                        ApiClient.getThumbnailUri("book_collections", id),
                         BookCollections.getBookCollectionThumbnailUri(id)).execute();
             }
         }

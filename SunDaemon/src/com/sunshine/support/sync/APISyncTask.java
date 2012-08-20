@@ -1,12 +1,13 @@
 package com.sunshine.support.sync;
 
+import android.os.AsyncTask;
 import android.util.Log;
 import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.MetadataDBHandlerFactory;
 import com.sunshine.metadata.database.Table;
 import com.sunshine.metadata.database.tables.*;
-
-import android.os.AsyncTask;
+import com.sunshine.support.sync.managers.TableSyncManager;
+import com.sunshine.support.sync.managers.TableSyncManagerFactory;
 
 public class APISyncTask extends AsyncTask<String, String, Integer> {
 
@@ -47,7 +48,7 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
 			for (String tableName: SYNCED_TABLES) {
                 Log.v(getClass().getName(), "Synchronizing table: " + tableName);
 				Table table = dbHandler.getTableManager(tableName);
-				TableSyncManager syncManager = new TableSyncManager(table, syncTable);
+				TableSyncManager syncManager = TableSyncManagerFactory.getManager(table, syncTable);
 				if (!syncManager.sync() ) {
 					status = SYNC_FAILURE;
 					break;
@@ -56,8 +57,14 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
  		}
 		return status;
 	}
-	
-	protected boolean isConnected() {
+
+    @Override
+    protected void onPostExecute(Integer integer) {
+        super.onPostExecute(integer);
+        dbHandler.close();
+    }
+
+    protected boolean isConnected() {
 		return context.isConnected();
 	}
 }

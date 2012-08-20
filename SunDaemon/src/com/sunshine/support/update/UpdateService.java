@@ -1,4 +1,4 @@
-package com.sunshine.support.updater;
+package com.sunshine.support.update;
 
 import android.app.Service;
 import android.content.Intent;
@@ -11,12 +11,9 @@ public class UpdateService extends Service {
     }
 
     @Override
-    public void onCreate() {
-    }
-
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        return START_STICKY;
+        new UpdateTask(this).execute();
+        return START_NOT_STICKY;
     }
 }

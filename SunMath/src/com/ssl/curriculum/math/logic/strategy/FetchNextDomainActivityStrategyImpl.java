@@ -43,14 +43,14 @@ public class FetchNextDomainActivityStrategyImpl implements FetchNextDomainActiv
     }
 
     private SectionActivityData fetchFromActivitiesGroup(SectionActivitiesData sectionActivitiesData, SectionActivityData currentSectionActivity) {
-        Log.i("@fetch activity by order. fetch from all activities:", sectionActivitiesData.toString());
-        Log.i("@fetch activity by order. fetch from the:", currentSectionActivity.toString());
+        Log.i("@fetch activities by order. fetch from all activities:", sectionActivitiesData.toString());
+        Log.i("@fetch activities by order. fetch from the:", currentSectionActivity.toString());
         SectionActivityData sectionActivityBySequence = sectionActivitiesData.getSectionActivityBySequence(currentSectionActivity.sequence);
         String msg = null;
         if (sectionActivityBySequence != null) {
             msg = sectionActivityBySequence.toString();
         }
-        Log.i("@fetch activity by order. to the:", msg);
+        Log.i("@fetch activities by order. to the:", msg);
         return sectionActivityBySequence;
     }
 

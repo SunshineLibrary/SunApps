@@ -198,6 +198,4 @@ public class MetadataProvider extends ContentProvider {
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
         return sharedStorageManager.openFile(uri, mode);
     }
-
-
 }

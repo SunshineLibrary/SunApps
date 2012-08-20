@@ -1,17 +1,15 @@
 package com.sunshine.support.api;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import android.content.IntentFilter;
 import android.net.Uri;
-import com.sunshine.metadata.database.tables.*;
+import com.sunshine.metadata.database.tables.GalleryImageTable;
 import org.apache.http.client.HttpClient;
-import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.HttpParams;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ApiClient {
 
@@ -20,6 +18,7 @@ public class ApiClient {
     // private static final String HOST = "10.0.2.2:3000";
     // private static final String HOST = "192.168.2.128:3000";
     private static final String HOST = "42.121.65.247";
+    // private static final String HOST = "s.sunshine-library.org";
 
     private static final Map<String, String> apiMap;
 
@@ -39,7 +38,8 @@ public class ApiClient {
     }
 
     public static synchronized HttpClient newHttpClient() {
-        return new DefaultHttpClient(getConnManager(), null);
+        // return new DefaultHttpClient(getConnManager(), null);
+        return new DefaultHttpClient();
     }
 
     public static String getSyncRequestUrl(String tableName, long lastUpdateTime) {
@@ -63,5 +63,9 @@ public class ApiClient {
 
     public static Uri getThumbnailUri(String type, int id) {
         return ROOT_URI.buildUpon().appendPath("download").appendPath(type + "_thumb").appendPath(String.valueOf(id)).build();
+    }
+
+    public static Uri getApkUpdateUri() {
+        return ROOT_URI.buildUpon().appendPath("apks").appendPath("get_updates").build();
     }
 }
