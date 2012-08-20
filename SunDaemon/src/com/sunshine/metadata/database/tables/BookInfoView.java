@@ -47,8 +47,10 @@ public class BookInfoView implements TableView {
         query.append(String.format(" ON b.%s = a.%s and b.%s = bt.%s and bt.%s = t.%s ",
         		Books._AUTHOR_ID, Authors._ID, Books._ID, BookTags._BOOK_ID, BookTags._TAG_ID, Tags._ID));
         
-        query.append(String.format(" WHERE t.%s = '%s';",
+        query.append(String.format(" WHERE t.%s = '%s' ",
         		Tags._TYPE, Tags.TYPE.THEME));
+        
+        query.append(" GROUP BY book_id;");
         
         return query.toString();
     }
