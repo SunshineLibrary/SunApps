@@ -1,70 +1,100 @@
 package com.ssl.curriculum.math.activity;
 
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.R;
-
+import com.ssl.curriculum.math.anim.FlipAnimationManager;
+import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
+import com.ssl.curriculum.math.logic.ActivityFlowController;
+import com.ssl.curriculum.math.logic.strategy.FetchNextDomainActivityStrategyImpl;
+import com.ssl.curriculum.math.presenter.FlipperViewsBuilder;
+import com.ssl.curriculum.math.service.ActivityContentProvider;
+import com.ssl.curriculum.math.service.SectionActivityContentProvider;
+import com.ssl.curriculum.math.task.FetchActivityTaskManager;
 public class MainActivity extends Activity {
 
-    private ViewFlipper viewFlipper;
+
+    private ActivityFlowController flowController;
     private ImageView leftBtn;
     private ImageView rightBtn;
     private ImageView naviBtn;
-    private Animation animFlipInFromRight;
-    private Animation animFlipInFromLeft;
-    private Animation animFlipOutToRight;
-    private Animation animFlipOutToLeft;
+    private ViewFlipper viewFlipper;
+
+    private FlipperViewsBuilder flipperViewsBuilder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initUI();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        initComponents();
         initListeners();
-        loadAnimation();
+        getDomainActivity(getIntent());
+    }
+
+    private void getDomainActivity(Intent intent) {
+        int sectionId = intent.getExtras().getInt("sectionId");
+        int activityId = intent.getExtras().getInt("activityId");
+        Log.i("open activities", "sectionId=" + sectionId + "," + "activityId" + activityId);
+        flowController.loadDomainActivityData(sectionId, activityId);
     }
 
     private void initUI() {
         setContentView(R.layout.main_layout);
+        leftBtn = (ImageView) this.findViewById(R.id.main_activity_left_btn);
+        rightBtn = (ImageView) this.findViewById(R.id.main_activity_right_btn);
+        naviBtn = (ImageView) this.findViewById(R.id.main_activity_navi_btn);
         viewFlipper = (ViewFlipper) this.findViewById(R.id.main_activity_view_flipper);
-        this.leftBtn = (ImageView) this.findViewById(R.id.main_activity_left_btn);
-        this.rightBtn = (ImageView) this.findViewById(R.id.main_activity_right_btn);
-        this.naviBtn = (ImageView) this.findViewById(R.id.main_activity_navi_btn);
     }
 
+    private void initComponents() {
+        flipperViewsBuilder = new FlipperViewsBuilder(this);
+        FetchActivityTaskManager fetchActivityTaskManager = new FetchActivityTaskManager(new ActivityContentProvider(this), new SectionActivityContentProvider(this));
+        flowController = new ActivityFlowController(viewFlipper, flipperViewsBuilder, fetchActivityTaskManager, new FetchNextDomainActivityStrategyImpl(), new FlipAnimationManager(this));
+    }
+
+
     private void initListeners() {
-        this.leftBtn.setOnClickListener(new OnClickListener() {
+        leftBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                viewFlipper.setInAnimation(animFlipInFromRight);
-                viewFlipper.setOutAnimation(animFlipOutToLeft);
-                viewFlipper.showPrevious();
+                flowController.onShowPrevious();
             }
         });
-        this.rightBtn.setOnClickListener(new OnClickListener() {
+
+        rightBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                viewFlipper.setInAnimation(animFlipInFromLeft);
-                viewFlipper.setOutAnimation(animFlipOutToRight);
-                viewFlipper.showNext();
+                flowController.onShowNext();
             }
         });
-        this.naviBtn.setOnClickListener(new OnClickListener() {
+
+        naviBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), NaviActivity.class);
+                finish();
+            }
+        });
+
+        flipperViewsBuilder.setGalleryThumbnailItemClickListener(new GalleryItemClickedListener() {
+            @Override
+            public void onGalleryItemClicked() {
+                Intent intent = new Intent(MainActivity.this, GalleryFlipperActivity.class);
                 startActivity(intent);
             }
         });
     }
 
-    private void loadAnimation() {
-        animFlipInFromLeft = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.flip_in_from_left);
-        animFlipInFromRight = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.flip_in_from_right);
-        animFlipOutToRight = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.flip_out_to_right);
-        animFlipOutToLeft = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.flip_out_to_left);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        flowController.destroyFlipperSubViews();
     }
 }

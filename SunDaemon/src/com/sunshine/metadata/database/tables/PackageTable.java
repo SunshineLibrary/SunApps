@@ -1,13 +1,13 @@
 package com.sunshine.metadata.database.tables;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.provider.MetadataContract.Packages;
 
 /**
  * @author Bowen Sun
  *
  */
-public class PackageTable extends Table {
+public class PackageTable extends AbstractTable {
 	
 	public static final String TABLE_NAME = "packages";
 	
@@ -23,22 +23,7 @@ public class PackageTable extends Table {
 		{Packages._VERSION, "INTEGER"}
 	};
 
-	public PackageTable(MetadataDBHandler db) {
-		super(db);
-	}
-
-	@Override
-	public String getTableName() {
-		return TABLE_NAME;
-	}
-
-	@Override
-	public String[][] getColumnDefinitions() {
-		return COLUMN_DEFINITIONS;
-	}
-
-	@Override
-	public String[] getColumns() {
-		return ALL_COLUMNS;
+	public PackageTable(DBHandler db) {
+		super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
 	}
 }

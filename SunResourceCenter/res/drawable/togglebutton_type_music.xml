@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+          >
+ <item android:state_checked="true"> <!-- pressed -->
+ 	<bitmap android:src="@drawable/type_music_active" android:gravity="center"/>
+ </item>
+ <item android:state_checked="false"> <!-- unchecked -->
+ 	<bitmap android:src="@drawable/type_music_normal" android:gravity="center"/>
+ </item>
+ <item><!-- default -->
+    <bitmap android:src="@drawable/type_music_normal" android:gravity="center"/>
+ </item>
+</selector>

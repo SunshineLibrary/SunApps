@@ -1,72 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
 
-    <RelativeLayout android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/main_activity_navi_background">
-        <ImageView android:id="@+id/main_activity_navi_btn"
-                   android:src="@drawable/ic_main_activity_navi"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_marginTop="5dp"
-                   android:layout_alignParentTop="true"
-                   android:layout_alignParentLeft="true"/>
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:background="@drawable/main_activity_background" >
+
         <ImageView
-                android:id="@+id/main_activity_left_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/main_activity_show_previous_selector"/>
+            android:id="@+id/main_activity_navi_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_main_activity_navi" />
 
-        <ImageView android:id="@+id/main_activity_flipper_left_shadow"
-                   android:layout_height="fill_parent"
-                   android:layout_width="6dp"
-                   android:layout_alignParentRight="true"
-                   android:scaleType="fitXY" android:src="@drawable/left_gradient"/>
+        <ImageView
+            android:id="@+id/main_activity_left_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/main_activity_show_previous_selector" />
 
+        <ImageView
+            android:id="@+id/main_activity_flipper_left_shadow"
+            android:layout_width="6dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/left_gradient" />
     </RelativeLayout>
 
-    <ViewFlipper android:id="@+id/main_activity_view_flipper"
-                 android:layout_width="0dp"
-                 android:layout_height="fill_parent"
-                 android:layout_weight="5"
-                 android:gravity="center_vertical"
-                 android:background="@color/main_activity_view_flipper_bg">
-        <include android:id="@+id/layout1" layout="@layout/layout1"/>
-        <include android:id="@+id/layout2" layout="@layout/layout2"/>
-        <com.ssl.curriculum.math.page.GalleryPage android:layout_height="fill_parent"
-                                                  android:layout_width="fill_parent"/>
+    <ViewFlipper
+        android:id="@+id/main_activity_view_flipper"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="5"
+        android:background="@color/main_activity_view_flipper_bg"
+        android:gravity="center_vertical" >
     </ViewFlipper>
 
-    <RelativeLayout android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/main_activity_navi_background">
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:background="@drawable/main_activity_background" >
 
-        <ImageView android:layout_height="fill_parent"
-                   android:layout_width="6dp"
-                   android:layout_alignParentLeft="true"
-                   android:scaleType="fitXY" android:src="@drawable/right_gradient"/>
+        <ImageView
+            android:layout_width="6dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/right_gradient" />
 
-        <ImageView android:id="@+id/main_activity_stat_btn"
-                     android:src="@drawable/ic_main_activity_stat"
-                     android:layout_alignParentTop="true"
-                     android:layout_alignParentRight="true"
-                     android:layout_marginTop="5dp"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/main_activity_stat_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_main_activity_stat" />
 
-        <ImageView android:id="@+id/main_activity_right_btn"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_centerInParent="true"
-                     android:src="@drawable/main_activity_show_next_selector" />
-
-
+        <ImageView
+            android:id="@+id/main_activity_right_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/main_activity_show_next_selector" />
     </RelativeLayout>
 
 </LinearLayout>

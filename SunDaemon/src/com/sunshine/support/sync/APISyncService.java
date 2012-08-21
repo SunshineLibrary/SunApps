@@ -6,12 +6,13 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
 public class APISyncService extends Service {
 
 	private boolean syncInProgress;
 	private APISyncTask syncTask;
-	private static final String IP = "42.121.65.247";
+	private static final String IP = "ssl-mock.herokuapp.com";
 	private static final long MIN_DELAY = 1200000;
 	private ConnectivityManager cm;
 
@@ -28,6 +29,7 @@ public class APISyncService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		if (!syncInProgress
 				&& System.currentTimeMillis() > MIN_DELAY + lastSuccessfulSync) {
+            Log.v(getClass().getName(), "Starting API Sync Task...");
 			syncTask.execute();
 			syncInProgress = true;
 		}
@@ -38,12 +40,15 @@ public class APISyncService extends Service {
 	public void onCreate() {
 		cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		syncInProgress = false;
-		syncTask = new APISyncTask(this, IP) {
+		syncTask = new APISyncTask(this) {
 			@Override
 			protected void onPostExecute(Integer result) {
-				if (result.intValue() == SYNC_SUCCESS) {
+				if (result.intValue() == SUCCESS) {
+                    Log.v(getClass().getName(), "API sync completed successfully.");
 					lastSuccessfulSync = System.currentTimeMillis();
-				}
+				} else {
+                    Log.v(getClass().getName(), "API sync failed.");
+                }
 				stopSelf();
 			}
 		};
@@ -63,6 +68,11 @@ public class APISyncService extends Service {
 	}
 
 	protected boolean isConnected() {
-		return cm.getActiveNetworkInfo().isConnected();
+        if (cm != null && cm.getActiveNetworkInfo() != null) {
+            return cm.getActiveNetworkInfo().isConnected();
+        } else {
+            Log.v(getClass().getName(), "Device is not connected...");
+            return false;
+        }
 	}
 }

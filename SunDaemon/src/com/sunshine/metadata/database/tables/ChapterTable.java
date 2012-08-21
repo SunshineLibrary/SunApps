@@ -1,6 +1,6 @@
 package com.sunshine.metadata.database.tables;
 
-import com.sunshine.metadata.database.MetadataDBHandler;
+import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.provider.MetadataContract;
 
 import static com.sunshine.metadata.provider.MetadataContract.Chapters;
@@ -22,8 +22,8 @@ public class ChapterTable extends MenuWithForeignKeyTable {
             {Chapters._PARENT_ID, "INTEGER NOT NULL"}
     };
 
-    public ChapterTable(MetadataDBHandler handler) {
-        super(handler);
+    public ChapterTable(DBHandler handler) {
+        super(handler, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
     }
 
     @Override
@@ -34,21 +34,6 @@ public class ChapterTable extends MenuWithForeignKeyTable {
     @Override
     protected String getParentTableName() {
         return CourseTable.TABLE_NAME;
-    }
-
-    @Override
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    @Override
-    public String[][] getColumnDefinitions() {
-        return COLUMN_DEFINITIONS;
-    }
-
-    @Override
-    public String[] getColumns() {
-        return ALL_COLUMNS;
     }
 
 	@Override

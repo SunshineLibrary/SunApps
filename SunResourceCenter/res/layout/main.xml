@@ -1,0 +1,329 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentTop="true"
+    android:background="@color/app_background"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/chrome"
+        android:padding="@dimen/padding_zero" >
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true" >
+
+            <requestFocus />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/searchbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/search"
+            android:ems="10"
+            android:hint="@string/search_resources"
+            android:inputType="text"
+            android:paddingBottom="0dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="10dp"
+            android:paddingTop="0dp" >
+        </EditText>
+
+        <Spinner
+            android:id="@+id/mainnav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/main_spinner_bg"
+            android:entries="@array/main_menu"
+            android:padding="@dimen/padding_small" 
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/subnav_height"
+        android:background="@color/chrome_background" >
+
+        <LinearLayout
+            android:id="@+id/resnav"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:visibility="visible" >
+
+            <ToggleButton
+                android:id="@+id/resnav_reading"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/subnav_height"
+                android:background="@drawable/togglebutton_nav"
+                android:checked="true"
+                android:padding="@dimen/padding_small"
+                android:text="@string/res_reading"
+                android:textColor="@color/chrome"
+                android:textOff="@string/res_reading"
+                android:textOn="@string/res_reading" />
+
+            <ToggleButton
+                android:id="@+id/resnav_all"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/subnav_height"
+                android:background="@drawable/togglebutton_nav"
+                android:padding="@dimen/padding_small"
+                android:text="@string/res_all_resources"
+                android:textColor="@color/chrome"
+                android:textOff="@string/res_all_resources"
+                android:textOn="@string/res_all_resources" />
+
+            <ToggleButton
+                android:id="@+id/resnav_recent_downloaded"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/subnav_height"
+                android:background="@drawable/togglebutton_nav"
+                android:padding="@dimen/padding_small"
+                android:text="@string/res_recent_downloaded"
+                android:textColor="@color/chrome"
+                android:textOff="@string/res_recent_downloaded"
+                android:textOn="@string/res_recent_downloaded" />
+
+            <ToggleButton
+                android:id="@+id/resnav_learn_new"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/subnav_height"
+                android:background="@drawable/togglebutton_nav"
+                android:padding="@dimen/padding_small"
+                android:text="@string/res_learn_new"
+                android:textColor="@color/chrome"
+                android:textOff="@string/res_learn_new"
+                android:textOn="@string/res_learn_new" />
+
+            <ToggleButton
+                android:id="@+id/resnav_readed"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/subnav_height"
+                android:background="@drawable/togglebutton_nav"
+                android:padding="@dimen/padding_small"
+                android:text="@string/res_readed"
+                android:textColor="@color/chrome"
+                android:textOff="@string/res_readed"
+                android:textOn="@string/res_readed" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/typenav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:visibility="visible" >
+
+            <ToggleButton
+                android:id="@+id/type_book"
+                android:layout_width="@dimen/typenav_width"
+                android:layout_height="fill_parent"
+                android:background="@drawable/togglebutton_type_book"
+                android:checked="true"
+                android:text="@string/empty"
+                android:textOff="@string/empty"
+                android:textOn="@string/empty" />
+
+            <ToggleButton
+                android:id="@+id/type_video"
+                android:layout_width="@dimen/typenav_width"
+                android:layout_height="fill_parent"
+                android:background="@drawable/togglebutton_type_movie"
+                android:text="@string/empty"
+                android:textOff="@string/empty"
+                android:textOn="@string/empty" />
+
+            <ToggleButton
+                android:id="@+id/type_audio"
+                android:layout_width="@dimen/typenav_width"
+                android:layout_height="fill_parent"
+                android:background="@drawable/togglebutton_type_music"
+                android:text="@string/empty"
+                android:textOff="@string/empty"
+                android:textOn="@string/empty" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/downnav"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:visibility="invisible" >
+
+            <ToggleButton
+                android:id="@+id/downnav_recommend"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/subnav_height"
+                android:background="@drawable/togglebutton_nav"
+                android:checked="true"
+                android:padding="@dimen/padding_small"
+                android:text="@string/download_recommend"
+                android:textColor="@color/chrome"
+                android:textOff="@string/download_recommend"
+                android:textOn="@string/download_recommend" />
+
+            <ToggleButton
+                android:id="@+id/downnav_hot"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/subnav_height"
+                android:background="@drawable/togglebutton_nav"
+                android:padding="@dimen/padding_small"
+                android:text="@string/download_hot"
+                android:textColor="@color/chrome"
+                android:textOff="@string/download_hot"
+                android:textOn="@string/download_hot" />
+
+            <ToggleButton
+                android:id="@+id/downnav_category"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/subnav_height"
+                android:background="@drawable/togglebutton_nav"
+                android:padding="@dimen/padding_small"
+                android:text="@string/download_category"
+                android:textColor="@color/chrome"
+                android:textOff="@string/download_category"
+                android:textOn="@string/download_category" />
+
+            <ToggleButton
+                android:id="@+id/downnav_like"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/subnav_height"
+                android:background="@drawable/togglebutton_nav"
+                android:padding="@dimen/padding_small"
+                android:text="@string/download_like"
+                android:textColor="@color/chrome"
+                android:textOff="@string/download_like"
+                android:textOn="@string/download_like" />
+
+            <ToggleButton
+                android:id="@+id/downnav_list"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/subnav_height"
+                android:background="@drawable/togglebutton_nav"
+                android:hint="@string/download_list"
+                android:padding="@dimen/padding_small"
+                android:text="@string/download_list"
+                android:textColor="@color/chrome"
+                android:textOff="@string/download_list"
+                android:textOn="@string/download_list" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/collection_back"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible" >
+
+            <TextView
+                android:id="@+id/title_collction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/chrome"
+                android:textSize="@dimen/grid_text_large" />
+
+            <ImageButton
+                android:id="@+id/btn_collection_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:background="@color/chrome_background"
+                android:contentDescription="@string/empty"
+                android:src="@drawable/back01" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <!-- android:listSelector="@drawable/grid_selector" -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/grid_background"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dp" >
+        </GridView>
+
+        <LinearLayout
+            android:id="@+id/recommand_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/app_background"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:weightSum="1.0" >
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="50dp"
+                android:layout_weight="0.3"
+                android:src="@color/chrome" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.7"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp" >
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:src="@drawable/ic_launcher" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:src="@drawable/ic_launcher" />
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:src="@drawable/ic_launcher" />
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:src="@drawable/ic_launcher" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

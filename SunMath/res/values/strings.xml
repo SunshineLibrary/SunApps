@@ -1,7 +1,15 @@
 <resources>
+
     <string name="app_name">test</string>
     <string name="main_activity_navi_btn_text">Navi</string>
     <string name="main_activity_stat_btn_text">Stat</string>
     <string name="title_main_activity">MainActivity</string>
     <string name="title_navi_activity">NaviActivity</string>
+    <string name="gallery_page_title">故宫图片集</string>
+    <string name="url">URL to streaming video</string>
+    <string name="gallery_flipper_activity_title">Gallery Image</string>
+
+    <string name="correct">正确</string>
+    <string name="web_view_activity_title">我是WebView</string>
+
 </resources>

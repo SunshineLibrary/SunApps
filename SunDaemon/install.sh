@@ -1,4 +1,3 @@
-ant release
 adb uninstall com.sunshine.support
+adb shell rm -r /sdcard/.contents
 adb install ./bin/SunDaemon-release.apk
-db/db.sh

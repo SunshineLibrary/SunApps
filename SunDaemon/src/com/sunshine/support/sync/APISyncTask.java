@@ -1,66 +1,83 @@
 package com.sunshine.support.sync;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import android.net.Uri;
 import android.os.AsyncTask;
-
-import com.sunshine.metadata.database.MetadataDBHandler;
-import com.sunshine.metadata.database.tables.APISyncStateTable;
-import com.sunshine.metadata.database.tables.ChapterTable;
-import com.sunshine.metadata.database.tables.CourseTable;
-import com.sunshine.metadata.database.tables.LessonTable;
-import com.sunshine.metadata.database.tables.PackageTable;
-import com.sunshine.metadata.database.tables.SectionTable;
-import com.sunshine.metadata.database.tables.Table;
+import android.util.Log;
+import com.sunshine.metadata.database.DBHandler;
+import com.sunshine.metadata.database.MetadataDBHandlerFactory;
+import com.sunshine.metadata.database.Table;
+import com.sunshine.metadata.database.tables.*;
+import com.sunshine.support.data.daos.ApiSyncStateDao;
+import com.sunshine.support.data.models.ApiSyncState;
+import com.sunshine.support.sync.managers.TableSyncManager;
+import com.sunshine.support.sync.managers.TableSyncManagerFactory;
 
 public class APISyncTask extends AsyncTask<String, String, Integer> {
 
-	private Uri root_uri;
 	private Table syncTable;
-	private HttpClient httpClient;
-	private MetadataDBHandler dbHandler;
+	private DBHandler dbHandler;
 	private APISyncService context;
 
-	private static final String[] SYNCED_TABLES = { 
-		CourseTable.TABLE_NAME,
-		ChapterTable.TABLE_NAME,
-		LessonTable.TABLE_NAME,
-		SectionTable.TABLE_NAME,
-	};
+	private static final String[] SYNCED_TABLES = {
+            CourseTable.TABLE_NAME,
+            ChapterTable.TABLE_NAME,
+            LessonTable.TABLE_NAME,
+            SectionTable.TABLE_NAME,
+            ActivityTable.TABLE_NAME,
+            GalleryImageTable.TABLE_NAME,
+            BookTable.TABLE_NAME,
+            BookCollectionTable.TABLE_NAME,
+            ProblemTable.TABLE_NAME,
+            ProblemChoiceTable.TABLE_NAME,
+            QuizComponentsTable.TABLE_NAME,
+            SectionComponentsTable.TABLE_NAME,
+    };
 
-	public static final int SYNC_SUCCESS = 0;
-	public static final int SYNC_FAILURE = -1;
-	
-	public APISyncTask(APISyncService context, String ip) {
+	public static final int SUCCESS = 0;
+	public static final int FAILURE = -1;
+    private ApiSyncStateDao apiSyncStateDao;
+
+    public APISyncTask(APISyncService context) {
 		this.context = context;
-		this.root_uri = new Uri.Builder().scheme("http").authority(ip).build();
 
-		httpClient = new DefaultHttpClient();
-
-		dbHandler = new MetadataDBHandler(context);
-		syncTable = dbHandler.getTableManager(APISyncStateTable.TABLE_NAME);
+		dbHandler = MetadataDBHandlerFactory.newMetadataDBHandler(context);
+        apiSyncStateDao = new ApiSyncStateDao(dbHandler);
 	}
 
 	@Override
 	protected Integer doInBackground(String... params) {
-		int status = SYNC_SUCCESS;
+        int status = SUCCESS;
 		if (isConnected()) {
-			//TODO: should check for changed tables before sync.
+            Log.v(getClass().getName(), "Device is connected, starting synchronization...");
 			for (String tableName: SYNCED_TABLES) {
+                Log.v(getClass().getName(), "Synchronizing table: " + tableName);
 				Table table = dbHandler.getTableManager(tableName);
-				TableSynchronizer synchronizer = new TableSynchronizer(table, syncTable, httpClient, root_uri);
-				if (!synchronizer.sync() ) {
-					status = SYNC_FAILURE;
-					break;
-				}
+                ApiSyncState syncState = apiSyncStateDao.getApiSyncStateForTable(tableName);
+				TableSyncManager syncManager = TableSyncManagerFactory.getManager(table, syncState);
+
+                syncState.setLastSyncStatus(APISyncStateTable.ApiSyncStates.SYNC_ONGOING);
+                syncState.setLastSyncTime(System.currentTimeMillis());
+                apiSyncStateDao.persist(syncState);
+				if (!syncManager.sync() ) {
+                    syncState.setLastSyncStatus(APISyncStateTable.ApiSyncStates.SYNC_FAILURE);
+                    apiSyncStateDao.persist(syncState);
+                    status = FAILURE;
+				} else {
+                    syncState.setLastSyncStatus(APISyncStateTable.ApiSyncStates.SYNC_SUCCESS);
+                    apiSyncStateDao.persist(syncState);
+                }
 			}
  		}
 		return status;
 	}
-	
-	protected boolean isConnected() {
+
+    @Override
+    protected void onPostExecute(Integer integer) {
+        super.onPostExecute(integer);
+        apiSyncStateDao.close();
+        dbHandler.close();
+    }
+
+    protected boolean isConnected() {
 		return context.isConnected();
 	}
 }

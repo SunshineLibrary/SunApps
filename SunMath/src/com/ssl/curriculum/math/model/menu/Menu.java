@@ -7,16 +7,16 @@ public class Menu extends MenuItem {
     private List<MenuItem> children = new ArrayList<MenuItem>();
     private Menu parent;
 
-    public static Menu createMenuWithoutParent(String name) {
-        return new Menu(name, null);
+    public static Menu createMenuWithoutParent(String name, int id) {
+        return new Menu(name, id,  null);
     }
     
-    public static Menu createMenuAddedToParent(String name, Menu parent) {
-        return new Menu(name, parent);
+    public static Menu createMenuAddedToParent(String name, int id, Menu parent) {
+        return new Menu(name, id, parent);
     }
     
-    private Menu(String name, Menu parent) {
-        super(name);
+    private Menu(String name, int id, Menu parent) {
+        super(name,id);
         this.parent = parent;
         if (parent != null) {
             this.parent.addChild(this);

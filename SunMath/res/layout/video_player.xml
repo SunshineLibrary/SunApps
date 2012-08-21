@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+    <com.ssl.curriculum.math.component.videoview.TappableSurfaceView android:id="@+id/video_player_surface"
+                                                                     android:layout_width="fill_parent"
+                                                                     android:layout_height="fill_parent"
+                                                                     android:layout_gravity="center"/>
+
+    <RelativeLayout android:id="@+id/video_player_control_panel"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:background="#40808080"
+                    android:layout_alignParentBottom="true">
+
+        <ImageButton android:id="@+id/video_player_media_btn"
+                     style="@style/MediaButton"
+                     android:layout_height="wrap_content"
+                     android:layout_width="wrap_content"
+                     android:src="@drawable/ic_media_play"
+                     android:enabled="false"
+                     android:layout_alignParentLeft="true"
+                     android:layout_centerVertical="true"/>
+
+        <RelativeLayout android:id="@+id/video_player_progress_bar_and_full_screen"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/video_player_media_btn"
+                        android:layout_centerVertical="true">
+
+            <ImageButton android:id="@+id/video_player_full_screen_btn"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                         android:src="@drawable/ic_full_screen"
+                         android:enabled="false"
+                         android:layout_alignParentRight="true"
+                         android:layout_centerVertical="true"/>
+
+            <ProgressBar android:id="@+id/video_player_time_line"
+                         style="?android:attr/progressBarStyleHorizontal"
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center"
+                         android:layout_centerHorizontal="true"
+                         android:paddingLeft="2px"
+                         android:layout_toLeftOf="@id/video_player_full_screen_btn"
+                         android:layout_centerVertical="true"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,11 @@
+<resources>
+    <color name="chrome">#73b3ce</color>
+    <color name="text">#ffffff</color>
+    <color name="app_background">#f2f2d2</color>
+    <color name="chrome_background">#ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="grid_background">#f2f2d2</color>
+    <color name="text_dark">#938192</color>
+    <color name="info_grey">#C0C0C0</color>
+    
+</resources>
