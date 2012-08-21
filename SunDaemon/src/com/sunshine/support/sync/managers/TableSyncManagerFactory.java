@@ -1,6 +1,7 @@
 package com.sunshine.support.sync.managers;
 
 import com.sunshine.metadata.database.Table;
+import com.sunshine.support.data.models.ApiSyncState;
 
 /**
  * Creates TableSyncManagers for APISyncService
@@ -10,7 +11,7 @@ import com.sunshine.metadata.database.Table;
  */
 public class TableSyncManagerFactory {
 
-    public static TableSyncManager getManager(Table table, Table syncTable) {
-        return new BasicTableSyncManager(table, syncTable);
+    public static TableSyncManager getManager(Table table, ApiSyncState syncState) {
+        return new BasicTableSyncManager(table, syncState);
     }
 }

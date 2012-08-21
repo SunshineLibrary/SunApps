@@ -43,7 +43,7 @@ public class APISyncService extends Service {
 		syncTask = new APISyncTask(this) {
 			@Override
 			protected void onPostExecute(Integer result) {
-				if (result.intValue() == SYNC_SUCCESS) {
+				if (result.intValue() == SUCCESS) {
                     Log.v(getClass().getName(), "API sync completed successfully.");
 					lastSuccessfulSync = System.currentTimeMillis();
 				} else {

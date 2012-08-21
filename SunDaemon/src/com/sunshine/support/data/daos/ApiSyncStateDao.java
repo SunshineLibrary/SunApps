@@ -56,6 +56,7 @@ public class ApiSyncStateDao extends AbstractPersistentDao<ApiSyncState> {
                 syncStateMap.put(state.getTableName(), state);
             } while (cursor.moveToNext());
         }
+        cursor.close();
     }
 
     @Override
@@ -64,12 +65,14 @@ public class ApiSyncStateDao extends AbstractPersistentDao<ApiSyncState> {
     }
 
     @Override
-    protected void update(int id, ContentValues values) {
-        syncTable.update(null, values, APISyncStateTable.APISyncState._ID + "=?", new String[] {String.valueOf(id)});
+    protected void update(ApiSyncState state, ContentValues values) {
+        syncTable.update(null, values, APISyncStateTable.ApiSyncStates._ID + "=?",
+                new String[] {String.valueOf(state.getId())});
     }
 
     @Override
-    protected void insert(ContentValues values) {
-        syncTable.insert(null, values);
+    protected void insert(ApiSyncState state, ContentValues values) {
+        long id =  dbHandler.getWritableDatabase().insert(syncTable.getTableName(), null, values);
+        state.setId(id);
     }
 }

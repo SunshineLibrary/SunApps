@@ -6,6 +6,8 @@ import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.MetadataDBHandlerFactory;
 import com.sunshine.metadata.database.Table;
 import com.sunshine.metadata.database.tables.*;
+import com.sunshine.support.data.daos.ApiSyncStateDao;
+import com.sunshine.support.data.models.ApiSyncState;
 import com.sunshine.support.sync.managers.TableSyncManager;
 import com.sunshine.support.sync.managers.TableSyncManagerFactory;
 
@@ -30,29 +32,39 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
             SectionComponentsTable.TABLE_NAME,
     };
 
-	public static final int SYNC_SUCCESS = 0;
-	public static final int SYNC_FAILURE = -1;
-	
-	public APISyncTask(APISyncService context) {
+	public static final int SUCCESS = 0;
+	public static final int FAILURE = -1;
+    private ApiSyncStateDao apiSyncStateDao;
+
+    public APISyncTask(APISyncService context) {
 		this.context = context;
 
 		dbHandler = MetadataDBHandlerFactory.newMetadataDBHandler(context);
-		syncTable = dbHandler.getTableManager(APISyncStateTable.TABLE_NAME);
+        apiSyncStateDao = new ApiSyncStateDao(dbHandler);
 	}
 
 	@Override
 	protected Integer doInBackground(String... params) {
-		int status = SYNC_SUCCESS;
+        int status = SUCCESS;
 		if (isConnected()) {
             Log.v(getClass().getName(), "Device is connected, starting synchronization...");
 			for (String tableName: SYNCED_TABLES) {
                 Log.v(getClass().getName(), "Synchronizing table: " + tableName);
 				Table table = dbHandler.getTableManager(tableName);
-				TableSyncManager syncManager = TableSyncManagerFactory.getManager(table, syncTable);
+                ApiSyncState syncState = apiSyncStateDao.getApiSyncStateForTable(tableName);
+				TableSyncManager syncManager = TableSyncManagerFactory.getManager(table, syncState);
+
+                syncState.setLastSyncStatus(APISyncStateTable.ApiSyncStates.SYNC_ONGOING);
+                syncState.setLastSyncTime(System.currentTimeMillis());
+                apiSyncStateDao.persist(syncState);
 				if (!syncManager.sync() ) {
-					status = SYNC_FAILURE;
-					break;
-				}
+                    syncState.setLastSyncStatus(APISyncStateTable.ApiSyncStates.SYNC_FAILURE);
+                    apiSyncStateDao.persist(syncState);
+                    status = FAILURE;
+				} else {
+                    syncState.setLastSyncStatus(APISyncStateTable.ApiSyncStates.SYNC_SUCCESS);
+                    apiSyncStateDao.persist(syncState);
+                }
 			}
  		}
 		return status;
@@ -61,6 +73,7 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
     @Override
     protected void onPostExecute(Integer integer) {
         super.onPostExecute(integer);
+        apiSyncStateDao.close();
         dbHandler.close();
     }
 

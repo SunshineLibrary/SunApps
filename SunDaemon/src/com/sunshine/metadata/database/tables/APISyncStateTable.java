@@ -11,7 +11,7 @@ public class APISyncStateTable extends AbstractTable {
 
     public static final String TABLE_NAME = "api_sync_states";
 
-    public static final class APISyncState {
+    public static final class ApiSyncStates {
         public static final String _ID = BaseColumns._ID;
         public static final String _TABLE_NAME = "table_name";
         public static final String _LAST_UPDATE = "last_update";
@@ -24,19 +24,19 @@ public class APISyncStateTable extends AbstractTable {
     }
 
     public static final String[] ALL_COLUMNS = {
-            APISyncState._ID,
-            APISyncState._TABLE_NAME,
-            APISyncState._LAST_UPDATE,
-            APISyncState._LAST_SYNC,
-            APISyncState._LAST_SYNC_STATUS
+            ApiSyncStates._ID,
+            ApiSyncStates._TABLE_NAME,
+            ApiSyncStates._LAST_UPDATE,
+            ApiSyncStates._LAST_SYNC,
+            ApiSyncStates._LAST_SYNC_STATUS
     };
 
     public static final String[][] COLUMN_DEFINITIONS = {
-            {APISyncState._ID, "INTEGER PRIMARY KEY"},
-            {APISyncState._TABLE_NAME, "TEXT"},
-            {APISyncState._LAST_UPDATE, "INTEGER"},
-            {APISyncState._LAST_SYNC, "INTEGER"},
-            {APISyncState._LAST_SYNC_STATUS, "INTEGER"},
+            {ApiSyncStates._ID, "INTEGER PRIMARY KEY"},
+            {ApiSyncStates._TABLE_NAME, "TEXT"},
+            {ApiSyncStates._LAST_UPDATE, "INTEGER"},
+            {ApiSyncStates._LAST_SYNC, "INTEGER"},
+            {ApiSyncStates._LAST_SYNC_STATUS, "INTEGER"},
     };
 
     public APISyncStateTable(DBHandler db) {

@@ -10,9 +10,11 @@ public interface PersistentData {
 
     public boolean isDirty();
 
+    public void clearDirty();
+
     public boolean isNew();
 
-    public int getId();
+    public void clearNew();
 
     public ContentValues getUpdateContentValues();
 

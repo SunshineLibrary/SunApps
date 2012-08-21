@@ -9,23 +9,15 @@ import android.util.Log;
 
 public class InstallerReceiver extends BroadcastReceiver {
 
-    private InstallTimer timer;
-
-    private static final int INSTALL_DELAY = 60000;
-
 	@Override
 	public synchronized void onReceive(Context context, Intent intent) {
+        Intent i = new Intent(context, InstallerService.class);
         if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
-            if (timer != null) {
-                timer.cancel();
-                timer = null;
-            }
+            i.setAction(InstallerService.ACTION_STOP_TIMER);
+            context.startService(i);
         } else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-            if (timer == null) {
-                Log.v(getClass().getName(), "Receiver detected install request, starting timer");
-                timer = new InstallTimer(context, INSTALL_DELAY);
-                timer.start();
-            }
+            i.setAction(InstallerService.ACTION_START_TIMER);
+            context.startService(i);
         }
 	}
 }

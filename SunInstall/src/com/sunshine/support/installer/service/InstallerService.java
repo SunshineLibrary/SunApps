@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
@@ -13,11 +14,19 @@ import org.apache.http.entity.InputStreamEntity;
 public class InstallerService extends Service {
 
     public static final String ACTION_INSTALL = "com.sunshine.support.action.install";
+    public static final String ACTION_START_TIMER = "com.sunshine.support.action.startTimer";
+    public static final String ACTION_STOP_TIMER= "com.sunshine.support.action.stopTimer";
     public static final String ACTION_SCHEDULE_INSTALL = "com.sunshine.support.action.scheduleInstall";
+
 
 	private static final String TAG = "Installer";
     private InstallQueue installQueue;
     private BroadcastReceiver installReceiver;
+    private Handler handler;
+
+    private static final int INSTALL_DELAY = 10000;
+    private InstallTimer timer;
+
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -28,6 +37,7 @@ public class InstallerService extends Service {
 	public void onCreate() {
 		super.onCreate();
         installQueue = new InstallQueue(getBaseContext(), new InstallRequest.Factory());
+        handler = new Handler();
         registerIntentReceivers();
         if (installQueue.peek() != null) {
             notifyInstall();
@@ -48,7 +58,19 @@ public class InstallerService extends Service {
                 installTask.execute(request.getApkPath());
             }
             stopSelf();
-		}
+		} else if(intent.getAction().equals(ACTION_START_TIMER)) {
+            if (timer == null) {
+                Log.v(getClass().getName(), "Receiver detected install request, starting timer");
+                timer = new InstallTimer(this);
+                new Handler().postDelayed(timer, INSTALL_DELAY);
+            }
+        } else if(intent.getAction().equals(ACTION_STOP_TIMER)) {
+            if (timer != null) {
+                Log.v(getClass().getName(), "Receiver detected screen on, revoking timer");
+                handler.removeCallbacks(timer);
+                timer = null;
+            }
+        }
     }
 
     @Override

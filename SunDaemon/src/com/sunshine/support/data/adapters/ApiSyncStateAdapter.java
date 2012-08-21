@@ -1,6 +1,8 @@
 package com.sunshine.support.data.adapters;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.sunshine.metadata.database.tables.APISyncStateTable;
 import com.sunshine.support.R;
-import com.sunshine.support.data.models.ApiSyncState;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -21,12 +22,12 @@ import java.util.List;
  */
 public class ApiSyncStateAdapter extends BaseAdapter {
 
-    private List<ApiSyncState> states;
+    private List<com.sunshine.support.data.models.ApiSyncState> states;
     private Context context;
 
     private static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public ApiSyncStateAdapter(Context context, List<ApiSyncState> states) {
+    public ApiSyncStateAdapter(Context context, List<com.sunshine.support.data.models.ApiSyncState> states) {
         this.context = context;
         this.states = states;
     }
@@ -63,19 +64,22 @@ public class ApiSyncStateAdapter extends BaseAdapter {
         TextView tv_last_update = (TextView) newView.findViewById(R.id.tv_table_last_update);
         TextView tv_last_sync_status = (TextView) newView.findViewById(R.id.tv_table_last_sync_status);
 
-        ApiSyncState state = states.get(position);
+        com.sunshine.support.data.models.ApiSyncState state = states.get(position);
         tv_table_name.setText(state.getTableName());
         tv_last_update.setText(format.format(new Date(state.getLastUpdateTime())));
         tv_last_sync.setText(format.format(new Date(state.getLastSyncTime())));
 
         switch (state.getLastSyncStatus()) {
-            case APISyncStateTable.APISyncState.SYNC_SUCCESS:
+            case APISyncStateTable.ApiSyncStates.SYNC_SUCCESS:
+                tv_last_sync_status.setTextColor(Color.GREEN);
                 tv_last_sync_status.setText("同步成功");
                 break;
-            case APISyncStateTable.APISyncState.SYNC_ONGOING:
+            case APISyncStateTable.ApiSyncStates.SYNC_ONGOING:
+                tv_last_sync_status.setTextColor(Color.YELLOW);
                 tv_last_sync_status.setText("正在同步");
                 break;
-            case APISyncStateTable.APISyncState.SYNC_FAILURE:
+            case APISyncStateTable.ApiSyncStates.SYNC_FAILURE:
+                tv_last_sync_status.setTextColor(Color.RED);
                 tv_last_sync_status.setText("同步失败");
                 break;
         }
