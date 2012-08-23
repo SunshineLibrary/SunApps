@@ -101,11 +101,13 @@ public class BasicTableSyncManager implements TableSyncManager {
 
 	protected boolean processJsonArray(JSONArray jsonArr) throws JSONException,
 			ParseException {
+        table.beginTransaction();
 		for (int i = 0; i < jsonArr.length(); i++) {
 			JSONObject row = jsonArr.getJSONObject(i);
 			insertOrUpdateRow(row);
             syncState.setLastUpdateTime(Math.max(syncState.getLastUpdateTime(), parseTime(row.getString("updated_at"))));
 		}
+        table.endTransaction();
 		return jsonArr.length() < BATCH_SIZE;
 	}
 

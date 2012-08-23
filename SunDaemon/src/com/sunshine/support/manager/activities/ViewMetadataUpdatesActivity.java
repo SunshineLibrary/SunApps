@@ -6,6 +6,7 @@ import android.widget.ListView;
 import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.MetadataDBHandlerFactory;
 import com.sunshine.support.R;
+import com.sunshine.support.application.DaemonApplication;
 import com.sunshine.support.application.MessageApplication;
 import com.sunshine.support.application.UIMessage;
 import com.sunshine.support.application.UIMessageListener;
@@ -34,7 +35,7 @@ public class ViewMetadataUpdatesActivity extends Activity{
 
     private void loadData() {
         listener = new MetadataListUpdateListener();
-        DBHandler dbHandler = MetadataDBHandlerFactory.newMetadataDBHandler(ViewMetadataUpdatesActivity.this);
+        DBHandler dbHandler = ((DaemonApplication) getApplication()).getMetadataDBHandler();
         ApiSyncStateDao syncStateDao = new ApiSyncStateDao(ViewMetadataUpdatesActivity.this, dbHandler);
         List<ApiSyncState> states = syncStateDao.getAllSyncStates();
         lv_metadata_list.setAdapter(new ApiSyncStateAdapter(ViewMetadataUpdatesActivity.this, states));

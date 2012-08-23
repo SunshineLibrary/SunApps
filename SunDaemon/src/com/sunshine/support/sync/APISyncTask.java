@@ -6,6 +6,7 @@ import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.MetadataDBHandlerFactory;
 import com.sunshine.metadata.database.Table;
 import com.sunshine.metadata.database.tables.*;
+import com.sunshine.support.application.DaemonApplication;
 import com.sunshine.support.data.daos.ApiSyncStateDao;
 import com.sunshine.support.data.models.ApiSyncState;
 import com.sunshine.support.sync.managers.TableSyncManager;
@@ -39,7 +40,7 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
     public APISyncTask(APISyncService context) {
 		this.context = context;
 
-		dbHandler = MetadataDBHandlerFactory.newMetadataDBHandler(context);
+        dbHandler = ((DaemonApplication) context.getApplication()).getMetadataDBHandler();
         apiSyncStateDao = new ApiSyncStateDao(context, dbHandler);
 	}
 

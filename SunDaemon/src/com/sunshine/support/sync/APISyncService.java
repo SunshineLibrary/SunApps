@@ -17,8 +17,6 @@ public class APISyncService extends Service {
 	private ConnectivityManager cm;
 
 	private static long lastSuccessfulSync;
-	
-	public static final String SERVICE_ACTION = "com.sunshine.support.action.sync";
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -60,7 +58,7 @@ public class APISyncService extends Service {
 			Handler handler = new Handler();
 			handler.postDelayed(new Runnable() {
 				public void run() {
-					Intent intent = new Intent(SERVICE_ACTION);
+					Intent intent = new Intent(getApplication(), APISyncService.class);
 					getBaseContext().startService(intent);
 				}
 			}, (long) Math.floor(Math.random() * MIN_DELAY + MIN_DELAY));
