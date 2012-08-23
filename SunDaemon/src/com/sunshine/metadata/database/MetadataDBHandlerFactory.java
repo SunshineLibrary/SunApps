@@ -70,7 +70,5 @@ public class MetadataDBHandlerFactory {
     private static void initTableViews(DBHandler dbHandler) {
         dbHandler.addTableViewManager(SectionActivitiesView.VIEW_NAME, new SectionActivitiesView(dbHandler));
         dbHandler.addTableViewManager(BookInfoView.VIEW_NAME, new BookInfoView(dbHandler));
-        
     }
-
 }

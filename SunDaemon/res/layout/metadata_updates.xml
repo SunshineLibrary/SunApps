@@ -5,20 +5,70 @@
               android:layout_height="fill_parent"
               android:orientation="vertical"
         >
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dip"
-        android:textSize="14dip"
-        android:text="Metadata 列表"
-        android:background="@drawable/bg_bar_gradient"
-        android:textColor="#444"
-        />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="fill_parent"
+                  android:layout_height="50dip"
+                  android:background="@drawable/bg_bar_gradient"
+            >
+
+
+        <TextView android:id="@+id/tv_table_name"
+                  android:layout_height="fill_parent"
+                  android:layout_width="fill_parent"
+                  android:layout_weight="1"
+                  android:text="列表名称"
+                  android:gravity="center"
+                  android:textColor="#111"
+                />
+
+        <View
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:background="#999"
+                />
+
+        <TextView android:id="@+id/tv_table_last_update"
+                  android:layout_height="fill_parent"
+                  android:layout_width="160dip"
+                  android:text="最后更改时间"
+                  android:gravity="center"
+                  android:textColor="#111"
+                />
+
+        <View
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:background="#999"
+                />
+
+        <TextView android:id="@+id/tv_table_last_sync"
+                  android:layout_height="fill_parent"
+                  android:layout_width="160dip"
+                  android:text="上次同步时间"
+                  android:gravity="center"
+                  android:textColor="#111"
+                />
+
+        <View
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:background="#999"
+                />
+
+        <TextView android:id="@+id/tv_table_last_sync_status"
+                  android:layout_height="fill_parent"
+                  android:layout_width="100dip"
+                  android:text="同步状态"
+                  android:gravity="center"
+                  android:textColor="#111"
+                />
+
+    </LinearLayout>
 
     <ListView android:id="@+id/lv_metadata_list"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="#222"
             />
 
 </LinearLayout>

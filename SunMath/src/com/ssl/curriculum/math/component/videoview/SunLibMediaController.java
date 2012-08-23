@@ -469,7 +469,7 @@ public class SunLibMediaController extends MediaController {
             // that a) we won't update the progress while the user adjusts
             // the seekbar and b) once the user is done dragging the thumb
             // we will post one of these messages to the queue again and
-            // this ensures that there will be exactly one message queued up.
+            // this ensures that there will be exactly one application queued up.
             mHandler.removeMessages(SHOW_PROGRESS);
         }
 

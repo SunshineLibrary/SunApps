@@ -11,28 +11,28 @@
               android:layout_width="fill_parent"
               android:layout_weight="1"
               android:text="Activities"
-              android:gravity="center_vertical"
+              android:gravity="center"
             />
 
     <TextView android:id="@+id/tv_table_last_update"
               android:layout_height="fill_parent"
-              android:layout_width="120dip"
+              android:layout_width="160dip"
               android:text="2010-10-17 23:56:48"
-              android:gravity="center_vertical"
+              android:gravity="center"
             />
 
     <TextView android:id="@+id/tv_table_last_sync"
               android:layout_height="fill_parent"
-              android:layout_width="120dip"
+              android:layout_width="160dip"
               android:text="2010-10-17 11:42:32"
-              android:gravity="center_vertical"
+              android:gravity="center"
             />
 
     <TextView android:id="@+id/tv_table_last_sync_status"
               android:layout_height="fill_parent"
-              android:layout_width="80dip"
+              android:layout_width="90dip"
               android:text="同步成功"
-              android:gravity="center_vertical"
+              android:gravity="center"
             />
 
 </LinearLayout>

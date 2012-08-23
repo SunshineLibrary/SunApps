@@ -40,7 +40,7 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
 		this.context = context;
 
 		dbHandler = MetadataDBHandlerFactory.newMetadataDBHandler(context);
-        apiSyncStateDao = new ApiSyncStateDao(dbHandler);
+        apiSyncStateDao = new ApiSyncStateDao(context, dbHandler);
 	}
 
 	@Override

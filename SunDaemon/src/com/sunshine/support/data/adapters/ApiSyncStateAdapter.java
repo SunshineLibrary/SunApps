@@ -1,7 +1,6 @@
 package com.sunshine.support.data.adapters;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +9,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.sunshine.metadata.database.tables.APISyncStateTable;
 import com.sunshine.support.R;
+import com.sunshine.support.data.models.ApiSyncState;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Bowen Sun
@@ -22,14 +24,25 @@ import java.util.List;
  */
 public class ApiSyncStateAdapter extends BaseAdapter {
 
-    private List<com.sunshine.support.data.models.ApiSyncState> states;
+
+    private List<ApiSyncState> states;
     private Context context;
 
     private static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public ApiSyncStateAdapter(Context context, List<com.sunshine.support.data.models.ApiSyncState> states) {
+    public ApiSyncStateAdapter(Context context, List<ApiSyncState> states) {
         this.context = context;
         this.states = states;
+    }
+
+    public void update(ApiSyncState state) {
+        int index = states.indexOf(state);
+        if (index >= 0) {
+            states.set(index, state);
+        } else {
+            states.add(state);
+        }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -49,11 +62,7 @@ public class ApiSyncStateAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView != null) {
-            return convertView;
-        } else {
-            return getNewView(position, parent);
-        }
+        return getNewView(position, parent);
     }
 
     private View getNewView(int position, ViewGroup parent) {
@@ -64,7 +73,7 @@ public class ApiSyncStateAdapter extends BaseAdapter {
         TextView tv_last_update = (TextView) newView.findViewById(R.id.tv_table_last_update);
         TextView tv_last_sync_status = (TextView) newView.findViewById(R.id.tv_table_last_sync_status);
 
-        com.sunshine.support.data.models.ApiSyncState state = states.get(position);
+        ApiSyncState state = states.get(position);
         tv_table_name.setText(state.getTableName());
         tv_last_update.setText(format.format(new Date(state.getLastUpdateTime())));
         tv_last_sync.setText(format.format(new Date(state.getLastSyncTime())));

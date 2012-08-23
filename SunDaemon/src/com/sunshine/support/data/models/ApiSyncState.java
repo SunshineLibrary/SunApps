@@ -98,6 +98,15 @@ public class ApiSyncState implements PersistentData {
         isDirty = false;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other == null || !(other instanceof ApiSyncState)) {
+            return false;
+        } else {
+            return ((ApiSyncState) other).getTableName().equals(tableName);
+        }
+    }
+
     public void clearNew() {}
 
     public static class Factory {
