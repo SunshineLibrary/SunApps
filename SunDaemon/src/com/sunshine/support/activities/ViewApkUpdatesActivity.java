@@ -1,4 +1,4 @@
-package com.sunshine.support.manager.activities;
+package com.sunshine.support.activities;
 
 import android.app.Activity;
 

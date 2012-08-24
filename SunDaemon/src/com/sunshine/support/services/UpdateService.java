@@ -1,8 +1,9 @@
-package com.sunshine.support.update;
+package com.sunshine.support.services;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import com.sunshine.support.update.UpdateTask;
 
 public class UpdateService extends Service {
 

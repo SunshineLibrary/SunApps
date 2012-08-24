@@ -1,10 +1,9 @@
-package com.sunshine.support.manager.activities;
+package com.sunshine.support.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ListView;
 import com.sunshine.metadata.database.DBHandler;
-import com.sunshine.metadata.database.MetadataDBHandlerFactory;
 import com.sunshine.support.R;
 import com.sunshine.support.application.DaemonApplication;
 import com.sunshine.support.application.MessageApplication;

@@ -1,4 +1,4 @@
-package com.sunshine.support.manager.activities;
+package com.sunshine.support.activities;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -12,8 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.sunshine.metadata.database.tables.ActivityTable;
 import com.sunshine.support.R;
-import com.sunshine.support.sync.APISyncService;
-import com.sunshine.support.update.UpdateService;
+import com.sunshine.support.services.APISyncService;
+import com.sunshine.support.services.UpdateService;
 
 import static com.sunshine.metadata.provider.MetadataContract.Activities;
 

@@ -1,4 +1,4 @@
-package com.sunshine.support.sync.managers;
+package com.sunshine.support.sync;
 
 /**
  * TableSyncManager syncs a table with remote database

@@ -1,12 +1,11 @@
-package com.sunshine.support.sync;
+package com.sunshine.support.services;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import com.sunshine.support.update.UpdateService;
 
-public class APISyncReceiver extends BroadcastReceiver {
+public class ServiceReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {

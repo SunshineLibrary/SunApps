@@ -1,4 +1,4 @@
-package com.sunshine.support.sync;
+package com.sunshine.support.services;
 
 import android.app.Service;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import com.sunshine.support.sync.APISyncTask;
 
 public class APISyncService extends Service {
 
@@ -16,18 +17,18 @@ public class APISyncService extends Service {
 	private static final long MIN_DELAY = 1200000;
 	private ConnectivityManager cm;
 
-	private static long lastSuccessfulSync;
+    private static Runnable wakeUpRunner;
+    private static Handler handler;
 
-	@Override
+    @Override
 	public IBinder onBind(Intent intent) {
 		return null;
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		if (!syncInProgress
-				&& System.currentTimeMillis() > MIN_DELAY + lastSuccessfulSync) {
-            Log.v(getClass().getName(), "Starting API Sync Task...");
+		if (!syncInProgress) {
+            Log.v(getClass().getName(), "Starting APISyncTask...");
 			syncTask.execute();
 			syncInProgress = true;
 		}
@@ -43,7 +44,6 @@ public class APISyncService extends Service {
 			protected void onPostExecute(Integer result) {
 				if (result.intValue() == SUCCESS) {
                     Log.v(getClass().getName(), "API sync completed successfully.");
-					lastSuccessfulSync = System.currentTimeMillis();
 				} else {
                     Log.v(getClass().getName(), "API sync failed.");
                 }
@@ -55,17 +55,34 @@ public class APISyncService extends Service {
 	@Override
 	public void onDestroy() {
 		if (isConnected()) {
-			Handler handler = new Handler();
-			handler.postDelayed(new Runnable() {
-				public void run() {
-					Intent intent = new Intent(getApplication(), APISyncService.class);
-					getBaseContext().startService(intent);
-				}
-			}, (long) Math.floor(Math.random() * MIN_DELAY + MIN_DELAY));
+            long delay = (long) Math.floor(Math.random() * MIN_DELAY + MIN_DELAY);
+            getHandler().postDelayed(getWakeUpRunner(), delay);
 		}
 	}
 
-	protected boolean isConnected() {
+    private static Handler getHandler() {
+        if (handler == null) {
+            handler = new Handler();
+        }
+        return handler;
+    }
+
+    private Runnable getWakeUpRunner() {
+        if (wakeUpRunner == null) {
+            wakeUpRunner = new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(getApplication(), APISyncService.class);
+                    getBaseContext().startService(intent);
+                }
+            };
+        } else {
+            getHandler().removeCallbacks(wakeUpRunner);
+        }
+        return wakeUpRunner;
+    }
+
+	public boolean isConnected() {
         if (cm != null && cm.getActiveNetworkInfo() != null) {
             return cm.getActiveNetworkInfo().isConnected();
         } else {

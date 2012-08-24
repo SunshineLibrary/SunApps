@@ -93,7 +93,7 @@
             <arg value="am"/>
             <arg value="start"/>
             <arg value="-n"/>
-            <arg value="com.sunshine.support/com.sunshine.support.manager.activities.MainActivity"/>
+            <arg value="com.sunshine.support/com.sunshine.support.activities.MainActivity"/>
         </exec>
     </target>
 
