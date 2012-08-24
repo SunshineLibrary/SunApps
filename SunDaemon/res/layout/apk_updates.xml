@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical"
+        >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="fill_parent"
+                  android:layout_height="50dip"
+                  android:background="@drawable/bg_bar_gradient"
+            >
+
+
+        <TextView android:id="@+id/tv_table_name"
+                  android:layout_height="fill_parent"
+                  android:layout_width="fill_parent"
+                  android:layout_weight="1"
+                  android:text="Apk名称"
+                  android:gravity="center"
+                  android:textColor="#111"
+                />
+
+        <View
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:background="#999"
+                />
+
+        <TextView android:id="@+id/tv_table_last_update"
+                  android:layout_height="fill_parent"
+                  android:layout_width="160dip"
+                  android:text="版本号"
+                  android:gravity="center"
+                  android:textColor="#111"
+                />
+
+        <View
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:background="#999"
+                />
+
+        <TextView android:id="@+id/tv_table_last_sync"
+                  android:layout_height="fill_parent"
+                  android:layout_width="160dip"
+                  android:text="下载进度"
+                  android:gravity="center"
+                  android:textColor="#111"
+                />
+
+        <View
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:background="#999"
+                />
+
+        <TextView android:id="@+id/tv_table_last_sync_status"
+                  android:layout_height="fill_parent"
+                  android:layout_width="100dip"
+                  android:text="安装状态"
+                  android:gravity="center"
+                  android:textColor="#111"
+                />
+
+    </LinearLayout>
+
+    <ListView android:id="@+id/lv_metadata_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            />
+
+</LinearLayout>

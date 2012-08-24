@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="50dip"
+              android:padding="10dip"
+        >
+
+    <TextView android:id="@+id/tv_table_apk"
+              android:layout_height="fill_parent"
+              android:layout_width="fill_parent"
+              android:layout_weight="1"
+              android:text="com.sunshine.support"
+              android:gravity="center_vertical"
+            />
+
+    <TextView android:id="@+id/tv_table_version"
+              android:layout_height="fill_parent"
+              android:layout_width="160dip"
+              android:text="1"
+              android:gravity="center"
+            />
+
+    <TextView android:id="@+id/tv_table_progress"
+              android:layout_height="fill_parent"
+              android:layout_width="160dip"
+              android:text="100%"
+              android:gravity="center"
+            />
+
+    <TextView android:id="@+id/tv_table_status"
+              android:layout_height="fill_parent"
+              android:layout_width="90dip"
+              android:text="同步成功"
+              android:gravity="center"
+            />
+
+</LinearLayout>
+
