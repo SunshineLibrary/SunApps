@@ -1,66 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.sunshine.support"
-          android:versionCode="1"
-          android:versionName="1.0">
-
+    package="com.sunshine.support"
+    android:versionCode="1000"
+    android:versionName="1.0.0">
+    
     <!-- android:sharedUserId="android.uid.system" -->
     <uses-sdk android:minSdkVersion="8"/>
-
+    
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="com.sunshine.support.installer.INSTALL_PERMISSION"/>
+    
+    <application
+        android:name=".application.DaemonApplication"
+        android:icon="@drawable/daemon_logo"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Black.NoTitleBar">
 
-    <application android:icon="@drawable/ic_launcher"
-                 android:label="@string/app_name"
-                 android:theme="@android:style/Theme.Black.NoTitleBar">
         <provider android:name="com.sunshine.metadata.provider.MetadataProvider"
-                  android:authorities="com.sunshine.metadata.provider"
-                  android:permission="com.sunshine.metadata.provider.READ_WRITE_PERMISSION"/>
-
+            android:authorities="com.sunshine.metadata.provider"
+            android:permission="com.sunshine.metadata.provider.READ_WRITE_PERMISSION"/>
+        
         <activity android:name=".manager.activities.MainActivity"
-                  android:label="@string/app_name"
-                  android:screenOrientation="portrait">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
+        
         <activity
-                android:name=".manager.activities.ViewMetadataUpdatesActivity"
-                android:label="@string/app_name"
-                android:screenOrientation="portrait" >
+            android:name=".manager.activities.ViewMetadataUpdatesActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
-
+        
         <service
-                android:name="com.sunshine.support.sync.APISyncService"
-                android:enabled="true">
-            <intent-filter>
-                <action android:name="com.sunshine.support.action.sync"/>
-            </intent-filter>
+            android:name="com.sunshine.support.sync.APISyncService"
+            android:enabled="true">
         </service>
-
+        
         <service
-                android:name="com.sunshine.support.update.UpdateService"
-                android:enabled="true">
-            <intent-filter>
-                <action android:name="com.sunshine.support.action.update"/>
-            </intent-filter>
+            android:name="com.sunshine.support.update.UpdateService"
+            android:enabled="true">
         </service>
-
+        
         <receiver android:name="com.sunshine.support.sync.APISyncReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
-
+        
     </application>
-
+    
     <permission android:protectionLevel="normal" android:name="com.sunshine.metadata.provider.READ_WRITE_PERMISSION"/>
-
+    
 </manifest>

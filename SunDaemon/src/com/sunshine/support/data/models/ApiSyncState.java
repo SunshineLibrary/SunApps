@@ -4,11 +4,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import com.sunshine.metadata.database.tables.APISyncStateTable;
 
-import static com.sunshine.metadata.database.tables.APISyncStateTable.APISyncState.*;
+import static com.sunshine.metadata.database.tables.APISyncStateTable.ApiSyncStates.*;
 
 public class ApiSyncState implements PersistentData {
 
-    private int id;
+    private long id;
     private String tableName;
     private long lastUpdateTime;
     private long lastSyncTime;
@@ -17,10 +17,10 @@ public class ApiSyncState implements PersistentData {
 
     public ApiSyncState(String tableName) {
         this.tableName = tableName;
+        this.id = -1;
     }
 
-    @Override
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -84,11 +84,30 @@ public class ApiSyncState implements PersistentData {
     public ContentValues getCreateContentValues() {
         ContentValues values = new ContentValues();
         values.put(_TABLE_NAME, tableName);
-        values.put(_LAST_SYNC_STATUS, APISyncStateTable.APISyncState.SYNC_SUCCESS);
+        values.put(_LAST_SYNC_STATUS, APISyncStateTable.ApiSyncStates.SYNC_SUCCESS);
         values.put(_LAST_SYNC, lastSyncTime);
         values.put(_LAST_UPDATE, lastUpdateTime);
         return values;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void clearDirty() {
+        isDirty = false;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null || !(other instanceof ApiSyncState)) {
+            return false;
+        } else {
+            return ((ApiSyncState) other).getTableName().equals(tableName);
+        }
+    }
+
+    public void clearNew() {}
 
     public static class Factory {
 
@@ -97,8 +116,8 @@ public class ApiSyncState implements PersistentData {
             String tableName = cursor.getString(cursor.getColumnIndex(_TABLE_NAME));
 
             ApiSyncState entry = new ApiSyncState(tableName);
-            entry.id = cursor.getInt(cursor.getColumnIndex(APISyncStateTable.APISyncState._ID));
-            entry.lastUpdateTime = cursor.getLong(cursor.getColumnIndex(APISyncStateTable.APISyncState._LAST_UPDATE));
+            entry.id = cursor.getInt(cursor.getColumnIndex(APISyncStateTable.ApiSyncStates._ID));
+            entry.lastUpdateTime = cursor.getLong(cursor.getColumnIndex(APISyncStateTable.ApiSyncStates._LAST_UPDATE));
             entry.lastSyncTime = cursor.getLong(cursor.getColumnIndex(_LAST_SYNC));
             entry.lastSyncStatus = cursor.getInt(cursor.getColumnIndex(_LAST_SYNC_STATUS));
 

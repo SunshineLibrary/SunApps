@@ -2,41 +2,37 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
-              android:layout_height="50dp"
-              android:padding="10dp"
+              android:layout_height="50dip"
+              android:padding="10dip"
         >
 
     <TextView android:id="@+id/tv_table_name"
               android:layout_height="fill_parent"
               android:layout_width="fill_parent"
               android:layout_weight="1"
-              android:textSize="10dp"
               android:text="Activities"
-              android:gravity="center_vertical"
+              android:gravity="center"
             />
 
     <TextView android:id="@+id/tv_table_last_update"
               android:layout_height="fill_parent"
-              android:layout_width="80dp"
-              android:textSize="10dp"
+              android:layout_width="160dip"
               android:text="2010-10-17 23:56:48"
-              android:gravity="center_vertical"
+              android:gravity="center"
             />
 
     <TextView android:id="@+id/tv_table_last_sync"
               android:layout_height="fill_parent"
-              android:layout_width="80dp"
-              android:textSize="10dp"
+              android:layout_width="160dip"
               android:text="2010-10-17 11:42:32"
-              android:gravity="center_vertical"
+              android:gravity="center"
             />
 
     <TextView android:id="@+id/tv_table_last_sync_status"
               android:layout_height="fill_parent"
-              android:layout_width="40dp"
+              android:layout_width="90dip"
               android:text="同步成功"
-              android:textSize="10dp"
-              android:gravity="center_vertical"
+              android:gravity="center"
             />
 
 </LinearLayout>

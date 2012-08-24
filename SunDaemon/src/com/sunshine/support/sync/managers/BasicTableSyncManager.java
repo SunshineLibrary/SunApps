@@ -1,12 +1,11 @@
 package com.sunshine.support.sync.managers;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.provider.BaseColumns;
 import android.util.Log;
 import com.sunshine.metadata.database.Table;
-import com.sunshine.metadata.database.tables.APISyncStateTable.APISyncState;
 import com.sunshine.support.api.ApiClient;
+import com.sunshine.support.data.models.ApiSyncState;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.json.JSONArray;
@@ -26,31 +25,12 @@ public class BasicTableSyncManager implements TableSyncManager {
 	private static final int BATCH_SIZE = 100;
     private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-	private Table syncStateTable;
 	private Table table;
-	private long lastUpdateTime;
+    private ApiSyncState syncState;
 
-	public BasicTableSyncManager(Table table, Table syncStatesTable) {
+    public BasicTableSyncManager(Table table, ApiSyncState state) {
 		this.table = table;
-		this.syncStateTable = syncStatesTable;
-		lastUpdateTime = getLastUpdateTimeFromDB();
-	}
-
-	protected long getLastUpdateTime() {
-		return lastUpdateTime;
-	}
-
-	private long getLastUpdateTimeFromDB() {
-		long lastUpdate = 0;
-		Cursor cursor = syncStateTable.query(null, syncStateTable.getColumns(),
-				APISyncState._TABLE_NAME + "=?",
-				new String[] { table.getTableName() }, null);
-		if (cursor.moveToFirst()) {
-			lastUpdate = cursor.getLong(cursor
-					.getColumnIndex(APISyncState._LAST_UPDATE));
-		}
-		cursor.close();
-		return lastUpdate;
+        this.syncState = state;
 	}
 
 	public boolean sync() {
@@ -67,7 +47,6 @@ public class BasicTableSyncManager implements TableSyncManager {
 				result = httpClient.execute(request).getEntity().getContent();
 				JSONArray jsonArr = getJsonArrayFromInputStream(result);
 				isInSync = processJsonArray(jsonArr);
-				updateLastUpdateTime(lastUpdateTime);
 			} catch (IOException e) {
 				Log.e(getClassName(), "Failed to get " + requestURI, e);
 				retryCount++;
@@ -95,7 +74,7 @@ public class BasicTableSyncManager implements TableSyncManager {
     }
 
     protected String getRequestURI() {
-		return ApiClient.getSyncRequestUrl(table.getTableName(), lastUpdateTime);
+		return ApiClient.getSyncRequestUrl(table.getTableName(), syncState.getLastUpdateTime());
 	}
 
 	protected JSONArray getJsonArrayFromInputStream(InputStream result)
@@ -122,11 +101,13 @@ public class BasicTableSyncManager implements TableSyncManager {
 
 	protected boolean processJsonArray(JSONArray jsonArr) throws JSONException,
 			ParseException {
+        table.beginTransaction();
 		for (int i = 0; i < jsonArr.length(); i++) {
 			JSONObject row = jsonArr.getJSONObject(i);
 			insertOrUpdateRow(row);
-            lastUpdateTime = Math.max(lastUpdateTime, parseTime(row.getString("updated_at")));
+            syncState.setLastUpdateTime(Math.max(syncState.getLastUpdateTime(), parseTime(row.getString("updated_at"))));
 		}
+        table.endTransaction();
 		return jsonArr.length() < BATCH_SIZE;
 	}
 
@@ -159,13 +140,6 @@ public class BasicTableSyncManager implements TableSyncManager {
 				null) == 0) {
 			table.insert(null, values);
 		}
-	}
-
-	private void updateLastUpdateTime(long time) {
-		ContentValues values = new ContentValues();
-		values.put(APISyncState._TABLE_NAME, table.getTableName());
-		values.put(APISyncState._LAST_UPDATE, time);
-		syncStateTable.insert(null, values);
 	}
 
 	private String getClassName() {

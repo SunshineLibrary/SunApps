@@ -15,6 +15,10 @@ public interface Table {
 
     public void upgradeTable(SQLiteDatabase db, int oldVersion, int newVersion);
 
+    public void beginTransaction();
+
+    public void endTransaction();
+
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder);
 
     public Uri insert(Uri uri, ContentValues values);
