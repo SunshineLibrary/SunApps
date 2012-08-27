@@ -17,7 +17,7 @@
                   android:layout_height="fill_parent"
                   android:layout_width="fill_parent"
                   android:layout_weight="1"
-                  android:text="列表名称"
+                  android:text="Apk名称"
                   android:gravity="center"
                   android:textColor="#111"
                 />
@@ -31,7 +31,7 @@
         <TextView android:id="@+id/tv_table_last_update"
                   android:layout_height="fill_parent"
                   android:layout_width="160dip"
-                  android:text="最后更改时间"
+                  android:text="版本号"
                   android:gravity="center"
                   android:textColor="#111"
                 />
@@ -45,7 +45,7 @@
         <TextView android:id="@+id/tv_table_last_sync"
                   android:layout_height="fill_parent"
                   android:layout_width="160dip"
-                  android:text="上次同步时间"
+                  android:text="下载进度"
                   android:gravity="center"
                   android:textColor="#111"
                 />
@@ -59,7 +59,7 @@
         <TextView android:id="@+id/tv_table_last_sync_status"
                   android:layout_height="fill_parent"
                   android:layout_width="100dip"
-                  android:text="同步状态"
+                  android:text="安装状态"
                   android:gravity="center"
                   android:textColor="#111"
                 />

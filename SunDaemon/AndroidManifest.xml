@@ -13,14 +13,17 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="com.sunshine.support.installer.INSTALL_PERMISSION"/>
 
-    <application android:icon="@drawable/ic_launcher"
-                 android:label="@string/app_name"
-                 android:theme="@android:style/Theme.Black.NoTitleBar">
+    <application
+            android:name=".application.DaemonApplication"
+            android:icon="@drawable/daemon_logo"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+
         <provider android:name="com.sunshine.metadata.provider.MetadataProvider"
                   android:authorities="com.sunshine.metadata.provider"
                   android:permission="com.sunshine.metadata.provider.READ_WRITE_PERMISSION"/>
 
-        <activity android:name=".manager.activities.MainActivity"
+        <activity android:name=".activities.MainActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait">
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -31,28 +34,26 @@
         </activity>
 
         <activity
-                android:name=".manager.activities.ViewMetadataUpdatesActivity"
-                android:label="@string/app_name"
+                android:name=".activities.ViewMetadataUpdatesActivity"
+                android:screenOrientation="portrait" >
+        </activity>
+
+        <activity
+                android:name=".activities.ViewApkUpdatesActivity"
                 android:screenOrientation="portrait" >
         </activity>
 
         <service
-                android:name="com.sunshine.support.sync.APISyncService"
+                android:name=".services.APISyncService"
                 android:enabled="true">
-            <intent-filter>
-                <action android:name="com.sunshine.support.action.sync"/>
-            </intent-filter>
         </service>
 
         <service
-                android:name="com.sunshine.support.update.UpdateService"
+                android:name=".services.UpdateService"
                 android:enabled="true">
-            <intent-filter>
-                <action android:name="com.sunshine.support.action.update"/>
-            </intent-filter>
         </service>
 
-        <receiver android:name="com.sunshine.support.sync.APISyncReceiver">
+        <receiver android:name=".services.ServiceReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>

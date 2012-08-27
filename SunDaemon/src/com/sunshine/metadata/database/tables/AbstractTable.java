@@ -89,6 +89,15 @@ public abstract class AbstractTable implements Table {
 		db.execSQL("DROP TABLE " + this.getTableName() + ";");
 	}
 
+    public void beginTransaction() {
+        dbHandler.getWritableDatabase().beginTransaction();
+    }
+
+    public void endTransaction() {
+        dbHandler.getWritableDatabase().endTransaction();
+    }
+
+
 	/*
 	 * Proxy methods for the content provider to individual tables in the
 	 * database.

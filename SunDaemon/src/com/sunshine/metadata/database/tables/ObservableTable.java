@@ -49,6 +49,16 @@ public class ObservableTable implements Table {
     }
 
     @Override
+    public void beginTransaction() {
+        mTable.beginTransaction();
+    }
+
+    @Override
+    public void endTransaction() {
+        mTable.endTransaction();
+    }
+
+    @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         return mTable.query(uri, projection, selection, selectionArgs, sortOrder);
     }

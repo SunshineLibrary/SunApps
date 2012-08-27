@@ -1,4 +1,4 @@
-package com.sunshine.support.manager.activities;
+package com.sunshine.support.activities;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.sunshine.metadata.database.tables.ActivityTable;
 import com.sunshine.support.R;
+import com.sunshine.support.services.APISyncService;
+import com.sunshine.support.services.UpdateService;
 
 import static com.sunshine.metadata.provider.MetadataContract.Activities;
 
@@ -81,10 +83,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, ViewMetadataUpdatesActivity.class));
                 break;
             case R.id.btn_update_app:
-                startService(new Intent("com.sunshine.support.action.update"));
+                startService(new Intent(this, UpdateService.class));
                 break;
             case R.id.btn_update_metadata:
-                startService(new Intent("com.sunshine.support.action.sync"));
+                startService(new Intent(this, APISyncService.class));
                 break;
             default:
                 return;

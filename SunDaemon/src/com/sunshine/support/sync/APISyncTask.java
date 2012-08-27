@@ -3,13 +3,12 @@ package com.sunshine.support.sync;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.sunshine.metadata.database.DBHandler;
-import com.sunshine.metadata.database.MetadataDBHandlerFactory;
 import com.sunshine.metadata.database.Table;
 import com.sunshine.metadata.database.tables.*;
+import com.sunshine.support.application.DaemonApplication;
 import com.sunshine.support.data.daos.ApiSyncStateDao;
 import com.sunshine.support.data.models.ApiSyncState;
-import com.sunshine.support.sync.managers.TableSyncManager;
-import com.sunshine.support.sync.managers.TableSyncManagerFactory;
+import com.sunshine.support.services.APISyncService;
 
 public class APISyncTask extends AsyncTask<String, String, Integer> {
 
@@ -39,8 +38,8 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
     public APISyncTask(APISyncService context) {
 		this.context = context;
 
-		dbHandler = MetadataDBHandlerFactory.newMetadataDBHandler(context);
-        apiSyncStateDao = new ApiSyncStateDao(dbHandler);
+        dbHandler = ((DaemonApplication) context.getApplication()).getMetadataDBHandler();
+        apiSyncStateDao = new ApiSyncStateDao(context, dbHandler);
 	}
 
 	@Override
@@ -69,13 +68,6 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
  		}
 		return status;
 	}
-
-    @Override
-    protected void onPostExecute(Integer integer) {
-        super.onPostExecute(integer);
-        apiSyncStateDao.close();
-        dbHandler.close();
-    }
 
     protected boolean isConnected() {
 		return context.isConnected();

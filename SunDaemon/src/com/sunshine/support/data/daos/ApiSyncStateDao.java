@@ -1,9 +1,12 @@
 package com.sunshine.support.data.daos;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.tables.APISyncStateTable;
+import com.sunshine.support.application.MessageApplication;
+import com.sunshine.support.application.UIMessage;
 import com.sunshine.support.data.models.ApiSyncState;
 
 import java.util.*;
@@ -18,11 +21,16 @@ import java.util.*;
  */
 public class ApiSyncStateDao extends AbstractPersistentDao<ApiSyncState> {
 
-    private APISyncStateTable syncTable;
+    public static final String ON_NEW_STATE = "ApiSyncStateTable.ON_NEW_CHANGE";
 
+    public static final String ON_STATE_CHANGE = "ApiSyncStateTable.ON_STATE_CHANGE";
+
+    private Context context;
+    private APISyncStateTable syncTable;
     private Map<String, ApiSyncState> syncStateMap;
 
-    public ApiSyncStateDao(DBHandler dbHandler) {
+    public ApiSyncStateDao(Context context, DBHandler dbHandler) {
+        this.context = context;
         this.dbHandler = dbHandler;
         syncTable = (APISyncStateTable) dbHandler.getTableManager(APISyncStateTable.TABLE_NAME);
         syncStateMap = new HashMap<String, ApiSyncState>();
@@ -50,13 +58,16 @@ public class ApiSyncStateDao extends AbstractPersistentDao<ApiSyncState> {
     @Override
     public void fetch() {
         Cursor cursor = syncTable.query(null, APISyncStateTable.ALL_COLUMNS, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                ApiSyncState state = ApiSyncState.Factory.newEntryFromCursor(cursor);
-                syncStateMap.put(state.getTableName(), state);
-            } while (cursor.moveToNext());
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    ApiSyncState state = ApiSyncState.Factory.newEntryFromCursor(cursor);
+                    syncStateMap.put(state.getTableName(), state);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
         }
-        cursor.close();
     }
 
     @Override
@@ -68,11 +79,15 @@ public class ApiSyncStateDao extends AbstractPersistentDao<ApiSyncState> {
     protected void update(ApiSyncState state, ContentValues values) {
         syncTable.update(null, values, APISyncStateTable.ApiSyncStates._ID + "=?",
                 new String[] {String.valueOf(state.getId())});
+        ((MessageApplication) context.getApplicationContext())
+                .postMessage(new UIMessage<ApiSyncState>(ON_STATE_CHANGE, state));
     }
 
     @Override
     protected void insert(ApiSyncState state, ContentValues values) {
         long id =  dbHandler.getWritableDatabase().insert(syncTable.getTableName(), null, values);
         state.setId(id);
+        ((MessageApplication) context.getApplicationContext())
+                .postMessage(new UIMessage<ApiSyncState>(ON_NEW_STATE, state));
     }
 }

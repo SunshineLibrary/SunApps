@@ -10,6 +10,7 @@ import android.provider.BaseColumns;
 import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.MetadataDBHandlerFactory;
 import com.sunshine.metadata.database.tables.*;
+import com.sunshine.support.application.DaemonApplication;
 import com.sunshine.support.storage.SharedStorageManager;
 
 import java.io.FileNotFoundException;
@@ -28,7 +29,7 @@ public class MetadataProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        dbHandler = MetadataDBHandlerFactory.newMetadataDBHandler(getContext());
+        dbHandler = ((DaemonApplication) getContext().getApplicationContext()).getMetadataDBHandler();
         sharedStorageManager = new SharedStorageManager(getContext());
         return true;
     }
