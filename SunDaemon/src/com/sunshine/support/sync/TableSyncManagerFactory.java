@@ -1,4 +1,4 @@
-package com.sunshine.support.sync.managers;
+package com.sunshine.support.sync;
 
 import com.sunshine.metadata.database.Table;
 import com.sunshine.support.data.models.ApiSyncState;

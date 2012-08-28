@@ -1,7 +1,6 @@
 package com.sunshine.support.update;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -9,12 +8,12 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 import com.sunshine.metadata.database.DBHandler;
-import com.sunshine.metadata.database.SystemDBHandlerFactory;
 import com.sunshine.metadata.database.tables.PackageTable;
 import com.sunshine.metadata.provider.MetadataContract;
 import com.sunshine.support.api.ApiClient;
 import com.sunshine.support.application.DaemonApplication;
 import com.sunshine.support.downloader.FileDownloadTask;
+import com.sunshine.support.services.UpdateService;
 import com.sunshine.support.storage.FileStorage;
 import com.sunshine.support.storage.FileStorageManager;
 import com.sunshine.support.utils.Listener;
@@ -29,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.lang.*;
 import java.util.ArrayList;
 import java.util.List;
 

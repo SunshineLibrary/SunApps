@@ -84,7 +84,7 @@ public class ApiSyncState implements PersistentData {
     public ContentValues getCreateContentValues() {
         ContentValues values = new ContentValues();
         values.put(_TABLE_NAME, tableName);
-        values.put(_LAST_SYNC_STATUS, APISyncStateTable.ApiSyncStates.SYNC_SUCCESS);
+        values.put(_LAST_SYNC_STATUS, lastSyncStatus);
         values.put(_LAST_SYNC, lastSyncTime);
         values.put(_LAST_UPDATE, lastUpdateTime);
         return values;

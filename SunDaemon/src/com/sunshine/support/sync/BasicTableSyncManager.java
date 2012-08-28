@@ -1,4 +1,4 @@
-package com.sunshine.support.sync.managers;
+package com.sunshine.support.sync;
 
 import android.content.ContentValues;
 import android.provider.BaseColumns;
