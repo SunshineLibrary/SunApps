@@ -48,6 +48,7 @@ public class Matcher {
     public static final int BOOK_LISTS = 407;
     public static final int BOOK_LISTS_ID = 408;
     public static final int BOOK_INFO = 409;
+    public static final int BOOK_COLLECTION_INFO = 410;
     
     public static final int TAGS = 500;
     public static final int BOOK_TAG = 501;
@@ -95,6 +96,7 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "book_lists", BOOK_LISTS);
             matcher.addURI(AUTHORITY, "book_lists/#", BOOK_LISTS_ID);
             matcher.addURI(AUTHORITY, "book_info", BOOK_INFO);
+            matcher.addURI(AUTHORITY, "book_collection_info", BOOK_COLLECTION_INFO);
             
             matcher.addURI(AUTHORITY, "problems", PROBLEMS);
             matcher.addURI(AUTHORITY, "problems/quiz/#", PROBLEMS_BELONG_TO_QUIZ_ACTIVITY);

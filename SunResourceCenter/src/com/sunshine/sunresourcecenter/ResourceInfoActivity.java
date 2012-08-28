@@ -1,7 +1,11 @@
 package com.sunshine.sunresourcecenter;
 
+import java.io.IOException;
+
+import com.sunshine.metadata.provider.MetadataContract.BookInfo;
 import com.sunshine.metadata.provider.MetadataContract.Books;
 import com.sunshine.sunresourcecenter.R;
+import com.sunshine.sunresourcecenter.contentresolver.ResourceContentResolver;
 import com.sunshine.sunresourcecenter.model.ResourceGridItem;
 
 import android.os.Bundle;
@@ -9,6 +13,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -106,34 +111,41 @@ public class ResourceInfoActivity extends Activity {
     	case BOOK:
     		
     		try {
-    			cur = resolver.query(Books.CONTENT_URI, null, Books._ID+"="+id, null, null);		
+    			cur = resolver.query(BookInfo.CONTENT_URI, null, BookInfo._BOOK_ID+"="+id, null, null);		
     			
-    			int idCol = cur.getColumnIndex(Books._ID);
-    			int titleCol = cur.getColumnIndex(Books._TITLE);
-    			int authorCol = cur.getColumnIndex(Books._AUTHOR);
-    			int descriptionCol = cur.getColumnIndex(Books._INTRO);
+    			int idCol = cur.getColumnIndex(BookInfo._ID);
+    			int titleCol = cur.getColumnIndex(BookInfo._TITLE);
+    			int authorCol = cur.getColumnIndex(BookInfo._AUTHOR);
+    			int descriptionCol = cur.getColumnIndex(BookInfo._INTRO);
+    			int authorIntroCol = cur.getColumnIndex(BookInfo._AUTHOR_INTRO);
+    			int publisherCol = cur.getColumnIndex(BookInfo._PUBLISHER);
+    			int pubYearCol = cur.getColumnIndex(BookInfo._PUBLICATION_YEAR);
+    			int tagCol = cur.getColumnIndex(BookInfo._TAGS);
     			//int progressCol = cur.getColumnIndex(Books._PROGRESS);
-    			//int originalCol = cur.getColumnIndex(Books.);
-    			
     			
     			while (cur.moveToNext()) {
-    				//String tags = getBookTags(cur.getString(idCol));
-    				
-    				//resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,tags , R.drawable.ic_launcher, cur.getInt(progressCol), cur.getString(descriptionCol), 0));	
-    				//originname.setText(cur.getString());
-    				//publisher.setText();
-    				//publish_year.setText();
-    				//author_intro.setText();
     				cover.setImageResource(R.drawable.ic_launcher);
+    				
+    				//Bitmap bm = ResourceContentResolver.getBitmap(cur.getString(idCol), resolver);
+    				//cover.setImageBitmap(bm);
+    				String tags = cur.getString(tagCol);
+    				
+    				publisher.setText(cur.getString(publisherCol));
+    				publish_year.setText(cur.getString(pubYearCol));
+    				author_intro.setText(cur.getString(authorIntroCol));
     				author.setText(cur.getString(authorCol));
     				title.setText(cur.getString(titleCol));
     				intro.setText(cur.getString(descriptionCol));
     			}
-    		} finally {
-    			
+    		} 
+//    		catch (IOException e) {
+//				e.printStackTrace();
+//			} 
+    		finally {
     			
     		}
-    		
+    		if(cur != null)
+    			cur.close();
     		return;
     	default:
     		return;

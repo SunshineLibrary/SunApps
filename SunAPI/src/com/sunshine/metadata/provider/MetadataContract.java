@@ -165,7 +165,7 @@ public final class MetadataContract {
         public static final String _ID = BaseColumns._ID;
         public static final String _TITLE = "title";
         public static final String _AUTHOR = "author";
-        public static final String _AUTHOR_ID = "author_id";
+//        public static final String _AUTHOR_ID = "author_id";
         public static final String _INTRO = "intro";
         public static final String _PUBLISHER = "publisher";
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_collections").build();
@@ -186,7 +186,24 @@ public final class MetadataContract {
             return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
         }
     }
-
+    
+    /*
+     *  for BookCollectionInfoView
+     */
+    public static final class BookCollectionInfo{
+    	public static final String _ID = BaseColumns._ID;
+    	public static final String _BOOK_COLLECTION_ID = "book_collection_id";
+        public static final String _TITLE = "title";
+        public static final String _AUTHOR = "author";
+        public static final String _INTRO = "intro";
+        public static final String _PUBLISHER = "publisher";
+        public static final String _TAGS = "tags";
+        public static final String _COUNT = "count";
+        public static final String _DOWNLOAD_STATUS = "download_status";
+        
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_collection_info").build();
+    }
+    
     public static final class VideoCollections {
 
         public static final String _ID = BaseColumns._ID;
@@ -303,6 +320,7 @@ public final class MetadataContract {
         public static final String _PUBLICATION_YEAR = "publication_year";
         public static final String _COLLECTION_ID = "book_collection_id";
         public static final String _TAGS = "tags";
+        public static final String _DOWNLOAD_STATUS = "download_status";
         
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_info").build();
     }

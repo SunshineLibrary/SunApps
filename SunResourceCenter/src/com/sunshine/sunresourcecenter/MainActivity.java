@@ -106,7 +106,7 @@ public class MainActivity extends Activity {
 		btnCollectionBack = (ImageButton) findViewById(R.id.btn_collection_back);
 		searchBar = (EditText) findViewById(R.id.searchbar);
 				
-		resolver = new ResourceContentResolver(MainActivity.this.getContentResolver());
+		resolver = new ResourceContentResolver(MainActivity.this.getContentResolver(), this.getResources());
 		
 		// change via tab state
 		currentGridType = gridType.GRIDTYPE_RES_INPROGRESS;

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sunshine.metadata.provider.MetadataContract.BookCollectionInfo;
 import com.sunshine.metadata.provider.MetadataContract.BookCollections;
 import com.sunshine.metadata.provider.MetadataContract.BookInfo;
 import com.sunshine.metadata.provider.MetadataContract.BookLists;
@@ -16,6 +17,7 @@ import com.sunshine.sunresourcecenter.model.ResourceGridItem;
 import com.sunshine.sunresourcecenter.model.ResourceListGridItem;
 
 import android.content.ContentResolver;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,35 +26,41 @@ import android.os.ParcelFileDescriptor;
 public class ResourceContentResolver {
 	
 	private ContentResolver resolver;
+	private Resources res;
 		
-	public ResourceContentResolver(ContentResolver resolver){
+	public ResourceContentResolver(ContentResolver resolver, Resources res){
 		
 		this.resolver = resolver;		
+		this.res = res;
 	}
 	
 	public List<Object> getBookCollections(String[] projection, String selection){
 		ArrayList<ResourceGridItem> resGridItems = new ArrayList<ResourceGridItem>();
 
 		try {
-			Cursor cur = resolver.query(BookCollections.CONTENT_URI, projection, selection, null, null);		
-			int idCol = cur.getColumnIndex(BookCollections._ID);
-			int titleCol = cur.getColumnIndex(BookCollections._TITLE);
-			int authorCol = cur.getColumnIndex(BookCollections._AUTHOR);
-			int descriptionCol = cur.getColumnIndex(BookCollections._INTRO);
+			Cursor cur = resolver.query(BookCollectionInfo.CONTENT_URI, projection, selection, null, null);		
 			
-			//Bitmap bm = getBitmap(cur.getString(idCol));
-			Cursor bookcur = null;
+			int idCol = cur.getColumnIndex(BookCollectionInfo._BOOK_COLLECTION_ID);
+			int titleCol = cur.getColumnIndex(BookCollectionInfo._TITLE);
+			int authorCol = cur.getColumnIndex(BookCollectionInfo._AUTHOR);
+			int descriptionCol = cur.getColumnIndex(BookCollectionInfo._INTRO);
+			int tagCol = cur.getColumnIndex(BookCollectionInfo._TAGS);
+			int countCol = cur.getColumnIndex(BookCollectionInfo._COUNT);
+			
+			Bitmap bm = null;
+			try {
+				bm = getBitmap(cur.getString(idCol));
+			} catch (IOException e) {
+				//default image
+				bm = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
+			}
 			while (cur.moveToNext()) {
 				String tags = "";
-				//tooo slow, try put into view
-				bookcur = resolver.query(Books.CONTENT_URI, null, Books._COLLECTION_ID + " = '" + cur.getString(idCol) +"'", null, null);
-				int count = bookcur.getCount();
 				
-				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,tags , null, 0, cur.getString(descriptionCol), count));	
+				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol), cur.getString(tagCol), bm, 0, cur.getString(descriptionCol), cur.getInt(countCol)));	
 				
 			}
-			if(bookcur != null)
-				bookcur.close();
+			
 			if(cur != null)
 				cur.close();
 		} 
@@ -77,7 +85,7 @@ public class ResourceContentResolver {
 			return null;
 		}
 		while(bookcur.moveToNext()){
-			ResId =  bookcur.getString(bookcur.getColumnIndex(BookInfo._ID));
+			ResId =  bookcur.getString(bookcur.getColumnIndex(BookInfo._BOOK_ID));
 		}
 		
 		//other cases:
@@ -98,19 +106,22 @@ public class ResourceContentResolver {
 			int tagCol = cur.getColumnIndex(BookInfo._TAGS);
 			//int progressCol = cur.getColumnIndex(Books._PROGRESS);
 			
-			//Bitmap bm = getBitmap(cur.getString(idCol));
+			Bitmap bm = null;
+			try {
+				bm = getBitmap(cur.getString(idCol));
+			} catch (IOException e) {
+				//default image
+				bm = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
+			}
+			
 			while (cur.moveToNext()) {
 				//
-				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,cur.getString(tagCol) , null, 20, cur.getString(descriptionCol), 0));	
+				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,cur.getString(tagCol) , bm, 20, cur.getString(descriptionCol), 0));	
 			
 			}
 			cur.close();
 			
-		} 
-//		catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} 
+		}  
 		finally {
 			
 		}
@@ -131,6 +142,16 @@ public class ResourceContentResolver {
 	}
 	
 	private Bitmap getBitmap(String bookId) throws IOException {
+		ItemBookCover cover = new ItemBookCover(bookId);
+		ParcelFileDescriptor pfdInput = resolver.openFileDescriptor(cover.getThumbnailUri(), "r");
+		if (pfdInput == null)
+			return null;
+		Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null);
+		pfdInput.close();
+		return bitmap;
+	}
+	
+	public static Bitmap getBitmap(String bookId, ContentResolver resolver) throws IOException {
 		ItemBookCover cover = new ItemBookCover(bookId);
 		ParcelFileDescriptor pfdInput = resolver.openFileDescriptor(cover.getThumbnailUri(), "r");
 		if (pfdInput == null)

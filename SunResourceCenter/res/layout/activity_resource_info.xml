@@ -202,11 +202,12 @@
         android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:weightSum="1" >
-
+
         <LinearLayout
             android:id="@+id/res_layout_left"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="0.5"
             android:orientation="vertical"
             android:padding="5dp" >
 
@@ -225,9 +226,9 @@
                 android:background="@color/chrome"
                 android:orientation="vertical" >
             </LinearLayout>
-
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="40dp"
@@ -259,6 +260,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            
             android:padding="5dp" >
 
             <TextView

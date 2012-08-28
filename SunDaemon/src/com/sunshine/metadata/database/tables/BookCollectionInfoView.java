@@ -6,16 +6,18 @@ import android.net.Uri;
 import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.TableView;
 import com.sunshine.metadata.provider.MetadataContract.Authors;
+import com.sunshine.metadata.provider.MetadataContract.BookCollectionTags;
+import com.sunshine.metadata.provider.MetadataContract.BookCollections;
 import com.sunshine.metadata.provider.MetadataContract.BookTags;
 import com.sunshine.metadata.provider.MetadataContract.Books;
 import com.sunshine.metadata.provider.MetadataContract.Tags;
 
-public class BookInfoView implements TableView {
+public class BookCollectionInfoView implements TableView {
 	
-	public static final String VIEW_NAME = "books_info";
+	public static final String VIEW_NAME = "book_collections_info";
 	private DBHandler dbHandler;
 	
-	public BookInfoView(DBHandler handler){
+	public BookCollectionInfoView(DBHandler handler){
 		this.dbHandler = handler;
 	}
 	
@@ -33,22 +35,21 @@ public class BookInfoView implements TableView {
     	
         StringBuffer query = new StringBuffer("CREATE VIEW " + VIEW_NAME + " AS SELECT ");
         
-        query.append(String.format("b.%s as book_id, b.%s as title, b.%s as intro, b.%s as author, b.%s as publisher, b.%s as publication_year," +
-        		"b.%s as book_collection_id, b.%s as download_status, a.%s as author_intro, GROUP_CONCAT(DISTINCT t.%s) as tags ", 
-        		Books._ID, Books._TITLE, Books._INTRO, Books._AUTHOR, Books._PUBLISHER, 
-        		Books._PUBLICATION_YEAR, Books._COLLECTION_ID, Books._DOWNLOAD_STATUS, 
-        		Authors._INTRO, Tags._NAME));
+        query.append(String.format("bc.%s as book_collection_id, bc.%s as title, bc.%s as intro, bc.%s as author, bc.%s as publisher, " +
+        		"bc.%s as download_status, GROUP_CONCAT(DISTINCT t.%s) as tags, COUNT(DISTINCT b.%s) as count", 
+        		BookCollections._ID, BookCollections._TITLE, BookCollections._INTRO, BookCollections._AUTHOR, BookCollections._PUBLISHER, 
+        		BookCollections._DOWNLOAD_STATUS, Tags._NAME, Books._ID));
        
-        query.append(String.format(" FROM %s b left join %s a left join %s bt left join %s t",
-        		BookTable.TABLE_NAME, AuthorTable.TABLE_NAME, BookTagTable.TABLE_NAME, TagTable.TABLE_NAME));
+        query.append(String.format(" FROM %s bc left join %s b left join %s bt left join %s t",
+        		BookCollectionTable.TABLE_NAME, BookTable.TABLE_NAME, BookCollectionTagTable.TABLE_NAME, TagTable.TABLE_NAME));
        
-        query.append(String.format(" ON b.%s = a.%s and b.%s = bt.%s and bt.%s = t.%s ",
-        		Books._AUTHOR_ID, Authors._ID, Books._ID, BookTags._BOOK_ID, BookTags._TAG_ID, Tags._ID));
+        query.append(String.format(" ON bc.%s = b.%s and bc.%s = bt.%s and bt.%s = t.%s ",
+        		BookCollections._ID, Books._COLLECTION_ID, BookCollections._ID, BookCollectionTags._BOOK_COLLECTION_ID, BookCollectionTags._TAG_ID, Tags._ID));
         
         query.append(String.format(" WHERE t.%s = '%s' ",
         		Tags._TYPE, Tags.TYPE.THEME));
         
-        query.append(" GROUP BY book_id;");
+        query.append(" GROUP BY book_collection_id;");
         
         return query.toString();
     }
