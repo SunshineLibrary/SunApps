@@ -5,6 +5,9 @@ import com.sunshine.metadata.database.observers.DownloadableTableObserver;
 import com.sunshine.metadata.database.observers.TableObserver;
 import com.sunshine.metadata.database.observers.ThumbnailFetchObserver;
 import com.sunshine.metadata.database.tables.*;
+import com.sunshine.metadata.database.views.BookCollectionInfoView;
+import com.sunshine.metadata.database.views.BookInfoView;
+import com.sunshine.metadata.database.views.SectionActivitiesView;
 
 public class MetadataDBHandlerFactory {
 

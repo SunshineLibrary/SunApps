@@ -14,6 +14,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -113,7 +114,7 @@ public class ResourceInfoActivity extends Activity {
     		try {
     			cur = resolver.query(BookInfo.CONTENT_URI, null, BookInfo._BOOK_ID+"="+id, null, null);		
     			
-    			int idCol = cur.getColumnIndex(BookInfo._ID);
+    			int idCol = cur.getColumnIndex(BookInfo._BOOK_ID);
     			int titleCol = cur.getColumnIndex(BookInfo._TITLE);
     			int authorCol = cur.getColumnIndex(BookInfo._AUTHOR);
     			int descriptionCol = cur.getColumnIndex(BookInfo._INTRO);
@@ -123,11 +124,18 @@ public class ResourceInfoActivity extends Activity {
     			int tagCol = cur.getColumnIndex(BookInfo._TAGS);
     			//int progressCol = cur.getColumnIndex(Books._PROGRESS);
     			
+    			Bitmap bm = null;
+    			
     			while (cur.moveToNext()) {
     				cover.setImageResource(R.drawable.ic_launcher);
+    				try {
+    					bm = ResourceContentResolver.getBitmap(cur.getString(idCol), resolver);
+    				} catch (IOException e) {
+    					//default image
+    					bm = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_launcher);
+    				}
+    				cover.setImageBitmap(bm);
     				
-    				//Bitmap bm = ResourceContentResolver.getBitmap(cur.getString(idCol), resolver);
-    				//cover.setImageBitmap(bm);
     				String tags = cur.getString(tagCol);
     				
     				publisher.setText(cur.getString(publisherCol));

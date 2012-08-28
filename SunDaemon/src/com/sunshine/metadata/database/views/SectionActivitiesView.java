@@ -1,10 +1,12 @@
-package com.sunshine.metadata.database.tables;
+package com.sunshine.metadata.database.views;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.TableView;
+import com.sunshine.metadata.database.tables.ActivityTable;
+import com.sunshine.metadata.database.tables.SectionComponentsTable;
 
 import static com.sunshine.metadata.provider.MetadataContract.Activities;
 import static com.sunshine.metadata.provider.MetadataContract.SectionComponents;

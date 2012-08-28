@@ -1,10 +1,14 @@
-package com.sunshine.metadata.database.tables;
+package com.sunshine.metadata.database.views;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.TableView;
+import com.sunshine.metadata.database.tables.BookCollectionTable;
+import com.sunshine.metadata.database.tables.BookCollectionTagTable;
+import com.sunshine.metadata.database.tables.BookTable;
+import com.sunshine.metadata.database.tables.TagTable;
 import com.sunshine.metadata.provider.MetadataContract.Authors;
 import com.sunshine.metadata.provider.MetadataContract.BookCollectionTags;
 import com.sunshine.metadata.provider.MetadataContract.BookCollections;

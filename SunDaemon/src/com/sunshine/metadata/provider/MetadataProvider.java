@@ -10,6 +10,9 @@ import android.provider.BaseColumns;
 import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.MetadataDBHandlerFactory;
 import com.sunshine.metadata.database.tables.*;
+import com.sunshine.metadata.database.views.BookCollectionInfoView;
+import com.sunshine.metadata.database.views.BookInfoView;
+import com.sunshine.metadata.database.views.SectionActivitiesView;
 import com.sunshine.support.application.DaemonApplication;
 import com.sunshine.support.storage.SharedStorageManager;
 

@@ -533,7 +533,7 @@ public class MainActivity extends Activity {
 			case DOWN_RECOMMAND:
 				return null;
 			case DOWN_CATEGORY:
-
+				
 				return null;
 			
 			case DOWN_LIST:
