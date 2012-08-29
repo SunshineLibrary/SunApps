@@ -1,15 +1,12 @@
 package com.sunshine.support.installer.service;
 
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
-import org.apache.http.entity.InputStreamEntity;
 
 public class InstallerService extends Service {
 
@@ -20,15 +17,16 @@ public class InstallerService extends Service {
 
 
 	private static final String TAG = "Installer";
-    private InstallQueue installQueue;
-    private BroadcastReceiver installReceiver;
-    private Handler handler;
-
     private static final int INSTALL_DELAY = 10000;
+
+
+    private InstallerReceiver installReceiver;
+    private InstallQueue installQueue;
+    private boolean hasPendingInstall;
     private InstallTimer timer;
 
 
-	@Override
+    @Override
 	public IBinder onBind(Intent intent) {
 		return null;
 	}
@@ -36,64 +34,71 @@ public class InstallerService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+        timer = new InstallTimer(this, INSTALL_DELAY);
+        installReceiver = new InstallerReceiver();
+        registerInstallReceivers();
         installQueue = new InstallQueue(getBaseContext(), new InstallRequest.Factory());
-        handler = new Handler();
-        registerIntentReceivers();
-        if (installQueue.peek() != null) {
-            notifyInstall();
-        }
+        hasPendingInstall = (installQueue.peek() != null);
 	}
-	
-	@Override  
-    public void onStart(Intent intent, int startId) {
-		if(intent.getAction().equals(ACTION_SCHEDULE_INSTALL)){
-			Log.i(TAG, "Scheduling Install: "+intent);
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if(intent.getAction().equals(ACTION_SCHEDULE_INSTALL)){
+            Log.i(TAG, "Scheduling Install: "+intent);
             installQueue.add(new InstallRequest(intent.getData().toString()));
+            hasPendingInstall = true;
             notifyInstall();
-		} else if(intent.getAction().equals(ACTION_INSTALL)) {
-            InstallRequest request;
-            while ((request = installQueue.pop()) != null) {
-                Log.i(TAG, "Starting install: "+intent);
-                InstallTask installTask = new InstallTask();
-                installTask.execute(request.getApkPath());
+        } else if(intent.getAction().equals(ACTION_INSTALL)) {
+            if (hasPendingInstall) {
+                InstallRequest request;
+                while ((request = installQueue.pop()) != null) {
+                    Log.i(TAG, "Starting install: "+intent);
+                    InstallTask installTask = new InstallTask();
+                    installTask.execute(request.getApkPath());
+                }
+            } else {
+                Log.w(getClass().getName(), "No pending install found. This is weird.");
             }
-            stopSelf();
-		} else if(intent.getAction().equals(ACTION_START_TIMER)) {
-            if (timer == null) {
-                Log.v(getClass().getName(), "Receiver detected install request, starting timer");
-                timer = new InstallTimer(this);
-                new Handler().postDelayed(timer, INSTALL_DELAY);
+            hasPendingInstall = false;
+        } else if(intent.getAction().equals(ACTION_START_TIMER)) {
+            if (hasPendingInstall) {
+                Log.v(getClass().getName(), "Found pending install. Starting timer...");
+                timer.start();
+            } else {
+                Log.v(getClass().getName(), "No pending installs. Timer not started");
             }
         } else if(intent.getAction().equals(ACTION_STOP_TIMER)) {
-            if (timer != null) {
-                Log.v(getClass().getName(), "Receiver detected screen on, revoking timer");
-                handler.removeCallbacks(timer);
-                timer = null;
+            if (hasPendingInstall) {
+                Log.v(getClass().getName(), "Found active timer. stopping...");
+                timer.reset();
+            } else {
+                Log.v(getClass().getName(), "No active timer.");
             }
         }
+        return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.i(getClass().getName(), "Stopping Installer Service...");
         unregisterReceiver(installReceiver);
         installQueue.release();
-        Log.i(getClass().getName(), "Stopping Installer Service...");
     }
 
-    private void registerIntentReceivers()
-	{
+    private void registerInstallReceivers() {
         Log.d(TAG, "Registering Intent Receivers");
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         installReceiver = new InstallerReceiver();
         registerReceiver(installReceiver, filter);
-	}
+    }
 
     private void notifyInstall() {
         if (!((PowerManager) getSystemService(Context.POWER_SERVICE)).isScreenOn()) {
-            installReceiver.onReceive(getBaseContext(), new Intent(Intent.ACTION_SCREEN_OFF));
+            Log.v(getClass().getName(), "Notifying receiver of new install request...");
+            installReceiver.onReceive(this, new Intent(Intent.ACTION_SCREEN_OFF));
         }
     }
 }

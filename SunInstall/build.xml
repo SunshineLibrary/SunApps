@@ -84,6 +84,11 @@
             <arg value="./bin/SunInstall-release.apk"/>
         </exec>
         <exec executable="${sdk.dir}/platform-tools/adb">
+            <arg value="push"/>
+            <arg value="../SunDaemon/bin/SunDaemon-release.apk"/>
+            <arg value="/sdcard/"/>
+        </exec>
+        <exec executable="${sdk.dir}/platform-tools/adb">
             <arg value="shell"/>
             <arg value="am"/>
             <arg value="startservice"/>
