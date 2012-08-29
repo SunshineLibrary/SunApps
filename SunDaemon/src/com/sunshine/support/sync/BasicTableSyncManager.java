@@ -1,6 +1,7 @@
 package com.sunshine.support.sync;
 
 import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 import com.sunshine.metadata.database.Table;
@@ -101,13 +102,17 @@ public class BasicTableSyncManager implements TableSyncManager {
 
 	protected boolean processJsonArray(JSONArray jsonArr) throws JSONException,
 			ParseException {
-        table.beginTransaction();
-		for (int i = 0; i < jsonArr.length(); i++) {
-			JSONObject row = jsonArr.getJSONObject(i);
-			insertOrUpdateRow(row);
-            syncState.setLastUpdateTime(Math.max(syncState.getLastUpdateTime(), parseTime(row.getString("updated_at"))));
-		}
-        table.endTransaction();
+        try {
+            table.getDatabase().beginTransaction();
+            for (int i = 0; i < jsonArr.length(); i++) {
+                JSONObject row = jsonArr.getJSONObject(i);
+                insertOrUpdateRow(row);
+                syncState.setLastUpdateTime(Math.max(syncState.getLastUpdateTime(), parseTime(row.getString("updated_at"))));
+            }
+            table.getDatabase().setTransactionSuccessful();
+        } finally {
+            table.getDatabase().endTransaction();
+        }
 		return jsonArr.length() < BATCH_SIZE;
 	}
 
@@ -136,8 +141,7 @@ public class BasicTableSyncManager implements TableSyncManager {
 	private void insertOrUpdateRow(JSONObject row) {
 		ContentValues values = getContentValuesFromRow(row);
 		if (table.update(null, values,
-				BaseColumns._ID + "=" + values.getAsString(BaseColumns._ID),
-				null) == 0) {
+				BaseColumns._ID + "=" + values.getAsString(BaseColumns._ID), null) == 0) {
 			table.insert(null, values);
 		}
 	}
