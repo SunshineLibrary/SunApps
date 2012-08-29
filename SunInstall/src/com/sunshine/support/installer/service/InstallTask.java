@@ -39,7 +39,6 @@ public class InstallTask extends AsyncTask<Uri, Integer, Boolean>{
 
                         result = new String(output.toByteArray());
                     }
-                    process.destroy();
                 }
             } catch (Exception e) {
                 Log.e(getClass().getName(), "Error running pm install on APK: " + uri.toString(), e);
