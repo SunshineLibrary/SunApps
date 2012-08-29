@@ -223,6 +223,20 @@
                 android:textColor="@color/chrome"
                 android:textOff="@string/download_list"
                 android:textOn="@string/download_list" />
+            
+            <ToggleButton
+                android:id="@+id/downnav_search"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/subnav_height"
+                android:background="@drawable/togglebutton_nav"
+                android:hint="@string/download_search"
+                android:padding="@dimen/padding_small"
+                android:text="@string/download_search"
+                android:textColor="@color/chrome"
+                android:textOff="@string/download_search"
+                android:textOn="@string/download_search"
+                android:visibility="invisible" />
+            	
         </LinearLayout>
 
         <RelativeLayout

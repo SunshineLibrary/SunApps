@@ -97,6 +97,7 @@ public class MainActivity extends Activity {
 	private ResourceContentResolver resolver;
 	private TextView collectionTitle;
 	private ImageButton btnBack;
+	private ToggleButton searchToggleButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.main);
 		
 		init();
+		
 		
 		// change via tab state
 		currentGridType = GridType.GRIDTYPE_RES_INPROGRESS;
@@ -227,15 +229,18 @@ public class MainActivity extends Activity {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if(keyCode == KeyEvent.KEYCODE_ENTER){
 					//searchCurrentGrid(searchBar.getText().toString(),currentResType,currentGridType,currentViewType);
-					searchAllGrid(searchBar.getText().toString(),currentResType,currentGridType,currentViewType);
+					currentViewType = ViewType.SEARCH;
+					currentGridType = GridType.GRIDTYPE_RES_TODOWNLOAD;
+					searchToggleButton.setVisibility(View.VISIBLE);
+					searchToggleButton.setChecked(true);
+					searchAllGrid(searchBar.getText().toString());
 					
-//					InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);   
-//					if(imm.isActive()){  
-//						imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0 );  
-//					}
-					
-					//TODO
-					Toast.makeText(MainActivity.this, searchBar.getText().toString(),Toast.LENGTH_SHORT).show();
+					InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);   
+					if(imm.isActive()){  
+						imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0 );  
+					}
+				
+					//Toast.makeText(MainActivity.this, searchBar.getText().toString(),Toast.LENGTH_SHORT).show();
 					
 					return true;
 				}
@@ -276,6 +281,7 @@ public class MainActivity extends Activity {
 
 			}
 		};
+		
 		final TabSwitched typenav_switch = new TabSwitched() {
 
 			@Override
@@ -297,11 +303,19 @@ public class MainActivity extends Activity {
 				showGridView(currentResType, currentGridType, currentViewType);
 			}
 		};
+		
 		final TabSwitched downnav_switch = new TabSwitched() {
 
 			@Override
 			public void OnTabSwitched(int index) {
+				
 				gridView.setVisibility(View.INVISIBLE);
+				//search
+				if(index != 5){
+					searchToggleButton.setVisibility(View.INVISIBLE);
+					searchBar.setText(null);
+				}
+				
 				switch (index) {
 				case 0: // recommend
 					currentGridType = GridType.GRIDTYPE_RECOMMAND;
@@ -385,7 +399,8 @@ public class MainActivity extends Activity {
 		collectionTitle = (TextView) findViewById(R.id.title_collction);
 		btnBack = (ImageButton) findViewById(R.id.btn_collection_back);
 		searchBar = (EditText) findViewById(R.id.searchbar);
-				
+		searchToggleButton = (ToggleButton) findViewById(R.id.downnav_search);
+		
 		resolver = new ResourceContentResolver(MainActivity.this.getContentResolver(), this.getResources());
 		
 		formerGridType = new Stack<GridType>();
@@ -517,13 +532,18 @@ public class MainActivity extends Activity {
 	 * @param theGridType
 	 * @param theViewType
 	 */
-	private void searchAllGrid(String key,ResourceType resType, GridType theGridType, ViewType theViewType){
-		String[] projection = null;
-		String  selection = "title like " + key;
-		List<Object> itemList = setGridData(key, resType, theGridType, theViewType, projection, selection, null);
-		//just show res grid in reading page
-		ResourceGridAdapter adapter = new ResourceGridAdapter(itemList, true, this);
-		gridView.setAdapter(adapter);
+	private void searchAllGrid(String key){
+		//		??just show res grid in reading page?
+		//no. in search page now.
+		
+		//String[] projection = null;
+		//String  selection = "title like '%" + key +"%'";
+		//List<Object> itemList = setGridData(key, resType, theGridType, theViewType, projection, selection, null);
+		
+		//ResourceGridAdapter adapter = new ResourceGridAdapter(itemList, true, this);
+		//gridView.setAdapter(adapter);
+		
+		showGridView(currentResType, currentGridType, currentViewType, key);
 	}
 	
 	private List<Object> setGridData(String key,ResourceType resType, GridType theGridType, ViewType theViewType,
@@ -531,7 +551,7 @@ public class MainActivity extends Activity {
 		
 		switch(resType){
 		case BOOK:
-			return resolver.getBookCollections(null, "");
+			return resolver.getBookCollections(projection, selection);
 			
 		case AUDIO:
 			
@@ -673,6 +693,10 @@ public class MainActivity extends Activity {
 			case DOWN_LIST:
 
 				return null;
+			
+			case SEARCH:
+				
+				return resolver.getBookCollections(projection, " title like '%" + arg + "%' ");
 
 			default:
 				return null;
