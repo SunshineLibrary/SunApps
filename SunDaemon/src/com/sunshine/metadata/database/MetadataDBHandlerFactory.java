@@ -5,6 +5,7 @@ import com.sunshine.metadata.database.observers.DownloadableTableObserver;
 import com.sunshine.metadata.database.observers.TableObserver;
 import com.sunshine.metadata.database.observers.ThumbnailFetchObserver;
 import com.sunshine.metadata.database.tables.*;
+import com.sunshine.metadata.database.views.BookCategoryView;
 import com.sunshine.metadata.database.views.BookCollectionInfoView;
 import com.sunshine.metadata.database.views.BookInfoView;
 import com.sunshine.metadata.database.views.SectionActivitiesView;
@@ -74,5 +75,6 @@ public class MetadataDBHandlerFactory {
         dbHandler.addTableViewManager(SectionActivitiesView.VIEW_NAME, new SectionActivitiesView(dbHandler));
         dbHandler.addTableViewManager(BookInfoView.VIEW_NAME, new BookInfoView(dbHandler));
         dbHandler.addTableViewManager(BookCollectionInfoView.VIEW_NAME, new BookCollectionInfoView(dbHandler));
+        dbHandler.addTableViewManager(BookCategoryView.VIEW_NAME, new BookCategoryView(dbHandler));
     }
 }

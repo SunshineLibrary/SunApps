@@ -10,6 +10,7 @@ import android.provider.BaseColumns;
 import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.MetadataDBHandlerFactory;
 import com.sunshine.metadata.database.tables.*;
+import com.sunshine.metadata.database.views.BookCategoryView;
 import com.sunshine.metadata.database.views.BookCollectionInfoView;
 import com.sunshine.metadata.database.views.BookInfoView;
 import com.sunshine.metadata.database.views.SectionActivitiesView;
@@ -106,6 +107,9 @@ public class MetadataProvider extends ContentProvider {
                         uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.BOOK_LIST_COLLECTION:
                 return dbHandler.getTableManager(BookListCollectionTable.TABLE_NAME).query(
+                        uri, projection, selection, selectionArgs, sortOrder);
+            case Matcher.BOOK_CATEGORY:
+            	return dbHandler.getTableViewManager(BookCategoryView.VIEW_NAME).query(
                         uri, projection, selection, selectionArgs, sortOrder);
             case Matcher.PROBLEMS:
                 return dbHandler.getTableManager(ProblemTable.TABLE_NAME).query(

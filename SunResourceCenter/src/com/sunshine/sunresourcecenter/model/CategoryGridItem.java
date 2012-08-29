@@ -1,22 +1,25 @@
 package com.sunshine.sunresourcecenter.model;
 
+import android.graphics.Bitmap;
+
 public class CategoryGridItem {
 	
 	private String id;
 	private String name;
 	private int count;
-	private int imageId;
+	private Bitmap image;
 	private String description;
 
 	public CategoryGridItem() {
 		super();
 	}
 	
-	public CategoryGridItem(String name, int count, int imageId, String description) {
+	public CategoryGridItem(String id, String name, int count, Bitmap image, String description) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.count = count;
-		this.imageId = imageId;
+		this.image = image;
 		this.description = description;
 	}
 
@@ -28,10 +31,6 @@ public class CategoryGridItem {
 		return count;
 	}
 
-	public int getImageId() {
-		return imageId;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -41,6 +40,6 @@ public class CategoryGridItem {
 	}
 	
 	public String toString(){
-		return id;
+		return name;
 	}
 }

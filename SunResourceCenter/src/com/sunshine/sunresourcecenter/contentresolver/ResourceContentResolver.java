@@ -4,14 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sunshine.metadata.provider.MetadataContract.BookCategories;
 import com.sunshine.metadata.provider.MetadataContract.BookCollectionInfo;
-import com.sunshine.metadata.provider.MetadataContract.BookCollectionTags;
-import com.sunshine.metadata.provider.MetadataContract.BookCollections;
 import com.sunshine.metadata.provider.MetadataContract.BookInfo;
 import com.sunshine.metadata.provider.MetadataContract.BookLists;
-import com.sunshine.metadata.provider.MetadataContract.Books;
 import com.sunshine.sunresourcecenter.R;
-import com.sunshine.sunresourcecenter.R.drawable;
 import com.sunshine.sunresourcecenter.model.CategoryGridItem;
 import com.sunshine.sunresourcecenter.model.ItemBookCover;
 import com.sunshine.sunresourcecenter.model.ResourceGridItem;
@@ -23,7 +20,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.ParcelFileDescriptor;
-import android.util.Log;
 
 public class ResourceContentResolver {
 	
@@ -132,11 +128,14 @@ public class ResourceContentResolver {
 		
 		try
 		{
-			Cursor cur = resolver.query(BookCollectionTags.CONTENT_URI, null, "", null, null);
+			Cursor cur = resolver.query(BookCategories.CONTENT_URI, null, null, null, null);
 			
+			int idCol = cur.getColumnIndex(BookCategories._TAG_ID);
+			int nameCol = cur.getColumnIndex(BookCategories._NAME);
+			int countCol = cur.getColumnIndex(BookCategories._COUNT);
 			
 			while(cur.moveToNext()){
-				
+				cateGridItems.add(new CategoryGridItem(cur.getString(idCol), cur.getString(nameCol), cur.getInt(countCol), null, null));
 			}
 		}finally{
 			

@@ -6,18 +6,14 @@ import android.net.Uri;
 
 import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.TableView;
-import com.sunshine.metadata.database.tables.BookCollectionTable;
 import com.sunshine.metadata.database.tables.BookCollectionTagTable;
-import com.sunshine.metadata.database.tables.BookTable;
 import com.sunshine.metadata.database.tables.TagTable;
 import com.sunshine.metadata.provider.MetadataContract.BookCollectionTags;
-import com.sunshine.metadata.provider.MetadataContract.BookCollections;
-import com.sunshine.metadata.provider.MetadataContract.Books;
 import com.sunshine.metadata.provider.MetadataContract.Tags;
 
 public class BookCategoryView implements TableView{
 
-	public static final String VIEW_NAME = "book_category_info";
+	public static final String VIEW_NAME = "book_category";
 	private DBHandler dbHandler;
 	
 	public BookCategoryView(DBHandler handler){
@@ -38,21 +34,19 @@ public class BookCategoryView implements TableView{
     	
         StringBuffer query = new StringBuffer("CREATE VIEW " + VIEW_NAME + " AS SELECT ");
         
-        query.append(String.format("bc.%s as book_collection_id, bc.%s as title, bc.%s as intro, bc.%s as author, bc.%s as publisher, " +
-        		"bc.%s as download_status, GROUP_CONCAT(DISTINCT t.%s) as tags, COUNT(DISTINCT b.%s) as count", 
-        		BookCollections._ID, BookCollections._TITLE, BookCollections._INTRO, BookCollections._AUTHOR, BookCollections._PUBLISHER, 
-        		BookCollections._DOWNLOAD_STATUS, Tags._NAME, Books._ID));
+        query.append(String.format("t.%s as tag_id, t.%s as name, COUNT(DISTINCT bc.%s) as count", 
+        		Tags._ID, Tags._NAME, BookCollectionTags._BOOK_COLLECTION_ID));
        
-        query.append(String.format(" FROM %s bc left join %s b left join %s bt left join %s t",
-        		BookCollectionTable.TABLE_NAME, BookTable.TABLE_NAME, BookCollectionTagTable.TABLE_NAME, TagTable.TABLE_NAME));
+        query.append(String.format(" FROM %s t left join %s bc ",
+        		TagTable.TABLE_NAME, BookCollectionTagTable.TABLE_NAME));
        
-        query.append(String.format(" ON bc.%s = b.%s and bc.%s = bt.%s and bt.%s = t.%s ",
-        		BookCollections._ID, Books._COLLECTION_ID, BookCollections._ID, BookCollectionTags._BOOK_COLLECTION_ID, BookCollectionTags._TAG_ID, Tags._ID));
+        query.append(String.format(" ON t.%s = bc.%s ",
+        		Tags._ID, BookCollectionTags._TAG_ID ));
         
         query.append(String.format(" WHERE t.%s = '%s' ",
         		Tags._TYPE, Tags.TYPE.THEME));
         
-        query.append(" GROUP BY book_collection_id;");
+        query.append(" GROUP BY tag_id;");
         
         return query.toString();
     }

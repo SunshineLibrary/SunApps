@@ -55,6 +55,7 @@ public class Matcher {
     public static final int BOOK_COLLECTION_TAG = 502;
     public static final int BOOK_LIST_TAG = 503;
     public static final int BOOK_LIST_COLLECTION = 504;
+    public static final int BOOK_CATEGORY = 505;
     
     
     
@@ -107,6 +108,7 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "book_collection_tag", BOOK_COLLECTION_TAG);
             matcher.addURI(AUTHORITY, "book_list_tag", BOOK_LIST_TAG);
             matcher.addURI(AUTHORITY, "book_list_collection", BOOK_LIST_COLLECTION);
+            matcher.addURI(AUTHORITY, "book_category", BOOK_CATEGORY);
             
             matcher.addURI(AUTHORITY, "user_book", USER_BOOK);
             matcher.addURI(AUTHORITY, "user_book/#", USER_BOOK_ID);

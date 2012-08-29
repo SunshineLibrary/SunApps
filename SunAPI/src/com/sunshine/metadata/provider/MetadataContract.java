@@ -419,6 +419,19 @@ public final class MetadataContract {
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_list_tag").build();
     }
     
+    /*
+     * 
+     * for book category view
+     */
+    public static final class BookCategories{
+    	public static final String _ID = BaseColumns._ID;
+    	public static final String _TAG_ID = "tag_id";
+        public static final String _NAME = "name";
+        public static final String _COUNT = "count";
+        
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_category").build();
+    }
+    
     public static final class UserBook {
     	
     	public static final String _ID = BaseColumns._ID;
