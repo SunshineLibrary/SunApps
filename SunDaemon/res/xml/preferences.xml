@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="服务地址">
+
+        <EditTextPreference android:key="local_server_address"
+                            android:title="本地服务器地址"
+                            android:defaultValue="@string/default_local_server_address"
+                />
+
+        <EditTextPreference android:key="remote_server_address"
+                            android:title="远端服务器地址"
+                            android:defaultValue="@string/default_remote_server_address"
+                />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="通用设置">
+        <com.sunshine.support.components.ResetPreference
+                android:title="重置设置"
+                android:dialogMessage="您确定要重置对Daemon的设置么?"
+                android:dialogTitle="重置Daemon的设置"
+                />
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">下载更新</string>
+    <string name="default_local_server_address">192.168.2.100</string>
+    <string name="default_remote_server_address">s.sunshine-library.org</string>
 </resources>
