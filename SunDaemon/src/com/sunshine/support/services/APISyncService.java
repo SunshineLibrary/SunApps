@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.util.Log;
 import com.sunshine.support.sync.APISyncTask;
 
@@ -16,6 +17,7 @@ public class APISyncService extends Service {
 	private static final String IP = "ssl-mock.herokuapp.com";
 	private static final long MIN_DELAY = 1200000;
 	private ConnectivityManager cm;
+    private PowerManager.WakeLock wakeLock;
 
     private static Runnable wakeUpRunner;
     private static Handler handler;
@@ -29,6 +31,7 @@ public class APISyncService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		if (!syncInProgress) {
             Log.v(getClass().getName(), "Starting APISyncTask...");
+            acquireLock();
 			syncTask.execute();
 			syncInProgress = true;
 		}
@@ -39,6 +42,8 @@ public class APISyncService extends Service {
 	public void onCreate() {
 		cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		syncInProgress = false;
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
 		syncTask = new APISyncTask(this) {
 			@Override
 			protected void onPostExecute(Integer result) {
@@ -58,6 +63,7 @@ public class APISyncService extends Service {
             long delay = (long) Math.floor(Math.random() * MIN_DELAY + MIN_DELAY);
             getHandler().postDelayed(getWakeUpRunner(), delay);
 		}
+        releaseLock();
 	}
 
     private static Handler getHandler() {
@@ -90,4 +96,16 @@ public class APISyncService extends Service {
             return false;
         }
 	}
+
+    public void acquireLock() {
+        if (!wakeLock.isHeld()) {
+            wakeLock.acquire();
+        }
+    }
+
+    public void releaseLock() {
+        if (wakeLock.isHeld()) {
+            wakeLock.release();
+        }
+    }
 }

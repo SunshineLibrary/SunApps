@@ -24,6 +24,7 @@ public class InstallerService extends Service {
     private InstallQueue installQueue;
     private boolean hasPendingInstall;
     private InstallTimer timer;
+    private PowerManager.WakeLock wakeLock;
 
 
     @Override
@@ -39,6 +40,8 @@ public class InstallerService extends Service {
         registerInstallReceivers();
         installQueue = new InstallQueue(getBaseContext(), new InstallRequest.Factory());
         hasPendingInstall = (installQueue.peek() != null);
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
 	}
 
     @Override
@@ -60,15 +63,18 @@ public class InstallerService extends Service {
                 Log.w(getClass().getName(), "No pending install found. This is weird.");
             }
             hasPendingInstall = false;
+            releaseLock();
         } else if(intent.getAction().equals(ACTION_START_TIMER)) {
             if (hasPendingInstall) {
                 Log.v(getClass().getName(), "Found pending install. Starting timer...");
                 timer.start();
+                acquireLock();
             } else {
                 Log.v(getClass().getName(), "No pending installs. Timer not started");
             }
         } else if(intent.getAction().equals(ACTION_STOP_TIMER)) {
             if (hasPendingInstall) {
+                releaseLock();
                 Log.v(getClass().getName(), "Found active timer. stopping...");
                 timer.reset();
             } else {
@@ -82,6 +88,7 @@ public class InstallerService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.i(getClass().getName(), "Stopping Installer Service...");
+        releaseLock();
         unregisterReceiver(installReceiver);
         installQueue.release();
     }
@@ -99,6 +106,18 @@ public class InstallerService extends Service {
         if (!((PowerManager) getSystemService(Context.POWER_SERVICE)).isScreenOn()) {
             Log.v(getClass().getName(), "Notifying receiver of new install request...");
             installReceiver.onReceive(this, new Intent(Intent.ACTION_SCREEN_OFF));
+        }
+    }
+
+    private void acquireLock() {
+        if (!wakeLock.isHeld()) {
+            wakeLock.acquire();
+        }
+    }
+
+    private void releaseLock() {
+        if (wakeLock.isHeld()) {
+            wakeLock.release();
         }
     }
 }
