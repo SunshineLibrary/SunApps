@@ -1,0 +1,39 @@
+delete from books
+delete from book_collections
+
+insert into books values (1, 'title1', 'intro1', 'a1', 1, 1, 'pub1', 2000, null, null);
+insert into books values (2, 'title2', 'intro2', 'a1', 1, 1, 'pub1', 2000, null, null);
+insert into books values (3, 'title3', 'intro3', 'a2', 2, 2, 'pub1', 2000, null, null);
+insert into books values (4, 'title4', 'intro4', 'a3', 3, 3, 'pub1', 2000, null, null);
+
+insert into book_collections values (1, 'collection_title1', 'intro1', 'a1', 'pub1', null, null);
+insert into book_collections values (2, 'title2', 'intro2', 'a2', 'pub2',  null, null);
+insert into book_collections values (3, 'title3', 'intro3', 'a3', 'pub3',  null, null);
+
+insert into tags values (1, 'tag1', 'THEME');
+insert into tags values (2, 'tag2', 'THEME');
+insert into tags values (3, 'tag3', 'THEME');
+insert into tags values (4, 'tag4', 'THEME');
+
+insert into authors  values (1, 'a1', 'author1', null, null);
+insert into authors  values (2, 'a2', 'author2', null, null);
+insert into authors  values (3, 'a3', 'author3', null, null);
+
+insert into book_collection_tag values (1, 1, 1 );
+insert into book_collection_tag values (2, 1, 2 );
+insert into book_collection_tag values (3, 1, 3 );
+insert into book_collection_tag values (4, 2, 1 );
+insert into book_collection_tag values (5, 2, 2 );
+insert into book_collection_tag values (6, 3, 2 );
+insert into book_collection_tag values (7, 3, 4 );
+
+insert into book_tag values (1, 1, 1 );
+insert into book_tag values (2, 1, 2 );
+insert into book_tag values (3, 1, 3 );
+insert into book_tag values (4, 3, 1 );
+insert into book_tag values (5, 3, 2 );
+insert into book_tag values (6, 4, 2 );
+insert into book_tag values (7, 4, 4 );
+insert into book_tag values (8, 2, 1 );
+insert into book_tag values (9, 2, 2 );
+insert into book_tag values (10, 2, 3 );
