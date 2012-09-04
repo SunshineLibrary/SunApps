@@ -12,4 +12,6 @@
     <color name="gallery_flipper_text_bg">#1E1E1E</color>
     <color name="gallery_flipper_text">#A0A0A0</color>
     <color name="grey_sep">#464646</color>
+    <color name="quiz_summary_name">#804000</color>
+    <color name="quiz_number">#800000</color>
 </resources>

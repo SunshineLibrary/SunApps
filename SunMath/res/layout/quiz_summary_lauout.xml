@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+        			android:layout_alignParentTop="true"
+        			android:id="@+id/summary_stars_lv"
+        			android:orientation="vertical">
+                    	
+        	<TextView android:id="@+id/quiz_summary_name_tv"
+		    		  android:layout_width="wrap_content" 
+		    		  android:layout_height="wrap_content" 
+					  android:textSize="22sp" 
+					  android:textColor="@color/quiz_summary_name" 
+					  android:text="小测试2" 
+					  android:padding="10dp"/>        	
+                      
+		   <ImageView android:paddingLeft="50dp"
+            		  android:paddingRight="50dp"
+            		  android:layout_gravity="center_horizontal"
+		       		  android:id="@+id/summary_stars_iv" 
+		    	      android:layout_height="wrap_content" 
+				      android:layout_width="wrap_content"
+				      android:src="@drawable/ic_quiz_three_stars" />
+					
+			<TextView android:id="@+id/summary_tv"
+		    		  android:layout_width="wrap_content"
+		    		  android:layout_height="wrap_content"  
+		    		  android:layout_marginTop="30dp"
+					  android:text="1/5" 
+					  android:textColor="@color/quiz_number" 
+					  android:textSize="25sp" 
+					  android:layout_gravity="center_horizontal"/> 		
+	</LinearLayout>
+           
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+        		  android:orientation="horizontal"
+        		  android:layout_marginBottom="50dp"
+        		  android:layout_alignParentBottom="true"
+        		  android:id="@+id/btns_ll">  
+        		  
+    	<LinearLayout android:layout_width="wrap_content" android:layout_height="fill_parent"
+        			  android:orientation="vertical"
+        			  android:layout_weight="1"
+        			  android:paddingLeft="30dp"
+        			  android:paddingRight="30dp">
+           <ImageView android:id="@+id/explaination_btn"
+               		  android:layout_width="wrap_content" 
+               		  android:layout_height="wrap_content"
+               		  android:layout_gravity="center"
+               		  android:src="@drawable/see_explaination_selector"/>
+        </LinearLayout> 
+        
+    	<LinearLayout android:layout_width="wrap_content" android:layout_height="fill_parent"
+        			  android:orientation="vertical"
+        			  android:layout_weight="1"
+        			  android:paddingLeft="30dp"
+        			  android:paddingRight="30dp">
+           <ImageView android:id="@+id/review_btn"
+               		  android:layout_width="wrap_content" 
+               		  android:layout_height="wrap_content"
+               		  android:layout_gravity="center"
+               		  android:src="@drawable/review_selector"/>
+        </LinearLayout> 
+        
+    	<LinearLayout android:layout_width="wrap_content" android:layout_height="fill_parent"
+        			  android:orientation="vertical"
+        			  android:layout_weight="1"
+        			  android:paddingLeft="30dp"
+        			  android:paddingRight="30dp">
+           <ImageView android:id="@+id/done_btn"
+               		  android:layout_width="wrap_content" 
+               		  android:layout_height="wrap_content"
+               		  android:layout_gravity="center"
+               		  android:src="@drawable/done_selector"/>
+        </LinearLayout> 
+        
+    </LinearLayout>
+    
+    <ImageView android:id="@+id/banner_iv" 
+        	   android:layout_width="fill_parent" 
+        	   android:layout_height="70dp" 
+        	   android:layout_below="@id/summary_stars_lv"
+               android:layout_above="@id/btns_ll"
+        	   android:src="@drawable/ic_banner_great" />
+    
+</RelativeLayout>
