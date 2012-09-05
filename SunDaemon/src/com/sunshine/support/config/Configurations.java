@@ -11,8 +11,9 @@ import com.sunshine.support.R;
  */
 public class Configurations {
 
-    public static String LOCAL_SERVER_ADDRESS = "local_server_address";
-    public static String REMOTE_SERVER_ADDRESS = "remote_server_address";
+    public static String API_SERVER_ADDRESS = "api_server_address";
+    public static String UPLOAD_SERVER_ADDRESS = "upload_server_address";
+    public static String LOG_SERVER_ADDRESS = "log_server_address";
 
     private SharedPreferences preference;
     private Context context;
@@ -33,11 +34,12 @@ public class Configurations {
     }
 
     public String getDefaultString(String key) {
-        if (key.equals(LOCAL_SERVER_ADDRESS))
-            return context.getString(R.string.default_local_server_address);
-        if (key.equals(REMOTE_SERVER_ADDRESS))
-            return context.getString(R.string.default_remote_server_address);
+        if (key.equals(API_SERVER_ADDRESS))
+            return context.getString(R.string.default_api_server_address);
+        if (key.equals(UPLOAD_SERVER_ADDRESS))
+            return context.getString(R.string.default_upload_server_address);
+        if (key.equals(LOG_SERVER_ADDRESS))
+            return context.getString(R.string.default_log_server_address);
         return "";
     }
-
 }

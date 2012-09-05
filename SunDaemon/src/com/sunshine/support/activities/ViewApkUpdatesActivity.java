@@ -2,7 +2,6 @@ package com.sunshine.support.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
-import com.sunshine.metadata.provider.MetadataContract;
 import com.sunshine.support.R;
 
 /**

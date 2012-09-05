@@ -3,7 +3,6 @@ package com.sunshine.metadata.database.views;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-
 import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.TableView;
 import com.sunshine.metadata.database.tables.BookCollectionTagTable;

@@ -14,9 +14,7 @@ import com.sunshine.support.data.models.ApiSyncState;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Bowen Sun

@@ -5,13 +5,18 @@
     <PreferenceCategory android:title="服务地址">
 
         <EditTextPreference android:key="local_server_address"
-                            android:title="本地服务器地址"
-                            android:defaultValue="@string/default_local_server_address"
+                            android:title="API服务器地址"
+                            android:defaultValue="@string/default_api_server_address"
                 />
 
         <EditTextPreference android:key="remote_server_address"
-                            android:title="远端服务器地址"
-                            android:defaultValue="@string/default_remote_server_address"
+                            android:title="上传服务器地址"
+                            android:defaultValue="@string/default_upload_server_address"
+                />
+
+        <EditTextPreference android:key="remote_server_address"
+                            android:title="日志服务器地址"
+                            android:defaultValue="@string/default_log_server_address"
                 />
 
     </PreferenceCategory>

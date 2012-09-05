@@ -2,7 +2,6 @@ package com.sunshine.support.data.daos;
 
 import android.content.ContentValues;
 import com.sunshine.metadata.database.DBHandler;
-import com.sunshine.support.data.models.ApiSyncState;
 import com.sunshine.support.data.models.PersistentData;
 
 import java.util.Collection;

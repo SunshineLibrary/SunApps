@@ -5,7 +5,7 @@ import com.sunshine.metadata.provider.MetadataContract.BookTags;
 
 public class BookTagTable extends AbstractTable {
 	
-	public static final String TABLE_NAME = "book_tag";
+	public static final String TABLE_NAME = "books_tags";
 	
 	public static final String[] ALL_COLUMNS = {
 		BookTags._ID,

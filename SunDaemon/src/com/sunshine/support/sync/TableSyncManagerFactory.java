@@ -1,6 +1,8 @@
 package com.sunshine.support.sync;
 
+import android.content.Context;
 import com.sunshine.metadata.database.Table;
+import com.sunshine.support.api.ApiClientFactory;
 import com.sunshine.support.data.models.ApiSyncState;
 
 /**
@@ -11,7 +13,7 @@ import com.sunshine.support.data.models.ApiSyncState;
  */
 public class TableSyncManagerFactory {
 
-    public static TableSyncManager getManager(Table table, ApiSyncState syncState) {
-        return new BasicTableSyncManager(table, syncState);
+    public static TableSyncManager getManager(Context context, Table table, ApiSyncState syncState) {
+        return new BasicTableSyncManager(table, syncState, ApiClientFactory.newApiClient(context));
     }
 }

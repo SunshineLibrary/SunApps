@@ -11,6 +11,7 @@ import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.tables.PackageTable;
 import com.sunshine.metadata.provider.MetadataContract;
 import com.sunshine.support.api.ApiClient;
+import com.sunshine.support.api.ApiClientFactory;
 import com.sunshine.support.application.DaemonApplication;
 import com.sunshine.support.downloader.FileDownloadTask;
 import com.sunshine.support.services.UpdateService;
@@ -28,7 +29,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.lang.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +38,7 @@ public class UpdateTask extends AsyncTask {
     private PackageTable pkgTable;
     private UpdateService context;
     private FileStorage fileStorage;
+    private ApiClient apiClient;
 
     private static final String PKG_DIR_NAME = ".apks";
     private static final Uri PKG_DIR = Uri.parse(
@@ -48,6 +49,7 @@ public class UpdateTask extends AsyncTask {
         this.context = context;
         dbHandler = ((DaemonApplication) context.getApplication()).getSystemDBHandler();
         pkgTable = (PackageTable) dbHandler.getTableManager(PackageTable.TABLE_NAME);
+        apiClient = ApiClientFactory.newApiClient(context);
     }
 
     @Override
@@ -89,7 +91,7 @@ public class UpdateTask extends AsyncTask {
 
     private JSONArray getPendingPackagesFromServer(JSONArray jsonArr) {
         Log.v(getClass().getName(), "Sending local packages: " + jsonArr.toString());
-        HttpClient httpClient = ApiClient.newHttpClient();
+        HttpClient httpClient = apiClient.newHttpClient();
         StringWriter writer = new StringWriter();
         JSONArray result = new JSONArray();
 
@@ -116,7 +118,7 @@ public class UpdateTask extends AsyncTask {
     }
 
     private HttpPost getPostMessage(JSONArray jsonArr) throws UnsupportedEncodingException {
-        HttpPost post = new HttpPost(ApiClient.getApkUpdateUri().toString());
+        HttpPost post = new HttpPost(apiClient.getApkUpdateUri().toString());
         List<NameValuePair> pairs = new ArrayList<NameValuePair>(1);
         pairs.add(new BasicNameValuePair("packages", jsonArr.toString()));
         post.setEntity(new UrlEncodedFormEntity(pairs));
@@ -124,7 +126,7 @@ public class UpdateTask extends AsyncTask {
     }
 
     private void downloadAndInstallApk(Package pkg) {
-        Uri remoteUri = ApiClient.getDownloadUri("apks", pkg.getId());
+        Uri remoteUri = apiClient.getDownloadUri("apks", pkg.getId());
         Uri localUri = getLocalFilePath(pkg);
 
         FileDownloadTask task = new FileDownloadTask(context, remoteUri, localUri);

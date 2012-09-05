@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import com.sunshine.metadata.provider.Matcher;
 import com.sunshine.support.api.ApiClient;
+import com.sunshine.support.api.ApiClientFactory;
 import com.sunshine.support.downloader.MonitoredFileDownloadTask;
 
 import java.util.List;
@@ -22,9 +23,11 @@ public class DownloadableTableObserver extends TableObserver {
 
     private UriMatcher sUriMatcher = Matcher.Factory.getMatcher();
     private Context context;
+    private ApiClient apiClient;
 
     public DownloadableTableObserver(Context context) {
         this.context = context;
+        this.apiClient = ApiClientFactory.newApiClient(context);
     }
 
     @Override
@@ -85,12 +88,12 @@ public class DownloadableTableObserver extends TableObserver {
             switch (type) {
                 case Activities.TYPE_VIDEO:
                     new MonitoredFileDownloadTask(context,
-                            ApiClient.getDownloadUri("activities", id),
+                            apiClient.getDownloadUri("activities", id),
                             Activities.getActivityVideoUri(id), uri).execute();
                     break;
                 case Activities.TYPE_TEXT:
                     new MonitoredFileDownloadTask(context,
-                            ApiClient.getDownloadUri("activities", id),
+                            apiClient.getDownloadUri("activities", id),
                             Activities.getActivityTextUri(id), uri).execute();
                     break;
                 case Activities.TYPE_GALLERY:
@@ -108,7 +111,7 @@ public class DownloadableTableObserver extends TableObserver {
     public void downloadGalleryImage(Uri uri) {
         int id = Integer.parseInt(uri.getLastPathSegment());
         new MonitoredFileDownloadTask(context,
-                ApiClient.getDownloadUri("images", id),
+                apiClient.getDownloadUri("images", id),
                 GalleryImages.getGalleryImageUri(id), uri).execute();
     }
 }

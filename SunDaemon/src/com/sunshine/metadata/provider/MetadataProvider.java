@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.BaseColumns;
 import com.sunshine.metadata.database.DBHandler;
-import com.sunshine.metadata.database.MetadataDBHandlerFactory;
 import com.sunshine.metadata.database.tables.*;
 import com.sunshine.metadata.database.views.BookCategoryView;
 import com.sunshine.metadata.database.views.BookCollectionInfoView;

@@ -1,9 +1,11 @@
 package com.sunshine.support.activities;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ListView;
 import com.sunshine.metadata.database.DBHandler;
+import com.sunshine.metadata.database.MetadataDBHandlerFactory;
 import com.sunshine.support.R;
 import com.sunshine.support.application.DaemonApplication;
 import com.sunshine.support.application.MessageApplication;
@@ -12,6 +14,7 @@ import com.sunshine.support.application.UIMessageListener;
 import com.sunshine.support.data.adapters.ApiSyncStateAdapter;
 import com.sunshine.support.data.daos.ApiSyncStateDao;
 import com.sunshine.support.data.models.ApiSyncState;
+import com.sunshine.support.sync.APISyncTask;
 
 import java.util.List;
 
@@ -33,15 +36,27 @@ public class ViewMetadataUpdatesActivity extends Activity{
     }
 
     private void loadData() {
-        listener = new MetadataListUpdateListener();
-        DBHandler dbHandler = ((DaemonApplication) getApplication()).getMetadataDBHandler();
-        ApiSyncStateDao syncStateDao = new ApiSyncStateDao(ViewMetadataUpdatesActivity.this, dbHandler);
-        List<ApiSyncState> states = syncStateDao.getAllSyncStates();
-        lv_metadata_list.setAdapter(new ApiSyncStateAdapter(ViewMetadataUpdatesActivity.this, states));
-        ((MessageApplication) ViewMetadataUpdatesActivity.this.getApplication())
-                .registerUIMessageListener(ApiSyncStateDao.ON_NEW_STATE, listener);
-        ((MessageApplication) ViewMetadataUpdatesActivity.this.getApplication())
-                .registerUIMessageListener(ApiSyncStateDao.ON_STATE_CHANGE, listener);
+        new AsyncTask<Object, Object, List<ApiSyncState>>(){
+
+            @Override
+            protected List<ApiSyncState> doInBackground(Object... params) {
+                listener = new MetadataListUpdateListener();
+                DBHandler dbHandler = ((DaemonApplication) getApplication()).getMetadataDBHandler();
+                ApiSyncStateDao syncStateDao = new ApiSyncStateDao(ViewMetadataUpdatesActivity.this, dbHandler);
+                List<ApiSyncState> states = syncStateDao.getAllSyncStates();
+                return states;
+            }
+
+            @Override
+            protected void onPostExecute(List<ApiSyncState> states) {
+                super.onPostExecute(states);
+                lv_metadata_list.setAdapter(new ApiSyncStateAdapter(ViewMetadataUpdatesActivity.this, states));
+                ((MessageApplication) ViewMetadataUpdatesActivity.this.getApplication())
+                        .registerUIMessageListener(ApiSyncStateDao.ON_NEW_STATE, listener);
+                ((MessageApplication) ViewMetadataUpdatesActivity.this.getApplication())
+                        .registerUIMessageListener(ApiSyncStateDao.ON_STATE_CHANGE, listener);
+            }
+        }.execute();
     }
 
     @Override

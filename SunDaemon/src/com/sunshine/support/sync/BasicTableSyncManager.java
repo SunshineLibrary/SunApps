@@ -1,11 +1,11 @@
 package com.sunshine.support.sync;
 
 import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 import com.sunshine.metadata.database.Table;
 import com.sunshine.support.api.ApiClient;
+import com.sunshine.support.api.ApiClientFactory;
 import com.sunshine.support.data.models.ApiSyncState;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -28,16 +28,18 @@ public class BasicTableSyncManager implements TableSyncManager {
 
 	private Table table;
     private ApiSyncState syncState;
+    private ApiClient apiClient;
 
-    public BasicTableSyncManager(Table table, ApiSyncState state) {
+    public BasicTableSyncManager(Table table, ApiSyncState state, ApiClient apiClient) {
 		this.table = table;
         this.syncState = state;
+        this.apiClient = apiClient;
 	}
 
 	public boolean sync() {
 		boolean isInSync = false;
 		int retryCount = 0;
-        HttpClient httpClient = ApiClient.newHttpClient();
+        HttpClient httpClient = apiClient.newHttpClient();
 		while (!isInSync && retryCount <= MAX_RETRY_COUNT) {
 			String requestURI = getRequestURI();
             Log.i(this.getClassName(), requestURI);
@@ -61,7 +63,7 @@ public class BasicTableSyncManager implements TableSyncManager {
                 closeConnection(result);
             }
 		}
-		return retryCount <= MAX_RETRY_COUNT;
+		return isInSync;
 	}
 
     private void closeConnection(InputStream result) {
@@ -75,7 +77,7 @@ public class BasicTableSyncManager implements TableSyncManager {
     }
 
     protected String getRequestURI() {
-		return ApiClient.getSyncRequestUrl(table.getTableName(), syncState.getLastUpdateTime());
+		return apiClient.getSyncRequestUrl(table.getTableName(), syncState.getLastUpdateTime());
 	}
 
 	protected JSONArray getJsonArrayFromInputStream(InputStream result)

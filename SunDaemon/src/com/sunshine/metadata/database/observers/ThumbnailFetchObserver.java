@@ -10,6 +10,7 @@ import com.sunshine.metadata.provider.Matcher;
 import com.sunshine.metadata.provider.MetadataContract.BookCollections;
 import com.sunshine.metadata.provider.MetadataContract.Books;
 import com.sunshine.support.api.ApiClient;
+import com.sunshine.support.api.ApiClientFactory;
 import com.sunshine.support.downloader.FileDownloadTask;
 
 import static com.sunshine.metadata.provider.MetadataContract.Activities;
@@ -19,9 +20,11 @@ public class ThumbnailFetchObserver extends TableObserver {
 
     private UriMatcher sUriMatcher = Matcher.Factory.getMatcher();
     private Context context;
+    private ApiClient apiClient;
 
     public ThumbnailFetchObserver(Context context) {
         this.context = context;
+        this.apiClient = ApiClientFactory.newApiClient(context);
     }
 
     @Override
@@ -30,19 +33,19 @@ public class ThumbnailFetchObserver extends TableObserver {
             int id = values.getAsInteger(BaseColumns._ID);
             if (table.getTableName().equals(ActivityTable.TABLE_NAME)) {
                 new FileDownloadTask(context,
-                        ApiClient.getThumbnailUri("activities", id),
+                        apiClient.getThumbnailUri("activities", id),
                         Activities.getActivityThumbnailUri(id)).execute();
             } else if (table.getTableName().equals(GalleryImageTable.TABLE_NAME)) {
                 new FileDownloadTask(context,
-                        ApiClient.getThumbnailUri("images", id),
+                        apiClient.getThumbnailUri("images", id),
                         GalleryImages.getGalleryImageThumbnailUri(id)).execute();
             } else if (table.getTableName().equals(BookTable.TABLE_NAME)) {
                 new FileDownloadTask(context,
-                        ApiClient.getThumbnailUri("books", id),
+                        apiClient.getThumbnailUri("books", id),
                         Books.getBookThumbnailUri(id)).execute();
             } else if (table.getTableName().equals(BookCollectionTable.TABLE_NAME)) {
                 new FileDownloadTask(context,
-                        ApiClient.getThumbnailUri("book_collections", id),
+                        apiClient.getThumbnailUri("book_collections", id),
                         BookCollections.getBookCollectionThumbnailUri(id)).execute();
             }
         }
