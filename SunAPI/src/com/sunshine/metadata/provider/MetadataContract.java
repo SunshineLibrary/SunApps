@@ -290,6 +290,8 @@ public final class MetadataContract {
         public static final String _PUBLISHER = "publisher";
         public static final String _PUBLICATION_YEAR = "publication_year";
         public static final String _COLLECTION_ID = "book_collection_id";
+        public static final String _PROGRESS = "progress";
+        public static final String _STARTTIME = "start_time";
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("books").build();
 
         public static Uri getTags(String bookId) {

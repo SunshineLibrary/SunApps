@@ -20,6 +20,8 @@ public class BookTable extends DownloadableTable {
 		Books._COLLECTION_ID,
 		Books._PUBLISHER,
 		Books._PUBLICATION_YEAR,
+		Books._PROGRESS,
+		Books._STARTTIME
 	};
 	
 	public static final String[][] COLUMN_DEFINITIONS = {
@@ -31,6 +33,8 @@ public class BookTable extends DownloadableTable {
 		{Books._COLLECTION_ID, "INTEGER"},
 		{Books._PUBLISHER, "TEXT"},
 		{Books._PUBLICATION_YEAR, "TEXT"},
+		{Books._PROGRESS, "INTEGER"},
+		{Books._STARTTIME, "DATETIME"}
 	};
 
 	public BookTable(DBHandler db) {
