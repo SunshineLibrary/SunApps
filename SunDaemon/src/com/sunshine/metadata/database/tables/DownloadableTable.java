@@ -11,10 +11,13 @@ public abstract class DownloadableTable extends AbstractTable {
      * @param handler
      */
 
-    private static final String[] DOWNLOADABLE_COLUMNS = {
-            Downloadable._DOWNLOAD_PROGRESS,
-            Downloadable._DOWNLOAD_STATUS,
+    private static final String[][] DOWNLOADABLE_COLUMNS = {
+            {Downloadable._DOWNLOAD_PROGRESS, "INTEGER"},
+            {Downloadable._DOWNLOAD_STATUS, "INTEGER"},
+            {Downloadable._DOWNLOAD_TIME, "DATETIME"}
     };
+    
+    
 
     public DownloadableTable(DBHandler handler,
                              String tableName,
@@ -29,8 +32,8 @@ public abstract class DownloadableTable extends AbstractTable {
         for (String[] pair : getColumnDefinitions()) {
             query += pair[0] + " " + pair[1] + " , ";
         }
-        for (String column: DOWNLOADABLE_COLUMNS) {
-            query += column + " INTEGER , ";
+        for (String[] column: DOWNLOADABLE_COLUMNS) {
+            query += column[0] + " " + column[1] + " , ";
         }
         query = query.substring(0, query.lastIndexOf(" , ")) + ");";
         return query;

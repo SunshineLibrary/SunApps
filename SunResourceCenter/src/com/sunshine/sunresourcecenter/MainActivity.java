@@ -1,8 +1,10 @@
 package com.sunshine.sunresourcecenter;
 
-import com.sunshine.metadata.provider.*;
+import com.sunshine.metadata.provider.MetadataContract.BookCollectionInfo;
 import com.sunshine.metadata.provider.MetadataContract.BookCollections;
+import com.sunshine.metadata.provider.MetadataContract.BookInfo;
 import com.sunshine.metadata.provider.MetadataContract.Books;
+import com.sunshine.metadata.provider.MetadataContract.Downloadable;
 import com.sunshine.sunresourcecenter.R;
 import com.sunshine.sunresourcecenter.adapter.CategoryGridAdapter;
 import com.sunshine.sunresourcecenter.adapter.ResourceGridAdapter;
@@ -11,20 +13,17 @@ import com.sunshine.sunresourcecenter.contentresolver.ResourceContentResolver;
 import com.sunshine.sunresourcecenter.model.ResourceGridItem;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Stack;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
@@ -38,11 +37,9 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -222,7 +219,8 @@ public class MainActivity extends Activity {
 			}
         	
         });
-
+		
+		//search method
 		searchBar.setOnKeyListener(new OnKeyListener(){
 
 			@Override
@@ -546,25 +544,6 @@ public class MainActivity extends Activity {
 		showGridView(currentResType, currentGridType, currentViewType, key);
 	}
 	
-	private List<Object> setGridData(String key,ResourceType resType, GridType theGridType, ViewType theViewType,
-			String[] projection,String  selection,String argId){
-		
-		switch(resType){
-		case BOOK:
-			return resolver.getBookCollections(projection, selection);
-			
-		case AUDIO:
-			
-			return null;
-		case VEDIO:
-			
-			return null;
-			
-		default: 
-			return null;
-		}
-	}
-	
 	private void pushGridViewState(GridType theGridType, ViewType theViewType, int selectedItem, String arg, CharSequence title){
 		
 		formerGridType.push(theGridType);
@@ -629,7 +608,7 @@ public class MainActivity extends Activity {
 	private List<Object> boundGridData(ResourceType resType, ViewType theViewType, String arg) {
 		
 		String[] projection = null;
-		String  selection = null;
+		String selection = null;
 		
 		switch(resType){
 		case BOOK:
@@ -637,48 +616,52 @@ public class MainActivity extends Activity {
 			//books
 			case RES_READING:
 				// AND progress > 0 AND progress < 100
-				//selection = "download_status = 'DOWNLOADED'";
+				selection = String.format("%s = '%s' AND %s != null ", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS.DOWNLOADED,
+						BookInfo._STARTTIME);
 				return resolver.getBooks(projection, selection);
 					
 			case RES_ALL:
-				//selection = "download_status = 'DOWNLOADED'";
+				selection = String.format("%s = '%s'", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS.DOWNLOADED);
 				return resolver.getBooks(projection, selection);
 				
 			case RES_RECENT:
-				// AND download_time > ...
-				//selection = "download_status = 'DOWNLOADED' ";
+				// Date format: YYYY-MM-DD hh:mm:ss
+				int inDays = 15; 
+				selection = String.format("%s = '%s' AND %s > datetime('now', '-%d days', 'localtime')", BookInfo._DOWNLOAD_STATUS, 
+						Downloadable.STATUS.DOWNLOADED, BookInfo._DOWNLOAD_TIME, inDays);
 				return resolver.getBooks(projection, selection);
 			
 			case RES_READED:
 				//WEN GU ZHI XIN
-				// AND readed
-				//selection = "download_status = 'DOWNLOADED'";
+				selection = String.format("%s = '%s' AND %s >= 98 ", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS.DOWNLOADED, 
+						BookInfo._PROGRESS);
 				return resolver.getBooks(projection, selection);
-				
+			
 			case COLLECTION:
 				//collections
-				return resolver.getBooks(projection, Books._COLLECTION_ID + " = '"+arg+"'");
+				selection = Books._COLLECTION_ID + " = '"+arg+"'";
+				return resolver.getBooks(projection, selection);
+				
+			case DOWN_CATEGORY:
+				
+				return resolver.getBookCategory();
+			
 				
 			case DOWN_HOT:
 				//AND HOT
-				//selection = "download_status = 'NOT_DOWNLOADED'";
 				return resolver.getBookCollections(projection, selection);
 				
 			case DOWN_LIKE:
-				//AND LIKE
-				//selection = "download_status = 'NOT_DOWNLOADED'";
+				//TODO:
+				//AND LIKE !!!
 				return resolver.getBookCollections(projection, selection);
 			
 			case DOWN_CATEGORY_RES:
-				//nested
-				//AND category_id = categoryId
-				//selection = "download_status = 'NOT_DOWNLOADED'";
-				return resolver.getBookCollections(projection, " tags like '%" + arg + "%' ");
+				selection = BookCollectionInfo._TAGS + " like '%" + arg + "%' ";
+				return resolver.getBookCollections(projection, selection);
 			
 			case DOWN_LIST_RES:
-				//nested
-				//AND list_id = listId
-				//selection = "download_status = 'NOT_DOWNLOADED'";
+				//TODO:
 				return resolver.getBookCollections(projection, selection);
 				
 			case RES_READ_HISTORY:
@@ -687,16 +670,14 @@ public class MainActivity extends Activity {
 				
 			case DOWN_RECOMMAND:
 				return null;
-			case DOWN_CATEGORY:
-				
-				return resolver.getBookCategory();
+			
 			case DOWN_LIST:
 
 				return null;
 			
 			case SEARCH:
-				
-				return resolver.getBookCollections(projection, " title like '%" + arg + "%' ");
+				selection = BookCollections._TITLE + " like '%" + arg + "%' ";
+				return resolver.getBookCollections(projection, selection);
 
 			default:
 				return null;

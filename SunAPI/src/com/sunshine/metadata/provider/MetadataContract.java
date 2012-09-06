@@ -322,7 +322,10 @@ public final class MetadataContract {
         public static final String _PUBLICATION_YEAR = "publication_year";
         public static final String _COLLECTION_ID = "book_collection_id";
         public static final String _TAGS = "tags";
+        public static final String _PROGRESS = "progress";
+        public static final String _STARTTIME = "start_time";
         public static final String _DOWNLOAD_STATUS = "download_status";
+        public static final String _DOWNLOAD_TIME = "download_time";
         
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_info").build();
     }

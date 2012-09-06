@@ -38,10 +38,10 @@ public class BookInfoView implements TableView {
         StringBuffer query = new StringBuffer("CREATE VIEW " + VIEW_NAME + " AS SELECT ");
         
         query.append(String.format("b.%s as book_id, b.%s as title, b.%s as intro, b.%s as author, b.%s as publisher, b.%s as publication_year," +
-        		"b.%s as book_collection_id, b.%s as download_status, a.%s as author_intro, GROUP_CONCAT(DISTINCT t.%s) as tags ", 
+        		"b.%s as book_collection_id, b.%s as download_status, b.%s as download_time, b.%s as progress, b.%s as start_time, a.%s as author_intro, GROUP_CONCAT(DISTINCT t.%s) as tags ", 
         		Books._ID, Books._TITLE, Books._INTRO, Books._AUTHOR, Books._PUBLISHER, 
-        		Books._PUBLICATION_YEAR, Books._COLLECTION_ID, Books._DOWNLOAD_STATUS, 
-        		Authors._INTRO, Tags._NAME));
+        		Books._PUBLICATION_YEAR, Books._COLLECTION_ID, Books._DOWNLOAD_STATUS, Books._DOWNLOAD_TIME, 
+        		Books._PROGRESS, Books._STARTTIME, Authors._INTRO, Tags._NAME));
        
         query.append(String.format(" FROM %s b left join %s a left join %s bt left join %s t",
         		BookTable.TABLE_NAME, AuthorTable.TABLE_NAME, BookTagTable.TABLE_NAME, TagTable.TABLE_NAME));
