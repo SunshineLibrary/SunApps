@@ -70,8 +70,12 @@ public class MetadataProvider extends ContentProvider {
         switch (uriMatch) {
             // Views
             case Matcher.SECTIONS_ACTIVITIES:
-                return view.query(uri, projection,
+                    return view.query(uri, projection,
                         SectionComponents._SECTION_ID + "=?", new String[]{uri.getLastPathSegment()}, sortOrder);
+            case Matcher.BOOK_INFO:
+            case Matcher.BOOK_COLLECTION_INFO:
+            case Matcher.BOOK_CATEGORY:
+            	return view.query(uri, projection, selection, selectionArgs, sortOrder);
 
             // Collections
             case Matcher.PACKAGES:
@@ -84,16 +88,13 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.ACTIVITIES:
             case Matcher.EDGES:
             case Matcher.AUTHORS:
-            case Matcher.BOOK_INFO:
             case Matcher.BOOKS:
-            case Matcher.BOOK_COLLECTIONS:
-            case Matcher.BOOK_COLLECTION_INFO:
+            case Matcher.BOOK_COLLECTIONS:            
             case Matcher.BOOK_LISTS:
             case Matcher.TAGS:
             case Matcher.BOOK_LIST_TAG:
             case Matcher.BOOK_COLLECTION_TAG:
-            case Matcher.BOOK_LIST_COLLECTION:
-            case Matcher.BOOK_CATEGORY:
+            case Matcher.BOOK_LIST_COLLECTION:            
             case Matcher.PROBLEMS:
             case Matcher.PROBLEM_CHOICES:
             case Matcher.USER_BOOK:
@@ -279,6 +280,11 @@ public class MetadataProvider extends ContentProvider {
                     bookListCollectionTable = dbHandler.getTableManager(BookListCollectionTable.TABLE_NAME);
                 }
                 return bookListCollectionTable;
+//            case Matcher.BOOK_INFO:
+//            	if (bookInfoView == null) {
+//            		bookInfoView = dbHandler.getTableViewManager(BookInfoView.VIEW_NAME);
+//                }
+//                return bookInfoView;
             case Matcher.PROBLEMS:
                 if (problemTable == null) {
                     problemTable = dbHandler.getTableManager(ProblemTable.TABLE_NAME);
@@ -295,7 +301,8 @@ public class MetadataProvider extends ContentProvider {
                 }
                 return userBookTable;
             default:
-                return null;
+            	return null;
+//                throw new IllegalArgumentException("Illegal match("+match+") argument for getTableForMatch");
         }
 
     }
