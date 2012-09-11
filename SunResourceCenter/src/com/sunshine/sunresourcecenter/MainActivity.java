@@ -10,10 +10,11 @@ import com.sunshine.sunresourcecenter.adapter.CategoryGridAdapter;
 import com.sunshine.sunresourcecenter.adapter.ResourceGridAdapter;
 import com.sunshine.sunresourcecenter.adapter.ResourceListGridAdapter;
 import com.sunshine.sunresourcecenter.contentresolver.ResourceContentResolver;
+import com.sunshine.sunresourcecenter.enums.GridType;
+import com.sunshine.sunresourcecenter.enums.ResourceType;
+import com.sunshine.sunresourcecenter.enums.ViewType;
 import com.sunshine.sunresourcecenter.model.ResourceGridItem;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Stack;
 
@@ -21,7 +22,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -49,30 +49,6 @@ public class MainActivity extends Activity {
 		public void OnTabSwitched(int index);
 	}
 	
-	private enum GridType{
-		GRIDTYPE_RES_TODOWNLOAD,
-		GRIDTYPE_RES_INPROGRESS, 
-		GRIDTYPE_RESLIST,
-		GRIDTYPE_CATEGORY,
-		GRIDTYPE_RECOMMAND
-	};
-	
-	private enum ViewType {
-		RES_READING,
-		RES_ALL,
-		RES_RECENT,
-		RES_READED,
-		RES_READ_HISTORY,
-		DOWN_RECOMMAND, 
-		DOWN_HOT, //show collections hot
-		DOWN_CATEGORY, //show cates
-		DOWN_LIKE, //show collections like
-		DOWN_LIST, //show lists
-		DOWN_LIST_RES, //show collections in list
-		DOWN_CATEGORY_RES, //show collections in cate
-		COLLECTION, //show res in collection
-		SEARCH, //search result
-	};
 	private GridType currentGridType;
 	private ViewType currentViewType;
 	private String currentArg;
@@ -95,7 +71,7 @@ public class MainActivity extends Activity {
 	private TextView collectionTitle;
 	private ImageButton btnBack;
 	private ToggleButton searchToggleButton;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -196,7 +172,6 @@ public class MainActivity extends Activity {
 
 			}
 		});
-		
 		
 		//back from resource in a collection
 		btnBack.setOnClickListener(new OnClickListener(){
@@ -409,6 +384,13 @@ public class MainActivity extends Activity {
 	}
 	
 	@Override
+	protected void onResume() {
+		super.onResume();
+		//update grid view
+		showGridView(currentResType, currentGridType, currentViewType, currentArg);
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
@@ -473,55 +455,7 @@ public class MainActivity extends Activity {
 			}
 		}
 		return selected;
-	}
-	
-	/**
-	 * searchbar function
-	 * search the current gridItems ,see if it contains the input keywords
-	 * @param key
-	 * @param resType
-	 * @param theGridType
-	 * @param theViewType
-	 */
-	private void searchCurrentGrid(String key,ResourceType resType, GridType theGridType, ViewType theViewType){
-		List<Object> curList = gridItems;
-		List<Object> itemList = new ArrayList<Object>();
-		for (Object object : curList) {
-			ResourceGridItem resourceGridItem = (ResourceGridItem) object;
-			if(resourceGridItem.getTitle().contains(key))
-				itemList.add(object);
-		}
-		gridItems = itemList;
-		
-		switch (theGridType) {
-		case GRIDTYPE_RES_TODOWNLOAD:
-			// res grid in download page
-			ResourceGridAdapter adapter = new ResourceGridAdapter(itemList, false, this);
-			gridView.setAdapter(adapter);
-			break;
-		case GRIDTYPE_RES_INPROGRESS:
-			// res grid in reading page
-			ResourceGridAdapter adapter2 = new ResourceGridAdapter(itemList, true, this);
-			gridView.setAdapter(adapter2);
-			break;
-		case GRIDTYPE_RESLIST:
-			// resource list page
-			ResourceListGridAdapter adapter3 = new ResourceListGridAdapter(itemList, this);
-			gridView.setAdapter(adapter3);
-			break;
-		case GRIDTYPE_CATEGORY:
-			// category page
-			CategoryGridAdapter adapter4 = new CategoryGridAdapter(itemList, this);
-			gridView.setAdapter(adapter4);
-			break;
-		case GRIDTYPE_RECOMMAND:
-			gridView.setVisibility(View.INVISIBLE);
-			recommandView.setVisibility(View.VISIBLE);
-			break;
-		default:
-			break;
-		}
-	}
+	}	
 	
 	/**
 	 * search the DB to return res(books) related to the input keywords
@@ -531,15 +465,6 @@ public class MainActivity extends Activity {
 	 * @param theViewType
 	 */
 	private void searchAllGrid(String key){
-		//		??just show res grid in reading page?
-		//no. in search page now.
-		
-		//String[] projection = null;
-		//String  selection = "title like '%" + key +"%'";
-		//List<Object> itemList = setGridData(key, resType, theGridType, theViewType, projection, selection, null);
-		
-		//ResourceGridAdapter adapter = new ResourceGridAdapter(itemList, true, this);
-		//gridView.setAdapter(adapter);
 		
 		showGridView(currentResType, currentGridType, currentViewType, key);
 	}

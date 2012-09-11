@@ -100,7 +100,7 @@ public class ResourceContentResolver {
 			int authorCol = cur.getColumnIndex(BookInfo._AUTHOR);
 			int descriptionCol = cur.getColumnIndex(BookInfo._INTRO);
 			int tagCol = cur.getColumnIndex(BookInfo._TAGS);
-			//int progressCol = cur.getColumnIndex(Books._PROGRESS);
+			int progressCol = cur.getColumnIndex(BookInfo._PROGRESS);
 
 			Bitmap bm = null;
 			while (cur.moveToNext()) {
@@ -110,7 +110,7 @@ public class ResourceContentResolver {
 					//default image
 					bm = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
 				}
-				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,cur.getString(tagCol) , bm, 20, cur.getString(descriptionCol), 0));	
+				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,cur.getString(tagCol) , bm, cur.getInt(progressCol), cur.getString(descriptionCol), 0));	
 			
 			}
 			cur.close();

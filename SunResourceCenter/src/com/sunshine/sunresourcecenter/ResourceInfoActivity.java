@@ -4,8 +4,10 @@ import java.io.IOException;
 
 import com.sunshine.metadata.provider.MetadataContract.BookInfo;
 import com.sunshine.metadata.provider.MetadataContract.Books;
+import com.sunshine.metadata.provider.MetadataContract.Downloadable;
 import com.sunshine.sunresourcecenter.R;
 import com.sunshine.sunresourcecenter.contentresolver.ResourceContentResolver;
+import com.sunshine.sunresourcecenter.enums.ResourceType;
 import com.sunshine.sunresourcecenter.model.ResourceGridItem;
 
 import android.os.Bundle;
@@ -62,13 +64,11 @@ public class ResourceInfoActivity extends Activity {
         String id = intent.getStringExtra("bookId");
         ResourceType type = (ResourceType)intent.getExtras().get("type");
         
-        showResInfo(id, type);
+        String status = showResInfo(id, type);
         //Toast.makeText(this, String.valueOf(type) ,Toast.LENGTH_SHORT).show();
         
-        //downButton
-        setButtonEnable(downButton, false);
-        setButtonEnable(readButton, true);
-        
+        setButtons(status);
+       
         backButton.setOnClickListener(new OnClickListener(){
         	
 			@Override
@@ -103,9 +103,17 @@ public class ResourceInfoActivity extends Activity {
         });
     }
     
-    private void showResInfo(String id, ResourceType type){
+    @Override
+	protected void onResume() {
+		super.onResume();
+	}
+
+
+
+	private String showResInfo(String id, ResourceType type){
     	Cursor cur = null;
-    	if(id == null) return;
+    	String status = null;
+    	if(id == null) return status;
     	
     	switch(type){
     	
@@ -121,7 +129,8 @@ public class ResourceInfoActivity extends Activity {
     			int authorIntroCol = cur.getColumnIndex(BookInfo._AUTHOR_INTRO);
     			int publisherCol = cur.getColumnIndex(BookInfo._PUBLISHER);
     			int pubYearCol = cur.getColumnIndex(BookInfo._PUBLICATION_YEAR);
-    			int tagCol = cur.getColumnIndex(BookInfo._TAGS);
+    			//int tagCol = cur.getColumnIndex(BookInfo._TAGS);
+    			int downStatusCol = cur.getColumnIndex(BookInfo._DOWNLOAD_STATUS);
     			//int progressCol = cur.getColumnIndex(Books._PROGRESS);
     			
     			Bitmap bm = null;
@@ -136,7 +145,7 @@ public class ResourceInfoActivity extends Activity {
     				}
     				cover.setImageBitmap(bm);
     				
-    				String tags = cur.getString(tagCol);
+    				//String tags = cur.getString(tagCol);
     				
     				publisher.setText(cur.getString(publisherCol));
     				publish_year.setText(cur.getString(pubYearCol));
@@ -144,6 +153,8 @@ public class ResourceInfoActivity extends Activity {
     				author.setText(cur.getString(authorCol));
     				title.setText(cur.getString(titleCol));
     				intro.setText(cur.getString(descriptionCol));
+    				
+    				status = cur.getString(downStatusCol);
     			}
     		} 
 //    		catch (IOException e) {
@@ -154,11 +165,14 @@ public class ResourceInfoActivity extends Activity {
     		}
     		if(cur != null)
     			cur.close();
-    		return;
+    		return status;
+    	case AUDIO:
+    		return status;
+    	case VEDIO:
+    		return status;
     	default:
-    		return;
+    		return status;
     	}
-    	//cursor 
     	
     }
 
@@ -168,17 +182,29 @@ public class ResourceInfoActivity extends Activity {
         return true;
     }
     
-    private void setButtonEnable(Button button, boolean enable){
+    private void setButtons(String status){
+    	if(status.equals(Downloadable.STATUS.DOWNLOADED)){
+    		setButton(downButton, false, "已下载");
+     	    setButton(readButton, true, "阅读");
+    	}else if(status.equals(Downloadable.STATUS.QUEUED) || status.equals(Downloadable.STATUS.DOWNLOADING)){
+    		setButton(downButton, false, "正在下载");
+     	    setButton(readButton, false, "阅读");
+    	}else{
+    		setButton(downButton, true, "下载");
+     	    setButton(readButton, false, "阅读");
+    	}
     	
+    	
+         
+    }
+    
+    private void setButton(Button button, boolean enable, CharSequence text){
     	button.setEnabled(enable);
+    	button.setText(text);
     	if(enable){
-    		
     		button.setBackgroundColor(getResources().getColor(R.color.chrome));
-    		
     	}else {
-    		
     		button.setBackgroundColor(getResources().getColor(R.color.info_grey));
-    		
     	}
     }
     

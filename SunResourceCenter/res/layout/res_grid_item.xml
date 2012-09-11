@@ -34,7 +34,8 @@
         android:layout_alignParentLeft="true"
         android:gravity="left"
         android:textColor="@color/chrome"
-        android:textSize="@dimen/grid_text_large" />
+        android:textSize="@dimen/grid_text_large" 
+        android:singleLine="true"/>
 
     <TextView
         android:id="@+id/description"
@@ -46,7 +47,8 @@
         android:gravity="left"
         android:maxLines="6"
         android:textColor="@color/text_dark"
-        android:textSize="@dimen/grid_text_med" />
+        android:textSize="@dimen/grid_text_med" 
+        />
 
     <TextView
         android:id="@+id/tags"
@@ -56,7 +58,8 @@
         android:layout_below="@+id/title"
         android:gravity="left"
         android:textColor="@color/text_dark"
-        android:textSize="@dimen/grid_text_med" />
+        android:textSize="@dimen/grid_text_med"
+         />
 
     <ProgressBar
         android:id="@+id/reading_progress"
