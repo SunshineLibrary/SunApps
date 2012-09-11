@@ -77,7 +77,7 @@ public class BasicTableSyncManager implements TableSyncManager {
     }
 
     protected String getRequestURI() {
-		return apiClient.getSyncRequestUrl(table.getTableName(), syncState.getLastUpdateTime());
+		return apiClient.getSyncRequestUrl(table.getTableName(), syncState.lastUpdateTime);
 	}
 
 	protected JSONArray getJsonArrayFromInputStream(InputStream result)
@@ -109,7 +109,7 @@ public class BasicTableSyncManager implements TableSyncManager {
             for (int i = 0; i < jsonArr.length(); i++) {
                 JSONObject row = jsonArr.getJSONObject(i);
                 insertOrUpdateRow(row);
-                syncState.setLastUpdateTime(Math.max(syncState.getLastUpdateTime(), parseTime(row.getString("updated_at"))));
+                syncState.lastUpdateTime = Math.max(syncState.lastUpdateTime, parseTime(row.getString("updated_at")));
             }
             table.getDatabase().setTransactionSuccessful();
         } finally {

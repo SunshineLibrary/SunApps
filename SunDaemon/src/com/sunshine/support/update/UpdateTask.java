@@ -12,7 +12,8 @@ import com.sunshine.metadata.database.tables.PackageTable;
 import com.sunshine.metadata.provider.MetadataContract;
 import com.sunshine.support.api.ApiClient;
 import com.sunshine.support.api.ApiClientFactory;
-import com.sunshine.support.application.DaemonApplication;
+import com.sunshine.support.data.helpers.PackageHelper;
+import com.sunshine.support.data.models.Package;
 import com.sunshine.support.downloader.FileDownloadTask;
 import com.sunshine.support.services.UpdateService;
 import com.sunshine.support.storage.FileStorage;
@@ -34,8 +35,6 @@ import java.util.List;
 
 public class UpdateTask extends AsyncTask {
 
-    private DBHandler dbHandler;
-    private PackageTable pkgTable;
     private UpdateService context;
     private FileStorage fileStorage;
     private ApiClient apiClient;
@@ -47,14 +46,12 @@ public class UpdateTask extends AsyncTask {
 
     public UpdateTask(UpdateService context) {
         this.context = context;
-        dbHandler = ((DaemonApplication) context.getApplication()).getSystemDBHandler();
-        pkgTable = (PackageTable) dbHandler.getTableManager(PackageTable.TABLE_NAME);
         apiClient = ApiClientFactory.newApiClient(context);
     }
 
     @Override
     protected Object doInBackground(Object... params) {
-        List<Package> updates = getUpdates(getLocalPackages());
+        List<com.sunshine.support.data.models.Package> updates = getUpdates(getLocalPackages());
         Log.v(getClass().getName(), "Packages to be updated: " + updates);
         for (Package pkg: updates) {
             downloadAndInstallApk(pkg);
@@ -63,14 +60,13 @@ public class UpdateTask extends AsyncTask {
     }
 
     private List<Package> getLocalPackages() {
-        Cursor cursor = pkgTable.query(null, PackageTable.ALL_COLUMNS, null, null, null);
-        return PackageFactory.getPackageListFromCursor(cursor);
+        return PackageHelper.getLocalPackages(this.context);
     }
 
     private List<Package> getUpdates(List<Package> localPackages) {
         JSONArray jsonArr = packageListToJSONArray(localPackages);
         jsonArr = getPendingPackagesFromServer(jsonArr);
-        return PackageFactory.getPackageListFromJSONArray(jsonArr);
+        return PackageHelper.getPackageListFromJSONArray(jsonArr);
     }
 
     private JSONArray packageListToJSONArray(List<Package> localPackages) {
@@ -130,7 +126,7 @@ public class UpdateTask extends AsyncTask {
         Uri localUri = getLocalFilePath(pkg);
 
         FileDownloadTask task = new FileDownloadTask(context, remoteUri, localUri);
-        task.addListener(new InstallListener(dbHandler,pkgTable, pkg, localUri));
+        task.addListener(new InstallListener(pkg, localUri));
         Log.v(getClass().getName(), "Start downloading package: " + pkg);
         task.execute();
     }
@@ -167,19 +163,14 @@ public class UpdateTask extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
-        dbHandler.close();
     }
 
     private class InstallListener extends Listener<Integer> {
 
-        private PackageTable table;
         private Package pkg;
         private Uri filePath;
-        private DBHandler dbHandler;
 
-        public InstallListener(DBHandler dbHandler, PackageTable table, Package pkg, Uri filePath) {
-            this.dbHandler = dbHandler;
-            this.table = table;
+        public InstallListener(Package pkg, Uri filePath) {
             this.pkg = pkg;
             this.filePath = filePath;
         }
@@ -192,17 +183,8 @@ public class UpdateTask extends AsyncTask {
                 intent.setAction("com.sunshine.support.action.scheduleInstall");
                 intent.setData(filePath);
                 context.startService(intent);
-                createInstallRecord();
+                PackageHelper.createNewPackage(UpdateTask.this.context, pkg);
             }
-        }
-
-        private void createInstallRecord() {
-            ContentValues values = new ContentValues();
-            values.put(MetadataContract.Packages._ID, pkg.getId());
-            values.put(MetadataContract.Packages._VERSION, pkg.getVersion());
-            values.put(MetadataContract.Packages._NAME, pkg.getName());
-            table.insert(null, values);
-            dbHandler.close();
         }
     }
 }

@@ -25,7 +25,7 @@ public class APISyncStateTable extends AbstractTable {
         public static final int SYNC_FAILURE= 1;
         public static final int SYNC_ONGOING= 2;
 
-        public Uri CONTENT_URI = MetadataContract.AUTHORITY_URI.buildUpon().appendPath("api_sync_states").build();
+        public static Uri CONTENT_URI = MetadataContract.AUTHORITY_URI.buildUpon().appendPath("api_sync_states").build();
     }
 
     public static final String[] ALL_COLUMNS = {

@@ -31,7 +31,7 @@ public class ApiClient {
     }
 
     public String getSyncRequestUrl(String tableName, long lastUpdateTime) {
-        return apiServerUri.buildUpon().appendPath(getApiPath(tableName))
+        return apiServerUri.buildUpon().appendPath("api").appendPath(getApiPath(tableName))
                 .appendQueryParameter("timestamp", String.valueOf(lastUpdateTime)).build()
                 .toString();
     }

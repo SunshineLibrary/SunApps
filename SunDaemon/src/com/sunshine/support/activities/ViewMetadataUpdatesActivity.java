@@ -1,74 +1,63 @@
 package com.sunshine.support.activities;
 
 import android.app.Activity;
-import android.os.AsyncTask;
+import android.database.ContentObserver;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.widget.ListView;
-import com.sunshine.metadata.database.DBHandler;
-import com.sunshine.metadata.database.MetadataDBHandlerFactory;
+import com.sunshine.metadata.database.tables.APISyncStateTable;
 import com.sunshine.support.R;
-import com.sunshine.support.application.DaemonApplication;
-import com.sunshine.support.application.MessageApplication;
-import com.sunshine.support.application.UIMessage;
-import com.sunshine.support.application.UIMessageListener;
 import com.sunshine.support.data.adapters.ApiSyncStateAdapter;
-import com.sunshine.support.data.daos.ApiSyncStateDao;
-import com.sunshine.support.data.models.ApiSyncState;
-import com.sunshine.support.sync.APISyncTask;
-
-import java.util.List;
 
 public class ViewMetadataUpdatesActivity extends Activity{
 
     private ListView lv_metadata_list;
-    private UIMessageListener listener;
+    private ApiSyncStateAdapter mAdapter;
+    private CursorLoader mLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.metadata_updates);
+
         intUI();
         loadData();
+
+        getContentResolver().registerContentObserver(APISyncStateTable.ApiSyncStates.CONTENT_URI, false ,
+                new MContentObserver(new Handler()));
     }
 
     private void intUI() {
+        mAdapter = new ApiSyncStateAdapter(this, null);
         lv_metadata_list = (ListView) findViewById(R.id.lv_metadata_list);
+        lv_metadata_list.setAdapter(mAdapter);
     }
 
     private void loadData() {
-        new AsyncTask<Object, Object, List<ApiSyncState>>(){
+        mLoader = new CursorLoader(this,APISyncStateTable.ApiSyncStates.CONTENT_URI, null, null, null, null);
 
-            @Override
-            protected List<ApiSyncState> doInBackground(Object... params) {
-                listener = new MetadataListUpdateListener();
-                DBHandler dbHandler = ((DaemonApplication) getApplication()).getMetadataDBHandler();
-                ApiSyncStateDao syncStateDao = new ApiSyncStateDao(ViewMetadataUpdatesActivity.this, dbHandler);
-                List<ApiSyncState> states = syncStateDao.getAllSyncStates();
-                return states;
+        mLoader.registerListener(0, new Loader.OnLoadCompleteListener<Cursor>() {
+            public void onLoadComplete(Loader<Cursor> cursorLoader, Cursor cursor) {
+                mAdapter.changeCursor(cursor);
             }
+        });
 
-            @Override
-            protected void onPostExecute(List<ApiSyncState> states) {
-                super.onPostExecute(states);
-                lv_metadata_list.setAdapter(new ApiSyncStateAdapter(ViewMetadataUpdatesActivity.this, states));
-                ((MessageApplication) ViewMetadataUpdatesActivity.this.getApplication())
-                        .registerUIMessageListener(ApiSyncStateDao.ON_NEW_STATE, listener);
-                ((MessageApplication) ViewMetadataUpdatesActivity.this.getApplication())
-                        .registerUIMessageListener(ApiSyncStateDao.ON_STATE_CHANGE, listener);
-            }
-        }.execute();
+        mLoader.startLoading();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
+    private class MContentObserver extends ContentObserver {
 
-    private class MetadataListUpdateListener implements UIMessageListener {
+        public MContentObserver(Handler handler) {
+            super(handler);
+        }
 
         @Override
-        public void onUIMessageReceived(UIMessage msg) {
-            ((ApiSyncStateAdapter) lv_metadata_list.getAdapter()).update((ApiSyncState) msg.getPayload());
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            loadData();
         }
     }
 }

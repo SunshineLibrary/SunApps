@@ -148,6 +148,8 @@ public class MetadataProvider extends ContentProvider {
         switch (uriMatch) {
             case Matcher.GALLERY_IMAGES:
             case Matcher.ACTIVITIES:
+            case Matcher.API_SYNC_STATES:
+            case Matcher.PACKAGES:
                 return table.insert(uri, values);
             default:
                 throw new IllegalArgumentException();
@@ -177,6 +179,7 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.ACTIVITIES:
             case Matcher.GALLERY_IMAGES:
             case Matcher.BOOKS:
+            case Matcher.API_SYNC_STATES:
                 return table.update(uri, values, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException();
@@ -197,7 +200,7 @@ public class MetadataProvider extends ContentProvider {
                 return packageTable;
             case Matcher.API_SYNC_STATES:
                 if (apiSyncStateTable == null) {
-                    packageTable = dbHandler.getTableManager(APISyncStateTable.TABLE_NAME);
+                    apiSyncStateTable = dbHandler.getTableManager(APISyncStateTable.TABLE_NAME);
                 }
                 return apiSyncStateTable;
             case Matcher.COURSES:
