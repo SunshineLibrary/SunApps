@@ -1,4 +1,4 @@
-package com.sunshine.metadata.database.observers;
+package com.sunshine.metadata.provider.observers;
 
 import android.content.ContentValues;
 import android.content.Context;

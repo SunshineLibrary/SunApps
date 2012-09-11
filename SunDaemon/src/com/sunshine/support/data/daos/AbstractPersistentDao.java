@@ -24,11 +24,6 @@ public abstract class AbstractPersistentDao<T extends PersistentData> {
 
     protected abstract void insert(T data, ContentValues values);
 
-    public void persist() {
-        for (T data: getAllFetched()) {
-            persist(data);
-        }
-    }
 
     public void persist(T data) {
         if (data.isNew()) {

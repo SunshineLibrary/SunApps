@@ -1,7 +1,10 @@
 package com.sunshine.metadata.database.tables;
 
+import android.content.ContentUris;
+import android.net.Uri;
 import android.provider.BaseColumns;
 import com.sunshine.metadata.database.DBHandler;
+import com.sunshine.metadata.provider.MetadataContract;
 
 /**
  * @author Bowen Sun
@@ -21,6 +24,8 @@ public class APISyncStateTable extends AbstractTable {
         public static final int SYNC_SUCCESS = 0;
         public static final int SYNC_FAILURE= 1;
         public static final int SYNC_ONGOING= 2;
+
+        public Uri CONTENT_URI = MetadataContract.AUTHORITY_URI.buildUpon().appendPath("api_sync_states").build();
     }
 
     public static final String[] ALL_COLUMNS = {

@@ -460,9 +460,7 @@ public final class MetadataContract {
     public static class Downloadable {
 
         public static final String _DOWNLOAD_STATUS = "download_status";
-
         public static final String _DOWNLOAD_PROGRESS = "download_progress";
-
         public static final String _DOWNLOAD_TIME = "download_time";
 
         public static enum STATUS {
