@@ -1,9 +1,9 @@
 package com.sunshine.metadata.database;
 
 import android.content.Context;
-import com.sunshine.metadata.database.observers.DownloadableTableObserver;
-import com.sunshine.metadata.database.observers.TableObserver;
-import com.sunshine.metadata.database.observers.ThumbnailFetchObserver;
+import com.sunshine.metadata.provider.observers.DownloadableTableObserver;
+import com.sunshine.metadata.provider.observers.TableObserver;
+import com.sunshine.metadata.provider.observers.ThumbnailFetchObserver;
 import com.sunshine.metadata.database.tables.*;
 import com.sunshine.metadata.database.views.BookCategoryView;
 import com.sunshine.metadata.database.views.BookCollectionInfoView;
@@ -18,6 +18,7 @@ public class MetadataDBHandlerFactory {
     public static DBHandler newMetadataDBHandler(Context context) {
         DBHandler dbHandler = new DBHandler(context, DB_NAME, DB_VERSION);
 
+        initSystemTables(dbHandler);
         initNormalTables(dbHandler);
         initObservableTables(dbHandler, context);
         initTableViews(dbHandler);
@@ -25,8 +26,12 @@ public class MetadataDBHandlerFactory {
         return dbHandler;
     }
 
-    private static void initNormalTables(DBHandler dbHandler) {
+    private static void initSystemTables(DBHandler dbHandler) {
         dbHandler.addTableManager(APISyncStateTable.TABLE_NAME, new APISyncStateTable(dbHandler));
+        dbHandler.addTableManager(PackageTable.TABLE_NAME, new PackageTable(dbHandler));
+    }
+
+    private static void initNormalTables(DBHandler dbHandler) {
         dbHandler.addTableManager(CourseTable.TABLE_NAME, new CourseTable(dbHandler));
         dbHandler.addTableManager(ChapterTable.TABLE_NAME, new ChapterTable(dbHandler));
         dbHandler.addTableManager(LessonTable.TABLE_NAME, new LessonTable(dbHandler));

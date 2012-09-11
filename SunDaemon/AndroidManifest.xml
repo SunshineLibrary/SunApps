@@ -45,6 +45,11 @@
                 android:screenOrientation="portrait" >
         </activity>
 
+        <activity
+                android:name=".activities.SystemConfigsActivity"
+                android:screenOrientation="portrait" >
+        </activity>
+
         <service
                 android:name=".services.APISyncService"
                 android:enabled="true">

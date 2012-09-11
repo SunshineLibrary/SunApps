@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="50dp"
+              android:gravity="center_vertical"
+              android:padding="10dp"
+        >
+
+    <TextView android:id="@+id/tv_label"
+              android:layout_height="fill_parent"
+              android:layout_width="fill_parent"
+              android:layout_weight="3"
+              android:text="Activities"
+              android:gravity="center_vertical"
+            />
+
+    <TextView android:id="@+id/tv_value"
+              android:layout_height="fill_parent"
+              android:layout_width="fill_parent"
+              android:layout_weight="2"
+              android:text="2010-10-17 23:56:48"
+              android:gravity="center_vertical"
+            />
+</LinearLayout>

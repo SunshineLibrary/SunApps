@@ -99,7 +99,7 @@ public abstract class AbstractTable implements Table {
 	 */
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
-		return dbHandler.getWritableDatabase().query(getTableName(),
+		return dbHandler.getReadableDatabase().query(getTableName(),
 				projection, selection, selectionArgs, null, null, sortOrder);
 	}
 

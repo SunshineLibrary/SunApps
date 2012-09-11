@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import com.sunshine.metadata.database.Table;
-import com.sunshine.metadata.database.observers.TableObserver;
+import com.sunshine.metadata.provider.observers.TableObserver;
 
 import java.util.ArrayList;
 import java.util.List;

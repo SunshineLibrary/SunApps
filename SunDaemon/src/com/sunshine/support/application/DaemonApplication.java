@@ -2,7 +2,6 @@ package com.sunshine.support.application;
 
 import com.sunshine.metadata.database.DBHandler;
 import com.sunshine.metadata.database.MetadataDBHandlerFactory;
-import com.sunshine.metadata.database.SystemDBHandlerFactory;
 
 /**
  * @author Bowen Sun
@@ -11,7 +10,6 @@ import com.sunshine.metadata.database.SystemDBHandlerFactory;
 public class DaemonApplication extends MessageApplication {
 
     private DBHandler metadataDBHandler;
-    private DBHandler systemDBHandler;
 
     public synchronized DBHandler getMetadataDBHandler() {
         if (metadataDBHandler == null) {
@@ -20,27 +18,16 @@ public class DaemonApplication extends MessageApplication {
         return metadataDBHandler;
     }
 
-    public synchronized DBHandler getSystemDBHandler(){
-        if (systemDBHandler == null) {
-            systemDBHandler = SystemDBHandlerFactory.newSystemDBHandler(this);
-        }
-        return systemDBHandler;
-    }
-
     @Override
     public void onTerminate() {
         super.onTerminate();
-        closeHandlers();
+        closeHandler();
     }
 
-    private void closeHandlers() {
-        closeDBHandler(metadataDBHandler);
-        closeDBHandler(systemDBHandler);
-    }
-
-    private void closeDBHandler(DBHandler dbHandler) {
-        if (dbHandler != null) {
-            dbHandler.close();
+    private void closeHandler() {
+        if (metadataDBHandler != null) {
+            metadataDBHandler.close();
         }
     }
+
 }

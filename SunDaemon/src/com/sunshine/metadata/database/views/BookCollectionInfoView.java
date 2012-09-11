@@ -9,10 +9,8 @@ import com.sunshine.metadata.database.tables.BookCollectionTable;
 import com.sunshine.metadata.database.tables.BookCollectionTagTable;
 import com.sunshine.metadata.database.tables.BookTable;
 import com.sunshine.metadata.database.tables.TagTable;
-import com.sunshine.metadata.provider.MetadataContract.Authors;
 import com.sunshine.metadata.provider.MetadataContract.BookCollectionTags;
 import com.sunshine.metadata.provider.MetadataContract.BookCollections;
-import com.sunshine.metadata.provider.MetadataContract.BookTags;
 import com.sunshine.metadata.provider.MetadataContract.Books;
 import com.sunshine.metadata.provider.MetadataContract.Tags;
 

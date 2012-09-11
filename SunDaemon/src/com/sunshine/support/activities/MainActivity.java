@@ -77,10 +77,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, ViewMetadataUpdatesActivity.class));
                 break;
             case R.id.tv_view_app_updates:
-                startActivity(new Intent(this, ViewMetadataUpdatesActivity.class));
+                startActivity(new Intent(this, ViewApkUpdatesActivity.class));
                 break;
             case R.id.tv_view_system_config:
-                startActivity(new Intent(this, ViewMetadataUpdatesActivity.class));
+                startActivity(new Intent(this, SystemConfigsActivity.class));
                 break;
             case R.id.btn_update_app:
                 startService(new Intent(this, UpdateService.class));

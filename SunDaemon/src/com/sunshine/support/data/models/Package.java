@@ -1,4 +1,4 @@
-package com.sunshine.support.update;
+package com.sunshine.support.data.models;
 
 public class Package {
 	

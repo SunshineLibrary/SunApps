@@ -16,7 +16,7 @@ public class InstallerService extends Service {
     public static final String ACTION_SCHEDULE_INSTALL = "com.sunshine.support.action.scheduleInstall";
 
 
-	private static final String TAG = "Installer";
+    private static final String TAG = "Installer";
     private static final int INSTALL_DELAY = 10000;
 
 
@@ -28,13 +28,13 @@ public class InstallerService extends Service {
 
 
     @Override
-	public IBinder onBind(Intent intent) {
-		return null;
-	}
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
+    @Override
+    public void onCreate() {
+        super.onCreate();
         timer = new InstallTimer(this, INSTALL_DELAY);
         installReceiver = new InstallerReceiver();
         registerInstallReceivers();
@@ -42,7 +42,7 @@ public class InstallerService extends Service {
         hasPendingInstall = (installQueue.peek() != null);
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
-	}
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -59,11 +59,12 @@ public class InstallerService extends Service {
                     InstallTask installTask = new InstallTask();
                     installTask.execute(request.getApkPath());
                 }
+                releaseLock();
             } else {
                 Log.w(getClass().getName(), "No pending install found. This is weird.");
             }
             hasPendingInstall = false;
-            releaseLock();
+            stopSelf();
         } else if(intent.getAction().equals(ACTION_START_TIMER)) {
             if (hasPendingInstall) {
                 Log.v(getClass().getName(), "Found pending install. Starting timer...");
@@ -87,8 +88,9 @@ public class InstallerService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(getClass().getName(), "Stopping Installer Service...");
         releaseLock();
+
+        Log.i(getClass().getName(), "Stopping Installer Service...");
         unregisterReceiver(installReceiver);
         installQueue.release();
     }
