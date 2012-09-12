@@ -46,6 +46,6 @@ public class PackageAdapter extends CursorAdapter {
         tv_apk_name.setText(pkg.getName());
         tv_version.setText(pkg.getVersion());
         tv_progress.setText("100");
-        tv_status.setText("待安装");
+        tv_status.setText("等待安装");
     }
 }
