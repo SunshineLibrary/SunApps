@@ -75,6 +75,9 @@ public class DownloadableTableObserver extends TableObserver {
             case Matcher.GALLERY_IMAGES_ID:
                 downloadGalleryImage(uri);
                 break;
+            case Matcher.BOOKS_ID:
+                downloadBook(uri);
+                break;
             default:
         }
     }
@@ -102,10 +105,21 @@ public class DownloadableTableObserver extends TableObserver {
                     context.getContentResolver().update(GalleryImages.CONTENT_URI, values,
                             GalleryImages._GALLERY_ID + "=?", new String[]{String.valueOf(id)});
                     break;
+                case Activities.TYPE_QUIZ:
+                    values = new ContentValues();
+                    values.put(Activities._DOWNLOAD_STATUS, MetadataContract.Downloadable.STATUS_DOWNLOADED);
+                    context.getContentResolver().update(uri, values, null, null);
+                    context.getContentResolver().notifyChange(uri, null);
+                    break;
                 default:
             }
         }
         cursor.close();
+    }
+
+    private void downloadBook(Uri uri) {
+        int id = Integer.parseInt(uri.getLastPathSegment());
+        new MonitoredFileDownloadTask(context, apiClient.getDownloadUri("books", id), uri, uri).execute();
     }
 
     public void downloadGalleryImage(Uri uri) {

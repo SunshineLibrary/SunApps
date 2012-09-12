@@ -77,11 +77,15 @@ public class SectionPresenter {
         Uri activityUri;
         if (currentActivities.moveToFirst()) {
             do {
-                int activityId = currentActivities.getInt(currentActivities.getColumnIndex(BaseColumns._ID));
-                activityUri = MetadataContract.Activities.getActivityUri(activityId);
-                navigationActivity.getContentResolver().registerContentObserver(activityUri, false, mObserver);
-                ContentProviderOperation operation = ContentProviderOperation.newUpdate(activityUri).withValues(values).build();
-                operations.add(operation);
+                int status = currentActivities.getInt(
+                        currentActivities.getColumnIndex(MetadataContract.Downloadable._DOWNLOAD_STATUS));
+                if (status != MetadataContract.Downloadable.STATUS_DOWNLOADED) {
+                    int activityId = currentActivities.getInt(currentActivities.getColumnIndex(BaseColumns._ID));
+                    activityUri = MetadataContract.Activities.getActivityUri(activityId);
+                    navigationActivity.getContentResolver().registerContentObserver(activityUri, false, mObserver);
+                    ContentProviderOperation operation = ContentProviderOperation.newUpdate(activityUri).withValues(values).build();
+                    operations.add(operation);
+                }
             } while(currentActivities.moveToNext());
             try {
                 navigationActivity.getContentResolver().applyBatch(MetadataContract.AUTHORITY, operations);
