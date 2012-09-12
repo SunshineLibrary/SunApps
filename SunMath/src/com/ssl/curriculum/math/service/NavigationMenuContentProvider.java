@@ -44,7 +44,9 @@ public class NavigationMenuContentProvider implements NavigationMenuProvider {
                 String name = cursor.getString(nameIndex);
                 int parentId = cursor.getInt(parentIdIndex);
                 int currentId = cursor.getInt(idIndex);
-                MenuItem.createItemAddedToParent(name, currentId, parentMenu.get(parentId));
+                if (parentMenu.get(parentId) != null) {
+                    MenuItem.createItemAddedToParent(name, currentId, parentMenu.get(parentId));
+                }
                 
             } while (cursor.moveToNext());
         }

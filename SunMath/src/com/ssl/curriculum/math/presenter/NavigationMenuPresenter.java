@@ -45,15 +45,12 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 
 	private void handleMenuItem(MenuItem item, int id){
 		if (!item.isMenuGroup()) {
-            navigationActivity.displaySectionDetails();
-
             navigationActivity.activateMenuItem(id);
-            navigationActivity.setSection(SectionHelper.getSection(navigationActivity, id));
-            navigationActivity.setSectionActivities(SectionHelper.getSectionActivitiesCursor(navigationActivity, id));
-			return;
-		}
-		currentMenu = (Menu) item;
-		updateMenu();
+            navigationActivity.presentSection(id);
+		} else {
+            currentMenu = (Menu) item;
+            updateMenu();
+        }
 	}
 
 	public boolean menuBack() {

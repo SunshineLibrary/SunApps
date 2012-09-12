@@ -1,9 +1,9 @@
 package com.sunshine.metadata.database;
 
 import android.content.Context;
-import com.sunshine.metadata.provider.observers.DownloadableTableObserver;
-import com.sunshine.metadata.provider.observers.TableObserver;
-import com.sunshine.metadata.provider.observers.ThumbnailFetchObserver;
+import com.sunshine.metadata.database.observers.DownloadableTableObserver;
+import com.sunshine.metadata.database.observers.TableObserver;
+import com.sunshine.metadata.database.observers.ThumbnailFetchObserver;
 import com.sunshine.metadata.database.tables.*;
 import com.sunshine.metadata.database.views.BookCategoryView;
 import com.sunshine.metadata.database.views.BookCollectionInfoView;
