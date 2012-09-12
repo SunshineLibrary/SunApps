@@ -3,8 +3,8 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_margin="10dp"
-    android:padding="15dp"
+    android:layout_marginTop="5dp"
+    android:padding="5dp"
     android:background="@color/chrome_background"
     android:minHeight="@dimen/grid_height_res"
     android:orientation="vertical" >
@@ -13,7 +13,6 @@
         android:id="@+id/image"
         android:layout_width="@dimen/imageWidth_book"
         android:layout_height="@dimen/imageHeight_book"
-        
         android:layout_alignParentTop="true" />
     
 	<TextView
@@ -25,7 +24,6 @@
         android:gravity="left"
         android:textSize="@dimen/grid_text_small"
         android:textColor="@color/chrome"
-        android:layout_marginTop="5dp"
          />
 	
     <TextView
@@ -37,9 +35,7 @@
         android:gravity="left"
         android:textColor="@color/chrome"
         android:textSize="@dimen/grid_text_large" 
-        android:singleLine="true"
-        android:layout_marginTop="5dp"
-        />
+        android:singleLine="true"/>
 
     <TextView
         android:id="@+id/description"
@@ -69,7 +65,7 @@
         android:id="@+id/reading_progress"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/grid_progress"
+        android:layout_height="13dp"
         android:max="100"
         android:layout_below="@+id/title" 
         android:progressDrawable="@drawable/grid_progress_style"
