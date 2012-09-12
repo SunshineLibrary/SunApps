@@ -28,12 +28,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ResourceInfoActivity extends Activity {
-	ImageButton backButton;
-	ImageView cover;
-	TextView originname, author, translator, publisher, publish_year, title, author_intro, intro;
-	Button readButton, downButton;
-	ContentResolver resolver;
-	LinearLayout resLayoutAll, resLayoutLeft, resLayoutRight;
+	private ImageButton backButton;
+	private ImageView cover;
+	private TextView originname, author, translator, publisher, publish_year, title, author_intro, intro;
+	private Button readButton, downButton;
+	private ContentResolver resolver;
+	private LinearLayout resLayoutAll, resLayoutLeft, resLayoutRight;
+	private String resId;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,10 +61,10 @@ public class ResourceInfoActivity extends Activity {
         resLayoutLeft.setMinimumWidth(width/2);
         resLayoutRight.setMinimumWidth(width/2);
         Intent intent = this.getIntent();
-        String id = intent.getStringExtra("bookId");
+        resId = intent.getStringExtra("bookId");
         ResourceType type = (ResourceType)intent.getExtras().get("type");
         
-        String status = showResInfo(id, type);
+        String status = showResInfo(resId, type);
         //Toast.makeText(this, String.valueOf(type) ,Toast.LENGTH_SHORT).show();
         
         setButtons(status);
