@@ -1,7 +1,7 @@
 #!/bin/bash
 
 MATH_APP_PACKAGE="com.ssl.curriculum.math"
-MATH_APP_ACTIVITY="com.ssl.curriculum.math.activity.NaviActivity"
+MATH_APP_ACTIVITY="com.ssl.curriculum.math.activity.NavigationActivity"
 
 
 MATH_PROJECT_DIR=$1

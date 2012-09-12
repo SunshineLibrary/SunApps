@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="170dp"
+                android:layout_width="230dp"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
+                android:layout_marginRight="30dp"
                 android:orientation="vertical" >
 
 
     <ImageView
             android:id="@+id/image"
-            android:layout_width="150dp"
+            android:layout_width="200dp"
             android:layout_height="150dp"
             android:scaleType="centerCrop"
             android:background="#222"
@@ -17,7 +17,7 @@
 
     <View
             android:id="@+id/mask"
-            android:layout_width="150dp"
+            android:layout_width="200dp"
             android:layout_height="150dp"
             android:layout_alignTop="@id/image"
             android:layout_alignLeft="@id/image"
@@ -26,7 +26,7 @@
 
     <TextView
             android:id="@+id/status"
-            android:layout_width="150dp"
+            android:layout_width="200dp"
             android:layout_height="150dp"
             android:layout_alignTop="@id/image"
             android:layout_alignLeft="@id/image"
@@ -37,7 +37,7 @@
 
     <TextView
             android:id="@+id/title"
-            android:layout_width="150dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="活动"

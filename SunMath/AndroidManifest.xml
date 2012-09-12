@@ -7,9 +7,9 @@
     <application
         android:icon="@drawable/sunmath_logo"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Light.NoTitleBar" >
+        android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
         <activity
-            android:name=".activity.NaviActivity"
+            android:name=".activity.NavigationActivity"
             android:label="@string/title_navi_activity"
             android:screenOrientation="landscape" >
             <intent-filter>

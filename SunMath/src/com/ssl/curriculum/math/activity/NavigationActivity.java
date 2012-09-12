@@ -18,7 +18,7 @@ import com.sunshine.metadata.provider.MetadataContract.Activities;
 import com.sunshine.metadata.provider.MetadataContract.SectionComponents;
 import com.sunshine.metadata.provider.MetadataContract.Sections;
 
-public class NaviActivity extends Activity implements View.OnClickListener {
+public class NavigationActivity extends Activity implements View.OnClickListener {
 
     private static String[] ActivitiesInfo = new String[] {
             BaseColumns._ID,
@@ -149,7 +149,7 @@ public class NaviActivity extends Activity implements View.OnClickListener {
                 cursor.move(position);
                 intent.putExtra("sectionId", currentSection.id);
                 intent.putExtra("activityId", cursor.getInt(cursor.getColumnIndex(SectionComponents._ACTIVITY_ID)));
-                intent.setClass(NaviActivity.this, MainActivity.class);
+                intent.setClass(NavigationActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
