@@ -44,7 +44,6 @@ public class ResourceInfoActivity extends Activity {
         downButton = (Button) findViewById(R.id.info_button_down);
         backButton = (ImageButton)findViewById(R.id.info_back_button);
         cover = (ImageView) findViewById(R.id.info_cover);
-        originname = (TextView) findViewById(R.id.info_originname);
         author = (TextView) findViewById(R.id.info_author);
         //translator = (TextView) findViewById(R.id.info_translator);
         publisher = (TextView) findViewById(R.id.info_publisher);
@@ -73,10 +72,7 @@ public class ResourceInfoActivity extends Activity {
         	
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub   
-                
-				v.setBackgroundResource(R.drawable.back02);       
-				
+				//v.setBackgroundResource(R.drawable.back02);  
 				ResourceInfoActivity.this.finish();
 			}
         	
@@ -120,17 +116,30 @@ public class ResourceInfoActivity extends Activity {
     	case BOOK:
     		
     		try {
-    			cur = resolver.query(BookInfo.CONTENT_URI, null, BookInfo._BOOK_ID+"="+id, null, null);		
+//    			cur = resolver.query(BookInfo.CONTENT_URI, null, BookInfo._BOOK_ID+"="+id, null, null);		
+//    			
+//    			int idCol = cur.getColumnIndex(BookInfo._BOOK_ID);
+//    			int titleCol = cur.getColumnIndex(BookInfo._TITLE);
+//    			int authorCol = cur.getColumnIndex(BookInfo._AUTHOR);
+//    			int descriptionCol = cur.getColumnIndex(BookInfo._INTRO);
+//    			int authorIntroCol = cur.getColumnIndex(BookInfo._AUTHOR_INTRO);
+//    			int publisherCol = cur.getColumnIndex(BookInfo._PUBLISHER);
+//    			int pubYearCol = cur.getColumnIndex(BookInfo._PUBLICATION_YEAR);
+//    			//int tagCol = cur.getColumnIndex(BookInfo._TAGS);
+//    			int downStatusCol = cur.getColumnIndex(BookInfo._DOWNLOAD_STATUS);
+//    			//int progressCol = cur.getColumnIndex(Books._PROGRESS);
     			
-    			int idCol = cur.getColumnIndex(BookInfo._BOOK_ID);
-    			int titleCol = cur.getColumnIndex(BookInfo._TITLE);
-    			int authorCol = cur.getColumnIndex(BookInfo._AUTHOR);
-    			int descriptionCol = cur.getColumnIndex(BookInfo._INTRO);
-    			int authorIntroCol = cur.getColumnIndex(BookInfo._AUTHOR_INTRO);
-    			int publisherCol = cur.getColumnIndex(BookInfo._PUBLISHER);
-    			int pubYearCol = cur.getColumnIndex(BookInfo._PUBLICATION_YEAR);
+    			cur = resolver.query(Books.CONTENT_URI, null, Books._ID+"="+id, null, null);		
+    			
+    			int idCol = cur.getColumnIndex(Books._ID);
+    			int titleCol = cur.getColumnIndex(Books._TITLE);
+    			int authorCol = cur.getColumnIndex(Books._AUTHOR);
+    			int descriptionCol = cur.getColumnIndex(Books._INTRO);
+    			//int authorIntroCol = cur.getColumnIndex(Books._AUTHOR_INTRO);
+    			int publisherCol = cur.getColumnIndex(Books._PUBLISHER);
+    			int pubYearCol = cur.getColumnIndex(Books._PUBLICATION_YEAR);
     			//int tagCol = cur.getColumnIndex(BookInfo._TAGS);
-    			int downStatusCol = cur.getColumnIndex(BookInfo._DOWNLOAD_STATUS);
+    			int downStatusCol = cur.getColumnIndex(Books._DOWNLOAD_STATUS);
     			//int progressCol = cur.getColumnIndex(Books._PROGRESS);
     			
     			Bitmap bm = null;
@@ -149,7 +158,7 @@ public class ResourceInfoActivity extends Activity {
     				
     				publisher.setText(cur.getString(publisherCol));
     				publish_year.setText(cur.getString(pubYearCol));
-    				author_intro.setText(cur.getString(authorIntroCol));
+    				//author_intro.setText(cur.getString(authorIntroCol));
     				author.setText(cur.getString(authorCol));
     				title.setText(cur.getString(titleCol));
     				intro.setText(cur.getString(descriptionCol));
@@ -183,15 +192,17 @@ public class ResourceInfoActivity extends Activity {
     }
     
     private void setButtons(String status){
+    	if(status == null) return;
+    	
     	if(status.equals(Downloadable.STATUS.DOWNLOADED)){
-    		setButton(downButton, false, "ÒÑÏÂÔØ");
-     	    setButton(readButton, true, "ÔÄ¶Á");
+    		setButton(downButton, false, "å·²ä¸‹è½½");
+     	    setButton(readButton, true, "é˜…è¯»");
     	}else if(status.equals(Downloadable.STATUS.QUEUED) || status.equals(Downloadable.STATUS.DOWNLOADING)){
-    		setButton(downButton, false, "ÕýÔÚÏÂÔØ");
-     	    setButton(readButton, false, "ÔÄ¶Á");
+    		setButton(downButton, false, "æ­£åœ¨ä¸‹è½½");
+     	    setButton(readButton, false, "é˜…è¯»");
     	}else{
-    		setButton(downButton, true, "ÏÂÔØ");
-     	    setButton(readButton, false, "ÔÄ¶Á");
+    		setButton(downButton, true, "ä¸‹è½½");
+     	    setButton(readButton, false, "é˜…è¯»");
     	}
     	
     	

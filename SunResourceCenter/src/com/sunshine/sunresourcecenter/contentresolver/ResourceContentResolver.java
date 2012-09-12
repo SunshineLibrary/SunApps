@@ -6,8 +6,10 @@ import java.util.List;
 
 import com.sunshine.metadata.provider.MetadataContract.BookCategories;
 import com.sunshine.metadata.provider.MetadataContract.BookCollectionInfo;
+import com.sunshine.metadata.provider.MetadataContract.BookCollections;
 import com.sunshine.metadata.provider.MetadataContract.BookInfo;
 import com.sunshine.metadata.provider.MetadataContract.BookLists;
+import com.sunshine.metadata.provider.MetadataContract.Books;
 import com.sunshine.sunresourcecenter.R;
 import com.sunshine.sunresourcecenter.model.CategoryGridItem;
 import com.sunshine.sunresourcecenter.model.ItemBookCover;
@@ -36,14 +38,23 @@ public class ResourceContentResolver {
 		ArrayList<ResourceGridItem> resGridItems = new ArrayList<ResourceGridItem>();
 
 		try {
-			Cursor cur = resolver.query(BookCollectionInfo.CONTENT_URI, projection, selection, null, null);		
+			//real code
+//			Cursor cur = resolver.query(BookCollectionInfo.CONTENT_URI, projection, selection, null, null);		
+//			
+//			int idCol = cur.getColumnIndex(BookCollectionInfo._BOOK_COLLECTION_ID);
+//			int titleCol = cur.getColumnIndex(BookCollectionInfo._TITLE);
+//			int authorCol = cur.getColumnIndex(BookCollectionInfo._AUTHOR);
+//			int descriptionCol = cur.getColumnIndex(BookCollectionInfo._INTRO);
+//			int tagCol = cur.getColumnIndex(BookCollectionInfo._TAGS);
+//			int countCol = cur.getColumnIndex(BookCollectionInfo._COUNT);
 			
-			int idCol = cur.getColumnIndex(BookCollectionInfo._BOOK_COLLECTION_ID);
-			int titleCol = cur.getColumnIndex(BookCollectionInfo._TITLE);
-			int authorCol = cur.getColumnIndex(BookCollectionInfo._AUTHOR);
-			int descriptionCol = cur.getColumnIndex(BookCollectionInfo._INTRO);
-			int tagCol = cur.getColumnIndex(BookCollectionInfo._TAGS);
-			int countCol = cur.getColumnIndex(BookCollectionInfo._COUNT);
+			//not real code!!
+			Cursor cur = resolver.query(BookCollections.CONTENT_URI, projection, selection, null, null);		
+			
+			int idCol = cur.getColumnIndex(BookCollections._ID);
+			int titleCol = cur.getColumnIndex(BookCollections._TITLE);
+			int authorCol = cur.getColumnIndex(BookCollections._AUTHOR);
+			int descriptionCol = cur.getColumnIndex(BookCollections._INTRO);
 			
 			Bitmap bm = null;
 			while (cur.moveToNext()) {
@@ -53,7 +64,7 @@ public class ResourceContentResolver {
 					//default image
 					bm = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
 				}
-				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol), cur.getString(tagCol), bm, 0, cur.getString(descriptionCol), cur.getInt(countCol)));	
+				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol), null, bm, 0, cur.getString(descriptionCol), 1));	
 				
 			}
 			
@@ -74,14 +85,18 @@ public class ResourceContentResolver {
 	public String getSingleResIdOfCollection(String ColId) {
 		String ResId = null;
 		//case book:
-		Cursor bookcur = resolver.query(BookInfo.CONTENT_URI, null, BookInfo._COLLECTION_ID + " = '" + ColId +"'", null, null);
+		//Cursor bookcur = resolver.query(BookInfo.CONTENT_URI, null, BookInfo._COLLECTION_ID + " = '" + ColId +"'", null, null);
+		Cursor bookcur = resolver.query(Books.CONTENT_URI, null, Books._COLLECTION_ID + " = '" + ColId +"'", null, null);
+		
 		
 		if(bookcur.getCount()>1) {
 			bookcur.close();
 			return null;
 		}
 		while(bookcur.moveToNext()){
-			ResId =  bookcur.getString(bookcur.getColumnIndex(BookInfo._BOOK_ID));
+			//ResId =  bookcur.getString(bookcur.getColumnIndex(BookInfo._BOOK_ID));
+			ResId =  bookcur.getString(bookcur.getColumnIndex(Books._ID));
+			break;
 		}
 		
 		//other cases:
@@ -93,14 +108,24 @@ public class ResourceContentResolver {
 	public List<Object> getBooks(String[] projection, String selection){
 		ArrayList<ResourceGridItem> resGridItems = new ArrayList<ResourceGridItem>();
 		try {
-			Cursor cur = resolver.query(BookInfo.CONTENT_URI, projection, selection, null, null);		
+			//real code
+//			Cursor cur = resolver.query(BookInfo.CONTENT_URI, projection, selection, null, null);		
+//
+//			int idCol = cur.getColumnIndex(BookInfo._BOOK_ID);
+//			int titleCol = cur.getColumnIndex(BookInfo._TITLE);
+//			int authorCol = cur.getColumnIndex(BookInfo._AUTHOR);
+//			int descriptionCol = cur.getColumnIndex(BookInfo._INTRO);
+//			int tagCol = cur.getColumnIndex(BookInfo._TAGS);
+//			int progressCol = cur.getColumnIndex(BookInfo._PROGRESS);
+			
+			//not real code!!
+			Cursor cur = resolver.query(Books.CONTENT_URI, projection, selection, null, null);		
 
-			int idCol = cur.getColumnIndex(BookInfo._BOOK_ID);
-			int titleCol = cur.getColumnIndex(BookInfo._TITLE);
-			int authorCol = cur.getColumnIndex(BookInfo._AUTHOR);
-			int descriptionCol = cur.getColumnIndex(BookInfo._INTRO);
-			int tagCol = cur.getColumnIndex(BookInfo._TAGS);
-			int progressCol = cur.getColumnIndex(BookInfo._PROGRESS);
+			int idCol = cur.getColumnIndex(Books._ID);
+			int titleCol = cur.getColumnIndex(Books._TITLE);
+			int authorCol = cur.getColumnIndex(Books._AUTHOR);
+			int descriptionCol = cur.getColumnIndex(Books._INTRO);
+			int progressCol = cur.getColumnIndex(Books._PROGRESS);
 
 			Bitmap bm = null;
 			while (cur.moveToNext()) {
@@ -110,7 +135,7 @@ public class ResourceContentResolver {
 					//default image
 					bm = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
 				}
-				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,cur.getString(tagCol) , bm, cur.getInt(progressCol), cur.getString(descriptionCol), 0));	
+				resGridItems.add(new ResourceGridItem(cur.getString(idCol), cur.getString(titleCol), cur.getString(authorCol) ,null , bm, cur.getInt(progressCol), cur.getString(descriptionCol), 0));	
 			
 			}
 			cur.close();

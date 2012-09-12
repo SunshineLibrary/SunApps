@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/chrome"
+        
         android:padding="@dimen/padding_zero" >
 
         <LinearLayout
@@ -28,15 +29,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:background="@drawable/search"
+            android:layout_centerVertical="true"
             android:ems="10"
             android:hint="@string/search_resources"
             android:inputType="text"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="20dp"
             android:paddingBottom="0dp"
             android:paddingLeft="40dp"
-            android:paddingRight="10dp"
-            android:paddingTop="0dp" >
+            android:paddingRight="40dp"
+            android:paddingTop="0dp" 
+            >
         </EditText>
 
         <Spinner
@@ -49,6 +54,7 @@
             android:background="@drawable/main_spinner_bg"
             android:entries="@array/main_menu"
             android:padding="@dimen/padding_small" 
+            
             />
     </RelativeLayout>
 
@@ -73,9 +79,12 @@
                 android:checked="true"
                 android:padding="@dimen/padding_small"
                 android:text="@string/res_reading"
+                android:textSize="@dimen/nav_text"
                 android:textColor="@color/chrome"
                 android:textOff="@string/res_reading"
-                android:textOn="@string/res_reading" />
+                android:textOn="@string/res_reading" 
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
 
             <ToggleButton
                 android:id="@+id/resnav_all"
@@ -84,9 +93,11 @@
                 android:background="@drawable/togglebutton_nav"
                 android:padding="@dimen/padding_small"
                 android:text="@string/res_all_resources"
+                android:textSize="@dimen/nav_text"
                 android:textColor="@color/chrome"
                 android:textOff="@string/res_all_resources"
-                android:textOn="@string/res_all_resources" />
+                android:textOn="@string/res_all_resources" 
+                android:layout_marginRight="10dp"/>
 
             <ToggleButton
                 android:id="@+id/resnav_recent_downloaded"
@@ -95,9 +106,11 @@
                 android:background="@drawable/togglebutton_nav"
                 android:padding="@dimen/padding_small"
                 android:text="@string/res_recent_downloaded"
+                android:textSize="@dimen/nav_text"
                 android:textColor="@color/chrome"
                 android:textOff="@string/res_recent_downloaded"
-                android:textOn="@string/res_recent_downloaded" />
+                android:textOn="@string/res_recent_downloaded"
+                android:layout_marginRight="10dp" />
 
             <ToggleButton
                 android:id="@+id/resnav_learn_new"
@@ -106,9 +119,11 @@
                 android:background="@drawable/togglebutton_nav"
                 android:padding="@dimen/padding_small"
                 android:text="@string/res_learn_new"
+                android:textSize="@dimen/nav_text"
                 android:textColor="@color/chrome"
                 android:textOff="@string/res_learn_new"
-                android:textOn="@string/res_learn_new" />
+                android:textOn="@string/res_learn_new"
+                android:layout_marginRight="10dp" />
 
             <ToggleButton
                 android:id="@+id/resnav_readed"
@@ -117,9 +132,11 @@
                 android:background="@drawable/togglebutton_nav"
                 android:padding="@dimen/padding_small"
                 android:text="@string/res_readed"
+                android:textSize="@dimen/nav_text"
                 android:textColor="@color/chrome"
                 android:textOff="@string/res_readed"
-                android:textOn="@string/res_readed" />
+                android:textOn="@string/res_readed" 
+                android:layout_marginRight="10dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -138,7 +155,8 @@
                 android:checked="true"
                 android:text="@string/empty"
                 android:textOff="@string/empty"
-                android:textOn="@string/empty" />
+                android:textOn="@string/empty" 
+                android:layout_marginRight="20dp"/>
 
             <ToggleButton
                 android:id="@+id/type_video"
@@ -147,7 +165,8 @@
                 android:background="@drawable/togglebutton_type_movie"
                 android:text="@string/empty"
                 android:textOff="@string/empty"
-                android:textOn="@string/empty" />
+                android:textOn="@string/empty" 
+                android:layout_marginRight="20dp"/>
 
             <ToggleButton
                 android:id="@+id/type_audio"
@@ -156,7 +175,8 @@
                 android:background="@drawable/togglebutton_type_music"
                 android:text="@string/empty"
                 android:textOff="@string/empty"
-                android:textOn="@string/empty" />
+                android:textOn="@string/empty" 
+                android:layout_marginRight="20dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -175,9 +195,12 @@
                 android:checked="true"
                 android:padding="@dimen/padding_small"
                 android:text="@string/download_recommend"
+                android:textSize="@dimen/nav_text"
                 android:textColor="@color/chrome"
                 android:textOff="@string/download_recommend"
-                android:textOn="@string/download_recommend" />
+                android:textOn="@string/download_recommend"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
 
             <ToggleButton
                 android:id="@+id/downnav_hot"
@@ -186,9 +209,11 @@
                 android:background="@drawable/togglebutton_nav"
                 android:padding="@dimen/padding_small"
                 android:text="@string/download_hot"
+                android:textSize="@dimen/nav_text"
                 android:textColor="@color/chrome"
                 android:textOff="@string/download_hot"
-                android:textOn="@string/download_hot" />
+                android:textOn="@string/download_hot" 
+                android:layout_marginRight="10dp"/>
 
             <ToggleButton
                 android:id="@+id/downnav_category"
@@ -197,9 +222,11 @@
                 android:background="@drawable/togglebutton_nav"
                 android:padding="@dimen/padding_small"
                 android:text="@string/download_category"
+                android:textSize="@dimen/nav_text"
                 android:textColor="@color/chrome"
                 android:textOff="@string/download_category"
-                android:textOn="@string/download_category" />
+                android:textOn="@string/download_category" 
+                android:layout_marginRight="10dp"/>
 
             <ToggleButton
                 android:id="@+id/downnav_like"
@@ -208,9 +235,11 @@
                 android:background="@drawable/togglebutton_nav"
                 android:padding="@dimen/padding_small"
                 android:text="@string/download_like"
+                android:textSize="@dimen/nav_text"
                 android:textColor="@color/chrome"
                 android:textOff="@string/download_like"
-                android:textOn="@string/download_like" />
+                android:textOn="@string/download_like" 
+                android:layout_marginRight="10dp"/>
 
             <ToggleButton
                 android:id="@+id/downnav_list"
@@ -220,9 +249,11 @@
                 android:hint="@string/download_list"
                 android:padding="@dimen/padding_small"
                 android:text="@string/download_list"
+                android:textSize="@dimen/nav_text"
                 android:textColor="@color/chrome"
                 android:textOff="@string/download_list"
-                android:textOn="@string/download_list" />
+                android:textOn="@string/download_list" 
+                android:layout_marginRight="10dp"/>
             
             <ToggleButton
                 android:id="@+id/downnav_search"
@@ -232,6 +263,7 @@
                 android:hint="@string/download_search"
                 android:padding="@dimen/padding_small"
                 android:text="@string/download_search"
+                android:textSize="@dimen/nav_text"
                 android:textColor="@color/chrome"
                 android:textOff="@string/download_search"
                 android:textOn="@string/download_search"
@@ -271,7 +303,10 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
 
         <GridView
             android:id="@+id/gridview"
@@ -279,10 +314,10 @@
             android:layout_height="fill_parent"
             android:background="@color/grid_background"
             android:gravity="center"
-            android:horizontalSpacing="10dp"
+            android:horizontalSpacing="20dp"
             android:numColumns="2"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="10dp" >
+            android:verticalSpacing="20dp" >
         </GridView>
 
         <LinearLayout
