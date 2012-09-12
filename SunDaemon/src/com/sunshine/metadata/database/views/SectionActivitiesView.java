@@ -38,7 +38,7 @@ public class SectionActivitiesView implements TableView {
                 Activities._NAME, Activities._TYPE, Activities._DOWNLOAD_PROGRESS, Activities._DOWNLOAD_STATUS);
         query += String.format(" FROM %s s left join %s a ", SectionComponentsTable.TABLE_NAME, ActivityTable.TABLE_NAME);
         query += String.format("ON s.%s = a.%s ", SectionComponents._ACTIVITY_ID, Activities._ID);
-        query += String.format("ORDER BY s.%s;", SectionComponents._SEQUENCE);
+        query += String.format("WHERE a.%s > 0 ORDER BY s.%s;", Activities._ID, SectionComponents._SEQUENCE);
         return query;
     }
 

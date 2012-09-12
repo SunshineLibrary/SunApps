@@ -24,5 +24,4 @@ public interface Table {
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs);
 
     public SQLiteDatabase getDatabase();
-
 }

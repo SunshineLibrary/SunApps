@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.sunshine.R;
 
+import java.util.HashSet;
+
 import static com.sunshine.metadata.provider.MetadataContract.Activities;
 
 /**
@@ -43,7 +45,9 @@ public class ActivityListAdapter extends CursorAdapter {
         String title = cursor.getString(cursor.getColumnIndex(Activities._NAME));
 
         tv_title.setText(title);
-        iv_image.setImageURI(Activities.getActivityThumbnailUri(id));
+        if (!iv_image.isLayoutRequested()) {
+            iv_image.setImageURI(Activities.getActivityThumbnailUri(id));
+        }
 
         switch (status) {
             case Activities.STATUS_NOT_DOWNLOADED:
@@ -54,9 +58,10 @@ public class ActivityListAdapter extends CursorAdapter {
                 break;
             case Activities.STATUS_DOWNLOADING:
                 tv_status.setText("正在下载:" + progress + "%");
+                break;
             case Activities.STATUS_DOWNLOADED:
-                tv_status.setVisibility(0);
-                v_mask.setVisibility(0);
+                tv_status.setVisibility(View.INVISIBLE);
+                v_mask.setVisibility(View.INVISIBLE);
                 break;
         }
     }

@@ -14,27 +14,14 @@ import com.ssl.curriculum.math.component.NavigationListView;
 import com.ssl.curriculum.math.model.Section;
 import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.presenter.NavigationMenuPresenter;
+import com.ssl.curriculum.math.presenter.SectionPresenter;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
 import com.sunshine.metadata.provider.MetadataContract.SectionComponents;
 import com.sunshine.metadata.provider.MetadataContract.Sections;
 
 public class NavigationActivity extends Activity implements View.OnClickListener {
 
-    private static String[] ActivitiesInfo = new String[] {
-            BaseColumns._ID,
-            SectionComponents._SECTION_ID,
-            Activities._NAME,
-            Activities._DOWNLOAD_PROGRESS,
-            Activities._DOWNLOAD_STATUS,
-    };
-
-    private static String[] SectionInfo = new String[] {
-            Sections._ID,
-            Sections._DESCRIPTION
-    };
-
     private NavigationMenuPresenter menuPresenter;
-    private Section currentSection;
 
     private ImageView iv_back_button;
     private TextView tv_menu_title;
@@ -48,6 +35,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     private ImageView iv_section_thumbnail;
     private TextView tv_section_description;
     private HorizontalListView lv_section_activities;
+    private SectionPresenter sectionPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,7 +62,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
         if (v == iv_back_button) {
             menuPresenter.menuBack();
         } else if (v == btn_download){
-
+            sectionPresenter.startDownload();
         } else if (v == btn_study) {
 
         } else if (v == btn_stat) {
@@ -82,8 +70,11 @@ public class NavigationActivity extends Activity implements View.OnClickListener
         }
     }
 
+    public void presentSection(int id) {
+        sectionPresenter.presentSection(id);
+    }
+
     public void setSection(Section section) {
-        currentSection = section;
         displaySectionDetails();
         setSectionName(section.name);
         setSectionDescription(section.description);
@@ -106,7 +97,14 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     }
 
     public void setSectionActivities(Cursor cursor){
-        ((CursorAdapter) lv_section_activities.getAdapter()).changeCursor(cursor);
+        CursorAdapter adapter = (CursorAdapter) lv_section_activities.getAdapter();
+        Cursor oldCursor = adapter.getCursor();
+        if (cursor != oldCursor) {
+            adapter.changeCursor(cursor);
+            if (oldCursor != null) {
+                oldCursor.close();
+            }
+        }
     }
 
     public void activateMenuItem(int id) {
@@ -119,6 +117,11 @@ public class NavigationActivity extends Activity implements View.OnClickListener
 
     public void updateMenu(Menu menu) {
         navigationListView.updateMenu(menu);
+    }
+
+    public void setOnActivityClickListener(AdapterView.OnItemClickListener listener) {
+        lv_section_activities.setOnItemClickListener(listener);
+
     }
 
     private void initUI(){
@@ -138,6 +141,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
 
     private void initComponent() {
         menuPresenter = new NavigationMenuPresenter(this);
+        sectionPresenter = new SectionPresenter(this);
         navigationListView.setNextLevelMenuChangedListener(menuPresenter);
         iv_back_button.setOnClickListener(this);
         btn_download.setOnClickListener(this);
@@ -149,16 +153,5 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     private void initSectionActivitiesView() {
         CursorAdapter adapter = new ActivityListAdapter(this, null);
         lv_section_activities.setAdapter(adapter);
-        lv_section_activities.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent();
-                Cursor cursor =  ((CursorAdapter) lv_section_activities.getAdapter()).getCursor();
-                cursor.move(position);
-                intent.putExtra("sectionId", currentSection.id);
-                intent.putExtra("activityId", cursor.getInt(cursor.getColumnIndex(SectionComponents._ACTIVITY_ID)));
-                intent.setClass(NavigationActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 }

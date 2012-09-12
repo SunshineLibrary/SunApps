@@ -223,8 +223,8 @@
 
                 <com.ssl.curriculum.math.component.HorizontalListView
                         android:id="@+id/lv_section_activities"
-                        android:layout_width="fill_parent"
-                        android:layout_height="100dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="200dp"
                         android:layout_marginBottom="0dp"
                         android:layout_alignParentBottom="true"
                         />

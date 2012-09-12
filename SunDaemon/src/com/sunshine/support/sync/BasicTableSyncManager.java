@@ -140,15 +140,30 @@ public class BasicTableSyncManager implements TableSyncManager {
 		return values;
 	}
 
-	private void insertOrUpdateRow(JSONObject row) {
-		ContentValues values = getContentValuesFromRow(row);
-		if (table.update(null, values,
-				BaseColumns._ID + "=" + values.getAsString(BaseColumns._ID), null) == 0) {
-			table.insert(null, values);
-		}
+	private void insertOrUpdateRow(JSONObject row) throws JSONException {
+        if (deleted(row)) {
+            table.delete(null, BaseColumns._ID + "=?", new String[]{row.getString("id")});
+        } else {
+            ContentValues values = getContentValuesFromRow(row);
+            if (table.update(null, values,
+                    BaseColumns._ID + "=" + values.getAsString(BaseColumns._ID), null) == 0) {
+                table.insert(null, values);
+            }
+        }
 	}
 
 	private String getClassName() {
 		return this.getClass().getName();
 	}
+
+    private boolean deleted(JSONObject row) {
+        try {
+            return parseTime(row.getString("created_at")) == 0;
+        } catch (ParseException e) {
+            Log.e(getClassName(), "Failed to parse time " + row.toString(), e);
+        } catch (JSONException e) {
+            Log.e(getClassName(), "Failed to get created_at " + row.toString(), e);
+        }
+        return false;
+    }
 }
