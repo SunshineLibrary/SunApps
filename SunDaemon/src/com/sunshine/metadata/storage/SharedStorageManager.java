@@ -1,4 +1,4 @@
-package com.sunshine.support.storage;
+package com.sunshine.metadata.storage;
 
 import android.content.Context;
 import android.content.UriMatcher;
@@ -44,6 +44,7 @@ public class SharedStorageManager {
             case Matcher.ACTIVITIES_VIDEO:
             case Matcher.ACTIVITIES_TEXT:
             case Matcher.ACTIVITIES_THUMBNAIL:
+            case Matcher.SECTIONS_THUMBNAIL:
             case Matcher.GALLERY_IMAGES_ID:
             case Matcher.GALLERY_IMAGES_THUMBNAIL:
             case Matcher.BOOKS_ID:

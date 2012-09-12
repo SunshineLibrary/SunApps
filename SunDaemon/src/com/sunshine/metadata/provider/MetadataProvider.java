@@ -16,7 +16,7 @@ import com.sunshine.metadata.database.views.BookCollectionInfoView;
 import com.sunshine.metadata.database.views.BookInfoView;
 import com.sunshine.metadata.database.views.SectionActivitiesView;
 import com.sunshine.support.application.DaemonApplication;
-import com.sunshine.support.storage.SharedStorageManager;
+import com.sunshine.metadata.storage.SharedStorageManager;
 
 import java.io.FileNotFoundException;
 
@@ -67,6 +67,11 @@ public class MetadataProvider extends ContentProvider {
         int uriMatch = sUriMatcher.match(uri);
         Table table = getTableForMatch(uriMatch);
         TableView view = getViewForMatch(uriMatch);
+
+        if (table == null && view == null) {
+            throw new IllegalArgumentException();
+        }
+
         switch (uriMatch) {
             // Views
             case Matcher.SECTIONS_ACTIVITIES:
@@ -145,6 +150,10 @@ public class MetadataProvider extends ContentProvider {
         int uriMatch = sUriMatcher.match(uri);
         Table table = getTableForMatch(uriMatch);
 
+        if (table == null) {
+            throw new IllegalArgumentException();
+        }
+
         switch (uriMatch) {
             case Matcher.GALLERY_IMAGES:
             case Matcher.ACTIVITIES:
@@ -169,6 +178,10 @@ public class MetadataProvider extends ContentProvider {
                       String[] selectionArgs) {
         int uriMatch = sUriMatcher.match(uri);
         Table table = getTableForMatch(uriMatch);
+
+        if (table == null) {
+            throw new IllegalArgumentException();
+        }
 
         switch (uriMatch) {
             case Matcher.ACTIVITIES_ID:
@@ -224,6 +237,7 @@ public class MetadataProvider extends ContentProvider {
                 }
                 return sectionTable;
             case Matcher.GALLERY_IMAGES:
+            case Matcher.GALLERY_IMAGES_ID:
                 if (galleryImagesTable == null) {
                     galleryImagesTable = dbHandler.getTableManager(GalleryImageTable.TABLE_NAME);
                 }
@@ -245,6 +259,7 @@ public class MetadataProvider extends ContentProvider {
                 }
                 return authorTable;
             case Matcher.BOOKS:
+            case Matcher.BOOKS_ID:
                 if (bookTable == null) {
                     bookTable = dbHandler.getTableManager(BookTable.TABLE_NAME);
                 }

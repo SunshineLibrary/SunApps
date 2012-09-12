@@ -31,7 +31,7 @@ public class SectionActivityContentProvider {
     public SectionActivitiesData fetchSectionActivities(int sectionId) {
         SectionActivitiesData sectionActivitiesData = new SectionActivitiesData();
         ContentResolver contentResolver = context.getContentResolver();
-        Cursor cursor = contentResolver.query(Sections.getActivitiesBelongToSection(sectionId), new String[]{
+        Cursor cursor = contentResolver.query(Sections.getSectionActivitiesUri(sectionId), new String[]{
                 SectionComponents._ACTIVITY_ID, SectionComponents._SEQUENCE}, null, null, null);
         if (cursor.moveToFirst()) {
             do {

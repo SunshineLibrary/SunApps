@@ -1,19 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:orientation="vertical" >
+
 
     <ImageView
-        android:id="@+id/image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:scaleType="centerCrop" />
+            android:id="@+id/image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            android:background="#222"
+            android:src="@drawable/ic_main_thumbnail_photo_album"
+            />
+
+    <View
+            android:id="@+id/mask"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignTop="@id/image"
+            android:layout_alignLeft="@id/image"
+            android:background="#dfff"
+            />
 
     <TextView
-        android:id="@+id/title"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal" />
+            android:id="@+id/status"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignTop="@id/image"
+            android:layout_alignLeft="@id/image"
+            android:gravity="center"
+            android:textColor="#aaa"
+            android:text="未下载"
+            />
 
-</LinearLayout>
+    <TextView
+            android:id="@+id/title"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="活动"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/image"
+            />
+
+</RelativeLayout>

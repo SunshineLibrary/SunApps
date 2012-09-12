@@ -5,8 +5,6 @@ import android.content.Context;
 import android.net.Uri;
 import com.sunshine.metadata.provider.MetadataContract;
 
-import static com.sunshine.metadata.provider.MetadataContract.Downloadable.STATUS;
-
 public class MonitoredFileDownloadTask extends FileDownloadTask {
 
     private static final ContentValues NOT_DOWNLOADED = new ContentValues();
@@ -16,9 +14,9 @@ public class MonitoredFileDownloadTask extends FileDownloadTask {
     private Uri updateUri;
 
     static {
-        NOT_DOWNLOADED.put(MetadataContract.Downloadable._DOWNLOAD_STATUS, STATUS.NOT_DOWNLOADED.ordinal());
-        DOWNLOADING.put(MetadataContract.Downloadable._DOWNLOAD_STATUS, STATUS.DOWNLOADING.ordinal());
-        DOWNLOADED.put(MetadataContract.Downloadable._DOWNLOAD_STATUS, STATUS.DOWNLOADED.ordinal());
+        NOT_DOWNLOADED.put(MetadataContract.Downloadable._DOWNLOAD_STATUS, MetadataContract.Downloadable.STATUS_NOT_DOWNLOADED);
+        DOWNLOADING.put(MetadataContract.Downloadable._DOWNLOAD_STATUS, MetadataContract.Downloadable.STATUS_DOWNLOADING);
+        DOWNLOADED.put(MetadataContract.Downloadable._DOWNLOAD_STATUS, MetadataContract.Downloadable.STATUS_DOWNLOADED);
     }
 
     public MonitoredFileDownloadTask(Context context, Uri remoteUri, Uri localUri, Uri updateUri) {

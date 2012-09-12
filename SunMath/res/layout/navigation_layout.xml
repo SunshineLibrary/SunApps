@@ -25,7 +25,7 @@
                 android:src="@drawable/ic_side_list_back" />
 
             <TextView
-                android:id="@+id/navigation_menu_title"
+                android:id="@+id/tv_menu_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -70,7 +70,8 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/small_green_square"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_side_shadow" />
+            android:src="@drawable/ic_side_shadow"
+                />
     </RelativeLayout>
 
     <FrameLayout
@@ -79,7 +80,6 @@
         android:layout_weight="2.5" >
 
         <RelativeLayout
-            android:id="@+id/test_relative"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="#F6F2E4"
@@ -100,7 +100,7 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/test_linear"
+            android:id="@+id/section_details"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="#F6F2E4"
@@ -186,52 +186,79 @@
                 </RelativeLayout>
             </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                    >
 
                 <ImageView
-                    android:id="@+id/imageview_navi_activity_lesson_icon"
-                    android:layout_width="0dp"
+                    android:id="@+id/iv_section_thumbnail"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_marginRight="20dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_main_thumbnail_photo_album"
+                    />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:orientation="vertical" >
 
-                    <TextView
-                        android:id="@+id/textview_navi_activity_lesson_title"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/textview_navi_activity_lesson_stat"
+                <TextView
+                        android:id="@+id/tv_section_name"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="heihei" />
+                        android:layout_toRightOf="@id/iv_section_thumbnail"
+                        android:layout_marginTop="15dp"
+                        android:text="Section Name"
+                        android:textColor="#26240c"
+                        android:textSize="24dp"
+                        />
 
-                    <ProgressBar
+                <TextView
+                        android:id="@+id/tv_section_stat"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@id/iv_section_thumbnail"
+                        android:layout_below="@id/tv_section_name"
+                        android:text="共有0个视频"
+                        android:textSize="20dp"
+                        android:textColor="#594c25"
+                        />
+
+                <ProgressBar
                         android:id="@+id/progressbar_navi_activity_lesson_pb"
                         style="@android:style/Widget.ProgressBar.Horizontal"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-            </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/iv_section_thumbnail"
+                        android:layout_below="@id/tv_section_stat"
+                        android:layout_marginTop="15dp"
+                        />
 
-            <ListView
-                android:id="@+id/listview_navi_activity_lesson_description"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:cacheColorHint="#00000000"
-                android:fadingEdge="none"
-                android:listSelector="@android:color/transparent" />
+                <ScrollView
+                        android:layout_width="fill_parent"
+                        android:layout_height="200dp"
+                        android:layout_below="@id/iv_section_thumbnail"
+                        android:layout_marginTop="20dp"
+                        >
+                    <TextView android:id="@+id/tv_section_description"
+                              android:layout_width="fill_parent"
+                              android:layout_height="wrap_content"
+                              android:fadingEdge="none"
+                              android:text="Section Description"
+                              android:textSize="22dp"
+                              android:textColor="#594c25"
+                            />
+                </ScrollView>
+
+            </RelativeLayout>
+
 
             <com.ssl.curriculum.math.component.HorizontalListView
-                android:id="@+id/listview"
+                android:id="@+id/lv_section_activities"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

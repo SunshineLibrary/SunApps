@@ -1,54 +1,53 @@
 package com.ssl.curriculum.math.activity;
 
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.provider.BaseColumns;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.*;
 import com.ssl.curriculum.math.R;
+import com.ssl.curriculum.math.adapter.ActivityListAdapter;
 import com.ssl.curriculum.math.component.HorizontalListView;
 import com.ssl.curriculum.math.component.NavigationListView;
+import com.ssl.curriculum.math.model.Section;
+import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.presenter.NavigationMenuPresenter;
-import com.sunshine.metadata.provider.MetadataContract;
 import com.sunshine.metadata.provider.MetadataContract.Activities;
-import com.sunshine.metadata.provider.MetadataContract.Downloadable;
 import com.sunshine.metadata.provider.MetadataContract.SectionComponents;
 import com.sunshine.metadata.provider.MetadataContract.Sections;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+public class NaviActivity extends Activity implements View.OnClickListener {
 
-public class NaviActivity extends Activity {
+    private static String[] ActivitiesInfo = new String[] {
+            BaseColumns._ID,
+            SectionComponents._SECTION_ID,
+            Activities._NAME,
+            Activities._DOWNLOAD_PROGRESS,
+            Activities._DOWNLOAD_STATUS,
+    };
 
-    private static String[] ActivitiesInfo = new String[] {SectionComponents._ACTIVITY_ID,Activities._NAME};
-    private static String[] SectionInfo = new String[] { Sections._ID,
-            Sections._DESCRIPTION };
+    private static String[] SectionInfo = new String[] {
+            Sections._ID,
+            Sections._DESCRIPTION
+    };
 
-    private NavigationListView navigationListView;
     private NavigationMenuPresenter menuPresenter;
-    private TextView menuTitle;
-    private ImageView backImageView;
-    private TextView mztext;
-    private LinearLayout test_linear;
-    private ListView desListView;
-    private HorizontalListView horizontalListView;
-    private static ImageView mImageView;
-    private static ContentResolver contentResolver;
-    private static Context context;
+    private Section currentSection;
+
+    private ImageView iv_back_button;
+    private TextView tv_menu_title;
+    private NavigationListView navigationListView;
+
+    private LinearLayout ll_section_details;
     private ImageButton btn_download;
     private ImageButton btn_study;
     private ImageButton btn_stat;
+    private TextView tv_section_name;
+    private ImageView iv_section_thumbnail;
+    private TextView tv_section_description;
+    private HorizontalListView lv_section_activities;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,162 +62,96 @@ public class NaviActivity extends Activity {
         menuPresenter.loadMenuData();
     }
 
-    public static void loadSectionData(Context context, ListView someListView,
-                                       int position) {
-        NaviActivity.context=context;
-        ContentResolver contentResolver = context.getContentResolver();
-        Cursor wenbenCursor = contentResolver.query(Sections.CONTENT_URI,
-                SectionInfo, Sections._ID + "=?",
-                new String[] { String.valueOf(position) }, null);
-        SimpleCursorAdapter wenbenadapter = new SimpleCursorAdapter(context,
-                R.layout.navi_activity_lesson_description_item, wenbenCursor,
-                new String[] { Sections._DESCRIPTION },
-                new int[] { R.id.title_des });
-        someListView.setAdapter(wenbenadapter);
+    @Override
+    public void onClick(View v) {
+        if (v == iv_back_button) {
+            menuPresenter.menuBack();
+        } else if (v == btn_download){
 
+        } else if (v == btn_study) {
+
+        } else if (v == btn_stat) {
+
+        }
     }
 
-
-
-
-    public static void loadActivitiesData(final Context context,HorizontalListView horizontalListView, final int sectionId, final ImageView mImageView,ImageButton btn_download,
-                                          ImageButton btn_study, ImageButton btn_stat){
-
-        NaviActivity.context=context; contentResolver = context.getContentResolver();
-
-        final Cursor cursor = contentResolver.query(Sections.getActivitiesBelongToSection(sectionId),ActivitiesInfo,null,null, null);
-
-        btn_download.setOnClickListener(new OnClickListener() {
-            public void onClick(View v){
-
-                ContentValues values = new ContentValues();
-                values.put(Downloadable._DOWNLOAD_STATUS, Downloadable.STATUS.QUEUED.ordinal());
-                if (cursor.moveToFirst()){
-                    do {
-                        Uri uri = Activities.getActivityUri(cursor.getInt(cursor.getColumnIndex(SectionComponents._ACTIVITY_ID)));
-                        context.getContentResolver().update(uri, values, null, null);
-                    } while (cursor.moveToNext());
-                }
-
-            }
-
-        });
-
-        BaseAdapter thumbAdapter = new BaseAdapter(){
-
-            private int c=cursor.getCount();
-
-            @Override
-            public int getCount() {
-                // TODO Auto-generated method stub
-                return c;
-            }
-
-            public Object getItem(int position) {
-                return position;
-            }
-
-            public long getItemId(int position) {
-                return position;
-            }
-
-            public View getView(int position, View view, ViewGroup viewGroup) {
-                View retval = LayoutInflater.from(viewGroup.getContext()).inflate(
-                        R.layout.navi_activity_horizontal_item, null);
-
-
-                TextView thutext=(TextView)retval.findViewById(R.id.title);
-                ImageView thumbimage=(ImageView)retval.findViewById(R.id.image);
-
-
-                InputStream is = null;
-                cursor.moveToPosition(position);
-                int actname = cursor.getColumnIndex(Activities._NAME);
-                String activityname = cursor.getString(actname);
-                thutext.setText(activityname);
-                //System.out.println(activityname);
-
-
-                try {
-                    is = NaviActivity.context.getContentResolver().openInputStream(MetadataContract.Activities.getActivityThumbnailUri(sectionId));
-                    //System.out.println("could find it");
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    //System.out.println("could not find it");
-                }
-
-                Bitmap bitmap = BitmapFactory.decodeStream(is);
-                BitmapDrawable bd = new BitmapDrawable(bitmap);
-                thumbimage.setBackgroundDrawable(bd);
-                thumbimage.setImageResource(R.drawable.ic_main_thumbnail_photo_album);
-                mImageView.setImageResource(R.drawable.ic_navi_section_thumbnail);
-
-                return retval;
-            }
-        };
-
-        horizontalListView.setAdapter(thumbAdapter);
-
-        horizontalListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-
-                                    int position, long id) {
-
-                cursor.moveToPosition(position);
-
-                int a = cursor.getColumnIndex(SectionComponents._ACTIVITY_ID);
-
-                int activityId = cursor.getInt(a);
-
-                Intent intent = new Intent();
-
-                intent.putExtra("sectionId",sectionId);
-
-                intent.putExtra("activityId",activityId);
-                //System.out.println(sectionId);
-                //System.out.println(activityId);
-
-                intent.setClass(context, MainActivity.class);
-                ((NaviActivity) context).startLearn(intent);
-
-            }
-
-        });
+    public void setSection(Section section) {
+        currentSection = section;
+        displaySectionDetails();
+        setSectionName(section.name);
+        setSectionDescription(section.description);
     }
 
-    protected void startLearn(Intent intent) {
-        startActivity(intent);
+    public void displaySectionDetails() {
+        ll_section_details.setVisibility(View.VISIBLE);
+    }
 
+    public void hideSectionDetails() {
+        ll_section_details.setVisibility(View.INVISIBLE);
+    }
+
+    public void setSectionName(String title) {
+        tv_section_name.setText(title);
+    }
+
+    public void setSectionDescription(String description) {
+        tv_section_description.setText(description);
+    }
+
+    public void setSectionActivities(Cursor cursor){
+        ((CursorAdapter) lv_section_activities.getAdapter()).changeCursor(cursor);
+    }
+
+    public void activateMenuItem(int id) {
+        navigationListView.activateMenuItem(id);
+    }
+
+    public void setMenuTitle(String title) {
+        tv_menu_title.setText(title);
+    }
+
+    public void updateMenu(Menu menu) {
+        navigationListView.updateMenu(menu);
     }
 
     private void initUI(){
         setContentView(R.layout.navigation_layout);
+        tv_menu_title = (TextView) findViewById(R.id.tv_menu_title);
+        iv_back_button = (ImageView) findViewById(R.id.navigation_menu_back_btn);
         navigationListView = (NavigationListView) findViewById(R.id.navi_list_view);
-        menuTitle = (TextView) findViewById(R.id.navigation_menu_title);
-        backImageView = (ImageView) findViewById(R.id.navigation_menu_back_btn);
-        mztext = (TextView) findViewById(R.id.textview_navi_activity_lesson_title);
-        test_linear = (LinearLayout) this.findViewById(R.id.test_linear);
-        desListView = (ListView) this.findViewById(R.id.listview_navi_activity_lesson_description);
-        horizontalListView = (HorizontalListView) findViewById(R.id.listview);
-        mImageView=(ImageView)findViewById(R.id.imageview_navi_activity_lesson_icon);
+        ll_section_details = (LinearLayout) this.findViewById(R.id.section_details);
+        tv_section_name = (TextView) findViewById(R.id.tv_section_name);
         btn_download = (ImageButton)findViewById(R.id.btn_navi_activity_download);
         btn_study = (ImageButton)findViewById(R.id.btn_navi_activity_study);
         btn_stat = (ImageButton)findViewById(R.id.btn_navi_activity_statistic);
-
+        iv_section_thumbnail =(ImageView)findViewById(R.id.iv_section_thumbnail);
+        tv_section_description = (TextView) this.findViewById(R.id.tv_section_description);
+        lv_section_activities = (HorizontalListView) findViewById(R.id.lv_section_activities);
     }
 
     private void initComponent() {
-        menuPresenter = new NavigationMenuPresenter(this, navigationListView,
-                menuTitle, mztext, test_linear, desListView, horizontalListView,mImageView,btn_download,btn_study,btn_stat);
+        menuPresenter = new NavigationMenuPresenter(this);
         navigationListView.setNextLevelMenuChangedListener(menuPresenter);
-        backImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                menuPresenter.menuBack();
-            }
-        });
-
+        iv_back_button.setOnClickListener(this);
+        btn_download.setOnClickListener(this);
+        btn_study.setOnClickListener(this);
+        btn_stat.setOnClickListener(this);
+        initSectionActivitiesView();
     }
 
+    private void initSectionActivitiesView() {
+        CursorAdapter adapter = new ActivityListAdapter(this, null);
+        lv_section_activities.setAdapter(adapter);
+        lv_section_activities.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent();
+                Cursor cursor =  ((CursorAdapter) lv_section_activities.getAdapter()).getCursor();
+                cursor.move(position);
+                intent.putExtra("sectionId", currentSection.id);
+                intent.putExtra("activityId", cursor.getInt(cursor.getColumnIndex(SectionComponents._ACTIVITY_ID)));
+                intent.setClass(NaviActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 }
