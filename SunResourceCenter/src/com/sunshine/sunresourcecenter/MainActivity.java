@@ -541,7 +541,7 @@ public class MainActivity extends Activity {
 			//books
 			case RES_READING:
 				// AND progress > 0 AND progress < 100
-				selection = String.format("%s = '%s' AND %s != null ", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS.DOWNLOADED,
+				selection = String.format("%s = '%s' AND %s not null ", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS.DOWNLOADED,
 						BookInfo._STARTTIME);
 				return resolver.getBooks(projection, selection);
 					

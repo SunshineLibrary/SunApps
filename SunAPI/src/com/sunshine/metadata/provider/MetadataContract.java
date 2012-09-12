@@ -380,7 +380,18 @@ public final class MetadataContract {
         public static final String _TYPE = "tag_type";
 
         public static enum TYPE {
-            THEME, DIFFICULTY
+            THEME("Ìâ²Ä"), 
+            DIFFICULTY("Àí½â");
+            
+            String value;
+            TYPE(String value){
+            	this.value = value;
+            }
+            
+            @Override
+            public String toString(){
+            	return value;
+            }
         }
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("tags").build();
