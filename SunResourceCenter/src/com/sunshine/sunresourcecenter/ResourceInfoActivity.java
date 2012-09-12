@@ -91,9 +91,10 @@ public class ResourceInfoActivity extends Activity {
 				ContentValues cv = new ContentValues();
 				try{
 					cv.put(Books._DOWNLOAD_STATUS, Downloadable.STATUS_QUEUED);
-					resolver.update(Books.CONTENT_URI, cv, Books._ID + "=" + resId, null);
+					int r = resolver.update(Books.CONTENT_URI, cv, Books._ID + "= " + resId, null);
+					Log.i("download rolls updated", r+" rolls, id:"+resId);
 				}catch(Exception e){
-					
+					Log.e("update error", e.getMessage());
 				}
 				setButtons(Downloadable.STATUS_QUEUED);
 			}
@@ -118,7 +119,7 @@ public class ResourceInfoActivity extends Activity {
 	                String date = sDateFormat.format(new Date());
 	                cv.put(Books._STARTTIME, date);
 	                StringBuffer selection = new StringBuffer(Books._ID);
-	                selection.append(" = ").append(resId).append(" AND ").append(Books._STARTTIME).append(" not null ");
+	                selection.append(" = '").append(resId).append("' AND ").append(Books._STARTTIME).append(" not null ");
 					resolver.update(Books.CONTENT_URI, cv, selection.toString(), null);
 					
 				}catch(Exception e){
@@ -229,10 +230,10 @@ public class ResourceInfoActivity extends Activity {
      	    setButton(readButton, true, "阅读");
     	}else if(status == Downloadable.STATUS_QUEUED || status == Downloadable.STATUS_DOWNLOADING){
     		setButton(downButton, false, "正在下载");
-     	    setButton(readButton, true, "阅读");
+     	    setButton(readButton, false, "阅读");
     	}else{
     		setButton(downButton, true, "下载");
-     	    setButton(readButton, true, "阅读");
+     	    setButton(readButton, false, "阅读");
     	}
     	
     	
