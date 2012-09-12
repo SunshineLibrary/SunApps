@@ -13,10 +13,12 @@ import com.sunshine.sunresourcecenter.model.ResourceGridItem;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,12 +30,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ResourceInfoActivity extends Activity {
-	ImageButton backButton;
-	ImageView cover;
-	TextView originname, author, translator, publisher, publish_year, title, author_intro, intro;
-	Button readButton, downButton;
-	ContentResolver resolver;
-	LinearLayout resLayoutAll, resLayoutLeft, resLayoutRight;
+	private ImageButton backButton;
+	private ImageView cover;
+	private TextView originname, author, translator, publisher, publish_year, title, author_intro, intro;
+	private Button readButton, downButton;
+	private ContentResolver resolver;
+	private LinearLayout resLayoutAll, resLayoutLeft, resLayoutRight;
+	private String resId;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,10 +63,10 @@ public class ResourceInfoActivity extends Activity {
         resLayoutLeft.setMinimumWidth(width/2);
         resLayoutRight.setMinimumWidth(width/2);
         Intent intent = this.getIntent();
-        String id = intent.getStringExtra("bookId");
+        resId = intent.getStringExtra("bookId");
         ResourceType type = (ResourceType)intent.getExtras().get("type");
         
-        String status = showResInfo(id, type);
+        int status = showResInfo(resId, type);
         //Toast.makeText(this, String.valueOf(type) ,Toast.LENGTH_SHORT).show();
         
         setButtons(status);
@@ -81,9 +84,16 @@ public class ResourceInfoActivity extends Activity {
         downButton.setOnClickListener(new OnClickListener(){
         	
 			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub   
+			public void onClick(View v) { 
                 //v.setDrawingCacheBackgroundColor(color);
+				ContentValues cv = new ContentValues();
+				try{
+					cv.put(Books._DOWNLOAD_STATUS, Downloadable.STATUS_QUEUED);
+					resolver.update(Books.CONTENT_URI, cv, Books._ID + "=" + resId, null);
+				}catch(Exception e){
+					
+				}
+				setButtons(Downloadable.STATUS_QUEUED);
 			}
         	
         });
@@ -91,8 +101,15 @@ public class ResourceInfoActivity extends Activity {
         readButton.setOnClickListener(new OnClickListener(){
         	
 			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub   
+			public void onClick(View v) { 
+				try{
+                Intent openBookIntent = new Intent();
+                openBookIntent.setData(Books.getBookUri(Integer.valueOf(resId)));
+                openBookIntent.setAction("android.fbreader.action.VIEW");
+                startActivity(openBookIntent);
+				}catch(Exception e){
+					Log.e("Exception calling SunReader", e.getMessage());
+				}
                 
 			}
         	
@@ -106,9 +123,9 @@ public class ResourceInfoActivity extends Activity {
 
 
 
-	private String showResInfo(String id, ResourceType type){
+	private int showResInfo(String id, ResourceType type){
     	Cursor cur = null;
-    	String status = null;
+    	int status = 0;
     	if(id == null) return status;
     	
     	switch(type){
@@ -163,7 +180,7 @@ public class ResourceInfoActivity extends Activity {
     				title.setText(cur.getString(titleCol));
     				intro.setText(cur.getString(descriptionCol));
     				
-    				status = cur.getString(downStatusCol);
+    				status = cur.getInt(downStatusCol);
     			}
     		} 
 //    		catch (IOException e) {
@@ -191,18 +208,17 @@ public class ResourceInfoActivity extends Activity {
         return true;
     }
     
-    private void setButtons(String status){
-    	if(status == null) return;
+    private void setButtons(int status){
     	
-    	if(status.equals(Downloadable.STATUS_DOWNLOADED)){
+    	if(status == Downloadable.STATUS_DOWNLOADED){
     		setButton(downButton, false, "已下载");
      	    setButton(readButton, true, "阅读");
-    	}else if(status.equals(Downloadable.STATUS_QUEUED) || status.equals(Downloadable.STATUS_DOWNLOADING)){
+    	}else if(status == Downloadable.STATUS_QUEUED || status == Downloadable.STATUS_DOWNLOADING){
     		setButton(downButton, false, "正在下载");
-     	    setButton(readButton, false, "阅读");
+     	    setButton(readButton, true, "阅读");
     	}else{
     		setButton(downButton, true, "下载");
-     	    setButton(readButton, false, "阅读");
+     	    setButton(readButton, true, "阅读");
     	}
     	
     	

@@ -387,7 +387,7 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		//update grid view
-		showGridView(currentResType, currentGridType, currentViewType, currentArg);
+		//showGridView(currentResType, currentGridType, currentViewType, currentArg);
 	}
 
 	@Override
