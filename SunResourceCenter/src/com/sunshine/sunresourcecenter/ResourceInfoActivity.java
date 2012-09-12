@@ -183,15 +183,15 @@ public class ResourceInfoActivity extends Activity {
     }
     
     private void setButtons(String status){
-    	if(status.equals(Downloadable.STATUS.DOWNLOADED)){
-    		setButton(downButton, false, "ÒÑÏÂÔØ");
-     	    setButton(readButton, true, "ÔÄ¶Á");
-    	}else if(status.equals(Downloadable.STATUS.QUEUED) || status.equals(Downloadable.STATUS.DOWNLOADING)){
-    		setButton(downButton, false, "ÕýÔÚÏÂÔØ");
-     	    setButton(readButton, false, "ÔÄ¶Á");
+    	if(status.equals(Downloadable.STATUS_DOWNLOADED)){
+    		setButton(downButton, false, "å·²ä¸‹è½½");
+     	    setButton(readButton, true, "é˜…è¯»");
+    	}else if(status.equals(Downloadable.STATUS_QUEUED) || status.equals(Downloadable.STATUS_DOWNLOADING)){
+    		setButton(downButton, false, "æ­£åœ¨ä¸‹è½½");
+     	    setButton(readButton, false, "é˜…è¯»");
     	}else{
-    		setButton(downButton, true, "ÏÂÔØ");
-     	    setButton(readButton, false, "ÔÄ¶Á");
+    		setButton(downButton, true, "ä¸‹è½½");
+     	    setButton(readButton, false, "é˜…è¯»");
     	}
     	
     	

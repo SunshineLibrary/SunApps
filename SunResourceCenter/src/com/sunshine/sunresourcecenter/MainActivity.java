@@ -541,24 +541,24 @@ public class MainActivity extends Activity {
 			//books
 			case RES_READING:
 				// AND progress > 0 AND progress < 100
-				selection = String.format("%s = '%s' AND %s not null ", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS.DOWNLOADED,
+				selection = String.format("%s = '%s' AND %s not null ", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS_DOWNLOADED,
 						BookInfo._STARTTIME);
 				return resolver.getBooks(projection, selection);
 					
 			case RES_ALL:
-				selection = String.format("%s = '%s'", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS.DOWNLOADED);
+				selection = String.format("%s = '%s'", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS_DOWNLOADED);
 				return resolver.getBooks(projection, selection);
 				
 			case RES_RECENT:
 				// Date format: YYYY-MM-DD hh:mm:ss
 				int inDays = 15; 
 				selection = String.format("%s = '%s' AND %s > datetime('now', '-%d days', 'localtime')", BookInfo._DOWNLOAD_STATUS, 
-						Downloadable.STATUS.DOWNLOADED, BookInfo._DOWNLOAD_TIME, inDays);
+						Downloadable.STATUS_DOWNLOADED, BookInfo._DOWNLOAD_TIME, inDays);
 				return resolver.getBooks(projection, selection);
 			
 			case RES_READED:
 				//WEN GU ZHI XIN
-				selection = String.format("%s = '%s' AND %s >= 98 ", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS.DOWNLOADED, 
+				selection = String.format("%s = '%s' AND %s >= 98 ", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS_DOWNLOADED, 
 						BookInfo._PROGRESS);
 				return resolver.getBooks(projection, selection);
 			
