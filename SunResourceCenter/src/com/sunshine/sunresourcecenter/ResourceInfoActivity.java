@@ -106,6 +106,7 @@ public class ResourceInfoActivity extends Activity {
                 Intent openBookIntent = new Intent();
                 openBookIntent.setData(Books.getBookUri(Integer.valueOf(resId)));
                 openBookIntent.setAction("android.fbreader.action.VIEW");
+                //openBookIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(openBookIntent);
 				}catch(Exception e){
 					Log.e("Exception calling SunReader", e.getMessage());

@@ -66,9 +66,9 @@
 
         </TableLayout>
 
-        <Button android:id="@+id/info_button_down" android:layout_width="100dp" android:layout_height="40dp" android:layout_alignBottom="@+id/TableLayout1" android:layout_alignParentRight="true" android:layout_marginRight="40dp" android:background="@color/chrome" android:text="@string/info_button_down" android:textColor="@color/text" android:textSize="@dimen/info_text_med" />
+        <Button android:id="@+id/info_button_down" android:layout_width="120dp" android:layout_height="40dp" android:layout_alignBottom="@+id/TableLayout1" android:layout_alignParentRight="true" android:layout_marginRight="40dp" android:background="@color/chrome" android:text="@string/info_button_down" android:textColor="@color/text" android:textSize="@dimen/info_text_med" />
 
-        <Button android:id="@+id/info_button_read" android:layout_width="100dp" android:layout_height="40dp" android:layout_alignBaseline="@+id/info_button_down" android:layout_alignBottom="@+id/info_button_down" android:layout_marginRight="15dp" android:layout_toLeftOf="@+id/info_button_down" android:background="@color/info_grey" android:text="@string/info_button_read" android:textColor="@color/text" android:textSize="@dimen/info_text_med" />
+        <Button android:id="@+id/info_button_read" android:layout_width="120dp" android:layout_height="40dp" android:layout_alignBaseline="@+id/info_button_down" android:layout_alignBottom="@+id/info_button_down" android:layout_marginRight="15dp" android:layout_toLeftOf="@+id/info_button_down" android:background="@color/info_grey" android:text="@string/info_button_read" android:textColor="@color/text" android:textSize="@dimen/info_text_med" />
 
     </RelativeLayout><LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@color/chrome" android:orientation="vertical" android:padding="5dp">
 

@@ -546,9 +546,8 @@ public class MainActivity extends Activity {
 				return resolver.getBooks(projection, selection);
 					
 			case RES_ALL:
-				selection = String.format("%s = '%s'", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS_DOWNLOADED);
+				//selection = String.format("%s = '%s'", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS_DOWNLOADED);
 				return resolver.getBooks(projection, selection);
-				
 			case RES_RECENT:
 				// Date format: YYYY-MM-DD hh:mm:ss
 				int inDays = 15; 

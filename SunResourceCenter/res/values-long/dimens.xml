@@ -23,5 +23,6 @@
     <dimen name="info_image_width">66dp</dimen>
     <dimen name="info_text_small">13dp</dimen>
     <dimen name="padding_tiny">4dp</dimen>
+    <dimen name="nav_main">26dp</dimen>
 
 </resources>
