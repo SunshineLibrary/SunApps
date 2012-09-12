@@ -1,9 +1,8 @@
 package com.ssl.curriculum.math.presenter;
 
-import com.ssl.curriculum.math.activity.NaviActivity;
+import com.ssl.curriculum.math.activity.NavigationActivity;
 import com.ssl.curriculum.math.data.SectionHelper;
 import com.ssl.curriculum.math.listener.NextLevelMenuChangedListener;
-import com.ssl.curriculum.math.model.Section;
 import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.model.menu.MenuItem;
 import com.ssl.curriculum.math.service.NavigationMenuContentProvider;
@@ -15,11 +14,11 @@ import java.util.List;
 public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 	private NavigationMenuProvider provider;
 	private Menu currentMenu;
-    private NaviActivity naviActivity;
+    private NavigationActivity navigationActivity;
 
-    public NavigationMenuPresenter(NaviActivity naviActivity) {
-        this.naviActivity = naviActivity;
-		provider = new NavigationMenuContentProvider(naviActivity);
+    public NavigationMenuPresenter(NavigationActivity navigationActivity) {
+        this.navigationActivity = navigationActivity;
+		provider = new NavigationMenuContentProvider(navigationActivity);
 	}
 
 	public void loadMenuData() {
@@ -46,11 +45,11 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 
 	private void handleMenuItem(MenuItem item, int id){
 		if (!item.isMenuGroup()) {
-            naviActivity.displaySectionDetails();
+            navigationActivity.displaySectionDetails();
 
-            naviActivity.activateMenuItem(id);
-            naviActivity.setSection(SectionHelper.getSection(naviActivity, id));
-            naviActivity.setSectionActivities(SectionHelper.getSectionActivitiesCursor(naviActivity, id));
+            navigationActivity.activateMenuItem(id);
+            navigationActivity.setSection(SectionHelper.getSection(navigationActivity, id));
+            navigationActivity.setSectionActivities(SectionHelper.getSectionActivitiesCursor(navigationActivity, id));
 			return;
 		}
 		currentMenu = (Menu) item;
@@ -60,13 +59,13 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 	public void menuBack() {
 		if (currentMenu.getParent() == null)
 			return;
-        naviActivity.hideSectionDetails();
+        navigationActivity.hideSectionDetails();
 		currentMenu = currentMenu.getParent();
 		updateMenu();
 	}
 
 	private void updateMenu() {
-        naviActivity.setMenuTitle(currentMenu.getName());
-        naviActivity.updateMenu(currentMenu);
+        navigationActivity.setMenuTitle(currentMenu.getName());
+        navigationActivity.updateMenu(currentMenu);
 	}
 }
