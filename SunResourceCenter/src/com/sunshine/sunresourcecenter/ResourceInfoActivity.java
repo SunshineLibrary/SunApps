@@ -1,6 +1,8 @@
 package com.sunshine.sunresourcecenter;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.sunshine.metadata.provider.MetadataContract.BookInfo;
 import com.sunshine.metadata.provider.MetadataContract.Books;
@@ -102,12 +104,23 @@ public class ResourceInfoActivity extends Activity {
         	
 			@Override
 			public void onClick(View v) { 
+				
+				ContentValues cv = new ContentValues();
 				try{
-                Intent openBookIntent = new Intent();
-                openBookIntent.setData(Books.getBookUri(Integer.valueOf(resId)));
-                openBookIntent.setAction("android.fbreader.action.VIEW");
-                //openBookIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(openBookIntent);
+	                Intent openBookIntent = new Intent();
+	               
+	                openBookIntent.setAction("android.fbreader.action.VIEW");
+	                openBookIntent.putExtra("bookId", Integer.valueOf(resId));
+	                
+	                startActivity(openBookIntent);
+	                
+	                SimpleDateFormat sDateFormat = new SimpleDateFormat("'yyyy-MM-dd hh:mm:ss'");
+	                String date = sDateFormat.format(new Date());
+	                cv.put(Books._STARTTIME, date);
+	                StringBuffer selection = new StringBuffer(Books._ID);
+	                selection.append(" = ").append(resId).append(" AND ").append(Books._STARTTIME).append(" not null ");
+					resolver.update(Books.CONTENT_URI, cv, selection.toString(), null);
+					
 				}catch(Exception e){
 					Log.e("Exception calling SunReader", e.getMessage());
 				}
