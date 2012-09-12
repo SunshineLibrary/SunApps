@@ -53,12 +53,13 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
         }
 	}
 
-	public void menuBack() {
+	public boolean menuBack() {
 		if (currentMenu.getParent() == null)
-			return;
+			return false;
         navigationActivity.hideSectionDetails();
 		currentMenu = currentMenu.getParent();
 		updateMenu();
+		return true;
 	}
 
 	private void updateMenu() {

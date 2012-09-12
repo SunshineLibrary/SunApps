@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main" 
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,7 +25,8 @@
         </activity>
         <activity
             android:name=".ResourceInfoActivity"
-            android:label="@string/title_activity_resource_info" >
+            android:label="@string/title_activity_resource_info" 
+            android:screenOrientation="landscape">
             
         </activity>
     </application>

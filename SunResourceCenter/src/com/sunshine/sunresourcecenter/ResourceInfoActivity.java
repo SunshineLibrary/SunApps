@@ -13,10 +13,12 @@ import com.sunshine.sunresourcecenter.model.ResourceGridItem;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,12 +30,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ResourceInfoActivity extends Activity {
-	ImageButton backButton;
-	ImageView cover;
-	TextView originname, author, translator, publisher, publish_year, title, author_intro, intro;
-	Button readButton, downButton;
-	ContentResolver resolver;
-	LinearLayout resLayoutAll, resLayoutLeft, resLayoutRight;
+	private ImageButton backButton;
+	private ImageView cover;
+	private TextView originname, author, translator, publisher, publish_year, title, author_intro, intro;
+	private Button readButton, downButton;
+	private ContentResolver resolver;
+	private LinearLayout resLayoutAll, resLayoutLeft, resLayoutRight;
+	private String resId;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,6 @@ public class ResourceInfoActivity extends Activity {
         downButton = (Button) findViewById(R.id.info_button_down);
         backButton = (ImageButton)findViewById(R.id.info_back_button);
         cover = (ImageView) findViewById(R.id.info_cover);
-        originname = (TextView) findViewById(R.id.info_originname);
         author = (TextView) findViewById(R.id.info_author);
         //translator = (TextView) findViewById(R.id.info_translator);
         publisher = (TextView) findViewById(R.id.info_publisher);
@@ -61,10 +63,10 @@ public class ResourceInfoActivity extends Activity {
         resLayoutLeft.setMinimumWidth(width/2);
         resLayoutRight.setMinimumWidth(width/2);
         Intent intent = this.getIntent();
-        String id = intent.getStringExtra("bookId");
+        resId = intent.getStringExtra("bookId");
         ResourceType type = (ResourceType)intent.getExtras().get("type");
         
-        String status = showResInfo(id, type);
+        int status = showResInfo(resId, type);
         //Toast.makeText(this, String.valueOf(type) ,Toast.LENGTH_SHORT).show();
         
         setButtons(status);
@@ -73,10 +75,7 @@ public class ResourceInfoActivity extends Activity {
         	
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub   
-                
-				v.setBackgroundResource(R.drawable.back02);       
-				
+				//v.setBackgroundResource(R.drawable.back02);  
 				ResourceInfoActivity.this.finish();
 			}
         	
@@ -85,9 +84,16 @@ public class ResourceInfoActivity extends Activity {
         downButton.setOnClickListener(new OnClickListener(){
         	
 			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub   
+			public void onClick(View v) { 
                 //v.setDrawingCacheBackgroundColor(color);
+				ContentValues cv = new ContentValues();
+				try{
+					cv.put(Books._DOWNLOAD_STATUS, Downloadable.STATUS_QUEUED);
+					resolver.update(Books.CONTENT_URI, cv, Books._ID + "=" + resId, null);
+				}catch(Exception e){
+					
+				}
+				setButtons(Downloadable.STATUS_QUEUED);
 			}
         	
         });
@@ -95,8 +101,15 @@ public class ResourceInfoActivity extends Activity {
         readButton.setOnClickListener(new OnClickListener(){
         	
 			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub   
+			public void onClick(View v) { 
+				try{
+                Intent openBookIntent = new Intent();
+                openBookIntent.setData(Books.getBookUri(Integer.valueOf(resId)));
+                openBookIntent.setAction("android.fbreader.action.VIEW");
+                startActivity(openBookIntent);
+				}catch(Exception e){
+					Log.e("Exception calling SunReader", e.getMessage());
+				}
                 
 			}
         	
@@ -110,9 +123,9 @@ public class ResourceInfoActivity extends Activity {
 
 
 
-	private String showResInfo(String id, ResourceType type){
+	private int showResInfo(String id, ResourceType type){
     	Cursor cur = null;
-    	String status = null;
+    	int status = 0;
     	if(id == null) return status;
     	
     	switch(type){
@@ -120,17 +133,30 @@ public class ResourceInfoActivity extends Activity {
     	case BOOK:
     		
     		try {
-    			cur = resolver.query(BookInfo.CONTENT_URI, null, BookInfo._BOOK_ID+"="+id, null, null);		
+//    			cur = resolver.query(BookInfo.CONTENT_URI, null, BookInfo._BOOK_ID+"="+id, null, null);		
+//    			
+//    			int idCol = cur.getColumnIndex(BookInfo._BOOK_ID);
+//    			int titleCol = cur.getColumnIndex(BookInfo._TITLE);
+//    			int authorCol = cur.getColumnIndex(BookInfo._AUTHOR);
+//    			int descriptionCol = cur.getColumnIndex(BookInfo._INTRO);
+//    			int authorIntroCol = cur.getColumnIndex(BookInfo._AUTHOR_INTRO);
+//    			int publisherCol = cur.getColumnIndex(BookInfo._PUBLISHER);
+//    			int pubYearCol = cur.getColumnIndex(BookInfo._PUBLICATION_YEAR);
+//    			//int tagCol = cur.getColumnIndex(BookInfo._TAGS);
+//    			int downStatusCol = cur.getColumnIndex(BookInfo._DOWNLOAD_STATUS);
+//    			//int progressCol = cur.getColumnIndex(Books._PROGRESS);
     			
-    			int idCol = cur.getColumnIndex(BookInfo._BOOK_ID);
-    			int titleCol = cur.getColumnIndex(BookInfo._TITLE);
-    			int authorCol = cur.getColumnIndex(BookInfo._AUTHOR);
-    			int descriptionCol = cur.getColumnIndex(BookInfo._INTRO);
-    			int authorIntroCol = cur.getColumnIndex(BookInfo._AUTHOR_INTRO);
-    			int publisherCol = cur.getColumnIndex(BookInfo._PUBLISHER);
-    			int pubYearCol = cur.getColumnIndex(BookInfo._PUBLICATION_YEAR);
+    			cur = resolver.query(Books.CONTENT_URI, null, Books._ID+"="+id, null, null);		
+    			
+    			int idCol = cur.getColumnIndex(Books._ID);
+    			int titleCol = cur.getColumnIndex(Books._TITLE);
+    			int authorCol = cur.getColumnIndex(Books._AUTHOR);
+    			int descriptionCol = cur.getColumnIndex(Books._INTRO);
+    			//int authorIntroCol = cur.getColumnIndex(Books._AUTHOR_INTRO);
+    			int publisherCol = cur.getColumnIndex(Books._PUBLISHER);
+    			int pubYearCol = cur.getColumnIndex(Books._PUBLICATION_YEAR);
     			//int tagCol = cur.getColumnIndex(BookInfo._TAGS);
-    			int downStatusCol = cur.getColumnIndex(BookInfo._DOWNLOAD_STATUS);
+    			int downStatusCol = cur.getColumnIndex(Books._DOWNLOAD_STATUS);
     			//int progressCol = cur.getColumnIndex(Books._PROGRESS);
     			
     			Bitmap bm = null;
@@ -149,12 +175,12 @@ public class ResourceInfoActivity extends Activity {
     				
     				publisher.setText(cur.getString(publisherCol));
     				publish_year.setText(cur.getString(pubYearCol));
-    				author_intro.setText(cur.getString(authorIntroCol));
+    				//author_intro.setText(cur.getString(authorIntroCol));
     				author.setText(cur.getString(authorCol));
     				title.setText(cur.getString(titleCol));
     				intro.setText(cur.getString(descriptionCol));
     				
-    				status = cur.getString(downStatusCol);
+    				status = cur.getInt(downStatusCol);
     			}
     		} 
 //    		catch (IOException e) {
@@ -182,16 +208,17 @@ public class ResourceInfoActivity extends Activity {
         return true;
     }
     
-    private void setButtons(String status){
-    	if(status.equals(Downloadable.STATUS.DOWNLOADED)){
-    		setButton(downButton, false, "ÒÑÏÂÔØ");
-     	    setButton(readButton, true, "ÔÄ¶Á");
-    	}else if(status.equals(Downloadable.STATUS.QUEUED) || status.equals(Downloadable.STATUS.DOWNLOADING)){
-    		setButton(downButton, false, "ÕýÔÚÏÂÔØ");
-     	    setButton(readButton, false, "ÔÄ¶Á");
+    private void setButtons(int status){
+    	
+    	if(status == Downloadable.STATUS_DOWNLOADED){
+    		setButton(downButton, false, "å·²ä¸‹è½½");
+     	    setButton(readButton, true, "é˜…è¯»");
+    	}else if(status == Downloadable.STATUS_QUEUED || status == Downloadable.STATUS_DOWNLOADING){
+    		setButton(downButton, false, "æ­£åœ¨ä¸‹è½½");
+     	    setButton(readButton, true, "é˜…è¯»");
     	}else{
-    		setButton(downButton, true, "ÏÂÔØ");
-     	    setButton(readButton, false, "ÔÄ¶Á");
+    		setButton(downButton, true, "ä¸‹è½½");
+     	    setButton(readButton, true, "é˜…è¯»");
     	}
     	
     	
