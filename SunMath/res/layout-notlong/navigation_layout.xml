@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:background="@drawable/bg_main_activity_navi" >
+
+        <RelativeLayout
+            android:id="@+id/navi_activity_top_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" >
+
+            <ImageView
+                android:id="@+id/navigation_menu_back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_side_list_back" />
+
+            <TextView
+                android:id="@+id/tv_menu_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/small_green_square"
+                android:layout_toRightOf="@+id/navigation_menu_back_btn"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:textColor="@color/navi_activity_navi_list_view_text"
+                android:textSize="20sp" >
+
+                <requestFocus />
+            </TextView>
+
+            <ImageView
+                android:id="@+id/small_green_square"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:paddingTop="11dp"
+                android:visibility="invisible"
+                android:src="@drawable/ic_side_green" />
+        </RelativeLayout>
+
+        <com.ssl.curriculum.math.component.NavigationListView
+            android:id="@+id/navi_list_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/navi_activity_top_container"
+            android:cacheColorHint="#00000000"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="2dp"
+            android:fadingEdge="none" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/small_green_square"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_side_shadow"
+                />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="2.5" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#F6F2E4"
+            android:visibility="visible" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/bg_main_activity_no_item_selected" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/section_details"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#F6F2E4"
+            android:orientation="vertical"
+            android:visibility="invisible" >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:paddingTop="11dp"
+                    android:src="@drawable/ic_main_title_banner" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingRight="30dp" >
+
+                    <ImageView
+                        android:id="@+id/navi_top_divider_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/btn_navi_activity_download"
+                        android:src="@drawable/ic_main_top_single_divider" />
+
+                    <ImageButton
+                        android:id="@+id/btn_navi_activity_download"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/navi_top_divider_2"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_navi_download_selector" />
+
+                    <ImageView
+                        android:id="@+id/navi_top_divider_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/btn_navi_activity_study"
+                        android:src="@drawable/ic_main_top_single_divider" />
+
+                    <ImageButton
+                        android:id="@+id/btn_navi_activity_study"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/navi_top_divider_3"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_navi_start_selector" />
+
+                    <ImageView
+                        android:id="@+id/navi_top_divider_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/btn_navi_activity_statistic"
+                        android:src="@drawable/ic_main_top_single_divider" />
+
+                    <ImageButton
+                        android:id="@+id/btn_navi_activity_statistic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/navi_top_divider_4"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_navi_statistic_selector" />
+
+                    <ImageView
+                        android:id="@+id/navi_top_divider_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_main_top_single_divider" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                >
+
+                <ImageView
+                    android:id="@+id/iv_section_thumbnail"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_main_thumbnail_photo_album"
+                    />
+
+
+                <TextView
+                        android:id="@+id/tv_section_name"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/iv_section_thumbnail"
+                        android:layout_marginTop="15dp"
+                        android:text="Section Name"
+                        android:textColor="#26240c"
+                        android:textSize="24dp"
+                        />
+
+                <TextView
+                        android:id="@+id/tv_section_stat"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@id/iv_section_thumbnail"
+                        android:layout_below="@id/tv_section_name"
+                        android:textSize="20dp"
+                        android:textColor="#594c25"
+                        />
+
+                <com.ssl.curriculum.math.component.HorizontalListView
+                        android:id="@+id/lv_section_activities"
+                        android:layout_width="fill_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginBottom="0dp"
+                        android:layout_alignParentBottom="true"
+                        />
+
+                <ScrollView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_below="@id/iv_section_thumbnail"
+                        android:layout_above="@id/lv_section_activities"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        >
+                    <TextView android:id="@+id/tv_section_description"
+                              android:layout_width="fill_parent"
+                              android:layout_height="wrap_content"
+                              android:fadingEdge="none"
+                              android:text="Section Description"
+                              android:textSize="20dp"
+                              android:textColor="#594c25"
+                            />
+                </ScrollView>
+
+            </RelativeLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>
