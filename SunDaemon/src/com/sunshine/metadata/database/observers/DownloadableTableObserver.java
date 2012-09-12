@@ -105,6 +105,12 @@ public class DownloadableTableObserver extends TableObserver {
                     context.getContentResolver().update(GalleryImages.CONTENT_URI, values,
                             GalleryImages._GALLERY_ID + "=?", new String[]{String.valueOf(id)});
                     break;
+                case Activities.TYPE_QUIZ:
+                    values = new ContentValues();
+                    values.put(Activities._DOWNLOAD_STATUS, MetadataContract.Downloadable.STATUS_DOWNLOADED);
+                    context.getContentResolver().update(uri, values, null, null);
+                    context.getContentResolver().notifyChange(uri, null);
+                    break;
                 default:
             }
         }
