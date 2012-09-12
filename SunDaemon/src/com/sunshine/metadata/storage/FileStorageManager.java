@@ -1,4 +1,4 @@
-package com.sunshine.support.storage;
+package com.sunshine.metadata.storage;
 
 import android.os.Environment;
 

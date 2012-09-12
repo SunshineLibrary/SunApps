@@ -33,10 +33,12 @@ public class SectionActivitiesView implements TableView {
 
     private String createViewQuery() {
         String query = "CREATE VIEW " + VIEW_NAME + " AS SELECT ";
-        query += String.format("s.%s, s.%s, s.%s, a.%s, a.%s", SectionComponents._SECTION_ID,
-                SectionComponents._ACTIVITY_ID, SectionComponents._SEQUENCE, Activities._NAME, Activities._TYPE);
+        query += String.format("a.%s, s.%s, s.%s, s.%s, a.%s, a.%s, a.%s, a.%s", Activities._ID,
+                SectionComponents._SECTION_ID, SectionComponents._SEQUENCE, SectionComponents._ACTIVITY_ID,
+                Activities._NAME, Activities._TYPE, Activities._DOWNLOAD_PROGRESS, Activities._DOWNLOAD_STATUS);
         query += String.format(" FROM %s s left join %s a ", SectionComponentsTable.TABLE_NAME, ActivityTable.TABLE_NAME);
-        query += String.format("ON s.%s = a.%s;", SectionComponents._ACTIVITY_ID, Activities._ID);
+        query += String.format("ON s.%s = a.%s ", SectionComponents._ACTIVITY_ID, Activities._ID);
+        query += String.format("ORDER BY s.%s;", SectionComponents._SEQUENCE);
         return query;
     }
 

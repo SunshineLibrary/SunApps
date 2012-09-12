@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import com.sunshine.metadata.provider.Matcher;
+import com.sunshine.metadata.provider.MetadataContract;
 import com.sunshine.support.api.ApiClient;
 import com.sunshine.support.api.ApiClientFactory;
 import com.sunshine.support.downloader.MonitoredFileDownloadTask;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.Vector;
 
 import static com.sunshine.metadata.provider.MetadataContract.Activities;
-import static com.sunshine.metadata.provider.MetadataContract.Downloadable.STATUS;
 import static com.sunshine.metadata.provider.MetadataContract.Downloadable._DOWNLOAD_STATUS;
 import static com.sunshine.metadata.provider.MetadataContract.GalleryImages;
 
@@ -33,7 +33,7 @@ public class DownloadableTableObserver extends TableObserver {
     @Override
     public void postUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs, int result) {
         if (result > 0 && values.containsKey(_DOWNLOAD_STATUS)
-                && values.getAsInteger(_DOWNLOAD_STATUS) == STATUS.QUEUED.ordinal()) {
+                && values.getAsInteger(_DOWNLOAD_STATUS) == MetadataContract.Downloadable.STATUS_QUEUED) {
             switch(sUriMatcher.match(uri)) {
                 case Matcher.ACTIVITIES:
                 case Matcher.GALLERY_IMAGES:
@@ -98,7 +98,7 @@ public class DownloadableTableObserver extends TableObserver {
                     break;
                 case Activities.TYPE_GALLERY:
                     ContentValues values = new ContentValues();
-                    values.put(Activities._DOWNLOAD_STATUS, STATUS.QUEUED.ordinal());
+                    values.put(Activities._DOWNLOAD_STATUS, MetadataContract.Downloadable.STATUS_QUEUED);
                     context.getContentResolver().update(GalleryImages.CONTENT_URI, values,
                             GalleryImages._GALLERY_ID + "=?", new String[]{String.valueOf(id)});
                     break;

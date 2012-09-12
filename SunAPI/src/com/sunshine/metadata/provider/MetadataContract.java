@@ -107,8 +107,12 @@ public final class MetadataContract {
         public static final String _DESCRIPTION = "description";
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("sections").build();
 
-        public static Uri getActivitiesBelongToSection(int id) {
+        public static Uri getSectionActivitiesUri(int id) {
             return CONTENT_URI.buildUpon().appendPath("activities").appendPath(String.valueOf(id)).build();
+        }
+
+        public static Uri getSectionThumbnailUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath("thumbnail").appendPath(String.valueOf(id)).build();
         }
     }
 
@@ -474,8 +478,10 @@ public final class MetadataContract {
         public static final String _DOWNLOAD_PROGRESS = "download_progress";
         public static final String _DOWNLOAD_TIME = "download_time";
 
-        public static enum STATUS {
-            NOT_DOWNLOADED, QUEUED, DOWNLOADING, DOWNLOADED, MARK_DELETE
-        }
+        public static final int STATUS_NOT_DOWNLOADED = 0;
+        public static final int STATUS_QUEUED = 1;
+        public static final int STATUS_DOWNLOADING = 2;
+        public static final int STATUS_DOWNLOADED = 3;
+        public static final int STATUS_MARK_DELETE = 4;
     }
 }
