@@ -85,12 +85,8 @@ public class FileDownloadTask extends ListenableAsyncTask<Uri, Integer, Integer>
         return null;
     }
 
-    public Uri getLocalUri() {
-        return localUri;
-    }
-
     public class DownloadProgressUpdater extends IOUtils.ProgressUpdater {
-        private static final int PROGRESS_SAMPLE_RATE = 20;
+        private static final int PROGRESS_SAMPLE_RATE = 10;
 
         private long contentLength;
         private long lastProgress;
@@ -102,10 +98,11 @@ public class FileDownloadTask extends ListenableAsyncTask<Uri, Integer, Integer>
 
         public void onProgressUpdate(long totalBytesProcessed) {
             if (totalBytesProcessed * 100 / contentLength >= lastProgress + PROGRESS_SAMPLE_RATE) {
+                Integer[] progress = new Integer[]{(int) (totalBytesProcessed * 100 / contentLength)};
+                FileDownloadTask.this.onProgressUpdate(progress);
                 Log.d(getClass().getName(), String.format("Downloading[%d]: %s)", totalBytesProcessed * 100 / contentLength, remoteUri.toString()));
                 lastProgress += PROGRESS_SAMPLE_RATE;
             }
         }
     }
 }
-

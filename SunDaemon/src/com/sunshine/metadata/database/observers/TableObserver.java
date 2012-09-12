@@ -1,4 +1,4 @@
-package com.sunshine.metadata.provider.observers;
+package com.sunshine.metadata.database.observers;
 
 import android.content.ContentValues;
 import android.net.Uri;

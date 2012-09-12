@@ -27,6 +27,7 @@ public class MonitoredFileDownloadTask extends FileDownloadTask {
     @Override
     protected void onPreExecute() {
         context.getContentResolver().update(updateUri, DOWNLOADING, null, null);
+        context.getContentResolver().notifyChange(updateUri, null);
     }
 
     @Override
@@ -36,5 +37,19 @@ public class MonitoredFileDownloadTask extends FileDownloadTask {
         } else {
             context.getContentResolver().update(updateUri, NOT_DOWNLOADED, null, null);
         }
+        context.getContentResolver().notifyChange(updateUri, null);
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
+        context.getContentResolver().update(updateUri, downloadProgress(values[0]), null, null);
+        context.getContentResolver().notifyChange(updateUri, null);
+    }
+
+    private ContentValues downloadProgress(int progress) {
+        ContentValues values = new ContentValues();
+        values.put(MetadataContract.Downloadable._DOWNLOAD_PROGRESS, progress);
+        return values;
     }
 }
