@@ -63,6 +63,13 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     }
 
     @Override
+    public void onBackPressed() {
+    	if(!menuPresenter.menuBack()){
+    		super.onBackPressed();
+    	}    	
+    }
+    
+    @Override
     public void onClick(View v) {
         if (v == iv_back_button) {
             menuPresenter.menuBack();
