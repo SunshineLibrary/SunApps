@@ -12,4 +12,3 @@ reports
 reports/**/*
 .gitignore
 .DS_Store
-.properties
