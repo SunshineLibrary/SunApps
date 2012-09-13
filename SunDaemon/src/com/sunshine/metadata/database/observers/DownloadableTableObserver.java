@@ -1,16 +1,16 @@
 package com.sunshine.metadata.database.observers;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.UriMatcher;
+import android.content.*;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.IBinder;
 import android.provider.BaseColumns;
 import com.sunshine.metadata.provider.Matcher;
 import com.sunshine.metadata.provider.MetadataContract;
 import com.sunshine.support.api.ApiClient;
 import com.sunshine.support.api.ApiClientFactory;
 import com.sunshine.support.downloader.MonitoredFileDownloadTask;
+import com.sunshine.support.services.DownloadService;
 
 import java.util.List;
 import java.util.Vector;
@@ -24,10 +24,24 @@ public class DownloadableTableObserver extends TableObserver {
     private UriMatcher sUriMatcher = Matcher.Factory.getMatcher();
     private Context context;
     private ApiClient apiClient;
+    private DownloadService downloadService;
+    private ServiceConnection mConnection;
 
     public DownloadableTableObserver(Context context) {
         this.context = context;
         this.apiClient = ApiClientFactory.newApiClient(context);
+
+        mConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                downloadService = ((DownloadService.DownloadBinder) service).getService();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                downloadService = null;
+            }
+        };
     }
 
     @Override
@@ -90,14 +104,14 @@ public class DownloadableTableObserver extends TableObserver {
             int type = cursor.getInt(cursor.getColumnIndex(Activities._TYPE));
             switch (type) {
                 case Activities.TYPE_VIDEO:
-                    new MonitoredFileDownloadTask(context,
+                    startSerialDownload(new MonitoredFileDownloadTask(context,
                             apiClient.getDownloadUri("activities", id),
-                            Activities.getActivityVideoUri(id), uri).execute();
+                            Activities.getActivityVideoUri(id), uri));
                     break;
                 case Activities.TYPE_TEXT:
-                    new MonitoredFileDownloadTask(context,
+                    startSerialDownload(new MonitoredFileDownloadTask(context,
                             apiClient.getDownloadUri("activities", id),
-                            Activities.getActivityTextUri(id), uri).execute();
+                            Activities.getActivityTextUri(id), uri));
                     break;
                 case Activities.TYPE_GALLERY:
                     ContentValues values = new ContentValues();
@@ -127,5 +141,17 @@ public class DownloadableTableObserver extends TableObserver {
         new MonitoredFileDownloadTask(context,
                 apiClient.getDownloadUri("images", id),
                 GalleryImages.getGalleryImageUri(id), uri).execute();
+    }
+
+    private void startSerialDownload(MonitoredFileDownloadTask task) {
+        getDownloadService().addDownloadTask(task);
+    }
+
+    private DownloadService getDownloadService() {
+        if (downloadService == null) {
+            Intent intent = new Intent(context, DownloadService.class);
+            context.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        }
+        return downloadService;
     }
 }

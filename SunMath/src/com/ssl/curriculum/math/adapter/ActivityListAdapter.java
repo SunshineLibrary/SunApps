@@ -2,6 +2,7 @@ package com.ssl.curriculum.math.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.test.ActivityTestCase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,11 +43,16 @@ public class ActivityListAdapter extends CursorAdapter {
         long id = cursor.getLong(cursor.getColumnIndex(Activities._ID));
         int status = cursor.getInt(cursor.getColumnIndex(Activities._DOWNLOAD_STATUS));
         int progress = cursor.getInt(cursor.getColumnIndex(Activities._DOWNLOAD_PROGRESS));
+        int type = cursor.getInt(cursor.getColumnIndex(Activities._TYPE));
         String title = cursor.getString(cursor.getColumnIndex(Activities._NAME));
 
         tv_title.setText(title);
         if (!iv_image.isLayoutRequested()) {
-            iv_image.setImageURI(Activities.getActivityThumbnailUri(id));
+            switch (type) {
+                case Activities.TYPE_VIDEO:
+                case Activities.TYPE_TEXT:
+                case Activities.TYPE_QUIZ:
+            }
         }
 
         switch (status) {

@@ -46,7 +46,7 @@ public class FetchNextDomainActivityStrategyImpl implements FetchNextDomainActiv
         Log.i("@fetch activities by order. fetch from all activities:", sectionActivitiesData.toString());
         Log.i("@fetch activities by order. fetch from the:", currentSectionActivity.toString());
         SectionActivityData sectionActivityBySequence = sectionActivitiesData.getSectionActivityBySequence(currentSectionActivity.sequence);
-        String msg = null;
+        String msg = "null";
         if (sectionActivityBySequence != null) {
             msg = sectionActivityBySequence.toString();
         }
