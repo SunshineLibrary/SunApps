@@ -1,6 +1,7 @@
 package com.sunshine.sunresourcecenter.adapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.sunshine.sunresourcecenter.R;
@@ -9,6 +10,7 @@ import com.sunshine.sunresourcecenter.R.layout;
 import com.sunshine.sunresourcecenter.model.ResourceGridItem;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ public class ResourceGridAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private List<ResourceGridItem> gridItemList;
 	private boolean showProgress = false;
+	private HashMap<Integer,Bitmap> dataCache;
 
 	// public BookGridAdapter(String[] titles, int[] images,String[]
 	// description, Context context)
@@ -84,7 +87,9 @@ public class ResourceGridAdapter extends BaseAdapter {
 		viewHolder.author.setText(((ResourceGridItem) gridItemList.get(position)).getAuthor());
 		viewHolder.tags.setText(((ResourceGridItem) gridItemList.get(position)).getTags());
 		viewHolder.description.setText(((ResourceGridItem) gridItemList.get(position)).getDescription());
+		
 		viewHolder.image.setImageBitmap(((ResourceGridItem) gridItemList.get(position)).getImageBitmap());
+		
 		progress = ((ResourceGridItem) gridItemList.get(position)).getProgress();
 		viewHolder.progressBar.setProgress(progress);
 		if(showProgress){

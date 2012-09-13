@@ -1,6 +1,8 @@
 package com.sunshine.sunresourcecenter;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.sunshine.metadata.provider.MetadataContract.BookInfo;
 import com.sunshine.metadata.provider.MetadataContract.Books;
@@ -89,9 +91,10 @@ public class ResourceInfoActivity extends Activity {
 				ContentValues cv = new ContentValues();
 				try{
 					cv.put(Books._DOWNLOAD_STATUS, Downloadable.STATUS_QUEUED);
-					resolver.update(Books.CONTENT_URI, cv, Books._ID + "=" + resId, null);
+					int r = resolver.update(Books.CONTENT_URI, cv, Books._ID + "= " + resId, null);
+					Log.i("download rolls updated", r+" rolls, id:"+resId);
 				}catch(Exception e){
-					
+					Log.e("update error", e.getMessage());
 				}
 				setButtons(Downloadable.STATUS_QUEUED);
 			}
@@ -102,11 +105,23 @@ public class ResourceInfoActivity extends Activity {
         	
 			@Override
 			public void onClick(View v) { 
+				
+				ContentValues cv = new ContentValues();
 				try{
-                Intent openBookIntent = new Intent();
-                openBookIntent.setData(Books.getBookUri(Integer.valueOf(resId)));
-                openBookIntent.setAction("android.fbreader.action.VIEW");
-                startActivity(openBookIntent);
+	                Intent openBookIntent = new Intent();
+	               
+	                openBookIntent.setAction("android.fbreader.action.VIEW");
+	                openBookIntent.putExtra("bookId", Integer.valueOf(resId));
+	                
+	                startActivity(openBookIntent);
+	                
+	                SimpleDateFormat sDateFormat = new SimpleDateFormat("'yyyy-MM-dd hh:mm:ss'");
+	                String date = sDateFormat.format(new Date());
+	                cv.put(Books._STARTTIME, date);
+	                StringBuffer selection = new StringBuffer(Books._ID);
+	                selection.append(" = '").append(resId).append("' AND ").append(Books._STARTTIME).append(" not null ");
+					resolver.update(Books.CONTENT_URI, cv, selection.toString(), null);
+					
 				}catch(Exception e){
 					Log.e("Exception calling SunReader", e.getMessage());
 				}
@@ -215,10 +230,10 @@ public class ResourceInfoActivity extends Activity {
      	    setButton(readButton, true, "阅读");
     	}else if(status == Downloadable.STATUS_QUEUED || status == Downloadable.STATUS_DOWNLOADING){
     		setButton(downButton, false, "正在下载");
-     	    setButton(readButton, true, "阅读");
+     	    setButton(readButton, false, "阅读");
     	}else{
     		setButton(downButton, true, "下载");
-     	    setButton(readButton, true, "阅读");
+     	    setButton(readButton, false, "阅读");
     	}
     	
     	

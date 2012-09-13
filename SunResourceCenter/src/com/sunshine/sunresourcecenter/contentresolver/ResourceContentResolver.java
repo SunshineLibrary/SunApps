@@ -178,7 +178,9 @@ public class ResourceContentResolver {
 		ParcelFileDescriptor pfdInput = resolver.openFileDescriptor(cover.getThumbnailUri(), "r");
 		if (pfdInput == null)
 			return null;
-		Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, null);
+		BitmapFactory.Options opts = new BitmapFactory.Options();
+		opts.inSampleSize = 4;
+		Bitmap bitmap = BitmapFactory.decodeFileDescriptor(pfdInput.getFileDescriptor(), null, opts);
 		pfdInput.close();
 		return bitmap;
 	}
