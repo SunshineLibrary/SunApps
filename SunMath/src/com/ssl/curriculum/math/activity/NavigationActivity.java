@@ -78,6 +78,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
         displaySectionDetails();
         setSectionName(section.name);
         setSectionDescription(section.description);
+        lv_section_activities.removeAllViewsInLayout();
     }
 
     public void displaySectionDetails() {

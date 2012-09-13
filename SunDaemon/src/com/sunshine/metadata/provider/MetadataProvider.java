@@ -53,6 +53,7 @@ public class MetadataProvider extends ContentProvider {
     private Table problemTable;
     private Table problemChoiceTable;
     private Table userBookTable;
+    private Table quizComponentsTable;
 
 
     @Override
@@ -101,6 +102,7 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.BOOK_COLLECTION_TAG:
             case Matcher.BOOK_LIST_COLLECTION:            
             case Matcher.PROBLEMS:
+            case Matcher.QUIZ_COMPONENTS:
             case Matcher.PROBLEM_CHOICES:
             case Matcher.USER_BOOK:
                 return table.query(uri, projection, selection, selectionArgs, sortOrder);
@@ -305,6 +307,12 @@ public class MetadataProvider extends ContentProvider {
                     problemTable = dbHandler.getTableManager(ProblemTable.TABLE_NAME);
                 }
                 return problemTable;
+            case Matcher.QUIZ_COMPONENTS:
+                if (quizComponentsTable == null) {
+                    quizComponentsTable = dbHandler.getTableManager(QuizComponentsTable.TABLE_NAME);
+                }
+                return quizComponentsTable;
+
             case Matcher.PROBLEM_CHOICES:
                 if (problemChoiceTable == null) {
                     problemChoiceTable = dbHandler.getTableManager(ProblemChoiceTable.TABLE_NAME);

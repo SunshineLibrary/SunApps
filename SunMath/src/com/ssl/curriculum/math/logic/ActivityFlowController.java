@@ -120,10 +120,6 @@ public class ActivityFlowController implements SectionActivityDataReceiver, Page
 
     private void showPrevious() {
         currentPosition--;
-        if (getCurrentActivityData().type == MetadataContract.Activities.TYPE_VIDEO) {
-            flipperViewsBuilder.updateFlipperVideoPlayer(viewFlipper, getPreviousDomainActivityData());
-            return;
-        }
         setShowPreviousAnimation();
         onCurrentViewFlipOut();
         viewFlipper.showPrevious();
@@ -141,10 +137,6 @@ public class ActivityFlowController implements SectionActivityDataReceiver, Page
 
     private void showNext() {
         currentPosition++;
-        if (getCurrentActivityData().type == MetadataContract.Activities.TYPE_VIDEO) {
-            flipperViewsBuilder.updateFlipperVideoPlayer(viewFlipper, getNextDomainActivityData());
-            return;
-        }
         setShowNextAnimation();
         onCurrentViewFlipOut();
         viewFlipper.setDisplayedChild(currentPosition);

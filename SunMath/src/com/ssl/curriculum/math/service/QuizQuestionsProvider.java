@@ -24,7 +24,8 @@ public class QuizQuestionsProvider {
     public void loadQuizQuestions(QuizDomainData quizData) {
         final String[] columns = new String[]{MetadataContract.QuizComponents._PROBLEM_ID};
         List<Integer> allProblemIds = new ArrayList<Integer>();
-        Cursor cursor = contentResolver.query(MetadataContract.QuizComponents.getProblemToQuizActivityUri(quizData.activityId), columns, null, null, null);
+        Cursor cursor = contentResolver.query(MetadataContract.QuizComponents.CONTENT_URI, columns,
+                MetadataContract.QuizComponents._QUIZ_ACTIVITY_ID + "=" + quizData.activityId, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 int problemIdIndex = cursor.getColumnIndex(MetadataContract.QuizComponents._PROBLEM_ID);

@@ -2,16 +2,13 @@ package com.ssl.curriculum.math.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.test.ActivityTestCase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.sunshine.R;
-
-import java.util.HashSet;
+import com.ssl.curriculum.math.R;
 
 import static com.sunshine.metadata.provider.MetadataContract.Activities;
 
@@ -47,12 +44,16 @@ public class ActivityListAdapter extends CursorAdapter {
         String title = cursor.getString(cursor.getColumnIndex(Activities._NAME));
 
         tv_title.setText(title);
-        if (!iv_image.isLayoutRequested()) {
-            switch (type) {
-                case Activities.TYPE_VIDEO:
-                case Activities.TYPE_TEXT:
-                case Activities.TYPE_QUIZ:
-            }
+        switch (type) {
+            case Activities.TYPE_VIDEO:
+                iv_image.setImageResource(R.drawable.ic_main_thumbnail_video);
+                break;
+            case Activities.TYPE_TEXT:
+                iv_image.setImageResource(R.drawable.ic_main_thumbnail_photo_album);
+                break;
+            case Activities.TYPE_QUIZ:
+                iv_image.setImageResource(R.drawable.ic_main_thumbnail_quiz);
+                break;
         }
 
         switch (status) {
