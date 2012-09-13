@@ -12,9 +12,6 @@ import static com.sunshine.metadata.provider.MetadataContract.Activities.*;
 public class FlipperViewsBuilder {
     private Context context;
     private GalleryItemClickedListener galleryThumbnailItemClickListener;
-    private VideoFlipperChild videoFlipperChild;
-    private int videoFlipperChildPosition;
-
 
     public FlipperViewsBuilder(Context context) {
         this.context = context;
@@ -23,13 +20,7 @@ public class FlipperViewsBuilder {
     public boolean buildViewToFlipper(ViewFlipper viewFlipper, DomainActivityData domainActivity) {
         switch (domainActivity.type) {
             case TYPE_VIDEO:
-                if (videoFlipperChild == null) {
-                    videoFlipperChild = new VideoFlipperChild(this.context, domainActivity);
-                    viewFlipper.addView(videoFlipperChild);
-                    videoFlipperChildPosition = viewFlipper.getChildCount() - 1;
-                    return true;
-                }
-                videoFlipperChild.resetDomainActivityData(domainActivity);
+                viewFlipper.addView(new VideoFlipperChild(this.context, domainActivity));
                 return true;
             case TYPE_QUIZ:
                 viewFlipper.addView(new QuizFlipperChild(this.context, (QuizDomainData) domainActivity));
@@ -52,11 +43,5 @@ public class FlipperViewsBuilder {
 
     public void setGalleryThumbnailItemClickListener(GalleryItemClickedListener galleryThumbnailItemClickListener) {
         this.galleryThumbnailItemClickListener = galleryThumbnailItemClickListener;
-    }
-
-    public void updateFlipperVideoPlayer(ViewFlipper viewFlipper, DomainActivityData nextDomainActivityData) {
-        if(videoFlipperChild == null) return;
-        videoFlipperChild.resetDomainActivityData(nextDomainActivityData);
-        viewFlipper.setDisplayedChild(videoFlipperChildPosition);
     }
 }

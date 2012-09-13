@@ -52,9 +52,7 @@ public final class MetadataContract {
         public static final String _QUIZ_ACTIVITY_ID = "quiz_activity_id";
         public static final String _PROBLEM_ID = "problem_id";
 
-        public static Uri getProblemToQuizActivityUri(int id) {
-            return Problems.CONTENT_URI.buildUpon().appendPath("quiz").appendPath(String.valueOf(id)).build();
-        }
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("quiz_components").build();
     }
 
     /*
@@ -380,8 +378,8 @@ public final class MetadataContract {
         public static final String _TYPE = "tag_type";
 
         public static enum TYPE {
-            THEME("Ã‚≤ƒ"), 
-            DIFFICULTY("¿ÌΩ‚");
+            THEME("ËØùÈ¢ò"),
+            DIFFICULTY("ÁêÜËß£");
             
             String value;
             TYPE(String value){

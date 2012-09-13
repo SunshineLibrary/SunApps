@@ -26,12 +26,14 @@ public class MonitoredFileDownloadTask extends FileDownloadTask {
 
     @Override
     protected void onPreExecute() {
+        super.onPreExecute();
         context.getContentResolver().update(updateUri, DOWNLOADING, null, null);
         context.getContentResolver().notifyChange(updateUri, null);
     }
 
     @Override
     protected void onPostExecute(Integer status) {
+        super.onPostExecute(status);
         if (status == SUCCESS) {
             context.getContentResolver().update(updateUri, DOWNLOADED, null, null);
         } else {

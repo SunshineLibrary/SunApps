@@ -31,6 +31,7 @@ public class Matcher {
     public static final int GALLERY_IMAGES_THUMBNAIL = 306;
 
     public static final int PROBLEMS = 307;
+    public static final int QUIZ_COMPONENTS = 308;
 
     public static final int EDGES = 309;
 
@@ -103,6 +104,7 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "book_collection_info", BOOK_COLLECTION_INFO);
             
             matcher.addURI(AUTHORITY, "problems", PROBLEMS);
+            matcher.addURI(AUTHORITY, "quiz_components", QUIZ_COMPONENTS);
             matcher.addURI(AUTHORITY, "problem_choices", PROBLEM_CHOICES);
 
             matcher.addURI(AUTHORITY, "tags", TAGS);

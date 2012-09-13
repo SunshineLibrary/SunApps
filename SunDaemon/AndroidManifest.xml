@@ -52,13 +52,16 @@
 
         <service
                 android:name=".services.APISyncService"
-                android:enabled="true">
-        </service>
+                android:enabled="true"/>
 
         <service
                 android:name=".services.UpdateService"
-                android:enabled="true">
-        </service>
+                android:enabled="true"/>
+
+        <service
+                android:name=".services.DownloadService"
+                android:enabled="true"
+                android:exported="false" />
 
         <receiver android:name=".services.ServiceReceiver">
             <intent-filter>

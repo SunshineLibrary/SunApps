@@ -8,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.sunshine.R;
-
-import java.util.HashSet;
+import com.ssl.curriculum.math.R;
 
 import static com.sunshine.metadata.provider.MetadataContract.Activities;
 
@@ -42,11 +40,20 @@ public class ActivityListAdapter extends CursorAdapter {
         long id = cursor.getLong(cursor.getColumnIndex(Activities._ID));
         int status = cursor.getInt(cursor.getColumnIndex(Activities._DOWNLOAD_STATUS));
         int progress = cursor.getInt(cursor.getColumnIndex(Activities._DOWNLOAD_PROGRESS));
+        int type = cursor.getInt(cursor.getColumnIndex(Activities._TYPE));
         String title = cursor.getString(cursor.getColumnIndex(Activities._NAME));
 
         tv_title.setText(title);
-        if (!iv_image.isLayoutRequested()) {
-            iv_image.setImageURI(Activities.getActivityThumbnailUri(id));
+        switch (type) {
+            case Activities.TYPE_VIDEO:
+                iv_image.setImageResource(R.drawable.ic_main_thumbnail_video);
+                break;
+            case Activities.TYPE_TEXT:
+                iv_image.setImageResource(R.drawable.ic_main_thumbnail_photo_album);
+                break;
+            case Activities.TYPE_QUIZ:
+                iv_image.setImageResource(R.drawable.ic_main_thumbnail_quiz);
+                break;
         }
 
         switch (status) {

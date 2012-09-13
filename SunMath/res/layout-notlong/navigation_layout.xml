@@ -201,7 +201,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_main_thumbnail_photo_album"
+                    android:src="@drawable/ic_navi_section_thumbnail"
                     />
 
 
@@ -230,7 +230,7 @@
 
                 <com.ssl.curriculum.math.component.HorizontalListView
                         android:id="@+id/lv_section_activities"
-                        android:layout_width="fill_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="200dp"
                         android:layout_marginBottom="0dp"
                         android:layout_alignParentBottom="true"

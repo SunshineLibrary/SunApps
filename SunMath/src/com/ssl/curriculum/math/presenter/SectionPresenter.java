@@ -1,12 +1,10 @@
 package com.ssl.curriculum.math.presenter;
 
-import android.content.ContentProviderOperation;
-import android.content.ContentValues;
-import android.content.Intent;
-import android.content.OperationApplicationException;
+import android.content.*;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.provider.BaseColumns;
@@ -41,10 +39,7 @@ public class SectionPresenter {
 
         navigationActivity.setOnActivityClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                currentActivities.move(position);
-                int activityId = currentActivities.getInt(
-                        currentActivities.getColumnIndex(MetadataContract.SectionComponents._ACTIVITY_ID));
-                startActivity(activityId);
+                startActivity((int) id);
             }
         });
     }
@@ -55,6 +50,7 @@ public class SectionPresenter {
         navigationActivity.setSection(currentSection);
         currentActivities = SectionHelper.getSectionActivitiesCursor(navigationActivity, id);
         navigationActivity.setSectionActivities(currentActivities);
+        registerObservers();
     }
 
     private void loadActivities() {
@@ -62,39 +58,61 @@ public class SectionPresenter {
         loader.registerListener(0, new Loader.OnLoadCompleteListener<Cursor>() {
           @Override
           public void onLoadComplete(Loader<Cursor> cursorLoader, Cursor cursor) {
-                currentActivities = cursor;
-                navigationActivity.setSectionActivities(currentActivities);
+              currentActivities = cursor;
+              navigationActivity.setSectionActivities(currentActivities);
             }
         });
         loader.startLoading();
     }
 
-    public void startDownload() {
-        ContentValues values = new ContentValues();
-        values.put(MetadataContract.Downloadable._DOWNLOAD_STATUS, MetadataContract.Downloadable.STATUS_QUEUED);
-        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
+    public void registerObservers() {
+        ContentResolver resolver = navigationActivity.getContentResolver();
+        resolver.unregisterContentObserver(mObserver);
 
         Uri activityUri;
-        if (currentActivities.moveToFirst()) {
-            do {
-                int status = currentActivities.getInt(
-                        currentActivities.getColumnIndex(MetadataContract.Downloadable._DOWNLOAD_STATUS));
-                if (status != MetadataContract.Downloadable.STATUS_DOWNLOADED) {
-                    int activityId = currentActivities.getInt(currentActivities.getColumnIndex(BaseColumns._ID));
+        int activityId;
+        try {
+            if (currentActivities.moveToFirst()) {
+                do {
+                    activityId = currentActivities.getInt(currentActivities.getColumnIndex(BaseColumns._ID));
                     activityUri = MetadataContract.Activities.getActivityUri(activityId);
-                    navigationActivity.getContentResolver().registerContentObserver(activityUri, false, mObserver);
-                    ContentProviderOperation operation = ContentProviderOperation.newUpdate(activityUri).withValues(values).build();
-                    operations.add(operation);
-                }
-            } while(currentActivities.moveToNext());
-            try {
-                navigationActivity.getContentResolver().applyBatch(MetadataContract.AUTHORITY, operations);
-            } catch (RemoteException e) {
-                Log.e(getClass().getName(), "Error Queueing Activity Download", e);
-            } catch (OperationApplicationException e) {
-                Log.e(getClass().getName(), "Error Queueing Activity Download", e);
+                    resolver.registerContentObserver(activityUri, false, mObserver);
+                } while (currentActivities.moveToNext());
             }
+        } catch (Exception e) {
+            Log.e(getClass().getName(), "Failed registering observer", e);
         }
+    }
+
+
+    public void startDownload() {
+        new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object... params) {
+                ContentValues values = new ContentValues();
+                values.put(MetadataContract.Downloadable._DOWNLOAD_STATUS, MetadataContract.Downloadable.STATUS_QUEUED);
+                ContentResolver resolver = navigationActivity.getContentResolver();
+
+                Uri activityUri;
+                try {
+                    if (currentActivities.moveToFirst()) {
+                        do {
+                        int status = currentActivities.getInt(
+                                currentActivities.getColumnIndex(MetadataContract.Downloadable._DOWNLOAD_STATUS));
+                        if (status == MetadataContract.Downloadable.STATUS_NOT_DOWNLOADED) {
+                            int activityId = currentActivities.getInt(currentActivities.getColumnIndex(BaseColumns._ID));
+                            activityUri = MetadataContract.Activities.getActivityUri(activityId);
+                            resolver.update(activityUri, values, null, null);
+                        }
+                        } while (currentActivities.moveToNext());
+                    }
+                } catch (Exception e) {
+                    Log.e(getClass().getName(), "Error starting download:", e);
+                } finally {
+                    return null;
+                }
+            }
+        }.execute();
     }
 
     public void startActivity(int activityId) {
