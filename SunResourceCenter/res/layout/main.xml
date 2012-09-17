@@ -111,32 +111,35 @@
                 android:textOff="@string/res_recent_downloaded"
                 android:textOn="@string/res_recent_downloaded"
                 android:layout_marginRight="10dp" />
-
+
             <ToggleButton
                 android:id="@+id/resnav_learn_new"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/subnav_height"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/togglebutton_nav"
                 android:padding="@dimen/padding_small"
                 android:text="@string/res_learn_new"
-                android:textSize="@dimen/nav_text"
                 android:textColor="@color/chrome"
                 android:textOff="@string/res_learn_new"
                 android:textOn="@string/res_learn_new"
-                android:layout_marginRight="10dp" />
-
+                android:textSize="@dimen/nav_text"
+                android:visibility="gone" />
+
             <ToggleButton
                 android:id="@+id/resnav_readed"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/subnav_height"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/togglebutton_nav"
                 android:padding="@dimen/padding_small"
                 android:text="@string/res_readed"
-                android:textSize="@dimen/nav_text"
                 android:textColor="@color/chrome"
                 android:textOff="@string/res_readed"
-                android:textOn="@string/res_readed" 
-                android:layout_marginRight="10dp"/>
+                android:textOn="@string/res_readed"
+                android:textSize="@dimen/nav_text"
+                android:visibility="gone" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -157,26 +160,29 @@
                 android:textOff="@string/empty"
                 android:textOn="@string/empty" 
                 android:layout_marginRight="20dp"/>
-
+
             <ToggleButton
                 android:id="@+id/type_video"
                 android:layout_width="@dimen/typenav_width"
                 android:layout_height="fill_parent"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/togglebutton_type_movie"
                 android:text="@string/empty"
                 android:textOff="@string/empty"
-                android:textOn="@string/empty" 
-                android:layout_marginRight="20dp"/>
-
+                android:textOn="@string/empty"
+                android:visibility="gone" />
+
             <ToggleButton
                 android:id="@+id/type_audio"
                 android:layout_width="@dimen/typenav_width"
                 android:layout_height="fill_parent"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/togglebutton_type_music"
                 android:text="@string/empty"
                 android:textOff="@string/empty"
-                android:textOn="@string/empty" 
-                android:layout_marginRight="20dp"/>
+                android:textOn="@string/empty"
+                android:visibility="gone" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -186,21 +192,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:visibility="invisible" >
-
-            <ToggleButton
-                android:id="@+id/downnav_recommend"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/subnav_height"
-                android:background="@drawable/togglebutton_nav"
-                android:checked="true"
-                android:padding="@dimen/padding_small"
-                android:text="@string/download_recommend"
-                android:textSize="@dimen/nav_text"
-                android:textColor="@color/chrome"
-                android:textOff="@string/download_recommend"
-                android:textOn="@string/download_recommend"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp" />
+
+           
 
             <ToggleButton
                 android:id="@+id/downnav_hot"
@@ -213,9 +206,11 @@
                 android:textColor="@color/chrome"
                 android:textOff="@string/download_hot"
                 android:textOn="@string/download_hot" 
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="10dp"
+                android:checked="true"/>
 
-            <ToggleButton
+          
+			  <ToggleButton
                 android:id="@+id/downnav_category"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/subnav_height"
@@ -226,22 +221,8 @@
                 android:textColor="@color/chrome"
                 android:textOff="@string/download_category"
                 android:textOn="@string/download_category" 
-                android:layout_marginRight="10dp"/>
-
-            <ToggleButton
-                android:id="@+id/downnav_like"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/subnav_height"
-                android:background="@drawable/togglebutton_nav"
-                android:padding="@dimen/padding_small"
-                android:text="@string/download_like"
-                android:textSize="@dimen/nav_text"
-                android:textColor="@color/chrome"
-                android:textOff="@string/download_like"
-                android:textOn="@string/download_like" 
-                android:layout_marginRight="10dp"/>
-
-            <ToggleButton
+                android:layout_marginRight="10dp"/>			
+			 <ToggleButton
                 android:id="@+id/downnav_list"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/subnav_height"
@@ -254,7 +235,36 @@
                 android:textOff="@string/download_list"
                 android:textOn="@string/download_list" 
                 android:layout_marginRight="10dp"/>
-            
+			 
+			 <ToggleButton
+                android:id="@+id/downnav_recommend"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/subnav_height"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/togglebutton_nav"
+                android:padding="@dimen/padding_small"
+                android:text="@string/download_recommend"
+                android:textColor="@color/chrome"
+                android:textOff="@string/download_recommend"
+                android:textOn="@string/download_recommend"
+                android:textSize="@dimen/nav_text"
+                android:visibility="gone" />
+			 
+            <ToggleButton
+                android:id="@+id/downnav_like"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/subnav_height"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/togglebutton_nav"
+                android:padding="@dimen/padding_small"
+                android:text="@string/download_like"
+                android:textColor="@color/chrome"
+                android:textOff="@string/download_like"
+                android:textOn="@string/download_like"
+                android:textSize="@dimen/nav_text"
+                android:visibility="gone" />
+			
             <ToggleButton
                 android:id="@+id/downnav_search"
                 android:layout_width="wrap_content"
@@ -373,6 +383,26 @@
                     android:src="@drawable/ic_launcher" />
             </LinearLayout>
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/tip_null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingTop="20dp" 
+            android:visibility="invisible">
+            
+             <TextView
+                android:id="@+id/text_tip_null"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/chrome"
+                android:textSize="@dimen/grid_text_med" 
+                android:text="@string/tip_null"
+                />
+        </RelativeLayout>
+
     </RelativeLayout>
 
 </LinearLayout>

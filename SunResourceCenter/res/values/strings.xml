@@ -35,6 +35,7 @@
     <string name="info_button_down">下载</string>
     <string name="info_button_read">阅读</string>
     <string name="download_search">搜索结果</string>
+    <string name="tip_null">没有可以显示的数据！</string>
     
     
     

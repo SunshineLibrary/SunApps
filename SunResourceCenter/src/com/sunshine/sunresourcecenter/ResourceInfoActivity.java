@@ -119,7 +119,7 @@ public class ResourceInfoActivity extends Activity {
 	                String date = sDateFormat.format(new Date());
 	                cv.put(Books._STARTTIME, date);
 	                StringBuffer selection = new StringBuffer(Books._ID);
-	                selection.append(" = '").append(resId).append("' AND ").append(Books._STARTTIME).append(" not null ");
+	                selection.append(" = ").append(resId).append(" AND ").append(Books._STARTTIME).append(" not null ");
 					resolver.update(Books.CONTENT_URI, cv, selection.toString(), null);
 					
 				}catch(Exception e){

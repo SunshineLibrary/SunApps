@@ -10,7 +10,7 @@
     <dimen name="grid_text_large">26dp</dimen>
     <dimen name="grid_text_med">18dp</dimen>
     <dimen name="grid_text_small">16dp</dimen>
-    <dimen name="grid_height_res">280dp</dimen><dimen name="grid_height_list">200dp</dimen>
+    <dimen name="grid_height_res">280dp</dimen><dimen name="grid_height_list">190dp</dimen>
     <dimen name="grid_progress">18dp</dimen><dimen name="imageHeight_cate">70dp</dimen>
     <dimen name="imageWidth_cate">95dp</dimen>
     <dimen name="subnav_height">42dp</dimen>

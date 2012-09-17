@@ -64,7 +64,7 @@ public class MainActivity extends Activity {
 	private LinearLayout downnav;
 	private LinearLayout typenav;
 	private LinearLayout recommandView;
-	private RelativeLayout collectionBack;
+	private RelativeLayout collectionBack, tipNull;
 	private Spinner mainnav;
 	private EditText searchBar;
 	private ResourceContentResolver resolver;
@@ -290,25 +290,26 @@ public class MainActivity extends Activity {
 				}
 				
 				switch (index) {
-				case 0: // recommend
-					currentGridType = GridType.GRIDTYPE_RECOMMAND;
-					currentViewType = ViewType.DOWN_RECOMMAND;
-					break;
-				case 1: // hot
+				
+				case 0: // hot
 					currentGridType = GridType.GRIDTYPE_RES_TODOWNLOAD;
 					currentViewType = ViewType.DOWN_HOT;
 					break;
-				case 2: // category
+				case 1: // category
 					currentGridType = GridType.GRIDTYPE_CATEGORY;
 					currentViewType = ViewType.DOWN_CATEGORY;
 					break;
-				case 3: // like
-					currentGridType = GridType.GRIDTYPE_RES_TODOWNLOAD;
-					currentViewType = ViewType.DOWN_LIKE;
-					break;
-				case 4: // list
+				case 2: // list
 					currentGridType = GridType.GRIDTYPE_RESLIST;
 					currentViewType = ViewType.DOWN_LIST;
+					break;
+				case 3: // recommend
+					currentGridType = GridType.GRIDTYPE_RECOMMAND;
+					currentViewType = ViewType.DOWN_RECOMMAND;
+					break;
+				case 4: // like
+					currentGridType = GridType.GRIDTYPE_RES_TODOWNLOAD;
+					currentViewType = ViewType.DOWN_LIKE;
 					break;
 				default:
 					break;
@@ -373,6 +374,7 @@ public class MainActivity extends Activity {
 		btnBack = (ImageButton) findViewById(R.id.btn_collection_back);
 		searchBar = (EditText) findViewById(R.id.searchbar);
 		searchToggleButton = (ToggleButton) findViewById(R.id.downnav_search);
+		tipNull = (RelativeLayout) findViewById(R.id.tip_null);
 		
 		resolver = new ResourceContentResolver(MainActivity.this.getContentResolver(), this.getResources());
 		
@@ -499,6 +501,11 @@ public class MainActivity extends Activity {
 		
 		gridItems = boundGridData(resType, theViewType, arg);
 		List<Object> itemList = gridItems;
+		if(itemList == null || itemList.size() == 0){ 
+			tipNull.setVisibility(View.VISIBLE); 
+		}else{
+			tipNull.setVisibility(View.INVISIBLE); 
+		}
 		
 		switch (theGridType) {
 		case GRIDTYPE_RES_TODOWNLOAD:
@@ -542,17 +549,20 @@ public class MainActivity extends Activity {
 			case RES_READING:
 				// AND progress > 0 AND progress < 100
 				selection = String.format("%s = '%s' AND %s not null ", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS_DOWNLOADED,
-						BookInfo._STARTTIME);
+						BookInfo._PROGRESS);
+//				selection = String.format("%s = '%s' AND %s not null ", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS_DOWNLOADED,
+//						BookInfo._STARTTIME);
 				return resolver.getBooks(projection, selection);
 					
 			case RES_ALL:
-				//selection = String.format("%s = '%s'", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS_DOWNLOADED);
+				selection = String.format("%s = '%s'", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS_DOWNLOADED);
 				return resolver.getBooks(projection, selection);
 			case RES_RECENT:
 				// Date format: YYYY-MM-DD hh:mm:ss
-				int inDays = 15; 
-				selection = String.format("%s = '%s' AND %s > datetime('now', '-%d days', 'localtime')", BookInfo._DOWNLOAD_STATUS, 
-						Downloadable.STATUS_DOWNLOADED, BookInfo._DOWNLOAD_TIME, inDays);
+//				int inDays = 15; 
+//				selection = String.format("%s = '%s' AND %s > datetime('now', '-%d days', 'localtime')", BookInfo._DOWNLOAD_STATUS, 
+//						Downloadable.STATUS_DOWNLOADED, BookInfo._DOWNLOAD_TIME, inDays);
+				selection = String.format("%s = '%s'", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS_DOWNLOADED);
 				return resolver.getBooks(projection, selection);
 			
 			case RES_READED:
