@@ -14,7 +14,7 @@
     <application android:icon="@drawable/icon" android:label="@string/app_name">
 
         <service android:name=".service.InstallService"
-                 android:permission="com.ssl.support.installer.INSTALL_PERMISSION"
+                 android:permission="com.ssl.support.install.INSTALL_PERMISSION"
                  android:enabled="true">
             <intent-filter>
                 <action android:name="com.ssl.support.action.scheduleInstall"/>
