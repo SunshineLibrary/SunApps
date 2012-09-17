@@ -1,11 +1,10 @@
 package com.ssl.curriculum.math.data;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.content.CursorLoader;
 import com.ssl.curriculum.math.model.Section;
-import com.sunshine.metadata.provider.MetadataContract;
+import com.ssl.metadata.provider.MetadataContract;
 
 /**
  * @author Bowen Sun

@@ -1,10 +1,8 @@
 package com.ssl.curriculum.math.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.view.View;
 import android.widget.*;
 import com.ssl.curriculum.math.R;
@@ -15,9 +13,6 @@ import com.ssl.curriculum.math.model.Section;
 import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.presenter.NavigationMenuPresenter;
 import com.ssl.curriculum.math.presenter.SectionPresenter;
-import com.sunshine.metadata.provider.MetadataContract.Activities;
-import com.sunshine.metadata.provider.MetadataContract.SectionComponents;
-import com.sunshine.metadata.provider.MetadataContract.Sections;
 
 public class NavigationActivity extends Activity implements View.OnClickListener {
 

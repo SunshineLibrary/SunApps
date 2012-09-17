@@ -77,7 +77,7 @@
         <ant antfile="./build.xml" target="release" usenativebasedir="true"/>
         <exec executable="${sdk.dir}/platform-tools/adb">
             <arg value="uninstall"/>
-            <arg value="com.sunshine.support.installer"/>
+            <arg value="com.ssl.support.install"/>
         </exec>
         <exec executable="${sdk.dir}/platform-tools/adb">
             <arg value="install"/>
@@ -93,7 +93,7 @@
             <arg value="am"/>
             <arg value="startservice"/>
             <arg value="-a"/>
-            <arg value="com.sunshine.support.action.scheduleInstall"/>
+            <arg value="com.ssl.support.action.scheduleInstall"/>
             <arg value="-d"/>
             <arg value="file:///sdcard/SunDaemon-release.apk"/>
         </exec>

@@ -7,8 +7,8 @@ import android.util.Log;
 import com.ssl.curriculum.math.model.activity.QuizDomainData;
 import com.ssl.curriculum.math.model.activity.quiz.QuizChoiceQuestion;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
-import com.sunshine.metadata.provider.MetadataContract;
-import com.sunshine.metadata.provider.MetadataContract.ProblemChoices;
+import com.ssl.metadata.provider.MetadataContract;
+import com.ssl.metadata.provider.MetadataContract.ProblemChoices;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -35,7 +35,7 @@
         </activity>
     </application>
 
-    <uses-permission android:name="com.sunshine.metadata.provider.READ_WRITE_PERMISSION" />
+    <uses-permission android:name="com.ssl.metadata.provider.READ_WRITE_PERMISSION" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />

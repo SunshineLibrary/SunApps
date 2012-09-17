@@ -22,7 +22,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="通用设置">
-        <com.sunshine.support.components.ResetPreference
+        <com.ssl.support.components.ResetPreference
                 android:title="重置设置"
                 android:dialogMessage="您确定要重置对Daemon的设置么?"
                 android:dialogTitle="重置Daemon的设置"

@@ -9,8 +9,8 @@ import com.ssl.curriculum.math.listener.SectionActivityDataReceiver;
 import com.ssl.curriculum.math.model.activity.SectionActivitiesData;
 import com.ssl.curriculum.math.model.activity.SectionActivityData;
 
-import static com.sunshine.metadata.provider.MetadataContract.SectionComponents;
-import static com.sunshine.metadata.provider.MetadataContract.Sections;
+import static com.ssl.metadata.provider.MetadataContract.SectionComponents;
+import static com.ssl.metadata.provider.MetadataContract.Sections;
 
 public class SectionActivityContentProvider {
 

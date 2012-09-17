@@ -1,7 +1,6 @@
 package com.ssl.curriculum.math.presenter;
 
 import com.ssl.curriculum.math.activity.NavigationActivity;
-import com.ssl.curriculum.math.data.SectionHelper;
 import com.ssl.curriculum.math.listener.NextLevelMenuChangedListener;
 import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.model.menu.MenuItem;

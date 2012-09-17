@@ -7,7 +7,7 @@ import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.ssl.curriculum.math.model.activity.QuizDomainData;
 
-import static com.sunshine.metadata.provider.MetadataContract.Activities.*;
+import static com.ssl.metadata.provider.MetadataContract.Activities.*;
 
 public class FlipperViewsBuilder {
     private Context context;
