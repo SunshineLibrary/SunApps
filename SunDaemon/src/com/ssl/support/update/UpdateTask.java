@@ -5,7 +5,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+import com.ssl.api.R;
 import com.ssl.metadata.provider.MetadataContract;
+import com.ssl.metadata.storage.ExternalFileStorage;
 import com.ssl.support.api.ApiClient;
 import com.ssl.support.api.ApiClientFactory;
 import com.ssl.support.data.helpers.PackageHelper;
@@ -32,14 +34,19 @@ import java.util.List;
 
 public class UpdateTask extends AsyncTask {
 
+    private static final String DAEMON_PACKAGE_NAME = "com.ssl.support.daemon";
+
+    private static Package daemonPkg;
+
     private UpdateService context;
     private FileStorage fileStorage;
     private ApiClient apiClient;
+    private int numInstalls;
 
-    private static final String PKG_DIR_NAME = ".apks";
+    private static final String PKG_DIR_NAME = "apks";
     private static final Uri PKG_DIR = Uri.parse(
-            "file://" + Environment.getExternalStorageDirectory().getAbsolutePath()).buildUpon()
-            .appendPath(PKG_DIR_NAME).build();
+            "file://" + Environment.getExternalStorageDirectory().getAbsolutePath()
+                    + "/" + ExternalFileStorage.BASE_PATH).buildUpon().appendPath(PKG_DIR_NAME).build();
 
     public UpdateTask(UpdateService context) {
         this.context = context;
@@ -50,6 +57,7 @@ public class UpdateTask extends AsyncTask {
     protected Object doInBackground(Object... params) {
         List<Package> updates = getUpdates(getLocalPackages());
         Log.v(getClass().getName(), "Packages to be updated: " + updates);
+        numInstalls = updates.size();
         for (Package pkg: updates) {
             downloadAndInstallApk(pkg);
         }
@@ -123,8 +131,8 @@ public class UpdateTask extends AsyncTask {
         Uri localUri = getLocalFilePath(pkg);
 
         PackageHelper.createNewPackage(context, pkg);
-        FileDownloadTask task = new MonitoredFileDownloadTask(context, remoteUri, localUri, pkg.getUpdateUri(),
-                MetadataContract.Packages.CONTENT_URI);
+        FileDownloadTask task = new MonitoredFileDownloadTask(context, remoteUri, localUri,
+                pkg.getUpdateUri(), MetadataContract.Packages.CONTENT_URI);
         task.addListener(new InstallListener(pkg, localUri));
         Log.v(getClass().getName(), "Start downloading package: " + pkg);
         task.execute();
@@ -177,13 +185,26 @@ public class UpdateTask extends AsyncTask {
         @Override
         public void onResult(Integer integer) {
             if (integer == FileDownloadTask.SUCCESS) {
-                Log.v(getClass().getName(), "Sending install request for package: " + pkg);
-                Intent intent = new Intent();
-                intent.setAction("com.ssl.support.action.scheduleInstall");
-                intent.setData(filePath);
-                context.startService(intent);
-                PackageHelper.setInstallStatus(context, pkg.id, MetadataContract.Packages.INSTALL_STATUS_PENDING);
+                if (pkg.getName().equals(DAEMON_PACKAGE_NAME)) {
+                    daemonPkg = pkg;
+                } else {
+                    sendInstallRequest(pkg);
+                }
             }
+
+            numInstalls--;
+            if (numInstalls == 0 && daemonPkg != null) {
+                sendInstallRequest(daemonPkg);
+            }
+        }
+
+        private void sendInstallRequest(Package pkg) {
+            Log.v(getClass().getName(), "Sending install request for package: " + pkg);
+            Intent intent = new Intent();
+            intent.setAction("com.ssl.support.action.scheduleInstall");
+            intent.setData(filePath);
+            context.startService(intent);
+            PackageHelper.setInstallStatus(context, pkg.id, MetadataContract.Packages.INSTALL_STATUS_PENDING);
         }
     }
 }

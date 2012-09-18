@@ -71,7 +71,7 @@ public class Matcher {
             UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
             matcher.addURI(AUTHORITY, "packages", PACKAGES);
-            matcher.addURI(AUTHORITY, "packages/#", PACKAGES);
+            matcher.addURI(AUTHORITY, "packages/#", PACKAGES_ID);
             matcher.addURI(AUTHORITY, "api_sync_states", API_SYNC_STATES);
 
             matcher.addURI(AUTHORITY, "courses", COURSES);

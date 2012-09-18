@@ -50,7 +50,6 @@ public abstract class InstallTask extends AsyncTask<Uri, Integer, Boolean>{
 
         if(result.equals("Success\n")) {
             Log.i(getClass().getName(), "Successfully Installed APK: " + apkPath.toString());
-            new File(fileName).delete();
             return true;
         } else {
             Log.e(getClass().getName(), "Failed to install APK: " + apkPath.toString());

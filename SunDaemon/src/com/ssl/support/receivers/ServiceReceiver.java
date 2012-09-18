@@ -11,7 +11,6 @@ public class ServiceReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
             context.startService(new Intent(context, APISyncService.class));
             context.startService(new Intent(context, UpdateService.class));

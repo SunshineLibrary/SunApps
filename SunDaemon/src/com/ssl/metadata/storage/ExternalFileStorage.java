@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class ExternalFileStorage implements FileStorage{
     private final File externalStorageRoot;
-    private static final String BASE_PATH = ".contents";
+    public static final String BASE_PATH = ".contents";
 
     public ExternalFileStorage() {
         externalStorageRoot = new File(Environment.getExternalStorageDirectory(), BASE_PATH);
