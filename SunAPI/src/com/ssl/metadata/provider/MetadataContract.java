@@ -466,8 +466,18 @@ public final class MetadataContract {
         public static final String _ID = BaseColumns._ID;
         public static final String _NAME = "name";
         public static final String _VERSION = "version";
+        public static final String _INSTALL_STATUS = "install_status";
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("packages").build();
+
+        public static final int INSTALL_STATUS_DOWNLOADING = 0;
+        public static final int INSTALL_STATUS_PENDING = 1;
+        public static final int INSTALL_STATUS_INSTALLED = 2;
+        public static final int INSTALL_STATUS_FAILED = 3;
+
+        public static Uri getPackageUri(int id) {
+            return CONTENT_URI.buildUpon().appendEncodedPath(String.valueOf(id)).build();
+        }
     }
 
     public static class Downloadable {

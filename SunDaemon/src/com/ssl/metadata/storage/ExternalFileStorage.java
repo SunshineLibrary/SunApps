@@ -10,8 +10,7 @@ public class ExternalFileStorage implements FileStorage{
     private static final String BASE_PATH = ".contents";
 
     public ExternalFileStorage() {
-//        externalStorageRoot = new File(Environment.getExternalStorageDirectory(), BASE_PATH);
-        externalStorageRoot = Environment.getExternalStorageDirectory();
+        externalStorageRoot = new File(Environment.getExternalStorageDirectory(), BASE_PATH);
         externalStorageRoot.mkdirs();
     }
 

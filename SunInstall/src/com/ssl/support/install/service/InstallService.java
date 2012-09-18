@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
@@ -15,6 +16,8 @@ public class InstallService extends Service {
     public static final String ACTION_STOP_TIMER= "com.ssl.support.action.stopTimer";
     public static final String ACTION_SCHEDULE_INSTALL = "com.ssl.support.action.scheduleInstall";
 
+    public static final String ACTION_PACKAGE_INSTALLED = "com.ssl.support.action.packageInstalled";
+    public static final String ACTION_PACKAGE_INSTALL_FAILED = "com.ssl.support.action.packageInstallFailed";
 
     private static final String TAG = "Installer";
     private static final int INSTALL_DELAY = 10000;
@@ -25,6 +28,8 @@ public class InstallService extends Service {
     private boolean hasPendingInstall;
     private InstallTimer timer;
     private PowerManager.WakeLock wakeLock;
+
+    private int numRunningTasks;
 
 
     @Override
@@ -56,15 +61,15 @@ public class InstallService extends Service {
                 InstallRequest request;
                 while ((request = installQueue.pop()) != null) {
                     Log.i(TAG, "Starting install: "+intent);
-                    InstallTask installTask = new InstallTask();
-                    installTask.execute(request.getApkPath());
+                    InstallTask installTask = new InstallTaskImpl(request.getApkPath());
+                    numRunningTasks++;
+                    installTask.execute();
                 }
                 releaseLock();
             } else {
                 Log.w(getClass().getName(), "No pending install found. This is weird.");
             }
             hasPendingInstall = false;
-            stopSelf();
         } else if(intent.getAction().equals(ACTION_START_TIMER)) {
             if (hasPendingInstall) {
                 Log.v(getClass().getName(), "Found pending install. Starting timer...");
@@ -89,7 +94,6 @@ public class InstallService extends Service {
     public void onDestroy() {
         super.onDestroy();
         releaseLock();
-
         Log.i(getClass().getName(), "Stopping Installer Service...");
         unregisterReceiver(installReceiver);
         installQueue.release();
@@ -120,6 +124,38 @@ public class InstallService extends Service {
     private void releaseLock() {
         if (wakeLock.isHeld()) {
             wakeLock.release();
+        }
+    }
+
+    private void tryStopSelf() {
+        if (!hasPendingInstall && numRunningTasks == 0) {
+            stopSelf();
+        }
+    }
+
+    private class InstallTaskImpl extends InstallTask {
+
+        public InstallTaskImpl(Uri apkPath) {
+            super(apkPath);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean status) {
+            super.onPostExecute(status);
+            broadcastStatus(status);
+            numRunningTasks--;
+            tryStopSelf();
+        }
+
+        private void broadcastStatus(boolean status) {
+            Intent intent;
+            if (status) {
+                intent = new Intent(ACTION_PACKAGE_INSTALLED, apkPath);
+            } else {
+                intent = new Intent(ACTION_PACKAGE_INSTALL_FAILED, apkPath);
+            }
+            Log.v(getClass().getName(), "Broadcasting install status: " + intent);
+            sendBroadcast(intent);
         }
     }
 }

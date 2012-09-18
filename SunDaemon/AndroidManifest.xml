@@ -63,10 +63,21 @@
                 android:enabled="true"
                 android:exported="false" />
 
-        <receiver android:name="com.ssl.support.services.ServiceReceiver">
+        <receiver android:name="com.ssl.support.receivers.ServiceReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.ssl.support.receivers.PostInstallReceiver">
+            <intent-filter>
+                <action android:name="com.ssl.support.action.packageInstalled"/>
+                <data android:scheme="file"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.ssl.support.action.packageInstallFailed"/>
+                <data android:scheme="file"/>
             </intent-filter>
         </receiver>
 

@@ -109,6 +109,7 @@ public class MetadataProvider extends ContentProvider {
 
             // Elements
             case Matcher.ACTIVITIES_ID:
+            case Matcher.PACKAGES_ID:
                 return table.query(uri, projection, BaseColumns._ID + "=" + uri.getLastPathSegment(), null, null);
 
             default:
@@ -190,8 +191,10 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.ACTIVITIES_ID:
             case Matcher.BOOKS_ID:
             case Matcher.GALLERY_IMAGES_ID:
+            case Matcher.PACKAGES_ID:
                 selection = BaseColumns._ID + " = ?";
                 selectionArgs = new String[]{uri.getLastPathSegment()};
+            case Matcher.PACKAGES:
             case Matcher.ACTIVITIES:
             case Matcher.GALLERY_IMAGES:
             case Matcher.BOOKS:
@@ -210,6 +213,7 @@ public class MetadataProvider extends ContentProvider {
     private Table getTableForMatch(int match) {
         switch (match) {
             case Matcher.PACKAGES:
+            case Matcher.PACKAGES_ID:
                 if (packageTable == null) {
                     packageTable = dbHandler.getTableManager(PackageTable.TABLE_NAME);
                 }

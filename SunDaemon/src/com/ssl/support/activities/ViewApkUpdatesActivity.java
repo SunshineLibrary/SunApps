@@ -21,16 +21,17 @@ public class ViewApkUpdatesActivity extends Activity {
     private ListView lv_apk_list;
     private PackageAdapter mAdapter;
     private CursorLoader mLoader;
+    private ContentObserver mObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.apk_updates);
+        mObserver = new MContentObserver(new Handler());
+
         initUI();
         loadData();
-
-        getContentResolver().registerContentObserver(MetadataContract.Packages.CONTENT_URI, false,
-                new MContentObserver(new Handler()));
+        getContentResolver().registerContentObserver(MetadataContract.Packages.CONTENT_URI, false, mObserver);
     }
 
     private void initUI() {
@@ -61,5 +62,11 @@ public class ViewApkUpdatesActivity extends Activity {
             super.onChange(selfChange);
             loadData();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getContentResolver().unregisterContentObserver(mObserver);
     }
 }

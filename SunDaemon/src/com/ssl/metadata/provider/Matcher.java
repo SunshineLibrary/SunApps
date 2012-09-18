@@ -11,7 +11,8 @@ public class Matcher {
      */
 
     public static final int PACKAGES = 100;
-    public static final int API_SYNC_STATES = 101;
+    public static final int PACKAGES_ID = 101;
+    public static final int API_SYNC_STATES = 102;
 
     public static final int COURSES = 200;
     public static final int CHAPTERS = 201;
@@ -70,6 +71,7 @@ public class Matcher {
             UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
             matcher.addURI(AUTHORITY, "packages", PACKAGES);
+            matcher.addURI(AUTHORITY, "packages/#", PACKAGES);
             matcher.addURI(AUTHORITY, "api_sync_states", API_SYNC_STATES);
 
             matcher.addURI(AUTHORITY, "courses", COURSES);

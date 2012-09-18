@@ -1,9 +1,11 @@
-package com.ssl.support.services;
+package com.ssl.support.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import com.ssl.support.services.APISyncService;
+import com.ssl.support.services.UpdateService;
 
 public class ServiceReceiver extends BroadcastReceiver {
 

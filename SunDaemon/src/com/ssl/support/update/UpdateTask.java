@@ -5,11 +5,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+import com.ssl.metadata.provider.MetadataContract;
 import com.ssl.support.api.ApiClient;
 import com.ssl.support.api.ApiClientFactory;
 import com.ssl.support.data.helpers.PackageHelper;
 import com.ssl.support.data.models.Package;
 import com.ssl.support.downloader.FileDownloadTask;
+import com.ssl.support.downloader.MonitoredFileDownloadTask;
 import com.ssl.support.services.UpdateService;
 import com.ssl.metadata.storage.FileStorage;
 import com.ssl.metadata.storage.FileStorageManager;
@@ -120,14 +122,16 @@ public class UpdateTask extends AsyncTask {
         Uri remoteUri = apiClient.getDownloadUri("apks", pkg.getId());
         Uri localUri = getLocalFilePath(pkg);
 
-        FileDownloadTask task = new FileDownloadTask(context, remoteUri, localUri);
+        PackageHelper.createNewPackage(context, pkg);
+        FileDownloadTask task = new MonitoredFileDownloadTask(context, remoteUri, localUri, pkg.getUpdateUri(),
+                MetadataContract.Packages.CONTENT_URI);
         task.addListener(new InstallListener(pkg, localUri));
         Log.v(getClass().getName(), "Start downloading package: " + pkg);
         task.execute();
     }
 
     private Uri getLocalFilePath(Package pkg) {
-        Uri filePath = PKG_DIR.buildUpon().appendPath(pkg.getName() + pkg.version + ".apk").build();
+        Uri filePath = PKG_DIR.buildUpon().appendPath(pkg.getName() + "_" + pkg.version + ".apk").build();
         createNewFileSafely(filePath);
         return filePath;
     }
@@ -178,7 +182,7 @@ public class UpdateTask extends AsyncTask {
                 intent.setAction("com.ssl.support.action.scheduleInstall");
                 intent.setData(filePath);
                 context.startService(intent);
-                PackageHelper.createNewPackage(UpdateTask.this.context, pkg);
+                PackageHelper.setInstallStatus(context, pkg.id, MetadataContract.Packages.INSTALL_STATUS_PENDING);
             }
         }
     }

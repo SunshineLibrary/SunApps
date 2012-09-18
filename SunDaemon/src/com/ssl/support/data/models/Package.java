@@ -1,10 +1,17 @@
 package com.ssl.support.data.models;
 
+import android.net.Uri;
+import com.ssl.metadata.provider.MetadataContract;
+
 public class Package {
 	
 	public String name;
 	public int version;
 	public int id;
+    public int downloadProgress;
+    public int downloadStatus;
+    public int installStatus;
+
 
     public Package() {}
 
@@ -48,5 +55,9 @@ public class Package {
     @Override
     public String toString() {
         return name + "_" + version;
+    }
+
+    public Uri getUpdateUri() {
+        return MetadataContract.Packages.getPackageUri(id);
     }
 }

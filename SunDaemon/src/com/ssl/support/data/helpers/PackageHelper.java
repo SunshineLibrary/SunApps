@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.util.Log;
 import com.ssl.metadata.provider.MetadataContract;
 import com.ssl.support.data.models.Package;
@@ -17,9 +18,25 @@ import java.util.Vector;
 import static com.ssl.metadata.provider.MetadataContract.Packages;
 
 public class PackageHelper {
+
+
     public static List<Package> getLocalPackages(Context context) {
-        Cursor cursor = context.getContentResolver().query(Packages.CONTENT_URI, null, null, null, null);
+        Cursor cursor = context.getContentResolver().query(Packages.CONTENT_URI, null,
+                Packages._INSTALL_STATUS + "=" + Packages.INSTALL_STATUS_INSTALLED, null, null);
         return getPackageListFromCursor(cursor);
+    }
+
+    public static Package getPackageForFile(Context context, Uri data) {
+        String path = truncatePath(data.getLastPathSegment());
+        String[] values = path.split("_");
+        if (values.length == 2) {
+            Cursor cursor = context.getContentResolver().query(Packages.CONTENT_URI, null,
+                    Packages._NAME + "= ? and " + Packages._VERSION + "= ?", values, null);
+            if (cursor.moveToFirst()) {
+                return newFromCursor(cursor);
+            }
+        }
+        return null;
     }
 
     public static List<Package> getPackageListFromJSONArray(JSONArray jsonArr) {
@@ -42,7 +59,14 @@ public class PackageHelper {
     public static void createNewPackage(Context context, Package pkg) {
         ContentResolver contentResolver = context.getContentResolver();
         contentResolver.insert(Packages.CONTENT_URI, getNewRecordContentValues(pkg));
-        context.getContentResolver().notifyChange(Packages.CONTENT_URI, null);
+        contentResolver.notifyChange(Packages.CONTENT_URI, null);
+    }
+
+    public static void setInstallStatus(Context context, int id, int status) {
+        ContentResolver contentResolver = context.getContentResolver();
+        Uri updateUri = Packages.getPackageUri(id);
+        contentResolver.update(updateUri, getContentValuesForStatus(status), null, null);
+        contentResolver.notifyChange(Packages.CONTENT_URI, null);
     }
 
     public static Package newFromCursor(Cursor cursor) {
@@ -50,6 +74,9 @@ public class PackageHelper {
         pkg.id = cursor.getInt(cursor.getColumnIndex(Packages._ID));
         pkg.version = cursor.getInt(cursor.getColumnIndex(Packages._VERSION));
         pkg.name = cursor.getString(cursor.getColumnIndex(Packages._NAME));
+        pkg.downloadProgress = cursor.getInt(cursor.getColumnIndex(Packages._DOWNLOAD_PROGRESS));
+        pkg.downloadStatus = cursor.getInt(cursor.getColumnIndex(Packages._DOWNLOAD_STATUS));
+        pkg.installStatus = cursor.getInt(cursor.getColumnIndex(Packages._INSTALL_STATUS));
         return pkg;
     }
 
@@ -70,6 +97,20 @@ public class PackageHelper {
         values.put(MetadataContract.Packages._VERSION, pkg.getVersion());
         values.put(MetadataContract.Packages._NAME, pkg.getName());
         return values;
+    }
+
+    private static ContentValues getContentValuesForStatus(int status) {
+        ContentValues values = new ContentValues();
+        values.put(Packages._INSTALL_STATUS, status);
+        return values;
+    }
+
+    private static String truncatePath(String path) {
+        int index = path.lastIndexOf(".apk");
+        if (index >= 0) {
+            return path.substring(0, index);
+        }
+        return path;
     }
 
 }

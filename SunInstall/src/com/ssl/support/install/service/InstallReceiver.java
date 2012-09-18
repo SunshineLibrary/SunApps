@@ -20,6 +20,8 @@ public class InstallReceiver extends BroadcastReceiver {
             Intent i = new Intent(context, InstallService.class);
             i.setAction(InstallService.ACTION_START_TIMER);
             context.startService(i);
+        } else {
+            Log.v(getClass().getName(), "Received Broadcast: " + intent);
         }
 	}
 }

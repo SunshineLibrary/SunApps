@@ -12,6 +12,7 @@ public class MonitoredFileDownloadTask extends FileDownloadTask {
     private static final ContentValues DOWNLOADED = new ContentValues();
 
     private Uri updateUri;
+    private Uri notifyUri;
 
     static {
         NOT_DOWNLOADED.put(MetadataContract.Downloadable._DOWNLOAD_STATUS, MetadataContract.Downloadable.STATUS_NOT_DOWNLOADED);
@@ -22,6 +23,12 @@ public class MonitoredFileDownloadTask extends FileDownloadTask {
     public MonitoredFileDownloadTask(Context context, Uri remoteUri, Uri localUri, Uri updateUri) {
         super(context, remoteUri, localUri);
         this.updateUri = updateUri;
+    }
+
+    public MonitoredFileDownloadTask(Context context, Uri remoteUri, Uri localUri, Uri updateUri, Uri notifyUri) {
+        super(context, remoteUri, localUri);
+        this.updateUri = updateUri;
+        this.notifyUri = notifyUri;
     }
 
     @Override
@@ -39,14 +46,22 @@ public class MonitoredFileDownloadTask extends FileDownloadTask {
         } else {
             context.getContentResolver().update(updateUri, NOT_DOWNLOADED, null, null);
         }
-        context.getContentResolver().notifyChange(updateUri, null);
+        if (notifyUri != null) {
+            context.getContentResolver().notifyChange(notifyUri, null);
+        } else {
+            context.getContentResolver().notifyChange(updateUri, null);
+        }
     }
 
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
         context.getContentResolver().update(updateUri, downloadProgress(values[0]), null, null);
-        context.getContentResolver().notifyChange(updateUri, null);
+        if (notifyUri != null) {
+            context.getContentResolver().notifyChange(notifyUri, null);
+        } else {
+            context.getContentResolver().notifyChange(updateUri, null);
+        }
     }
 
     private ContentValues downloadProgress(int progress) {
