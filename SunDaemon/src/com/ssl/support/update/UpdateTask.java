@@ -37,6 +37,7 @@ public class UpdateTask extends AsyncTask {
     private static final String DAEMON_PACKAGE_NAME = "com.ssl.support.daemon";
 
     private static Package daemonPkg;
+    private static Uri daemonFilePath;
 
     private UpdateService context;
     private FileStorage fileStorage;
@@ -187,18 +188,19 @@ public class UpdateTask extends AsyncTask {
             if (integer == FileDownloadTask.SUCCESS) {
                 if (pkg.getName().equals(DAEMON_PACKAGE_NAME)) {
                     daemonPkg = pkg;
+                    daemonFilePath = filePath;
                 } else {
-                    sendInstallRequest(pkg);
+                    sendInstallRequest(pkg, filePath);
                 }
             }
 
             numInstalls--;
             if (numInstalls == 0 && daemonPkg != null) {
-                sendInstallRequest(daemonPkg);
+                sendInstallRequest(daemonPkg, daemonFilePath);
             }
         }
 
-        private void sendInstallRequest(Package pkg) {
+        private void sendInstallRequest(Package pkg, Uri filePath) {
             Log.v(getClass().getName(), "Sending install request for package: " + pkg);
             Intent intent = new Intent();
             intent.setAction("com.ssl.support.action.scheduleInstall");
