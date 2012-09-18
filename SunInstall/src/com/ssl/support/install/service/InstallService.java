@@ -29,8 +29,6 @@ public class InstallService extends Service {
     private InstallTimer timer;
     private PowerManager.WakeLock wakeLock;
 
-    private int numRunningTasks;
-
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -57,19 +55,14 @@ public class InstallService extends Service {
             hasPendingInstall = true;
             notifyInstall();
         } else if(intent.getAction().equals(ACTION_INSTALL)) {
+            Log.i(TAG, "Starting install: "+intent);
             if (hasPendingInstall) {
-                InstallRequest request;
-                while ((request = installQueue.pop()) != null) {
-                    Log.i(TAG, "Starting install: "+intent);
-                    InstallTask installTask = new InstallTaskImpl(request.getApkPath());
-                    numRunningTasks++;
-                    installTask.execute();
-                }
-                releaseLock();
+                startNextInstall();
             } else {
                 Log.w(getClass().getName(), "No pending install found. This is weird.");
+                releaseLock();
+                stopSelf();
             }
-            hasPendingInstall = false;
         } else if(intent.getAction().equals(ACTION_START_TIMER)) {
             if (hasPendingInstall) {
                 Log.v(getClass().getName(), "Found pending install. Starting timer...");
@@ -88,6 +81,18 @@ public class InstallService extends Service {
             }
         }
         return START_STICKY;
+    }
+
+    private void startNextInstall() {
+        InstallRequest request = installQueue.pop();
+        if (request != null) {
+            InstallTask installTask = new InstallTaskImpl(request.getApkPath());
+            installTask.execute();
+        } else {
+            releaseLock();
+            hasPendingInstall = false;
+            stopSelf();
+        }
     }
 
     @Override
@@ -127,12 +132,6 @@ public class InstallService extends Service {
         }
     }
 
-    private void tryStopSelf() {
-        if (!hasPendingInstall && numRunningTasks == 0) {
-            stopSelf();
-        }
-    }
-
     private class InstallTaskImpl extends InstallTask {
 
         public InstallTaskImpl(Uri apkPath) {
@@ -143,8 +142,7 @@ public class InstallService extends Service {
         protected void onPostExecute(Boolean status) {
             super.onPostExecute(status);
             broadcastStatus(status);
-            numRunningTasks--;
-            tryStopSelf();
+            startNextInstall();
         }
 
         private void broadcastStatus(boolean status) {
