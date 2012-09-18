@@ -84,7 +84,7 @@ public class InstallService extends Service {
     }
 
     private void startNextInstall() {
-        InstallRequest request = installQueue.pop();
+        InstallRequest request = installQueue.peek();
         if (request != null) {
             InstallTask installTask = new InstallTaskImpl(request.getApkPath());
             installTask.execute();
@@ -142,6 +142,7 @@ public class InstallService extends Service {
         protected void onPostExecute(Boolean status) {
             super.onPostExecute(status);
             broadcastStatus(status);
+            installQueue.pop();
             startNextInstall();
         }
 
