@@ -63,6 +63,12 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="2dp"
             android:fadingEdge="none" />
+        <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/ic_side_download_manager"
+                />
 
         <ImageView
             android:layout_width="wrap_content"
