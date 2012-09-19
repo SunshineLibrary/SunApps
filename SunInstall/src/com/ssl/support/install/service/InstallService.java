@@ -25,7 +25,8 @@ public class InstallService extends Service {
 
     private InstallReceiver installReceiver;
     private InstallQueue installQueue;
-    private boolean hasPendingInstall;
+    private boolean hasActiveTimer;
+    private boolean installInProgress;
     private InstallTimer timer;
     private PowerManager.WakeLock wakeLock;
 
@@ -42,7 +43,7 @@ public class InstallService extends Service {
         installReceiver = new InstallReceiver();
         registerInstallReceivers();
         installQueue = new InstallQueue(getBaseContext(), new InstallRequest.Factory());
-        hasPendingInstall = (installQueue.peek() != null);
+        hasActiveTimer = (installQueue.peek() != null);
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
     }
@@ -52,19 +53,23 @@ public class InstallService extends Service {
         if(intent.getAction().equals(ACTION_SCHEDULE_INSTALL)){
             Log.i(TAG, "Scheduling Install: "+intent);
             installQueue.add(new InstallRequest(intent.getData().toString()));
-            hasPendingInstall = true;
-            notifyInstall();
+            if (!installInProgress) {
+                hasActiveTimer = true;
+                notifyInstall();
+            }
         } else if(intent.getAction().equals(ACTION_INSTALL)) {
             Log.i(TAG, "Starting install: "+intent);
-            if (hasPendingInstall) {
+            if (hasActiveTimer) {
+                hasActiveTimer = false;
                 startNextInstall();
+                installInProgress = true;
             } else {
                 Log.w(getClass().getName(), "No pending install found. This is weird.");
                 releaseLock();
                 stopSelf();
             }
         } else if(intent.getAction().equals(ACTION_START_TIMER)) {
-            if (hasPendingInstall) {
+            if (hasActiveTimer) {
                 Log.v(getClass().getName(), "Found pending install. Starting timer...");
                 timer.start();
                 acquireLock();
@@ -72,7 +77,7 @@ public class InstallService extends Service {
                 Log.v(getClass().getName(), "No pending installs. Timer not started");
             }
         } else if(intent.getAction().equals(ACTION_STOP_TIMER)) {
-            if (hasPendingInstall) {
+            if (hasActiveTimer) {
                 releaseLock();
                 Log.v(getClass().getName(), "Found active timer. stopping...");
                 timer.reset();
@@ -89,8 +94,8 @@ public class InstallService extends Service {
             InstallTask installTask = new InstallTaskImpl(request.getApkPath());
             installTask.execute();
         } else {
+            installInProgress = false;
             releaseLock();
-            hasPendingInstall = false;
             stopSelf();
         }
     }
