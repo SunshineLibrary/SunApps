@@ -6,10 +6,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.model.menu.MenuItem;
-import com.sunshine.metadata.provider.MetadataContract.Chapters;
-import com.sunshine.metadata.provider.MetadataContract.Courses;
-import com.sunshine.metadata.provider.MetadataContract.Lessons;
-import com.sunshine.metadata.provider.MetadataContract.Sections;
+import com.ssl.metadata.provider.MetadataContract.Chapters;
+import com.ssl.metadata.provider.MetadataContract.Courses;
+import com.ssl.metadata.provider.MetadataContract.Lessons;
+import com.ssl.metadata.provider.MetadataContract.Sections;
 
 import java.util.HashMap;
 

@@ -8,7 +8,7 @@ import com.ssl.curriculum.math.listener.ActivityDataReceiver;
 import com.ssl.curriculum.math.model.Edge;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.ssl.curriculum.math.model.activity.QuizDomainData;
-import com.sunshine.metadata.provider.MetadataContract;
+import com.ssl.metadata.provider.MetadataContract;
 
 import java.util.ArrayList;
 import java.util.List;

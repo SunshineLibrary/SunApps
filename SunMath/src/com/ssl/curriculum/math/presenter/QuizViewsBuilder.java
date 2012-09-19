@@ -6,7 +6,7 @@ import com.ssl.curriculum.math.component.flipperchildren.QuizFillInView;
 import com.ssl.curriculum.math.component.flipperchildren.QuizQuestionView;
 import com.ssl.curriculum.math.model.activity.quiz.QuizChoiceQuestion;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
-import com.sunshine.metadata.provider.MetadataContract;
+import com.ssl.metadata.provider.MetadataContract;
 
 public class QuizViewsBuilder {
     private Context context;

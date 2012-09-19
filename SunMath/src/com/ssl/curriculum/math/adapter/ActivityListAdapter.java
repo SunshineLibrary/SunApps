@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.ssl.curriculum.math.R;
 
-import static com.sunshine.metadata.provider.MetadataContract.Activities;
+import static com.ssl.metadata.provider.MetadataContract.Activities;
 
 /**
  * @author Bowen Sun

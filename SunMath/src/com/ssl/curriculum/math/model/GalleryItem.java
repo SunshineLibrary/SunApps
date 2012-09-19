@@ -1,7 +1,7 @@
 package com.ssl.curriculum.math.model;
 
 import android.net.Uri;
-import com.sunshine.metadata.provider.MetadataContract;
+import com.ssl.metadata.provider.MetadataContract;
 
 public class GalleryItem {
     private Uri imageUri;

@@ -1,7 +1,7 @@
 package com.ssl.curriculum.math.model.activity;
 
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
-import com.sunshine.metadata.provider.MetadataContract.Activities;
+import com.ssl.metadata.provider.MetadataContract.Activities;
 
 import java.util.ArrayList;
 import java.util.List;

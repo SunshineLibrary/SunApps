@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
-import com.sunshine.metadata.provider.MetadataContract;
+import com.ssl.metadata.provider.MetadataContract;
 
 import java.io.FileDescriptor;
 import java.io.FileInputStream;

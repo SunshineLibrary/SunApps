@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.os.RemoteException;
 import android.provider.BaseColumns;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -17,9 +16,7 @@ import com.ssl.curriculum.math.activity.MainActivity;
 import com.ssl.curriculum.math.activity.NavigationActivity;
 import com.ssl.curriculum.math.data.SectionHelper;
 import com.ssl.curriculum.math.model.Section;
-import com.sunshine.metadata.provider.MetadataContract;
-
-import java.util.ArrayList;
+import com.ssl.metadata.provider.MetadataContract;
 
 /**
  * @author Bowen Sun

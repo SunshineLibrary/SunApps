@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.sunshine.support"
-          android:versionCode="1000"
-          android:versionName="1.0.0">
+          package="com.ssl.support.daemon"
+          android:versionCode="100"
+          android:versionName="0.1.0">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     
@@ -14,19 +14,19 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="com.sunshine.support.installer.INSTALL_PERMISSION"/>
+    <uses-permission android:name="com.ssl.support.install.INSTALL_PERMISSION"/>
 
     <application
-            android:name=".application.DaemonApplication"
+            android:name="com.ssl.support.application.DaemonApplication"
             android:icon="@drawable/daemon_logo"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Black.NoTitleBar">
 
-        <provider android:name="com.sunshine.metadata.provider.MetadataProvider"
-                  android:authorities="com.sunshine.metadata.provider"
-                  android:permission="com.sunshine.metadata.provider.READ_WRITE_PERMISSION"/>
+        <provider android:name="com.ssl.metadata.provider.MetadataProvider"
+                  android:authorities="com.ssl.metadata.provider"
+                  android:permission="com.ssl.metadata.provider.READ_WRITE_PERMISSION"/>
 
-        <activity android:name=".activities.MainActivity"
+        <activity android:name="com.ssl.support.activities.MainActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait">
             <intent-filter>
@@ -36,42 +36,56 @@
         </activity>
 
         <activity
-                android:name=".activities.ViewMetadataUpdatesActivity"
+                android:name="com.ssl.support.activities.ViewMetadataUpdatesActivity"
                 android:screenOrientation="portrait" >
         </activity>
 
         <activity
-                android:name=".activities.ViewApkUpdatesActivity"
+                android:name="com.ssl.support.activities.ViewApkUpdatesActivity"
                 android:screenOrientation="portrait" >
         </activity>
 
         <activity
-                android:name=".activities.SystemConfigsActivity"
+                android:name="com.ssl.support.activities.SystemConfigsActivity"
                 android:screenOrientation="portrait" >
         </activity>
 
         <service
-                android:name=".services.APISyncService"
+                android:name="com.ssl.support.services.APISyncService"
                 android:enabled="true"/>
 
         <service
-                android:name=".services.UpdateService"
+                android:name="com.ssl.support.services.UpdateService"
                 android:enabled="true"/>
 
         <service
-                android:name=".services.DownloadService"
+                android:name="com.ssl.support.services.DownloadService"
                 android:enabled="true"
                 android:exported="false" />
 
-        <receiver android:name=".services.ServiceReceiver">
+        <receiver android:name="com.ssl.support.receivers.ServiceReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
 
+        <receiver android:name="com.ssl.support.receivers.PostInstallReceiver">
+            <intent-filter>
+                <action android:name="com.ssl.support.action.packageInstalled"/>
+                <data android:scheme="file"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.ssl.support.action.packageInstallFailed"/>
+                <data android:scheme="file"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.ssl.support.action.installStopped"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
-    <permission android:protectionLevel="normal" android:name="com.sunshine.metadata.provider.READ_WRITE_PERMISSION"/>
+    <permission android:protectionLevel="normal" android:name="com.ssl.metadata.provider.READ_WRITE_PERMISSION"/>
 
 </manifest>

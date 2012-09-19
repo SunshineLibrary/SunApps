@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.listener.TapListener;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
-import com.sunshine.metadata.provider.MetadataContract;
+import com.ssl.metadata.provider.MetadataContract;
 
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
@@ -289,15 +289,15 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         this.domainActivityData = domainActivityData;
     }
 
-    public void resetWithActivity(DomainActivityData domainActivity) {
-        this.domainActivityData = domainActivity;
+
+    public void reset() {
         if (player == null) return;
         try {
             player.stop();
             player.reset();
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setDataSource(getVideoFileDescriptor(domainActivity.activityId));
-            player.setDisplay(holder);
+            player.setDataSource(getVideoFileDescriptor(domainActivityData.activityId));
+            //player.setDisplay(holder);
             player.prepareAsync();
         } catch (IOException e) {
             Log.e(TAG, "when switch to different screen, recreate the media player error!");

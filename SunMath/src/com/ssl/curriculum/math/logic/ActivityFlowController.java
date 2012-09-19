@@ -17,7 +17,6 @@ import com.ssl.curriculum.math.model.activity.SectionActivitiesData;
 import com.ssl.curriculum.math.model.activity.SectionActivityData;
 import com.ssl.curriculum.math.presenter.FlipperViewsBuilder;
 import com.ssl.curriculum.math.task.FetchActivityTaskManager;
-import com.sunshine.metadata.provider.MetadataContract;
 
 import java.util.ArrayList;
 import java.util.List;
