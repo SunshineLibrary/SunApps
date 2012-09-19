@@ -12,6 +12,7 @@ public class PostInstallReceiver extends BroadcastReceiver {
 
     public static final String ACTION_PACKAGE_INSTALLED = "com.ssl.support.action.packageInstalled";
     public static final String ACTION_PACKAGE_INSTALL_FAILED = "com.ssl.support.action.packageInstallFailed";
+    public static final String ACTION_INSTALL_STOPPED = "com.ssl.support.action.installStopped";
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -23,7 +24,10 @@ public class PostInstallReceiver extends BroadcastReceiver {
             Log.v(getClass().getName(), "Received failed install: " + intent.getData());
             Package pkg = PackageHelper.getPackageForFile(context, intent.getData());
             PackageHelper.setInstallStatus(context, pkg.id, MetadataContract.Packages.INSTALL_STATUS_FAILED);
-		} else {
+		} else if (intent.getAction().equals(ACTION_INSTALL_STOPPED)) {
+            Log.v(getClass().getName(), "Received install stopped.");
+            PackageHelper.setPendingToFailed(context);
+        } else {
             Log.v(getClass().getName(), "Received broadcast: " + intent);
         }
 	}

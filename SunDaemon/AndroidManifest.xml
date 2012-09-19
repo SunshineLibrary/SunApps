@@ -79,6 +79,9 @@
                 <action android:name="com.ssl.support.action.packageInstallFailed"/>
                 <data android:scheme="file"/>
             </intent-filter>
+            <intent-filter>
+                <action android:name="com.ssl.support.action.installStopped"/>
+            </intent-filter>
         </receiver>
 
     </application>

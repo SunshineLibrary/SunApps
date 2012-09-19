@@ -18,6 +18,7 @@ public class InstallService extends Service {
 
     public static final String ACTION_PACKAGE_INSTALLED = "com.ssl.support.action.packageInstalled";
     public static final String ACTION_PACKAGE_INSTALL_FAILED = "com.ssl.support.action.packageInstallFailed";
+    public static final String ACTION_INSTALL_STOPPED = "com.ssl.support.action.installStopped";
 
     private static final String TAG = "Installer";
     private static final int INSTALL_DELAY = 10000;
@@ -105,6 +106,7 @@ public class InstallService extends Service {
         super.onDestroy();
         releaseLock();
         Log.i(getClass().getName(), "Stopping Installer Service...");
+        sendBroadcast(new Intent(ACTION_INSTALL_STOPPED));
         unregisterReceiver(installReceiver);
         installQueue.release();
     }

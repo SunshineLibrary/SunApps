@@ -78,7 +78,7 @@ public class FileDownloadTask extends ListenableAsyncTask<Uri, Integer, Integer>
             Log.d(getClass().getName(), "Accessing local uri: " + uri);
             ParcelFileDescriptor fid = context.getContentResolver().openFileDescriptor(uri, "w");
             if (fid != null)
-                return new FileOutputStream(fid.getFileDescriptor());
+                return new ParcelFileDescriptor.AutoCloseOutputStream(fid);
         } catch (FileNotFoundException e) {
             Log.e(getClass().getName(), "Failed to open file for writing");
         }

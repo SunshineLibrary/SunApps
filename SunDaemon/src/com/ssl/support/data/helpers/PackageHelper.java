@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.BaseColumns;
 import android.util.Log;
 import com.ssl.metadata.provider.MetadataContract;
 import com.ssl.support.data.models.Package;
@@ -64,9 +65,17 @@ public class PackageHelper {
     }
 
     public static void setInstallStatus(Context context, int id, int status) {
+        setInstallStatusForMatching(context, BaseColumns._ID + "=" + id, status);
+    }
+
+    public static void setPendingToFailed(Context context) {
+        setInstallStatusForMatching(context, Packages._INSTALL_STATUS + "=" + Packages.INSTALL_STATUS_PENDING,
+                Packages.INSTALL_STATUS_FAILED);
+    }
+
+    private static void setInstallStatusForMatching(Context context, String where, int status) {
         ContentResolver contentResolver = context.getContentResolver();
-        Uri updateUri = Packages.getPackageUri(id);
-        contentResolver.update(updateUri, getContentValuesForStatus(status), null, null);
+        contentResolver.update(Packages.CONTENT_URI, getContentValuesForStatus(status), where, null);
         contentResolver.notifyChange(Packages.CONTENT_URI, null);
     }
 
