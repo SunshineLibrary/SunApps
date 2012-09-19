@@ -65,6 +65,7 @@
             android:fadingEdge="none" />
 
         <ImageView
+                android:id="@+id/download_management_entry"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"

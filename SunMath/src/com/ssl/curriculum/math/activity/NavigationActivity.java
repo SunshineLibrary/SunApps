@@ -1,6 +1,7 @@
 package com.ssl.curriculum.math.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.adapter.ActivityListAdapter;
 import com.ssl.curriculum.math.component.HorizontalListView;
 import com.ssl.curriculum.math.component.NavigationListView;
+import com.ssl.curriculum.math.download.manage.DownloadManageActivity;
 import com.ssl.curriculum.math.model.Section;
 import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.presenter.NavigationMenuPresenter;
@@ -31,6 +33,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     private TextView tv_section_description;
     private HorizontalListView lv_section_activities;
     private SectionPresenter sectionPresenter;
+    private ImageView download_management_entry;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,10 @@ public class NavigationActivity extends Activity implements View.OnClickListener
 
         } else if (v == btn_stat) {
 
+        } else if (v == download_management_entry ) {
+            Intent intent = new Intent();
+            intent.setClass(this, DownloadManageActivity.class);
+            this.startActivity(intent);
         }
     }
 
@@ -133,6 +140,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
         iv_section_thumbnail =(ImageView)findViewById(R.id.iv_section_thumbnail);
         tv_section_description = (TextView) this.findViewById(R.id.tv_section_description);
         lv_section_activities = (HorizontalListView) findViewById(R.id.lv_section_activities);
+        download_management_entry = (ImageView)findViewById(R.id.download_management_entry) ;
     }
 
     private void initComponent() {
@@ -143,6 +151,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
         btn_download.setOnClickListener(this);
         btn_study.setOnClickListener(this);
         btn_stat.setOnClickListener(this);
+        download_management_entry.setOnClickListener(this);
         initSectionActivitiesView();
     }
 

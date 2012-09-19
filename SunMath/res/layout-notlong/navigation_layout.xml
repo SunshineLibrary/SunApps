@@ -63,7 +63,9 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="2dp"
             android:fadingEdge="none" />
+
         <ImageView
+                android:id="@+id/download_management_entry"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -203,7 +205,7 @@
 
                 <ImageView
                     android:id="@+id/iv_section_thumbnail"
-                    android:layout_width="200dp"
+                        android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
                     android:scaleType="centerCrop"
