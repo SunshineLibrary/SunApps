@@ -9,6 +9,7 @@ import com.sunshine.sunresourcecenter.R.id;
 import com.sunshine.sunresourcecenter.R.layout;
 import com.sunshine.sunresourcecenter.model.ResourceGridItem;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
@@ -24,27 +25,16 @@ public class ResourceGridAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private List<ResourceGridItem> gridItemList;
 	private boolean showProgress = false;
+	private ContentResolver contentResolver;
 	private HashMap<Integer,Bitmap> dataCache;
 
-	// public BookGridAdapter(String[] titles, int[] images,String[]
-	// description, Context context)
-	// {
-	// super();
-	// gridItemList = new ArrayList<BookGridItem>();
-	// inflater = LayoutInflater.from(context);
-	// for (int i = 0; i < images.length; i++)
-	// {
-	// BookGridItem picture = new BookGridItem(titles[i],
-	// images[i],description[i]);
-	// gridItemList.add(picture);
-	// }
-	// }
 
 	public ResourceGridAdapter(List<Object> resList, boolean showProgress, Context context) {
 		super();
 		this.gridItemList = (ArrayList) resList;
 		this.inflater = LayoutInflater.from(context);
 		this.showProgress = showProgress;
+		this.contentResolver = context.getContentResolver();
 	}
 
 	@Override
