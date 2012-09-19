@@ -6,7 +6,7 @@ import java.util.Date;
 
 import com.ssl.metadata.provider.MetadataContract.Books;
 import com.ssl.metadata.provider.MetadataContract.Downloadable;
-import com.sunshine.sunresourcecenter.R;
+import com.ssl.resourcecenter.R;
 import com.ssl.resourcecenter.contentresolver.ResourceContentResolver;
 import com.ssl.resourcecenter.enums.ResourceType;
 

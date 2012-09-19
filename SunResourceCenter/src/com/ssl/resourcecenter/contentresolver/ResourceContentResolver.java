@@ -10,7 +10,7 @@ import com.ssl.metadata.provider.MetadataContract.BookLists;
 import com.ssl.metadata.provider.MetadataContract.Books;
 import com.ssl.resourcecenter.model.ResourceGridItem;
 import com.ssl.resourcecenter.model.ResourceListGridItem;
-import com.sunshine.sunresourcecenter.R;
+import com.ssl.resourcecenter.R;
 import com.ssl.resourcecenter.model.CategoryGridItem;
 import com.ssl.resourcecenter.model.ItemBookCover;
 

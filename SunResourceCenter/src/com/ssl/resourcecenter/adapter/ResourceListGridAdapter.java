@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ssl.resourcecenter.model.ResourceListGridItem;
-import com.sunshine.sunresourcecenter.R;
+import com.ssl.resourcecenter.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;

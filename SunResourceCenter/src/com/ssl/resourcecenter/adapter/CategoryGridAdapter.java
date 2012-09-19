@@ -3,7 +3,7 @@ package com.ssl.resourcecenter.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sunshine.sunresourcecenter.R;
+import com.ssl.resourcecenter.R;
 import com.ssl.resourcecenter.model.CategoryGridItem;
 
 import android.content.Context;

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.ssl.resourcecenter.model.ResourceGridItem;
-import com.sunshine.sunresourcecenter.R;
+import com.ssl.resourcecenter.R;
 
 import android.content.ContentResolver;
 import android.content.Context;

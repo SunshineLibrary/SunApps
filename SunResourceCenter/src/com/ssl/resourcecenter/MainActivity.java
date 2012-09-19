@@ -12,7 +12,7 @@ import com.ssl.resourcecenter.enums.GridType;
 import com.ssl.resourcecenter.enums.ResourceType;
 import com.ssl.resourcecenter.enums.ViewType;
 import com.ssl.resourcecenter.model.ResourceGridItem;
-import com.sunshine.sunresourcecenter.R;
+import com.ssl.resourcecenter.R;
 import com.ssl.resourcecenter.adapter.ResourceGridAdapter;
 
 import java.util.List;
