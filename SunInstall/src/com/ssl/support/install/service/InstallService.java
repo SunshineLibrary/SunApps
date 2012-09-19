@@ -97,6 +97,7 @@ public class InstallService extends Service {
         } else {
             installInProgress = false;
             releaseLock();
+            sendBroadcast(new Intent(ACTION_INSTALL_STOPPED));
             stopSelf();
         }
     }
@@ -106,7 +107,6 @@ public class InstallService extends Service {
         super.onDestroy();
         releaseLock();
         Log.i(getClass().getName(), "Stopping Installer Service...");
-        sendBroadcast(new Intent(ACTION_INSTALL_STOPPED));
         unregisterReceiver(installReceiver);
         installQueue.release();
     }

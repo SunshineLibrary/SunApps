@@ -22,9 +22,11 @@ public class PackageHelper {
 
 
     public static List<Package> getLocalPackages(Context context) {
-        Cursor cursor = context.getContentResolver().query(Packages.CONTENT_URI, null,
-                Packages._INSTALL_STATUS + "<>" + Packages.INSTALL_STATUS_DOWNLOADING + " and " +
-                Packages._INSTALL_STATUS + "<>" + Packages.INSTALL_STATUS_FAILED, null, null);
+        String selection = Packages._INSTALL_STATUS + "<>? and " + Packages._INSTALL_STATUS + "<>?";
+        String[] selectionArgs = new String[]{
+                        String.valueOf(Packages.INSTALL_STATUS_DOWNLOADING),
+                        String.valueOf(Packages.INSTALL_STATUS_FAILED)};
+        Cursor cursor = context.getContentResolver().query(Packages.CONTENT_URI, null, selection, selectionArgs, null);
         return getPackageListFromCursor(cursor);
     }
 

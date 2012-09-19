@@ -79,6 +79,7 @@
     </target>
 
     <target name="deploy_app">
+        <ant antfile="./build.xml" target="clean" usenativebasedir="true"/>
         <ant antfile="./build.xml" target="release" usenativebasedir="true"/>
         <exec executable="${sdk.dir}/platform-tools/adb">
             <arg value="uninstall"/>
