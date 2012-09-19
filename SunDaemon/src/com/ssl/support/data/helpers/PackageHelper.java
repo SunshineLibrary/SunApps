@@ -22,7 +22,7 @@ public class PackageHelper {
 
     public static List<Package> getLocalPackages(Context context) {
         Cursor cursor = context.getContentResolver().query(Packages.CONTENT_URI, null,
-                Packages._INSTALL_STATUS + "=" + Packages.INSTALL_STATUS_INSTALLED, null, null);
+                Packages._INSTALL_STATUS + "<>" + Packages.INSTALL_STATUS_DOWNLOADING, null, null);
         return getPackageListFromCursor(cursor);
     }
 
