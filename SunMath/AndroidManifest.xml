@@ -33,6 +33,11 @@
             android:label="@string/web_view_activity_title"
             android:screenOrientation="landscape" >
         </activity>
+        <activity
+                android:name=".download.manage.DownloadManageActivity"
+                android:screenOrientation="landscape" >
+        </activity>
+
     </application>
 
     <uses-permission android:name="com.ssl.metadata.provider.READ_WRITE_PERMISSION" />
