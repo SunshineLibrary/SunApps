@@ -1,4 +1,4 @@
-package com.ssl.curriculum.math.component.flipperchildren;
+package com.ssl.curriculum.math.component.activity;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,19 +14,20 @@ import com.ssl.curriculum.math.data.GalleryContentManager;
 import com.ssl.curriculum.math.listener.GalleryContentFetchedListener;
 import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
 import com.ssl.curriculum.math.model.activity.DomainActivityData;
-import com.ssl.curriculum.math.service.GalleryContentProvider;
+import com.ssl.curriculum.math.model.activity.LinkedActivityData;
+import com.ssl.curriculum.math.service.GalleryLoader;
 import com.ssl.curriculum.math.task.FetchGalleryContentTask;
+import com.ssl.curriculum.math.component.viewer.ActivityViewer;
 
-public class GalleryThumbnailPageFlipperChild extends FlipperChildView implements GalleryContentFetchedListener {
+public class GalleryActivityView extends ActivityView implements GalleryContentFetchedListener {
+
     private GridView gridview;
     private GalleryGridAdapter gridAdapter;
     private TextView title;
     private GalleryItemClickedListener galleryItemClickedListener;
-    private DomainActivityData domainActivity;
 
-    public GalleryThumbnailPageFlipperChild(Context context, DomainActivityData domainActivity) {
-        super(context);
-        this.domainActivity = domainActivity;
+    public GalleryActivityView(Context context, ActivityViewer activityViewer) {
+        super(context, activityViewer);
         initUI();
         initListener();
         initAdapter();
@@ -43,12 +44,17 @@ public class GalleryThumbnailPageFlipperChild extends FlipperChildView implement
     private void initAdapter() {
         gridAdapter = new GalleryGridAdapter(getContext());
         gridview.setAdapter(gridAdapter);
-        fetchGalleryContent();
     }
 
-    private void fetchGalleryContent() {
+    @Override
+    public void setActivity(LinkedActivityData activityData) {
+        super.setActivity(activityData);
+        fetchGalleryContent(activityData);
+    }
+
+    private void fetchGalleryContent(DomainActivityData domainActivity) {
         GalleryContentManager.getInstance().registerGalleyContentChangedListener(this);
-        FetchGalleryContentTask fetchGalleryContentTask = new FetchGalleryContentTask(new GalleryContentProvider(getContext()), domainActivity);
+        FetchGalleryContentTask fetchGalleryContentTask = new FetchGalleryContentTask(new GalleryLoader(getContext()), domainActivity);
         fetchGalleryContentTask.execute();
     }
 

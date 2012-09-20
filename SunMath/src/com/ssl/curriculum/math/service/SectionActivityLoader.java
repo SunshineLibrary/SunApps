@@ -12,20 +12,20 @@ import com.ssl.curriculum.math.model.activity.SectionActivityData;
 import static com.ssl.metadata.provider.MetadataContract.SectionComponents;
 import static com.ssl.metadata.provider.MetadataContract.Sections;
 
-public class SectionActivityContentProvider {
+public class SectionActivityLoader {
 
     private Context context;
-    private ActivityContentProvider activityContentProvider;
+    private ActivityLoader activityLoader;
 
-    public SectionActivityContentProvider(Context context) {
+    public SectionActivityLoader(Context context) {
         this.context = context;
-        activityContentProvider = new ActivityContentProvider(context);
+        activityLoader = new ActivityLoader(context);
     }
 
     public void fetchSectionActivityData(SectionActivityDataReceiver sectionActivityDataReceiver, int sectionId, int activityId) {
         SectionActivitiesData sectionActivitiesData = fetchSectionActivities(sectionId);
         sectionActivityDataReceiver.onReceivedSectionActivities(sectionActivitiesData);
-        activityContentProvider.fetchMatchedActivityData(sectionActivityDataReceiver, activityId, sectionId);
+        activityLoader.fetchMatchedActivityData(sectionActivityDataReceiver, activityId, sectionId);
     }
 
     public SectionActivitiesData fetchSectionActivities(int sectionId) {

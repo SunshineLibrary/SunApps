@@ -18,7 +18,7 @@
                    android:visibility="invisible"/>
     </LinearLayout>
 
-    <com.ssl.curriculum.math.component.ChoiceButton android:id="@+id/choice_table_item_btn"
+    <com.ssl.curriculum.math.component.quiz.ChoiceButton android:id="@+id/choice_table_item_btn"
                                                     android:layout_height="wrap_content"
                                                     android:layout_marginLeft="5dp"
                                                     android:layout_width="wrap_content"/>

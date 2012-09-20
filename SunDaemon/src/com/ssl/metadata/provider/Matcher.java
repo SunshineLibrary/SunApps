@@ -33,12 +33,13 @@ public class Matcher {
 
     public static final int PROBLEMS = 307;
     public static final int QUIZ_COMPONENTS = 308;
+    public static final int QUIZ_PROBLEMS = 309;
 
-    public static final int EDGES = 309;
+    public static final int EDGES = 310;
 
-    public static final int PROBLEM_CHOICES = 310;
+    public static final int PROBLEM_CHOICES = 311;
 
-    public static final int ACTIVITIES_TEXT = 311;
+    public static final int ACTIVITIES_TEXT = 312;
 
     public static final int AUTHORS = 400;
     public static final int BOOKS = 401;
@@ -107,6 +108,7 @@ public class Matcher {
             
             matcher.addURI(AUTHORITY, "problems", PROBLEMS);
             matcher.addURI(AUTHORITY, "quiz_components", QUIZ_COMPONENTS);
+            matcher.addURI(AUTHORITY, "quiz_problems", QUIZ_PROBLEMS);
             matcher.addURI(AUTHORITY, "problem_choices", PROBLEM_CHOICES);
 
             matcher.addURI(AUTHORITY, "tags", TAGS);

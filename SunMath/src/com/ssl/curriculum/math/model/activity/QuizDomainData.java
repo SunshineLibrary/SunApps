@@ -6,7 +6,7 @@ import com.ssl.metadata.provider.MetadataContract.Activities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuizDomainData extends DomainActivityData {
+public class QuizDomainData extends LinkedActivityData {
 	private List<QuizQuestion> questions = new ArrayList<QuizQuestion>();
 	
 	public QuizDomainData() {

@@ -2,26 +2,26 @@ package com.ssl.curriculum.math.task;
 
 import com.ssl.curriculum.math.listener.ActivityDataReceiver;
 import com.ssl.curriculum.math.listener.SectionActivityDataReceiver;
-import com.ssl.curriculum.math.service.ActivityContentProvider;
-import com.ssl.curriculum.math.service.SectionActivityContentProvider;
+import com.ssl.curriculum.math.service.ActivityLoader;
+import com.ssl.curriculum.math.service.SectionActivityLoader;
 
 public class FetchActivityTaskManager {
 
-    private ActivityContentProvider activityContentProvider;
-    private SectionActivityContentProvider sectionActivityContentProvider;
+    private ActivityLoader activityLoader;
+    private SectionActivityLoader sectionActivityLoader;
 
-    public FetchActivityTaskManager(ActivityContentProvider activityContentProvider, SectionActivityContentProvider sectionActivityContentProvider) {
-        this.activityContentProvider = activityContentProvider;
-        this.sectionActivityContentProvider = sectionActivityContentProvider;
+    public FetchActivityTaskManager(ActivityLoader activityLoader, SectionActivityLoader sectionActivityLoader) {
+        this.activityLoader = activityLoader;
+        this.sectionActivityLoader = sectionActivityLoader;
     }
 
     public void fetchActivityData(ActivityDataReceiver activityDataReceiver, int fetchedSectionId, int fetchedActivityId) {
-        FetchActivityDataTask task = new FetchActivityDataTask(activityContentProvider, activityDataReceiver, fetchedSectionId, fetchedActivityId);
+        FetchActivityDataTask task = new FetchActivityDataTask(activityLoader, activityDataReceiver, fetchedSectionId, fetchedActivityId);
         task.execute();
     }
 
     public void fetchSectionActivities(SectionActivityDataReceiver sectionActivityDataReceiver, int fetchedSectionId, int fetchedActivityId) {
-        FetchSectionActivityDataTask task = new FetchSectionActivityDataTask(sectionActivityContentProvider, sectionActivityDataReceiver, fetchedSectionId, fetchedActivityId);
+        FetchSectionActivityDataTask task = new FetchSectionActivityDataTask(sectionActivityLoader, sectionActivityDataReceiver, fetchedSectionId, fetchedActivityId);
         task.execute();
     }
 }

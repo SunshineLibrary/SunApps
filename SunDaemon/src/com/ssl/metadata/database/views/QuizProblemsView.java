@@ -32,8 +32,8 @@ public class QuizProblemsView implements TableView {
 
     private String createViewQuery() {
         String query = "CREATE VIEW " + VIEW_NAME + " AS SELECT ";
-        query += String.format("p.%s, q.%s, q.%s, p.%s, p.%s, p.%s", Problems._ID,
-                QuizComponents._QUIZ_ACTIVITY_ID, QuizComponents._PROBLEM_ID,
+        query += String.format("p.%s, q.%s, q.%s, q.%s, p.%s, p.%s, p.%s", Problems._ID,
+                QuizComponents._QUIZ_ACTIVITY_ID, QuizComponents._PROBLEM_ID, QuizComponents._SEQUENCE,
                 Problems._TYPE, Problems._ANSWER, Problems._BODY);
         query += String.format(" FROM %s q left join %s p ", QuizComponentsTable.TABLE_NAME, ProblemTable.TABLE_NAME);
         query += String.format("ON q.%s = p.%s ", QuizComponents._PROBLEM_ID, Problems._ID);

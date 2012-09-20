@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.os.SystemClock;
 import android.util.AttributeSet;
@@ -17,7 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.listener.TapListener;
-import com.ssl.curriculum.math.model.activity.DomainActivityData;
 import com.ssl.metadata.provider.MetadataContract;
 
 import java.io.FileDescriptor;
@@ -45,25 +43,24 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     private int height;
     private long lastActionTime = 0L;
 
-    private Uri uri;
     private boolean isPaused;
     private boolean toFullScreen = false;
 
     private Runnable progressRunnable;
     private Thread.UncaughtExceptionHandler uncaughtExceptionHandler;
     private int savedPlayedPosition;
-    private DomainActivityData domainActivityData;
+    private int activityId;
 
     public VideoPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        uncatchException();
+        uncaughtException();
         initUI();
         initListener();
         initRunnable();
     }
 
-    private void uncatchException() {
+    private void uncaughtException() {
         uncaughtExceptionHandler = new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread thread, Throwable ex) {
                 Log.e(TAG, "Uncaught exception", ex);
@@ -182,7 +179,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         try {
             player = new MediaPlayer();
             player.setScreenOnWhilePlaying(true);
-            player.setDataSource(getVideoFileDescriptor(domainActivityData.activityId));
+            player.setDataSource(getVideoFileDescriptor(activityId));
             player.setDisplay(holder);
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.setOnPreparedListener(this);
@@ -242,7 +239,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         holder.setFixedSize(width, height);
         playerProgress.setProgress(0);
         playerProgress.setMax(player.getDuration());
-        player.start();
+        //player.start();
         playButton.setEnabled(true);
     }
 
@@ -257,7 +254,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         try {
             player.reset();
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setDataSource(getVideoFileDescriptor(domainActivityData.activityId));
+            player.setDataSource(getVideoFileDescriptor(activityId));
             player.setDisplay(holder);
             player.prepare();
             player.seekTo(savedPlayedPosition);
@@ -285,8 +282,8 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         return pfdInput.getFileDescriptor();
     }
 
-    public void setVideoData(DomainActivityData domainActivityData) {
-        this.domainActivityData = domainActivityData;
+    public void setVideoId(int id) {
+        activityId = id;
     }
 
 
@@ -296,8 +293,8 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
             player.stop();
             player.reset();
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setDataSource(getVideoFileDescriptor(domainActivityData.activityId));
-            //player.setDisplay(holder);
+            player.setDataSource(getVideoFileDescriptor(activityId));
+            player.setDisplay(holder);
             player.prepareAsync();
         } catch (IOException e) {
             Log.e(TAG, "when switch to different screen, recreate the media player error!");

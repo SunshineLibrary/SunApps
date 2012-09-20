@@ -10,10 +10,10 @@ import com.ssl.metadata.provider.MetadataContract;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GalleryContentProvider {
+public class GalleryLoader {
     private Context context;
 
-    public GalleryContentProvider(Context context) {
+    public GalleryLoader(Context context) {
         this.context = context;
     }
 

@@ -1,4 +1,4 @@
-package com.ssl.curriculum.math.component;
+package com.ssl.curriculum.math.component.quiz;
 
 import android.content.Context;
 

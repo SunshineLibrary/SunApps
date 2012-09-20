@@ -1,4 +1,4 @@
-package com.ssl.curriculum.math.component;
+package com.ssl.curriculum.math.component.quiz;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -26,6 +26,10 @@ public abstract class ChoiceTableView extends LinearLayout implements OnChoiceCh
         tableLayout = (TableLayout) findViewById(R.id.choice_table_layout);
     }
 
+    public void reset() {
+        tableLayout.removeAllViews();
+    }
+
     public void addChoiceTableRow(ChoiceTableItemView itemView) {
         tableLayout.addView(itemView);
         itemView.setOnChoiceChangedListener(this);
@@ -41,6 +45,7 @@ public abstract class ChoiceTableView extends LinearLayout implements OnChoiceCh
     public abstract void checkAnswer(String answer);
 
     public void loadChoices(List<QuizChoiceQuestion.Choice> choices) {
+        reset();
         for (QuizChoiceQuestion.Choice choice : choices) {
             addChoiceTableRow(new ChoiceTableItemView(getContext(), choice.body, choice.choice));
         }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.content.CursorLoader;
 import com.ssl.curriculum.math.model.Section;
+import com.ssl.curriculum.math.model.activity.LinkedActivityData;
 import com.ssl.metadata.provider.MetadataContract;
 
 /**

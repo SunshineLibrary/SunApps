@@ -13,10 +13,10 @@ import com.ssl.metadata.provider.MetadataContract;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityContentProvider {
+public class ActivityLoader {
     private Context context;
 
-    public ActivityContentProvider(Context context) {
+    public ActivityLoader(Context context) {
         this.context = context;
     }
 

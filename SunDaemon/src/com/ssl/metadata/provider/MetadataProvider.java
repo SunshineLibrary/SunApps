@@ -11,12 +11,9 @@ import com.ssl.metadata.database.DBHandler;
 import com.ssl.metadata.database.Table;
 import com.ssl.metadata.database.TableView;
 import com.ssl.metadata.database.tables.*;
-import com.ssl.metadata.database.views.BookCategoryView;
-import com.ssl.metadata.database.views.BookCollectionInfoView;
-import com.ssl.metadata.database.views.BookInfoView;
+import com.ssl.metadata.database.views.*;
 import com.ssl.metadata.storage.SharedStorageManager;
 import com.ssl.support.application.DaemonApplication;
-import com.ssl.metadata.database.views.SectionActivitiesView;
 
 import java.io.FileNotFoundException;
 
@@ -54,6 +51,7 @@ public class MetadataProvider extends ContentProvider {
     private Table problemChoiceTable;
     private Table userBookTable;
     private Table quizComponentsTable;
+    private TableView quizProblemsView;
 
 
     @Override
@@ -78,6 +76,7 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.SECTIONS_ACTIVITIES:
                     return view.query(uri, projection,
                         SectionComponents._SECTION_ID + "=?", new String[]{uri.getLastPathSegment()}, sortOrder);
+            case Matcher.QUIZ_PROBLEMS:
             case Matcher.BOOK_INFO:
             case Matcher.BOOK_COLLECTION_INFO:
             case Matcher.BOOK_CATEGORY:
@@ -316,7 +315,6 @@ public class MetadataProvider extends ContentProvider {
                     quizComponentsTable = dbHandler.getTableManager(QuizComponentsTable.TABLE_NAME);
                 }
                 return quizComponentsTable;
-
             case Matcher.PROBLEM_CHOICES:
                 if (problemChoiceTable == null) {
                     problemChoiceTable = dbHandler.getTableManager(ProblemChoiceTable.TABLE_NAME);
@@ -356,6 +354,11 @@ public class MetadataProvider extends ContentProvider {
                     bookCategoryView = dbHandler.getTableViewManager(BookCategoryView.VIEW_NAME);
                 }
                 return bookCategoryView;
+            case Matcher.QUIZ_PROBLEMS:
+                if (quizProblemsView == null) {
+                    quizProblemsView = dbHandler.getTableViewManager(QuizProblemsView.VIEW_NAME);
+                }
+                return quizProblemsView;
             default:
                 return null;
         }

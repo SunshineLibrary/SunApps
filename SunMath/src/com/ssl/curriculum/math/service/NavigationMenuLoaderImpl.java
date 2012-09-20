@@ -13,12 +13,12 @@ import com.ssl.metadata.provider.MetadataContract.Sections;
 
 import java.util.HashMap;
 
-public class NavigationMenuContentProvider implements NavigationMenuProvider {
+public class NavigationMenuLoaderImpl implements NavigationMenuLoader {
     private static final String ROOT_MENU_NAME = "Root Menu Name";
     private Context context;
     private final ContentResolver contentResolver;
 
-    public NavigationMenuContentProvider(Context context) {
+    public NavigationMenuLoaderImpl(Context context) {
         this.context = context;
         contentResolver = this.context.getContentResolver();
     }

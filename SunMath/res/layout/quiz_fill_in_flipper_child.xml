@@ -14,18 +14,12 @@
               android:layout_marginBottom="10dp"
               android:text="小测试１"/>
 
-    <ImageView android:id="@+id/quiz_fill_in_ok_btn" android:layout_height="wrap_content"
-               android:layout_width="wrap_content"
-               android:layout_alignParentRight="true"
-               android:layout_alignParentBottom="true"
-               android:src="@drawable/ic_quiz_confirm"/>
-
     <LinearLayout android:id="@+id/quiz_fill_in_answer_container" android:layout_height="wrap_content"
                   android:layout_width="wrap_content"
                   android:paddingLeft="30dp"
                   android:layout_marginTop="10dp"
                   android:gravity="center_vertical"
-                  android:layout_above="@id/quiz_fill_in_ok_btn"
+                  android:layout_alignParentBottom="true"
                   android:orientation="horizontal">
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
