@@ -161,6 +161,10 @@ public final class MetadataContract {
         public static Uri getActivityTextUri(long id) {
             return CONTENT_URI.buildUpon().appendPath("text").appendPath(String.valueOf(id)).build();
         }
+
+        public static Uri getActivityHtmlUri(long id) {
+            return CONTENT_URI.buildUpon().appendPath("html").appendPath(String.valueOf(id)).build();
+        }
     }
 
     /*
