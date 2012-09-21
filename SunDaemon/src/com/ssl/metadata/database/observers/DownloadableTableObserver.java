@@ -113,6 +113,11 @@ public class DownloadableTableObserver extends TableObserver {
                             apiClient.getDownloadUri("activities", id),
                             Activities.getActivityTextUri(id), uri));
                     break;
+                case Activities.TYPE_HTML:
+                    startSerialDownload(new MonitoredFileDownloadTask(context,
+                            apiClient.getDownloadUri("activities", id),
+                            Activities.getActivityHtmlUri(id), uri));
+                    break;
                 case Activities.TYPE_GALLERY:
                     ContentValues values = new ContentValues();
                     values.put(Activities._DOWNLOAD_STATUS, MetadataContract.Downloadable.STATUS_QUEUED);
