@@ -6,10 +6,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
+import com.ssl.curriculum.math.component.quiz.*;
+import com.ssl.curriculum.math.listener.QuestionResultListener;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
-import com.ssl.curriculum.math.component.quiz.FillBlankQuestionView;
-import com.ssl.curriculum.math.component.quiz.MultipleChoiceQuestionView;
-import com.ssl.curriculum.math.component.quiz.QuizQuestionView;
 
 import java.util.List;
 
@@ -19,33 +18,36 @@ import static com.ssl.metadata.provider.MetadataContract.Problems.*;
  * @author Bowen Sun
  * @version 1.0
  */
-public class QuestionViewer extends FrameLayout implements View.OnClickListener {
+public class QuizComponentViewer extends FrameLayout implements View.OnClickListener, QuestionResultListener{
 
     private int mCurrentPosition;
     private List<QuizQuestion> mQuestions;
 
     private ImageView iv_confirmButton, iv_nextButton;
 
-    private QuizQuestionView mCurrentQuestionView;
+    private QuizComponentView mCurrentComponentView;
     private FlipAnimationManager mAnimationManager;
 
-    private QuizQuestionView mFillBlankView, mMultipleChoiceView, mResultView;
+    private QuizQuestionView mFillBlankView, mMultipleChoiceView;
+    private QuizSummaryView mSummaryView;
 
-    public QuestionViewer(Context context) {
+    public QuizComponentViewer(Context context) {
         super(context);
         mAnimationManager = new FlipAnimationManager(context);
+        createResultView();
     }
 
-    public QuestionViewer(Context context, AttributeSet attrs) {
+    public QuizComponentViewer(Context context, AttributeSet attrs) {
         super(context, attrs);
         mAnimationManager = new FlipAnimationManager(context);
+        createResultView();
     }
 
-    public QuestionViewer(Context context, AttributeSet attrs, int defStyle) {
+    public QuizComponentViewer(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mAnimationManager = new FlipAnimationManager(context);
+        createResultView();
     }
-
 
     public void setControlButtons(ImageView confirmButton, ImageView nextButton) {
         iv_confirmButton = confirmButton;
@@ -53,12 +55,13 @@ public class QuestionViewer extends FrameLayout implements View.OnClickListener 
     }
 
     public void reset() {
-        if (mCurrentQuestionView != null) {
-            mCurrentQuestionView.setVisibility(INVISIBLE);
-            mCurrentQuestionView = null;
+        if (mCurrentComponentView != null) {
+            mCurrentComponentView.setVisibility(INVISIBLE);
+            mCurrentComponentView = null;
         }
         mQuestions = null;
         mCurrentPosition = -1;
+        mSummaryView.reset();
         hideButtons();
     }
 
@@ -76,21 +79,21 @@ public class QuestionViewer extends FrameLayout implements View.OnClickListener 
     }
 
     private void startResult() {
-        if (mCurrentQuestionView != null) {
-            mCurrentQuestionView.onBeforeFlippingOut();
+        if (mCurrentComponentView != null) {
+            mCurrentComponentView.onBeforeFlippingOut();
             flipCurrentQuestionOut();
         }
 
-        mCurrentQuestionView = getResultView();
+        mCurrentComponentView = mSummaryView;
 
         flipCurrentQuestionIn();
         hideButtons();
-        mCurrentQuestionView.onAfterFlippingIn();
+        mCurrentComponentView.onAfterFlippingIn();
     }
 
     public void startQuestion(QuizQuestion question) {
-        if (mCurrentQuestionView != null) {
-            mCurrentQuestionView.onBeforeFlippingOut();
+        if (mCurrentComponentView != null) {
+            mCurrentComponentView.onBeforeFlippingOut();
             flipCurrentQuestionOut();
         }
 
@@ -98,23 +101,24 @@ public class QuestionViewer extends FrameLayout implements View.OnClickListener 
 
         flipCurrentQuestionIn();
         showConfirmButton();
-        mCurrentQuestionView.onAfterFlippingIn();
+        mCurrentComponentView.onAfterFlippingIn();
     }
 
 
     public void setQuestion(QuizQuestion question) {
-        mCurrentQuestionView = getQuestionView(question);
-        mCurrentQuestionView.setQuestion(question);
+        QuizQuestionView questionView = getQuestionView(question);
+        questionView.setQuestion(question);
+        mCurrentComponentView = questionView;
     }
 
     public void flipCurrentQuestionIn() {
-        mCurrentQuestionView.startAnimation(mAnimationManager.getFlipInFromRightAnimation());
-        mCurrentQuestionView.setVisibility(VISIBLE);
+        mCurrentComponentView.startAnimation(mAnimationManager.getFlipInFromRightAnimation());
+        mCurrentComponentView.setVisibility(VISIBLE);
     }
 
     public void flipCurrentQuestionOut() {
-        mCurrentQuestionView.startAnimation(mAnimationManager.getFlipOutToLeftAnimation());
-        mCurrentQuestionView.setVisibility(INVISIBLE);
+        mCurrentComponentView.startAnimation(mAnimationManager.getFlipOutToLeftAnimation());
+        mCurrentComponentView.setVisibility(INVISIBLE);
     }
 
     private QuizQuestionView getQuestionView(QuizQuestion question) {
@@ -128,7 +132,7 @@ public class QuestionViewer extends FrameLayout implements View.OnClickListener 
         return null;
     }
 
-    public QuizQuestionView getFillBlankView() {
+    private QuizQuestionView getFillBlankView() {
         if (mFillBlankView == null) {
             mFillBlankView = new FillBlankQuestionView(getContext(), this);
             addView(mFillBlankView);
@@ -136,7 +140,7 @@ public class QuestionViewer extends FrameLayout implements View.OnClickListener 
         return mFillBlankView;
     }
 
-    public QuizQuestionView getMultipleChoiceView() {
+    private QuizQuestionView getMultipleChoiceView() {
         if (mMultipleChoiceView == null) {
             mMultipleChoiceView = new MultipleChoiceQuestionView(getContext(), this);
             addView(mMultipleChoiceView);
@@ -144,12 +148,17 @@ public class QuestionViewer extends FrameLayout implements View.OnClickListener 
         return mMultipleChoiceView;
     }
 
-    public QuizQuestionView getResultView() {
-        return mResultView;
+    private void createResultView() {
+        if (mSummaryView == null) {
+            mSummaryView = new QuizSummaryView(getContext(), this);
+            addView(mSummaryView);
+        }
     }
 
     public void onConfirmButtonClicked() {
-        mCurrentQuestionView.onQuestionAnswered();
+        if (mCurrentComponentView instanceof QuizQuestionView) {
+            ((QuizQuestionView) mCurrentComponentView).onQuestionAnswered();
+        }
         showNextButton();
     }
 
@@ -182,6 +191,13 @@ public class QuestionViewer extends FrameLayout implements View.OnClickListener 
         }
     }
 
+    @Override
+    public void onQuestionResult(QuizQuestion question, String answer, boolean isCorrect) {
+        if (mSummaryView != null) {
+            mSummaryView.onQuestionResult(question, answer, isCorrect);
+        }
+    }
+
     public void onDestroy() {
         if (mFillBlankView != null) {
             mFillBlankView.onDestroy();
@@ -189,8 +205,8 @@ public class QuestionViewer extends FrameLayout implements View.OnClickListener 
         if (mMultipleChoiceView != null) {
             mMultipleChoiceView.onDestroy();
         }
-        if (mResultView != null) {
-            mResultView.onDestroy();
+        if (mSummaryView != null) {
+            mSummaryView.onDestroy();
         }
     }
 
@@ -198,4 +214,5 @@ public class QuestionViewer extends FrameLayout implements View.OnClickListener 
     protected LayoutParams generateDefaultLayoutParams() {
         return new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
     }
+
 }

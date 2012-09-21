@@ -7,10 +7,10 @@
 
     <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
         			android:layout_alignParentTop="true"
-        			android:id="@+id/summary_stars_lv"
+        			android:id="@+id/lv_summary_stars"
         			android:orientation="vertical">
                     	
-        	<TextView android:id="@+id/quiz_summary_name_tv"
+        	<TextView android:id="@+id/tv_quiz_name"
 		    		  android:layout_width="wrap_content" 
 		    		  android:layout_height="wrap_content" 
 					  android:textSize="22sp" 
@@ -21,12 +21,12 @@
 		   <ImageView android:paddingLeft="50dp"
             		  android:paddingRight="50dp"
             		  android:layout_gravity="center_horizontal"
-		       		  android:id="@+id/summary_stars_iv" 
+		       		  android:id="@+id/iv_summary_stars"
 		    	      android:layout_height="wrap_content" 
 				      android:layout_width="wrap_content"
 				      android:src="@drawable/ic_quiz_three_stars" />
-					
-			<TextView android:id="@+id/summary_tv"
+
+			<TextView android:id="@+id/tv_quiz_score"
 		    		  android:layout_width="wrap_content"
 		    		  android:layout_height="wrap_content"  
 		    		  android:layout_marginTop="30dp"
@@ -40,18 +40,18 @@
         		  android:orientation="horizontal"
         		  android:layout_marginBottom="50dp"
         		  android:layout_alignParentBottom="true"
-        		  android:id="@+id/btns_ll">  
+        		  android:id="@+id/ll_quiz_buttons">
         		  
     	<LinearLayout android:layout_width="wrap_content" android:layout_height="fill_parent"
         			  android:orientation="vertical"
         			  android:layout_weight="1"
         			  android:paddingLeft="30dp"
         			  android:paddingRight="30dp">
-           <ImageView android:id="@+id/explaination_btn"
+           <ImageView android:id="@+id/btn_see_explanation"
                		  android:layout_width="wrap_content" 
                		  android:layout_height="wrap_content"
                		  android:layout_gravity="center"
-               		  android:src="@drawable/see_explaination_selector"/>
+               		  android:src="@drawable/see_explanation_selector"/>
         </LinearLayout> 
         
     	<LinearLayout android:layout_width="wrap_content" android:layout_height="fill_parent"
@@ -59,7 +59,7 @@
         			  android:layout_weight="1"
         			  android:paddingLeft="30dp"
         			  android:paddingRight="30dp">
-           <ImageView android:id="@+id/review_btn"
+           <ImageView android:id="@+id/btn_review"
                		  android:layout_width="wrap_content" 
                		  android:layout_height="wrap_content"
                		  android:layout_gravity="center"
@@ -71,7 +71,7 @@
         			  android:layout_weight="1"
         			  android:paddingLeft="30dp"
         			  android:paddingRight="30dp">
-           <ImageView android:id="@+id/done_btn"
+           <ImageView android:id="@+id/btn_done"
                		  android:layout_width="wrap_content" 
                		  android:layout_height="wrap_content"
                		  android:layout_gravity="center"
@@ -80,11 +80,11 @@
         
     </LinearLayout>
     
-    <ImageView android:id="@+id/banner_iv" 
+    <ImageView android:id="@+id/iv_banner"
         	   android:layout_width="fill_parent" 
         	   android:layout_height="70dp" 
-        	   android:layout_below="@id/summary_stars_lv"
-               android:layout_above="@id/btns_ll"
-        	   android:src="@drawable/ic_banner_great" />
+        	   android:layout_below="@id/lv_summary_stars"
+               android:layout_above="@id/ll_quiz_buttons"
+        	   android:src="@drawable/ic_quiz_banner_great" />
     
 </RelativeLayout>

@@ -14,6 +14,9 @@ import java.util.List;
 public abstract class ChoiceTableView extends LinearLayout implements OnChoiceChangedListener {
     protected TableLayout tableLayout;
 
+    private String userAnswer;
+    private boolean isCorrect;
+
     protected ChoiceTableView(Context context) {
         super(context);
         initUI();
@@ -42,7 +45,26 @@ public abstract class ChoiceTableView extends LinearLayout implements OnChoiceCh
 
     protected abstract void selectChoice(ChoiceButton choiceButton);
 
-    public abstract void checkAnswer(String answer);
+    public void checkAnswer(String answer) {
+        userAnswer = "";
+        isCorrect = true;
+    }
+
+    public boolean isCorrect() {
+        return isCorrect;
+    }
+
+    protected void setIncorrect() {
+        isCorrect = false;
+    }
+
+    public String getUserAnswer() {
+        return userAnswer;
+    }
+
+    protected void appendUserAnswer(String ans) {
+        userAnswer += ans;
+    }
 
     public void loadChoices(List<QuizChoiceQuestion.Choice> choices) {
         reset();

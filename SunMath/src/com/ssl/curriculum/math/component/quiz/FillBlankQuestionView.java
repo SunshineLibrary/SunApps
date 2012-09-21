@@ -7,18 +7,19 @@ import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.ssl.curriculum.math.R;
-import com.ssl.curriculum.math.component.viewer.QuestionViewer;
+import com.ssl.curriculum.math.component.viewer.QuizComponentViewer;
+import com.ssl.curriculum.math.listener.QuestionResultListener;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 import com.ssl.curriculum.math.presenter.quiz.FillBlankQuestionPresenter;
 
-public class FillBlankQuestionView extends QuizQuestionView {
+public class FillBlankQuestionView extends QuizQuestionView implements QuestionResultListener {
     private TextView showAnswerField;
     private EditText answerEditText;
 
     private FillBlankQuestionPresenter mPresenter;
 
-    public FillBlankQuestionView(Context context, QuestionViewer questionViewer) {
-        super(context, questionViewer);
+    public FillBlankQuestionView(Context context, QuizComponentViewer quizComponentViewer) {
+        super(context, quizComponentViewer);
         mPresenter = new FillBlankQuestionPresenter(this);
     }
 
@@ -50,4 +51,8 @@ public class FillBlankQuestionView extends QuizQuestionView {
         mPresenter.onQuestionAnswered();
     }
 
+    @Override
+    public void onQuestionResult(QuizQuestion question, String answer, boolean isCorrect) {
+        mQuizComponentViewer.onQuestionResult(question, answer, isCorrect);
+    }
 }

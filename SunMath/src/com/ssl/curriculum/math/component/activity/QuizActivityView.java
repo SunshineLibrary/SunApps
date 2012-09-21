@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.viewer.ActivityViewer;
-import com.ssl.curriculum.math.component.viewer.QuestionViewer;
+import com.ssl.curriculum.math.component.viewer.QuizComponentViewer;
 import com.ssl.curriculum.math.model.activity.LinkedActivityData;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 import com.ssl.curriculum.math.service.QuizQuestionsLoader;
@@ -19,7 +19,7 @@ public class QuizActivityView extends ActivityView {
     private ImageView confirmBtn;
     private QuizQuestionsLoader mQuestionLoader;
 
-    private QuestionViewer mQuestionViewer;
+    private QuizComponentViewer mQuizComponentViewer;
 
     public QuizActivityView(Context context, ActivityViewer activityViewer) {
         super(context, activityViewer);
@@ -31,7 +31,7 @@ public class QuizActivityView extends ActivityView {
     @Override
     public void setActivity(LinkedActivityData activityData) {
         super.setActivity(activityData);
-        mQuestionViewer.reset();
+        mQuizComponentViewer.reset();
         new LoadQuestionTask(activityData).execute();
     }
 
@@ -41,7 +41,7 @@ public class QuizActivityView extends ActivityView {
         addView(viewGroup);
         nextBtn = (ImageView) findViewById(R.id.quiz_next_btn);
         confirmBtn = (ImageView) findViewById(R.id.quiz_choice_ok_btn);
-        mQuestionViewer = (QuestionViewer) findViewById(R.id.quiz_question_view);
+        mQuizComponentViewer = (QuizComponentViewer) findViewById(R.id.quiz_question_view);
     }
 
     private void initComponents() {
@@ -49,15 +49,15 @@ public class QuizActivityView extends ActivityView {
     }
 
     private void initListener() {
-        mQuestionViewer.setControlButtons(confirmBtn, nextBtn);
-        nextBtn.setOnClickListener(mQuestionViewer);
-        confirmBtn.setOnClickListener(mQuestionViewer);
+        mQuizComponentViewer.setControlButtons(confirmBtn, nextBtn);
+        nextBtn.setOnClickListener(mQuizComponentViewer);
+        confirmBtn.setOnClickListener(mQuizComponentViewer);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mQuestionViewer.onDestroy();
+        mQuizComponentViewer.onDestroy();
     }
 
     private class LoadQuestionTask extends AsyncTask {
@@ -77,8 +77,8 @@ public class QuizActivityView extends ActivityView {
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-            mQuestionViewer.setQuestions(mQuestions);
-            mQuestionViewer.startNextQuestion();
+            mQuizComponentViewer.setQuestions(mQuestions);
+            mQuizComponentViewer.startNextQuestion();
         }
     }
 }

@@ -2,20 +2,17 @@ package com.ssl.curriculum.math.component.quiz;
 
 import android.content.Context;
 import android.webkit.WebView;
-import android.widget.LinearLayout;
-import com.ssl.curriculum.math.component.viewer.QuestionViewer;
+import com.ssl.curriculum.math.component.viewer.QuizComponentViewer;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 import com.ssl.curriculum.math.utils.QuizHtmlLoader;
 
-public abstract class QuizQuestionView extends LinearLayout {
+public abstract class QuizQuestionView extends QuizComponentView {
     protected WebView questionWebView;
 
     protected QuizQuestion mQuestion;
-    protected QuestionViewer mQuestionViewer;
 
-    public QuizQuestionView(Context context, QuestionViewer questionViewer) {
-        super(context);
-        mQuestionViewer = questionViewer;
+    public QuizQuestionView(Context context, QuizComponentViewer quizComponentViewer) {
+        super(context, quizComponentViewer);
         initUI();
         initWebView();
     }
@@ -36,10 +33,6 @@ public abstract class QuizQuestionView extends LinearLayout {
         mQuestion = question;
         loadQuizHtml(question.getQuizContent());
     }
-
-    public void onAfterFlippingIn() {}
-
-    public void onBeforeFlippingOut() {}
 
     public void onDestroy() {
         if (questionWebView != null) {

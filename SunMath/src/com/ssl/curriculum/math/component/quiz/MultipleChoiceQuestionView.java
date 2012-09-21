@@ -1,13 +1,12 @@
 package com.ssl.curriculum.math.component.quiz;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.RelativeLayout;
 import com.ssl.curriculum.math.R;
-import com.ssl.curriculum.math.component.viewer.QuestionViewer;
+import com.ssl.curriculum.math.component.viewer.QuizComponentViewer;
 import com.ssl.curriculum.math.model.activity.quiz.QuizChoiceQuestion;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 
@@ -21,8 +20,8 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
     private QuizQuestion mQuestion;
 
 
-    public MultipleChoiceQuestionView(Context context, QuestionViewer questionViewer) {
-        super(context, questionViewer);
+    public MultipleChoiceQuestionView(Context context, QuizComponentViewer quizComponentViewer) {
+        super(context, quizComponentViewer);
     }
 
     @Override
@@ -49,6 +48,7 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
     @Override
     public void onQuestionAnswered() {
         choiceTableView.checkAnswer(mQuestion.getAnswer());
+        mQuizComponentViewer.onQuestionResult(mQuestion, choiceTableView.getUserAnswer(), choiceTableView.isCorrect());
     }
 
     public void setAndShowChoiceTableView() {

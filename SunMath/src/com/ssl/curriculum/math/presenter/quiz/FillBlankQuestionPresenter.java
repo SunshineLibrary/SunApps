@@ -24,10 +24,13 @@ public class FillBlankQuestionPresenter {
     }
 
     public void onQuestionAnswered() {
-        if (isCorrect(mQuestionView.getUserAnswer())) {
+        String answer = mQuestionView.getUserAnswer();
+        if (isCorrect(answer)) {
             mQuestionView.setShowAnswerText(correctText);
+            mQuestionView.onQuestionResult(mQuestion, answer, true);
         } else {
             mQuestionView.setShowAnswerText(mQuestion.getAnswer());
+            mQuestionView.onQuestionResult(mQuestion, answer, false);
         }
     }
 

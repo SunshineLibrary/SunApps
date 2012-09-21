@@ -4,12 +4,12 @@
 
 
 
-    <com.ssl.curriculum.math.component.viewer.QuestionViewer
+    <com.ssl.curriculum.math.component.viewer.QuizComponentViewer
             android:id="@+id/quiz_question_view"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             >
-    </com.ssl.curriculum.math.component.viewer.QuestionViewer>
+    </com.ssl.curriculum.math.component.viewer.QuizComponentViewer>
 
     <RelativeLayout android:id="@+id/quiz_buttons"
                     android:layout_width="fill_parent"
