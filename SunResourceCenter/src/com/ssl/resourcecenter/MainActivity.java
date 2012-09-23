@@ -1,5 +1,7 @@
 package com.ssl.resourcecenter;
 
+import com.ssl.resourcecenter.util.AutoLoadListener;
+import com.ssl.resourcecenter.util.AutoLoadListener.AutoLoadCallBack;
 import com.ssl.metadata.provider.MetadataContract.BookCollectionInfo;
 import com.ssl.metadata.provider.MetadataContract.BookCollections;
 import com.ssl.metadata.provider.MetadataContract.BookInfo;
@@ -32,6 +34,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -40,6 +43,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -48,6 +52,7 @@ public class MainActivity extends Activity {
 	interface TabSwitched {
 		public void OnTabSwitched(int index);
 	}
+	private static final int ITEM_PER_PAGE = 6;
 	
 	private GridType currentGridType;
 	private ViewType currentViewType;
@@ -71,6 +76,11 @@ public class MainActivity extends Activity {
 	private TextView collectionTitle;
 	private ImageButton btnBack;
 	private ToggleButton searchToggleButton;
+	private ResourceGridAdapter toDownloadGridAdapter, downloadedGridAdapter;
+	private ResourceListGridAdapter listGridAdapter;
+	private CategoryGridAdapter categoryGridAdapter;
+	
+	//private 
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +88,6 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.main);
 		
 		init();
-		
 		
 		// change via tab state
 		currentGridType = GridType.GRIDTYPE_RES_INPROGRESS;
@@ -376,6 +385,9 @@ public class MainActivity extends Activity {
 		searchToggleButton = (ToggleButton) findViewById(R.id.downnav_search);
 		tipNull = (RelativeLayout) findViewById(R.id.tip_null);
 		
+		AutoLoadListener autoLoadListener =new AutoLoadListener(callBack);
+		gridView.setOnScrollListener(autoLoadListener);
+		
 		resolver = new ResourceContentResolver(MainActivity.this.getContentResolver(), this.getResources());
 		
 		formerGridType = new Stack<GridType>();
@@ -383,13 +395,46 @@ public class MainActivity extends Activity {
 		formerSelectedItem = new Stack<Integer>();
 		formerArg = new Stack<String>();
 		formerTitle = new Stack<CharSequence>();
+		
 	}
+	
+	//new page
+	AutoLoadCallBack callBack= new AutoLoadCallBack(){
+
+		public void execute() {
+			if(null == gridItems || 0 == gridItems.size()) return;
+			List<Object> itemList;
+			//Toast.makeText(MainActivity.this, "new page",500).show();
+			
+			switch (currentGridType) {
+			case GRIDTYPE_RES_TODOWNLOAD:
+				// res grid in download page
+				itemList = boundGridData(currentResType, currentViewType, currentArg, ITEM_PER_PAGE, gridItems.size());
+				gridItems.addAll(itemList);
+				toDownloadGridAdapter.notifyDataSetChanged();
+				break;
+			case GRIDTYPE_RES_INPROGRESS:
+				// res grid in reading page
+				itemList = boundGridData(currentResType, currentViewType, currentArg, ITEM_PER_PAGE, gridItems.size());
+				gridItems.addAll(itemList);
+				downloadedGridAdapter.notifyDataSetChanged();
+				break;
+			case GRIDTYPE_RESLIST:
+			case GRIDTYPE_CATEGORY:
+			case GRIDTYPE_RECOMMAND:
+				break;
+			default:
+				break;
+			}
+		}
+		
+	};
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
 		//update grid view
-		//showGridView(currentResType, currentGridType, currentViewType, currentArg);
+		showGridView(currentResType, currentGridType, currentViewType, currentArg);
 	}
 
 	@Override
@@ -500,8 +545,8 @@ public class MainActivity extends Activity {
 		currentArg=arg;
 		
 		gridItems = boundGridData(resType, theViewType, arg);
-		List<Object> itemList = gridItems;
-		if(itemList == null || itemList.size() == 0){ 
+		
+		if(gridItems == null || gridItems.size() == 0){ 
 			tipNull.setVisibility(View.VISIBLE); 
 		}else{
 			tipNull.setVisibility(View.INVISIBLE); 
@@ -510,23 +555,23 @@ public class MainActivity extends Activity {
 		switch (theGridType) {
 		case GRIDTYPE_RES_TODOWNLOAD:
 			// res grid in download page
-			ResourceGridAdapter adapter = new ResourceGridAdapter(itemList, false, this);
-			gridView.setAdapter(adapter);
+			toDownloadGridAdapter = new ResourceGridAdapter(gridItems, false, this);
+			gridView.setAdapter(toDownloadGridAdapter);
 			break;
 		case GRIDTYPE_RES_INPROGRESS:
 			// res grid in reading page
-			ResourceGridAdapter adapter2 = new ResourceGridAdapter(itemList, true, this);
-			gridView.setAdapter(adapter2);
+			downloadedGridAdapter = new ResourceGridAdapter(gridItems, true, this);
+			gridView.setAdapter(downloadedGridAdapter);
 			break;
 		case GRIDTYPE_RESLIST:
 			// resource list page
-			ResourceListGridAdapter adapter3 = new ResourceListGridAdapter(itemList, this);
-			gridView.setAdapter(adapter3);
+			listGridAdapter = new ResourceListGridAdapter(gridItems, this);
+			gridView.setAdapter(listGridAdapter);
 			break;
 		case GRIDTYPE_CATEGORY:
 			// category page
-			CategoryGridAdapter adapter4 = new CategoryGridAdapter(itemList, this);
-			gridView.setAdapter(adapter4);
+			categoryGridAdapter = new CategoryGridAdapter(gridItems, this);
+			gridView.setAdapter(categoryGridAdapter);
 			break;
 		case GRIDTYPE_RECOMMAND:
 			gridView.setVisibility(View.INVISIBLE);
@@ -537,7 +582,11 @@ public class MainActivity extends Activity {
 		}
 	}
 	
-	private List<Object> boundGridData(ResourceType resType, ViewType theViewType, String arg) {
+	private List<Object> boundGridData(ResourceType resType, ViewType theViewType, String arg){
+		return boundGridData(resType, theViewType, arg, ITEM_PER_PAGE, 0);
+	}
+	
+	private List<Object> boundGridData(ResourceType resType, ViewType theViewType, String arg, int itemCount, int offset) {
 		
 		String[] projection = null;
 		String selection = null;
@@ -550,31 +599,29 @@ public class MainActivity extends Activity {
 				// AND progress > 0 AND progress < 100
 				selection = String.format("%s = '%s' AND %s not null ", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS_DOWNLOADED,
 						BookInfo._PROGRESS);
-//				selection = String.format("%s = '%s' AND %s not null ", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS_DOWNLOADED,
-//						BookInfo._STARTTIME);
-				return resolver.getBooks(projection, selection);
+				return resolver.getBooks(projection, selection, itemCount, offset);
 					
 			case RES_ALL:
 				selection = String.format("%s = '%s'", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS_DOWNLOADED);
-				return resolver.getBooks(projection, selection);
+				return resolver.getBooks(projection, selection, itemCount, offset);
 			case RES_RECENT:
 				// Date format: YYYY-MM-DD hh:mm:ss
 //				int inDays = 15; 
 //				selection = String.format("%s = '%s' AND %s > datetime('now', '-%d days', 'localtime')", BookInfo._DOWNLOAD_STATUS, 
 //						Downloadable.STATUS_DOWNLOADED, BookInfo._DOWNLOAD_TIME, inDays);
 				selection = String.format("%s = '%s'", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS_DOWNLOADED);
-				return resolver.getBooks(projection, selection);
+				return resolver.getBooks(projection, selection, itemCount, offset);
 			
 			case RES_READED:
 				//WEN GU ZHI XIN
 				selection = String.format("%s = '%s' AND %s >= 98 ", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS_DOWNLOADED, 
 						BookInfo._PROGRESS);
-				return resolver.getBooks(projection, selection);
+				return resolver.getBooks(projection, selection, itemCount, offset);
 			
 			case COLLECTION:
 				//collections
 				selection = Books._COLLECTION_ID + " = '"+arg+"'";
-				return resolver.getBooks(projection, selection);
+				return resolver.getBooks(projection, selection, itemCount, offset);
 				
 			case DOWN_CATEGORY:
 				
@@ -583,20 +630,20 @@ public class MainActivity extends Activity {
 				
 			case DOWN_HOT:
 				//AND HOT
-				return resolver.getBookCollections(projection, selection);
+				return resolver.getBookCollections(projection, selection, itemCount, offset);
 				
 			case DOWN_LIKE:
 				//TODO:
 				//AND LIKE !!!
-				return resolver.getBookCollections(projection, selection);
+				return resolver.getBookCollections(projection, selection, itemCount, offset);
 			
 			case DOWN_CATEGORY_RES:
 				selection = BookCollectionInfo._TAGS + " like '%" + arg + "%' ";
-				return resolver.getBookCollections(projection, selection);
+				return resolver.getBookCollections(projection, selection, itemCount, offset);
 			
 			case DOWN_LIST_RES:
 				//TODO:
-				return resolver.getBookCollections(projection, selection);
+				return resolver.getBookCollections(projection, selection, itemCount, offset);
 				
 			case RES_READ_HISTORY:
 				//YUE DU LI CHENG
@@ -611,7 +658,7 @@ public class MainActivity extends Activity {
 			
 			case SEARCH:
 				selection = BookCollections._TITLE + " like '%" + arg + "%' ";
-				return resolver.getBookCollections(projection, selection);
+				return resolver.getBookCollections(projection, selection, itemCount, offset);
 
 			default:
 				return null;
