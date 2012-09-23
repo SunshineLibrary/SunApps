@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.ssl.metadata.provider.MetadataContract;
 import com.ssl.metadata.provider.MetadataContract.Books;
 import com.ssl.metadata.provider.MetadataContract.Downloadable;
 import com.ssl.resourcecenter.R;
@@ -11,38 +12,53 @@ import com.ssl.resourcecenter.contentresolver.ResourceContentResolver;
 import com.ssl.resourcecenter.enums.ResourceType;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class ResourceInfoActivity extends Activity {
+public class ResourceInfoActivity extends Activity implements View.OnClickListener{
 	private ImageButton backButton;
 	private ImageView cover;
-	private TextView originname, author, translator, publisher, publish_year, title, author_intro, intro;
+	private TextView author, publisher, publish_year, title, author_intro, intro;
 	private Button readButton, downButton;
 	private ContentResolver resolver;
 	private LinearLayout resLayoutAll, resLayoutLeft, resLayoutRight;
 	private String resId;
+	private ResourceType resType;
+	private MContentObserver mObserver;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_resource_info);
         
-        readButton = (Button) findViewById(R.id.info_button_read);
+        init();
+        int status = showResInfo(resId, resType);
+        //Toast.makeText(this, String.valueOf(type) ,Toast.LENGTH_SHORT).show();
+        setButtons(status);
+        
+        mObserver = new MContentObserver(new Handler());
+        resolver.registerContentObserver(MetadataContract.Books.CONTENT_URI, true, mObserver);
+    }
+    
+    private void init(){
+    	setContentView(R.layout.activity_resource_info);
+    	
+    	readButton = (Button) findViewById(R.id.info_button_read);
         downButton = (Button) findViewById(R.id.info_button_down);
         backButton = (ImageButton)findViewById(R.id.info_back_button);
         cover = (ImageView) findViewById(R.id.info_cover);
@@ -61,80 +77,55 @@ public class ResourceInfoActivity extends Activity {
         int width = resLayoutAll.getWidth();
         resLayoutLeft.setMinimumWidth(width/2);
         resLayoutRight.setMinimumWidth(width/2);
+        
+        readButton.setOnClickListener(this);
+        downButton.setOnClickListener(this);
+        backButton.setOnClickListener(this);
+        
         Intent intent = this.getIntent();
         resId = intent.getStringExtra("bookId");
-        ResourceType type = (ResourceType)intent.getExtras().get("type");
-        
-        int status = showResInfo(resId, type);
-        //Toast.makeText(this, String.valueOf(type) ,Toast.LENGTH_SHORT).show();
-        
-        setButtons(status);
-       
-        backButton.setOnClickListener(new OnClickListener(){
-        	
-			@Override
-			public void onClick(View v) {
-				//v.setBackgroundResource(R.drawable.back02);  
-				ResourceInfoActivity.this.finish();
-			}
-        	
-        });
-        
-        downButton.setOnClickListener(new OnClickListener(){
-        	
-			@Override
-			public void onClick(View v) { 
-                //v.setDrawingCacheBackgroundColor(color);
-				ContentValues cv = new ContentValues();
-				try{
-					cv.put(Books._DOWNLOAD_STATUS, Downloadable.STATUS_QUEUED);
-					int r = resolver.update(Books.CONTENT_URI, cv, Books._ID + "= " + resId, null);
-					Log.i("download rolls updated", r+" rolls, id:"+resId);
-				}catch(Exception e){
-					Log.e("update error", e.getMessage());
-				}
-				setButtons(Downloadable.STATUS_QUEUED);
-			}
-        	
-        });
-        
-        readButton.setOnClickListener(new OnClickListener(){
-        	
-			@Override
-			public void onClick(View v) { 
-				
-				ContentValues cv = new ContentValues();
-				try{
-	                Intent openBookIntent = new Intent();
-	               
-	                openBookIntent.setAction("android.fbreader.action.VIEW");
-	                openBookIntent.putExtra("bookId", Integer.valueOf(resId));
-	                
-	                startActivity(openBookIntent);
-	                
-	                SimpleDateFormat sDateFormat = new SimpleDateFormat("'yyyy-MM-dd hh:mm:ss'");
-	                String date = sDateFormat.format(new Date());
-	                cv.put(Books._STARTTIME, date);
-	                StringBuffer selection = new StringBuffer(Books._ID);
-	                selection.append(" = ").append(resId).append(" AND ").append(Books._STARTTIME).append(" not null ");
-					resolver.update(Books.CONTENT_URI, cv, selection.toString(), null);
-					
-				}catch(Exception e){
-					Log.e("Exception calling SunReader", e.getMessage());
-				}
-                
-			}
-        	
-        });
+        resType = (ResourceType)intent.getExtras().get("type");
     }
     
     @Override
 	protected void onResume() {
 		super.onResume();
+		
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		resolver.unregisterContentObserver(mObserver);
+	}
 
+	
+	@Override
+	public void onClick(View v) {
+		
+		switch(v.getId()){
+		case R.id.info_button_read:
+			openResource(resType);
+			break;
+		case R.id.info_button_down:
+			downResource(resType);
+			break;
+		case R.id.info_back_button:
+			//v.setBackgroundResource(R.drawable.back02);  
+			ResourceInfoActivity.this.finish();
+			break;
+		default :
+			return;
+		}
+		
+	}
 
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_resource_info, menu);
+        return true;
+    }
+	
 	private int showResInfo(String id, ResourceType type){
     	Cursor cur = null;
     	int status = 0;
@@ -214,10 +205,54 @@ public class ResourceInfoActivity extends Activity {
     	
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_resource_info, menu);
-        return true;
+    private void openResource(ResourceType type){
+    	switch(type){
+    	case BOOK:
+    		ContentValues cv = new ContentValues();
+			try{
+                Intent openResIntent = new Intent();
+               
+                openResIntent.setAction("android.fbreader.action.VIEW");
+                openResIntent.putExtra("bookId", Integer.valueOf(resId));
+                
+                SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                String date = "'" + sDateFormat.format(new Date()) + "'";
+                Log.i("test", date);
+                
+                cv.put(Books._STARTTIME, date);
+                StringBuffer selection = new StringBuffer(Books._ID);
+                selection.append(" = ").append(resId).append(" AND ").append(Books._STARTTIME).append(" is NULL ");
+				
+                Log.i("test", selection.toString());
+                resolver.update(Books.CONTENT_URI, cv, selection.toString(), null);
+                
+                startActivity(openResIntent);
+				
+			}catch(Exception e){
+				Log.e("Exception calling SunReader", e.getMessage());
+			}
+    		break;
+    	default:
+    		return;
+    	}
+    }
+    
+    private void downResource(ResourceType type){
+    	switch(type){
+    	case BOOK:
+    		ContentValues cv = new ContentValues();
+			try{
+				cv.put(Books._DOWNLOAD_STATUS, Downloadable.STATUS_QUEUED);
+				int r = resolver.update(Books.CONTENT_URI, cv, Books._ID + "= " + resId, null);
+				Log.i("download rolls updated", r+" rolls, id:"+resId);
+			}catch(Exception e){
+				Log.e("update error", e.getMessage());
+			}
+			setButtons(Downloadable.STATUS_QUEUED);
+    		break;
+    	default:
+    		return;
+    	}
     }
     
     private void setButtons(int status){
@@ -247,4 +282,19 @@ public class ResourceInfoActivity extends Activity {
     	}
     }
     
+    private class MContentObserver extends ContentObserver {
+
+        public MContentObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            //Toast.makeText(ResourceInfoActivity.this, "changed" ,Toast.LENGTH_SHORT).show();
+            
+            int status = showResInfo(resId, resType);
+            setButtons(status);
+        }
+    }
 }

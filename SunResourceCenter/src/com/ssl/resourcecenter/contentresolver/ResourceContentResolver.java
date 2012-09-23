@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssl.metadata.provider.MetadataContract;
 import com.ssl.metadata.provider.MetadataContract.BookCategories;
 import com.ssl.metadata.provider.MetadataContract.BookCollections;
 import com.ssl.metadata.provider.MetadataContract.BookLists;
@@ -42,7 +43,7 @@ public class ResourceContentResolver {
 
 		try {
 			//real code
-//			Cursor cur = resolver.query(BookCollectionInfo.CONTENT_URI, projection, selection, null, null);		
+//			Cursor cur = resolver.query(MetadataContract.BookCollectionInfo.CONTENT_URI, projection, selection, null, null);		
 //			
 //			int idCol = cur.getColumnIndex(BookCollectionInfo._BOOK_COLLECTION_ID);
 //			int titleCol = cur.getColumnIndex(BookCollectionInfo._TITLE);
@@ -52,7 +53,7 @@ public class ResourceContentResolver {
 //			int countCol = cur.getColumnIndex(BookCollectionInfo._COUNT);
 			
 			//not real code!!
-			Cursor cur = resolver.query(BookCollections.CONTENT_URI, projection, selection, null, null);		
+			Cursor cur = resolver.query(MetadataContract.BookCollections.CONTENT_URI, projection, selection, null, null);		
 			
 			int idCol = cur.getColumnIndex(BookCollections._ID);
 			int titleCol = cur.getColumnIndex(BookCollections._TITLE);
@@ -91,8 +92,8 @@ public class ResourceContentResolver {
 	public String getSingleResIdOfCollection(String ColId) {
 		String ResId = null;
 		//case book:
-		//Cursor bookcur = resolver.query(BookInfo.CONTENT_URI, null, BookInfo._COLLECTION_ID + " = '" + ColId +"'", null, null);
-		Cursor bookcur = resolver.query(Books.CONTENT_URI, null, Books._COLLECTION_ID + " = '" + ColId +"'", null, null);
+		//Cursor bookcur = resolver.query(MetadataContract.BookInfo.CONTENT_URI, null, BookInfo._COLLECTION_ID + " = '" + ColId +"'", null, null);
+		Cursor bookcur = resolver.query(MetadataContract.Books.CONTENT_URI, null, Books._COLLECTION_ID + " = '" + ColId +"'", null, null);
 		
 		
 //		if(bookcur.getCount()>1) {
@@ -115,7 +116,7 @@ public class ResourceContentResolver {
 		ArrayList<ResourceGridItem> resGridItems = new ArrayList<ResourceGridItem>();
 		try {
 			//real code
-//			Cursor cur = resolver.query(BookInfo.CONTENT_URI, projection, selection, null, null);		
+//			Cursor cur = resolver.query(MetadataContract.BookInfo.CONTENT_URI, projection, selection, null, null);		
 //
 //			int idCol = cur.getColumnIndex(BookInfo._BOOK_ID);
 //			int titleCol = cur.getColumnIndex(BookInfo._TITLE);
@@ -125,7 +126,7 @@ public class ResourceContentResolver {
 //			int progressCol = cur.getColumnIndex(BookInfo._PROGRESS);
 			
 			//not real code!!
-			Cursor cur = resolver.query(Books.CONTENT_URI, projection, selection, null, null);		
+			Cursor cur = resolver.query(MetadataContract.Books.CONTENT_URI, projection, selection, null, null);		
 
 			int idCol = cur.getColumnIndex(Books._ID);
 			int titleCol = cur.getColumnIndex(Books._TITLE);
@@ -161,7 +162,7 @@ public class ResourceContentResolver {
 		
 		try
 		{
-			Cursor cur = resolver.query(BookCategories.CONTENT_URI, null, null, null, null);
+			Cursor cur = resolver.query(MetadataContract.BookCategories.CONTENT_URI, null, null, null, null);
 			
 			int idCol = cur.getColumnIndex(BookCategories._TAG_ID);
 			int nameCol = cur.getColumnIndex(BookCategories._NAME);
@@ -178,7 +179,7 @@ public class ResourceContentResolver {
 	
 	public Cursor getBookLists(String[] projection, String selection){
 		ArrayList<ResourceListGridItem> listGridItems = new ArrayList<ResourceListGridItem>();
-		return resolver.query(BookLists.CONTENT_URI, projection, selection, null, null);
+		return resolver.query(MetadataContract.BookLists.CONTENT_URI, projection, selection, null, null);
 	}
 	
 	public static Bitmap getBitmap(String bookId, ContentResolver resolver) throws IOException {

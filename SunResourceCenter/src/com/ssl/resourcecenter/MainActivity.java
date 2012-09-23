@@ -85,7 +85,6 @@ public class MainActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
 		
 		init();
 		
@@ -334,10 +333,10 @@ public class MainActivity extends Activity {
 		simulateTabs(downnav, downnav_switch);
 		
 		String[] curs = getResources().getStringArray(R.array.main_menu);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.spinner_item, curs);
-		adapter.setDropDownViewResource(R.layout.spinner_dropdown);
+		ArrayAdapter<String> mainNavAdapter = new ArrayAdapter<String>(this,R.layout.spinner_item, curs);
+		mainNavAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
 		
-		mainnav.setAdapter(adapter);
+		mainnav.setAdapter(mainNavAdapter);
 		mainnav.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View spinner,
@@ -371,6 +370,7 @@ public class MainActivity extends Activity {
 	}
 	
 	private void init(){
+		setContentView(R.layout.main);
 		
 		gridView = (GridView) findViewById(R.id.gridview);
 		resnav = (LinearLayout) findViewById(R.id.resnav);
@@ -435,6 +435,25 @@ public class MainActivity extends Activity {
 		super.onResume();
 		//update grid view
 		showGridView(currentResType, currentGridType, currentViewType, currentArg);
+//		switch (currentGridType) {
+//		case GRIDTYPE_RES_TODOWNLOAD:
+//			// res grid in download page
+//			toDownloadGridAdapter.notifyDataSetChanged();
+//			break;
+//		case GRIDTYPE_RES_INPROGRESS:
+//			// res grid in reading page
+//			downloadedGridAdapter.notifyDataSetChanged();
+//			break;
+//		case GRIDTYPE_RESLIST:
+//			break;
+//		case GRIDTYPE_CATEGORY:
+//			categoryGridAdapter.notifyDataSetChanged();
+//			break;
+//		case GRIDTYPE_RECOMMAND:
+//			break;
+//		default:
+//			break;
+//		}
 	}
 
 	@Override
@@ -504,13 +523,6 @@ public class MainActivity extends Activity {
 		return selected;
 	}	
 	
-	/**
-	 * search the DB to return res(books) related to the input keywords
-	 * @param key
-	 * @param resType
-	 * @param theGridType
-	 * @param theViewType
-	 */
 	private void searchAllGrid(String key){
 		
 		showGridView(currentResType, currentGridType, currentViewType, key);
@@ -556,6 +568,7 @@ public class MainActivity extends Activity {
 		case GRIDTYPE_RES_TODOWNLOAD:
 			// res grid in download page
 			toDownloadGridAdapter = new ResourceGridAdapter(gridItems, false, this);
+			
 			gridView.setAdapter(toDownloadGridAdapter);
 			break;
 		case GRIDTYPE_RES_INPROGRESS:
@@ -598,7 +611,7 @@ public class MainActivity extends Activity {
 			case RES_READING:
 				// AND progress > 0 AND progress < 100
 				selection = String.format("%s = '%s' AND %s not null ", BookInfo._DOWNLOAD_STATUS, Downloadable.STATUS_DOWNLOADED,
-						BookInfo._PROGRESS);
+						Books._STARTTIME);
 				return resolver.getBooks(projection, selection, itemCount, offset);
 					
 			case RES_ALL:
