@@ -4,25 +4,25 @@ import com.ssl.curriculum.math.activity.NavigationActivity;
 import com.ssl.curriculum.math.listener.NextLevelMenuChangedListener;
 import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.model.menu.MenuItem;
-import com.ssl.curriculum.math.service.NavigationMenuContentProvider;
-import com.ssl.curriculum.math.service.NavigationMenuProvider;
+import com.ssl.curriculum.math.service.NavigationMenuLoaderImpl;
+import com.ssl.curriculum.math.service.NavigationMenuLoader;
 import com.ssl.curriculum.math.task.FetchNavigationMenuTask;
 
 import java.util.List;
 
 public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
-	private NavigationMenuProvider provider;
+	private NavigationMenuLoader loader;
 	private Menu currentMenu;
     private NavigationActivity navigationActivity;
 
     public NavigationMenuPresenter(NavigationActivity navigationActivity) {
         this.navigationActivity = navigationActivity;
-		provider = new NavigationMenuContentProvider(navigationActivity);
+		loader = new NavigationMenuLoaderImpl(navigationActivity);
 	}
 
 	public void loadMenuData() {
 		FetchNavigationMenuTask task = new FetchNavigationMenuTask(this,
-				provider);
+                loader);
 		task.execute();
 	}
 

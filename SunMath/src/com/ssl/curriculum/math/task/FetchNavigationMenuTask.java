@@ -3,21 +3,21 @@ package com.ssl.curriculum.math.task;
 import android.os.AsyncTask;
 import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.presenter.NavigationMenuPresenter;
-import com.ssl.curriculum.math.service.NavigationMenuProvider;
+import com.ssl.curriculum.math.service.NavigationMenuLoader;
 
 public class FetchNavigationMenuTask extends AsyncTask<Void, Void, Menu> {
 	private NavigationMenuPresenter menuPresenter;
-	private NavigationMenuProvider provider;
+	private NavigationMenuLoader loader;
 
 	public FetchNavigationMenuTask(NavigationMenuPresenter menuPresenter,
-			NavigationMenuProvider provider) {
+			NavigationMenuLoader loader) {
 		this.menuPresenter = menuPresenter;
-		this.provider = provider;
+		this.loader = loader;
 	}
 
 	@Override
 	protected Menu doInBackground(Void... voids) {
-		return provider.loadNavigationMenu();
+		return loader.loadNavigationMenu();
 	}
 
 	@Override

@@ -5,10 +5,7 @@ import com.ssl.metadata.database.observers.DownloadableTableObserver;
 import com.ssl.metadata.database.observers.TableObserver;
 import com.ssl.metadata.database.observers.ThumbnailFetchObserver;
 import com.ssl.metadata.database.tables.*;
-import com.ssl.metadata.database.views.BookCategoryView;
-import com.ssl.metadata.database.views.BookCollectionInfoView;
-import com.ssl.metadata.database.views.BookInfoView;
-import com.ssl.metadata.database.views.SectionActivitiesView;
+import com.ssl.metadata.database.views.*;
 
 public class MetadataDBHandlerFactory {
 
@@ -78,6 +75,7 @@ public class MetadataDBHandlerFactory {
 
     private static void initTableViews(DBHandler dbHandler) {
         dbHandler.addTableViewManager(SectionActivitiesView.VIEW_NAME, new SectionActivitiesView(dbHandler));
+        dbHandler.addTableViewManager(QuizProblemsView.VIEW_NAME, new QuizProblemsView(dbHandler));
         dbHandler.addTableViewManager(BookInfoView.VIEW_NAME, new BookInfoView(dbHandler));
         dbHandler.addTableViewManager(BookCollectionInfoView.VIEW_NAME, new BookCollectionInfoView(dbHandler));
         dbHandler.addTableViewManager(BookCategoryView.VIEW_NAME, new BookCategoryView(dbHandler));

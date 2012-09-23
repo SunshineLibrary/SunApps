@@ -7,46 +7,43 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ViewFlipper;
 import com.ssl.curriculum.math.R;
-import com.ssl.curriculum.math.anim.FlipAnimationManager;
-import com.ssl.curriculum.math.listener.GalleryItemClickedListener;
-import com.ssl.curriculum.math.logic.ActivityFlowController;
-import com.ssl.curriculum.math.logic.strategy.FetchNextDomainActivityStrategyImpl;
-import com.ssl.curriculum.math.presenter.FlipperViewsBuilder;
-import com.ssl.curriculum.math.service.ActivityContentProvider;
-import com.ssl.curriculum.math.service.SectionActivityContentProvider;
-import com.ssl.curriculum.math.task.FetchActivityTaskManager;
+import com.ssl.curriculum.math.component.viewer.ActivityViewer;
+import com.ssl.curriculum.math.data.SectionActivitiesLoader;
+import com.ssl.curriculum.math.model.activity.LinkedActivityData;
+
 public class MainActivity extends Activity {
 
 
-    private ActivityFlowController flowController;
     private ImageView leftBtn;
     private ImageView rightBtn;
     private ImageView naviBtn;
-    private ViewFlipper viewFlipper;
+    private ActivityViewer mActivityViewer;
+    private SectionActivitiesLoader mActivitiesLoader;
 
-    private FlipperViewsBuilder flipperViewsBuilder;
+    private int sectionId;
+    private int initActivityId;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initUI();
+        initComponents();
+        initListeners();
     }
+
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        initComponents();
-        initListeners();
-        getDomainActivity(getIntent());
+        loadActivity();
     }
 
-    private void getDomainActivity(Intent intent) {
-        int sectionId = intent.getExtras().getInt("sectionId");
-        int activityId = intent.getExtras().getInt("activityId");
-        Log.i("open activities", "sectionId=" + sectionId + "," + "activityId" + activityId);
-        flowController.loadDomainActivityData(sectionId, activityId);
+    private void loadActivity() {
+        Log.i("open activities", "sectionId=" + sectionId + "," + "activityId" + initActivityId);
+        LinkedActivityData data = mActivitiesLoader.getLoadedActivity(initActivityId);
+        mActivityViewer.startActivity(data);
     }
 
     private void initUI() {
@@ -54,26 +51,27 @@ public class MainActivity extends Activity {
         leftBtn = (ImageView) this.findViewById(R.id.main_activity_left_btn);
         rightBtn = (ImageView) this.findViewById(R.id.main_activity_right_btn);
         naviBtn = (ImageView) this.findViewById(R.id.main_activity_navi_btn);
-        viewFlipper = (ViewFlipper) this.findViewById(R.id.main_activity_view_flipper);
+        mActivityViewer = (ActivityViewer) this.findViewById(R.id.main_activity_view_flipper);
     }
 
     private void initComponents() {
-        flipperViewsBuilder = new FlipperViewsBuilder(this);
-        FetchActivityTaskManager fetchActivityTaskManager = new FetchActivityTaskManager(new ActivityContentProvider(this), new SectionActivityContentProvider(this));
-        flowController = new ActivityFlowController(viewFlipper, flipperViewsBuilder, fetchActivityTaskManager, new FetchNextDomainActivityStrategyImpl(), new FlipAnimationManager(this));
+        Intent intent = getIntent();
+        sectionId = intent.getExtras().getInt("sectionId");
+        initActivityId = intent.getExtras().getInt("activityId");
+        mActivitiesLoader = new SectionActivitiesLoader(this, sectionId);
     }
 
 
     private void initListeners() {
         leftBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                flowController.onShowPrevious();
+                mActivityViewer.onPrevBtnClicked(v);
             }
         });
 
         rightBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                flowController.onShowNext();
+                mActivityViewer.onNextBtnClicked(v);
             }
         });
 
@@ -82,19 +80,11 @@ public class MainActivity extends Activity {
                 finish();
             }
         });
-
-        flipperViewsBuilder.setGalleryThumbnailItemClickListener(new GalleryItemClickedListener() {
-            @Override
-            public void onGalleryItemClicked() {
-                Intent intent = new Intent(MainActivity.this, GalleryFlipperActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        flowController.destroyFlipperSubViews();
+        mActivityViewer.destroy();
     }
 }

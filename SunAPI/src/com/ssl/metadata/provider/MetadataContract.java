@@ -49,10 +49,14 @@ public final class MetadataContract {
 
 
     public static final class QuizComponents {
+        public static final String _ID = BaseColumns._ID;
         public static final String _QUIZ_ACTIVITY_ID = "quiz_activity_id";
         public static final String _PROBLEM_ID = "problem_id";
+        public static final String _SEQUENCE = "seq";
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("quiz_components").build();
+
+        public static final Uri PROBLEMS_URI = AUTHORITY_URI.buildUpon().appendPath("quiz_problems").build();
     }
 
     /*
@@ -156,6 +160,10 @@ public final class MetadataContract {
 
         public static Uri getActivityTextUri(long id) {
             return CONTENT_URI.buildUpon().appendPath("text").appendPath(String.valueOf(id)).build();
+        }
+
+        public static Uri getActivityHtmlUri(long id) {
+            return CONTENT_URI.buildUpon().appendPath("html").appendPath(String.valueOf(id)).build();
         }
     }
 

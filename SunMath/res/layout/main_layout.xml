@@ -35,14 +35,14 @@
             android:src="@drawable/left_gradient" />
     </RelativeLayout>
 
-    <ViewFlipper
+    <com.ssl.curriculum.math.component.viewer.ActivityViewer
         android:id="@+id/main_activity_view_flipper"
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:layout_weight="5"
         android:background="@color/main_activity_view_flipper_bg"
         android:gravity="center_vertical" >
-    </ViewFlipper>
+    </com.ssl.curriculum.math.component.viewer.ActivityViewer>
 
     <RelativeLayout
         android:layout_width="0dp"
