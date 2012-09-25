@@ -25,7 +25,8 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     private NavigationListView navigationListView;
 
     private LinearLayout ll_section_details;
-    private ImageButton btn_download;
+    private ImageView iv_download_lesson;
+    private ImageView iv_downloading;
     private ImageButton btn_study;
     private ImageButton btn_stat;
     private TextView tv_section_name;
@@ -59,8 +60,9 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     public void onClick(View v) {
         if (v == iv_back_button) {
             menuPresenter.menuBack();
-        } else if (v == btn_download){
+        } else if (v == iv_download_lesson){
             sectionPresenter.startDownload();
+            showDownloaded();
         } else if (v == btn_study) {
 
         } else if (v == btn_stat) {
@@ -127,6 +129,23 @@ public class NavigationActivity extends Activity implements View.OnClickListener
 
     }
 
+    public void showDownloadLesson(){
+        iv_download_lesson.setVisibility(View.VISIBLE);
+        iv_download_lesson.setEnabled(true);
+        iv_downloading.setVisibility(View.INVISIBLE);
+    }
+
+    public void showDownloading(){
+        iv_download_lesson.setVisibility(View.INVISIBLE);
+        iv_downloading.setVisibility(View.VISIBLE);
+    }
+
+    public void showDownloaded() {
+        iv_download_lesson.setVisibility(View.VISIBLE);
+        iv_download_lesson.setEnabled(false);
+        iv_downloading.setVisibility(View.INVISIBLE);
+    }
+
     private void initUI(){
         setContentView(R.layout.navigation_layout);
         tv_menu_title = (TextView) findViewById(R.id.tv_menu_title);
@@ -134,7 +153,8 @@ public class NavigationActivity extends Activity implements View.OnClickListener
         navigationListView = (NavigationListView) findViewById(R.id.navi_list_view);
         ll_section_details = (LinearLayout) this.findViewById(R.id.section_details);
         tv_section_name = (TextView) findViewById(R.id.tv_section_name);
-        btn_download = (ImageButton)findViewById(R.id.btn_navi_activity_download);
+        iv_download_lesson = (ImageView)findViewById(R.id.iv_navi_activity_download_lesson);
+        iv_downloading = (ImageView)findViewById(R.id.iv_navi_activity_downloading);
         btn_study = (ImageButton)findViewById(R.id.btn_navi_activity_study);
         btn_stat = (ImageButton)findViewById(R.id.btn_navi_activity_statistic);
         iv_section_thumbnail =(ImageView)findViewById(R.id.iv_section_thumbnail);
@@ -148,7 +168,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
         sectionPresenter = new SectionPresenter(this);
         navigationListView.setNextLevelMenuChangedListener(menuPresenter);
         iv_back_button.setOnClickListener(this);
-        btn_download.setOnClickListener(this);
+        iv_download_lesson.setOnClickListener(this);
         btn_study.setOnClickListener(this);
         btn_stat.setOnClickListener(this);
         download_management_entry.setOnClickListener(this);

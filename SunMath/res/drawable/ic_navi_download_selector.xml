@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/ic_main_download_lesson" android:state_enabled="true" android:state_pressed="false"/>
-    <item android:drawable="@drawable/ic_main_downloading_needs_progress_icon" android:state_enabled="false" android:state_pressed="true"/>
+    <item android:drawable="@drawable/ic_main_download_finished" android:state_pressed="true"/>
     <item android:drawable="@drawable/ic_main_download_finished" android:state_enabled="false"/>
+    <item android:drawable="@drawable/ic_main_download_lesson"/>
 
 </selector>

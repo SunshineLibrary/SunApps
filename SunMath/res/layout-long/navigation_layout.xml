@@ -139,17 +139,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/btn_navi_activity_download"
+                        android:layout_toLeftOf="@+id/iv_navi_activity_download_lesson"
                         android:src="@drawable/ic_main_top_single_divider" />
 
-                    <ImageButton
-                        android:id="@+id/btn_navi_activity_download"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/navi_top_divider_2"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/ic_navi_download_selector" />
+                    <ImageView android:id="@+id/iv_navi_activity_download_lesson"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:layout_centerVertical="true"
+                               android:layout_toLeftOf="@+id/navi_top_divider_2"
+                               android:background="@android:color/transparent"
+                               android:src="@drawable/ic_navi_download_selector"
+                            />
+
+                    <ImageView android:id="@+id/iv_navi_activity_downloading"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:layout_centerVertical="true"
+                               android:layout_toLeftOf="@+id/navi_top_divider_2"
+                               android:background="@android:color/transparent"
+                               android:src="@drawable/ic_main_downloading_in_progress"
+                               android:visibility="invisible"
+                            />
 
                     <ImageView
                         android:id="@+id/navi_top_divider_2"

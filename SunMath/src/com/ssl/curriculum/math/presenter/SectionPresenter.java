@@ -47,6 +47,7 @@ public class SectionPresenter {
         navigationActivity.setSection(currentSection);
         currentActivities = SectionHelper.getSectionActivitiesCursor(navigationActivity, id);
         navigationActivity.setSectionActivities(currentActivities);
+        navigationActivity.showDownloadLesson();
         registerObservers();
     }
 
