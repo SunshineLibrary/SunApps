@@ -4,4 +4,21 @@
     <string name="default_api_server_address">api.sunshine-library.org</string>
     <string name="default_upload_server_address">upload.sunshine-library.org</string>
     <string name="default_log_server_address">log.sunshine-library.org</string>
+
+    <string name="signin_heading">登录晓书</string>
+    <string name="name_input_legend">姓名</string>
+    <string name="birthday_input_legend">生日</string>
+    <string name="signin_submit_legend">生日</string>
+
+    <string-array name="grade_array">
+        <item>一年级</item>
+        <item>二年级</item>
+        <item>三年级</item>
+        <item>四年级</item>
+        <item>五年级</item>
+        <item>六年级</item>
+        <item>初一</item>
+        <item>初二</item>
+        <item>初三</item>
+    </string-array>
 </resources>

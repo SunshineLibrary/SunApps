@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:background="@drawable/bg_main_activity_navi"
+        >
+
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_window"
+        android:layout_centerInParent="true"
+        >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+                android:id="@+id/signin_topbar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                >
+
+            <TextView
+                    android:id="@+id/signin_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/signin_heading"
+                    android:textSize="28dp"
+                    android:textColor="#55A390"
+                    android:textStyle="bold"
+                    android:layout_alignParentLeft="true"
+                    />
+
+            <TextView
+                    android:id="@+id/signin_errormsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="20dp"
+                    android:textColor="#C84537"
+                    android:layout_alignParentRight="true"
+                    />
+        </RelativeLayout>
+
+        <ImageView
+                android:id="@+id/signin_heading_divider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_shadow_divider"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                />
+
+        <LinearLayout
+                android:id="@+id/input_form"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:orientation="vertical"
+                >
+
+            <Spinner
+                    android:id="@+id/school_spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    />
+
+            <RelativeLayout
+                    android:id="@+id/classroom_selection"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    >
+
+                <Spinner
+                        android:id="@+id/grade_spinner"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        />
+
+                <Spinner
+                        android:id="@+id/class_spinner"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        />
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:id="@+id/name_input"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    >
+
+                <TextView
+                        android:id="@+id/name_input_legent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/name_input_legend"
+                        android:textSize="24dp"
+                        android:textColor="#55A390"
+                        android:layout_alignParentLeft="true"
+                        />
+
+                <EditText
+                        android:id="@+id/name_input_field"
+                        android:layout_width="240dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="24dp"
+                        android:layout_alignParentRight="true"
+                        />
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:id="@+id/birthday_input"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    >
+
+                <TextView
+                        android:id="@+id/birthday_input_legent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/birthday_input_legend"
+                        android:textSize="24dp"
+                        android:textColor="#55A390"
+                        android:layout_alignParentLeft="true"
+                        />
+
+                <EditText
+                        android:id="@+id/birthday_input_field"
+                        android:layout_width="240dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="24dp"
+                        android:layout_alignParentRight="true"
+                        />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageButton
+            android:id="@+id/btn_signin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_confirm"
+            android:paddingTop="15dp"
+            />
+
+</LinearLayout>
+</RelativeLayout>
