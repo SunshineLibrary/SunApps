@@ -24,7 +24,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     private TextView tv_menu_title;
     private NavigationListView navigationListView;
 
-    private LinearLayout ll_section_details;
+    private RelativeLayout rl_section_details;
     private ImageView iv_download_lesson;
     private ImageView iv_downloading;
     private ImageButton btn_study;
@@ -86,11 +86,11 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     }
 
     public void displaySectionDetails() {
-        ll_section_details.setVisibility(View.VISIBLE);
+        rl_section_details.setVisibility(View.VISIBLE);
     }
 
     public void hideSectionDetails() {
-        ll_section_details.setVisibility(View.INVISIBLE);
+        rl_section_details.setVisibility(View.INVISIBLE);
     }
 
     public void setSectionName(String title) {
@@ -151,7 +151,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
         tv_menu_title = (TextView) findViewById(R.id.tv_menu_title);
         iv_back_button = (ImageView) findViewById(R.id.navigation_menu_back_btn);
         navigationListView = (NavigationListView) findViewById(R.id.navi_list_view);
-        ll_section_details = (LinearLayout) this.findViewById(R.id.section_details);
+        rl_section_details = (RelativeLayout) this.findViewById(R.id.section_details);
         tv_section_name = (TextView) findViewById(R.id.tv_section_name);
         iv_download_lesson = (ImageView)findViewById(R.id.iv_navi_activity_download_lesson);
         iv_downloading = (ImageView)findViewById(R.id.iv_navi_activity_downloading);

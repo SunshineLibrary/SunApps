@@ -107,7 +107,7 @@
                 android:src="@drawable/bg_main_activity_no_item_selected" />
         </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/section_details"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -116,8 +116,9 @@
             android:visibility="invisible" >
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                    android:id="@+id/title_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -204,6 +205,29 @@
                 </RelativeLayout>
             </RelativeLayout>
 
+            <FrameLayout
+                    android:id="@+id/section_activities_wrapper"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    >
+                <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="250dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_main_scroll_background"
+                        />
+                <com.ssl.curriculum.math.component.HorizontalListView
+                        android:id="@+id/lv_section_activities"
+                        android:layout_width="wrap_content"
+                        android:layout_height="200dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        />
+            </FrameLayout>
+
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -211,6 +235,8 @@
                 android:paddingTop="10dp"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
+                android:layout_above="@id/section_activities_wrapper"
+                android:layout_below="@id/title_bar"
                     >
 
                 <ImageView
@@ -246,19 +272,10 @@
                         android:textColor="#594c25"
                         />
 
-                <com.ssl.curriculum.math.component.HorizontalListView
-                        android:id="@+id/lv_section_activities"
-                        android:layout_width="wrap_content"
-                        android:layout_height="200dp"
-                        android:layout_marginBottom="0dp"
-                        android:layout_alignParentBottom="true"
-                        />
-
                 <ScrollView
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_below="@id/iv_section_thumbnail"
-                        android:layout_above="@id/lv_section_activities"
                         android:layout_marginBottom="20dp"
                         android:layout_marginTop="20dp"
                         >
@@ -271,9 +288,8 @@
                               android:textColor="#594c25"
                             />
                 </ScrollView>
-
             </RelativeLayout>
-        </LinearLayout>
+        </RelativeLayout>
     </FrameLayout>
 
 </LinearLayout>
