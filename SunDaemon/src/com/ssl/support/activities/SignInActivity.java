@@ -18,8 +18,6 @@ public class SignInActivity extends Activity{
     private Spinner sp_grade;
     private Spinner sp_class;
 
-    private ArrayAdapter
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

@@ -108,13 +108,13 @@
                 android:src="@drawable/bg_main_activity_no_item_selected" />
         </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/section_details"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="#F6F2E4"
             android:orientation="vertical"
-            android:visibility="invisible" >
+            android:visibility="visible" >
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -275,7 +275,7 @@
                 </ScrollView>
 
             </RelativeLayout>
-        </LinearLayout>
+        </RelativeLayout>
     </FrameLayout>
 
 </LinearLayout>
