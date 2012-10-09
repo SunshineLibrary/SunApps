@@ -102,7 +102,7 @@ public final class MetadataContract {
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("lessons").build();
     }
 
-    public static final class Sections {
+    public static final class Sections extends Downloadable {
         public static final String _ID = BaseColumns._ID;
         public static final String _PARENT_ID = "lesson_id";
         public static final String _NAME = "name";

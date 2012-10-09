@@ -11,5 +11,6 @@ public class Section {
     public int id;
     public String name;
     public String description;
+    public int download_status;
 
 }
