@@ -1,0 +1,5 @@
+key.store=key/xiaoshu-release.keystore
+key.alias=xiaoshu
+key.store.password=xiaoshu
+key.alias.password=xiaoshu
+gen.dir=gen
