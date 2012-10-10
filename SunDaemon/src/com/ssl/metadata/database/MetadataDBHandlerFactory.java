@@ -9,7 +9,7 @@ import com.ssl.metadata.database.views.*;
 
 public class MetadataDBHandlerFactory {
 
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 104;
     private static final String DB_NAME = "metadata";
 
     public static DBHandler newMetadataDBHandler(Context context) {
@@ -53,22 +53,22 @@ public class MetadataDBHandlerFactory {
         TableObserver thumbnailObserver = new ThumbnailFetchObserver(context);
         ObservableTable table = new ObservableTable(new ActivityTable(dbHandler));
         table.addObserver(downloadableObserver);
-        table.addObserver(thumbnailObserver);
+        //table.addObserver(thumbnailObserver);
         dbHandler.addTableManager(ActivityTable.TABLE_NAME, table);
 
         table = new ObservableTable(new GalleryImageTable(dbHandler));
         table.addObserver(downloadableObserver);
-        table.addObserver(thumbnailObserver);
+        //table.addObserver(thumbnailObserver);
         dbHandler.addTableManager(GalleryImageTable.TABLE_NAME, table);
 
         table = new ObservableTable(new BookTable(dbHandler));
         table.addObserver(downloadableObserver);
-        table.addObserver(thumbnailObserver);
+        //table.addObserver(thumbnailObserver);
         dbHandler.addTableManager(BookTable.TABLE_NAME, table);
 
         table = new ObservableTable(new BookCollectionTable(dbHandler));
         table.addObserver(downloadableObserver);
-        table.addObserver(thumbnailObserver);
+        //table.addObserver(thumbnailObserver);
         dbHandler.addTableManager(BookCollectionTable.TABLE_NAME, table);
 
     }

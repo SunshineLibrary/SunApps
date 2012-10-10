@@ -14,6 +14,7 @@ public class SectionTable extends MenuWithForeignKeyTable {
             Sections._NAME,
             Sections._PARENT_ID,
             Sections._DESCRIPTION,
+            Sections._DOWNLOAD_STATUS
     };
 
     private static final String[][] COLUMN_DEFINITIONS = {
@@ -21,6 +22,7 @@ public class SectionTable extends MenuWithForeignKeyTable {
             {Sections._NAME, "TEXT"},
             {Sections._PARENT_ID, "INTEGER NOT NULL"},
             {Sections._DESCRIPTION, "TEXT"},
+            {Sections._DOWNLOAD_STATUS, "INTEGER"},
     };
 
     public SectionTable(DBHandler handler) {

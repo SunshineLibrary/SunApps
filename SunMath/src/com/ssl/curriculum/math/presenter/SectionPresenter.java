@@ -47,8 +47,18 @@ public class SectionPresenter {
         navigationActivity.setSection(currentSection);
         currentActivities = SectionHelper.getSectionActivitiesCursor(navigationActivity, id);
         navigationActivity.setSectionActivities(currentActivities);
-        navigationActivity.showDownloadLesson();
+        showDownloadButton();
         registerObservers();
+    }
+
+    private void showDownloadButton() {
+        if (currentSection.download_status == MetadataContract.Downloadable.STATUS_NOT_DOWNLOADED) {
+            navigationActivity.showDownloadLesson();
+        } else if (currentSection.download_status == MetadataContract.Downloadable.STATUS_DOWNLOADED) {
+            navigationActivity.showDownloaded();
+        } else {
+            navigationActivity.showDownloading();
+        }
     }
 
     private void loadActivities() {

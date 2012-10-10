@@ -42,6 +42,7 @@ public class SectionHelper {
         section.id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Sections._ID));
         section.name = cursor.getString(cursor.getColumnIndex(MetadataContract.Sections._NAME));
         section.description = cursor.getString(cursor.getColumnIndex(MetadataContract.Sections._DESCRIPTION));
+        section.download_status = cursor.getInt(cursor.getColumnIndex(MetadataContract.Sections._DOWNLOAD_STATUS));
         return section;
     }
 }
