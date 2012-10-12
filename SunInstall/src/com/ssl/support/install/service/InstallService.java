@@ -108,12 +108,12 @@ public class InstallService extends Service {
     private void startNextInstall() {
         InstallRequest request = installQueue.peek();
         UninstallRequest request2 = uninstallQueue.peek();
-        if (request != null) {
-            InstallTask installTask = new InstallTaskImpl(request.getApkPath());
-            installTask.execute();
-        }else if (request2 != null){
+        if (request2 != null) {
             UninstallTask uninstallTask = new UninstallTaskImpl(request2.getApkPkg());
             uninstallTask.execute();
+        }else if (request != null){
+            InstallTask installTask = new InstallTaskImpl(request.getApkPath());
+            installTask.execute();
         } else {
             installInProgress = false;
             releaseLock();

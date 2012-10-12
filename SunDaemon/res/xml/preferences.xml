@@ -18,7 +18,6 @@
                             android:title="日志服务器地址"
                             android:defaultValue="@string/default_log_server_address"
                 />
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="通用设置">
@@ -27,6 +26,12 @@
                 android:dialogMessage="您确定要重置对Daemon的设置么?"
                 android:dialogTitle="重置Daemon的设置"
                 />
+        <!--
+        <DialogPreference
+                android:title="软件版本"
+                android:dialogMessage="@string/app_version"
+                android:dialogTitle="Daemon版本"
+                /> -->
     </PreferenceCategory>
 
 
