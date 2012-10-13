@@ -53,7 +53,6 @@ public class InstallService extends Service {
         registerInstallReceivers();
         installQueue = new InstallQueue(getBaseContext(), new InstallRequest.Factory());
         uninstallQueue = new UninstallQueue(getBaseContext(), new UninstallRequest.Factory());
-        hasActiveTimer = (installQueue.peek() != null) || (uninstallQueue.peek() != null);
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
     }
@@ -64,42 +63,42 @@ public class InstallService extends Service {
             Log.i(TAG, "Scheduling Install: "+intent);
             installQueue.add(new InstallRequest(intent.getData().toString()));
             if (!installInProgress) {
-                hasActiveTimer = true;
                 notifyInstall();
             }
         } else if(intent.getAction().equals(ACTION_SCHEDULE_UNINSTALL) && intent.hasExtra("pkg")){
             Log.i(TAG, "Scheduling Uninstall: "+intent);
             uninstallQueue.add(new UninstallRequest(intent.getStringExtra("pkg")));
             if (!installInProgress) {
-                hasActiveTimer = true;
                 notifyInstall();
             }
         } else if(intent.getAction().equals(ACTION_INSTALL)) {
-            Log.i(TAG, "Starting install: "+intent);
-            if (hasActiveTimer) {
-                hasActiveTimer = false;
-                startNextInstall();
+            Log.i(TAG, "Starting install: " + intent);
+            if (hasPendingInstall()) {
                 installInProgress = true;
+                startNextInstall();
             } else {
                 Log.w(getClass().getName(), "No pending install found. This is weird.");
                 releaseLock();
                 stopSelf();
             }
         } else if(intent.getAction().equals(ACTION_START_TIMER)) {
-            if (hasActiveTimer) {
+            if (installInProgress) {
+                Log.v(getClass().getName(), "Install in progress, timer not started.");
+            } else if (hasActiveTimer) {
+                Log.v(getClass().getName(), "Weird. Timer already started.");
+            }  else if (hasPendingInstall()) {
                 Log.v(getClass().getName(), "Found pending install. Starting timer...");
-                timer.start();
-                acquireLock();
+                startTimer();
             } else {
-                Log.v(getClass().getName(), "No pending installs. Timer not started");
+                Log.v(getClass().getName(), "Nothing to do, timer not started. Stopping...");
+                stopSelf();
             }
         } else if(intent.getAction().equals(ACTION_STOP_TIMER)) {
             if (hasActiveTimer) {
-                releaseLock();
                 Log.v(getClass().getName(), "Found active timer. stopping...");
-                timer.reset();
-            } else {
-                Log.v(getClass().getName(), "No active timer.");
+                stopTimer();
+            }  else {
+                Log.v(getClass().getName(), "No timer found.");
             }
         }
         return START_STICKY;
@@ -142,6 +141,22 @@ public class InstallService extends Service {
         registerReceiver(installReceiver, filter);
     }
 
+    private boolean hasPendingInstall() {
+        return installQueue.peek() != null || uninstallQueue.peek() != null;
+    }
+
+    private void startTimer() {
+        hasActiveTimer = true;
+        timer.start();
+        acquireLock();
+    }
+
+    private void stopTimer() {
+        releaseLock();
+        hasActiveTimer = false;
+        timer.reset();
+    }
+
     private void notifyInstall() {
         if (!((PowerManager) getSystemService(Context.POWER_SERVICE)).isScreenOn()) {
             Log.v(getClass().getName(), "Notifying receiver of new install request...");
@@ -168,10 +183,15 @@ public class InstallService extends Service {
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            installQueue.pop();
+        }
+
+        @Override
         protected void onPostExecute(Boolean status) {
             super.onPostExecute(status);
             broadcastStatus(status);
-            installQueue.pop();
             startNextInstall();
         }
 
@@ -194,10 +214,15 @@ public class InstallService extends Service {
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            uninstallQueue.pop();
+        }
+
+        @Override
         protected void onPostExecute(Boolean status) {
             super.onPostExecute(status);
             broadcastStatus(status);
-            uninstallQueue.pop();
             startNextInstall();
         }
 
