@@ -62,8 +62,24 @@ public class PackageHelper {
 
     public static void createNewPackage(Context context, Package pkg) {
         ContentResolver contentResolver = context.getContentResolver();
-        contentResolver.insert(Packages.CONTENT_URI, getNewRecordContentValues(pkg));
+        if (isExistingPackage(contentResolver, pkg.id)) {
+            contentResolver.update(Packages.CONTENT_URI, getUpdateRecordContentValues(pkg),
+                    BaseColumns._ID + "=" + pkg.id, null);
+        } else {
+            contentResolver.insert(Packages.CONTENT_URI, getNewRecordContentValues(pkg));
+        }
         contentResolver.notifyChange(Packages.CONTENT_URI, null);
+    }
+
+    private static boolean isExistingPackage(ContentResolver resolver, int pkg_id) {
+        boolean isExisting = false;
+        Cursor cursor = resolver.query(Packages.CONTENT_URI,
+                null, BaseColumns._ID + "=" + pkg_id, null, null);
+        if(cursor.moveToFirst()) {
+            isExisting = true;
+        }
+        cursor.close();
+        return isExisting;
     }
 
     public static void setInstallStatus(Context context, int id, int status) {
@@ -106,6 +122,13 @@ public class PackageHelper {
     private static ContentValues getNewRecordContentValues(Package pkg) {
         ContentValues values = new ContentValues();
         values.put(MetadataContract.Packages._ID, pkg.getId());
+        values.put(MetadataContract.Packages._VERSION, pkg.getVersion());
+        values.put(MetadataContract.Packages._NAME, pkg.getName());
+        return values;
+    }
+
+    private static ContentValues getUpdateRecordContentValues(Package pkg) {
+        ContentValues values = new ContentValues();
         values.put(MetadataContract.Packages._VERSION, pkg.getVersion());
         values.put(MetadataContract.Packages._NAME, pkg.getName());
         return values;

@@ -1,0 +1,4 @@
+<resources>
+    <integer name="app_version">106</integer>
+    <string name="app_version">1.0.6</string>
+</resources>
