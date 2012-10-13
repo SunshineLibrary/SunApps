@@ -78,7 +78,6 @@ public class InstallService extends Service {
                 startNextInstall();
             } else {
                 Log.w(getClass().getName(), "No pending install found. This is weird.");
-                releaseLock();
                 stopSelf();
             }
         } else if(intent.getAction().equals(ACTION_START_TIMER)) {
@@ -95,8 +94,13 @@ public class InstallService extends Service {
             }
         } else if(intent.getAction().equals(ACTION_STOP_TIMER)) {
             if (hasActiveTimer) {
-                Log.v(getClass().getName(), "Found active timer. stopping...");
-                stopTimer();
+                if (installInProgress) {
+                    hasActiveTimer = false;
+                    Log.v(getClass().getName(), "Timer expired. Do nothing");
+                } else {
+                    Log.v(getClass().getName(), "Found active timer. stopping...");
+                    stopTimer();
+                }
             }  else {
                 Log.v(getClass().getName(), "No timer found.");
             }
