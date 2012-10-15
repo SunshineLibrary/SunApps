@@ -21,4 +21,13 @@
         <item>初二</item>
         <item>初三</item>
     </string-array>
+
+    <string-array name="class_array">
+        <item>1班</item>
+        <item>2班</item>
+        <item>3班</item>
+        <item>4班</item>
+        <item>5班</item>
+        <item>6班</item>
+    </string-array>
 </resources>
