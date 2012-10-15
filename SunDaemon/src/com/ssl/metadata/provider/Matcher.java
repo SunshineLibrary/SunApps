@@ -9,6 +9,7 @@ public class Matcher {
     /*
      * Defining constants for matching the content URI
      */
+    public static final int SYSTEM_PASSWORD = 1;
 
     public static final int PACKAGES = 100;
     public static final int PACKAGES_ID = 101;
@@ -70,6 +71,8 @@ public class Matcher {
 
         public static UriMatcher getMatcher() {
             UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+            matcher.addURI(AUTHORITY, "system_password", SYSTEM_PASSWORD);
 
             matcher.addURI(AUTHORITY, "packages", PACKAGES);
             matcher.addURI(AUTHORITY, "packages/#", PACKAGES_ID);

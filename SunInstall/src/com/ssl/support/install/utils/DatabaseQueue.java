@@ -14,6 +14,7 @@ public class DatabaseQueue<T extends JSONSerializable> {
     private DatabaseQueueDBHandler dbHandler;
     private String queueName;
     private JSONSerializable.Factory<T> factory;
+    private T peeked;
 
 
     public DatabaseQueue(Context context, String queueName, JSONSerializable.Factory<T> factory) {
@@ -26,10 +27,13 @@ public class DatabaseQueue<T extends JSONSerializable> {
     }
 
     public T peek() {
+        if (peeked != null)
+            return peeked;
         String value = dbHandler.getFirst();
         if (value != null) {
             try {
-                return factory.createNewFromJSON(new JSONObject(value));
+                peeked = factory.createNewFromJSON(new JSONObject(value));
+                return peeked;
             } catch (JSONException e) {
                 Log.e(getClass().getName(), "Failed to parse JSON for value: " + value);
                 dbHandler.getAndRemoveFirst();
@@ -40,6 +44,7 @@ public class DatabaseQueue<T extends JSONSerializable> {
     }
 
     public T pop() {
+        peeked = null;
         String value = dbHandler.getAndRemoveFirst();
         if (value != null) {
             try {

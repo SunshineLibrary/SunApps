@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">下载更新</string>
+    <string name="app_version">1.0.6</string>
     <string name="default_api_server_address">api.sunshine-library.org</string>
     <string name="default_upload_server_address">upload.sunshine-library.org</string>
     <string name="default_log_server_address">log.sunshine-library.org</string>

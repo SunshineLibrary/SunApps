@@ -29,8 +29,7 @@
     </target>
 
     <target name="clean" description="Remove all files created by the build/test process.">
-        <delete dir="${classes.dir}"/>
-        <delete dir="${classes.dir}"/>
+        <delete dir="./bin"/>
         <delete dir="${gen.dir}"/>
         <delete dir="${reports.dir}"/>
         <delete file="cobertura.log"/>
@@ -82,20 +81,6 @@
         <exec executable="${sdk.dir}/platform-tools/adb">
             <arg value="install"/>
             <arg value="./bin/SunInstall-release.apk"/>
-        </exec>
-        <exec executable="${sdk.dir}/platform-tools/adb">
-            <arg value="push"/>
-            <arg value="../SunDaemon/bin/SunDaemon-release.apk"/>
-            <arg value="/sdcard/"/>
-        </exec>
-        <exec executable="${sdk.dir}/platform-tools/adb">
-            <arg value="shell"/>
-            <arg value="am"/>
-            <arg value="startservice"/>
-            <arg value="-a"/>
-            <arg value="com.ssl.support.action.scheduleInstall"/>
-            <arg value="-d"/>
-            <arg value="file:///sdcard/SunDaemon-release.apk"/>
         </exec>
     </target>
 
