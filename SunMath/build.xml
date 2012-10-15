@@ -29,8 +29,7 @@
     </target>
 
     <target name="clean" description="Remove all files created by the build/test process.">
-        <delete dir="${classes.dir}"/>
-        <delete dir="${classes.dir}"/>
+        <delete dir="./bin"/>
         <delete dir="${gen.dir}"/>
         <delete dir="${reports.dir}"/>
         <delete file="cobertura.log"/>
