@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.BaseColumns;
@@ -22,6 +23,8 @@ import static com.ssl.metadata.provider.MetadataContract.SectionComponents;
 public class MetadataProvider extends ContentProvider {
 
     private static final UriMatcher sUriMatcher = Matcher.Factory.getMatcher();
+
+    private static final String PASSWORD = "lightyear";
 
     private DBHandler dbHandler;
     private SharedStorageManager sharedStorageManager;
@@ -64,6 +67,10 @@ public class MetadataProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         int uriMatch = sUriMatcher.match(uri);
+        if (uriMatch == Matcher.SYSTEM_PASSWORD) {
+            return getNewPasswordCursor();
+        }
+
         Table table = getTableForMatch(uriMatch);
         TableView view = getViewForMatch(uriMatch);
 
@@ -74,7 +81,7 @@ public class MetadataProvider extends ContentProvider {
         switch (uriMatch) {
             // Views
             case Matcher.SECTIONS_ACTIVITIES:
-                    return view.query(uri, projection,
+                return view.query(uri, projection,
                         SectionComponents._SECTION_ID + "=?", new String[]{uri.getLastPathSegment()}, sortOrder);
             case Matcher.QUIZ_PROBLEMS:
             case Matcher.BOOK_INFO:
@@ -362,5 +369,11 @@ public class MetadataProvider extends ContentProvider {
             default:
                 return null;
         }
+    }
+
+    public Cursor getNewPasswordCursor() {
+        MatrixCursor cursor = new MatrixCursor(new String[] {"system_password"});
+        cursor.addRow(new String[] {String.valueOf(PASSWORD.hashCode())});
+        return cursor;
     }
 }
