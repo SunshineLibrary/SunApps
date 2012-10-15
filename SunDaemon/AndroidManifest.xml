@@ -5,7 +5,7 @@
           android:versionName="1.0.6">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    
+
     <!-- android:sharedUserId="android.uid.system" -->
     <uses-sdk android:minSdkVersion="8"/>
 
@@ -87,5 +87,6 @@
     </application>
 
     <permission android:protectionLevel="normal" android:name="com.ssl.metadata.provider.READ_WRITE_PERMISSION"/>
+    <permission android:protectionLevel="normal" android:name="com.ssl.support.install.INSTALL_PERMISSION"/>
 
 </manifest>
