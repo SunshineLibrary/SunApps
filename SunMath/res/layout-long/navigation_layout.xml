@@ -5,8 +5,9 @@
     android:orientation="horizontal" >
 
     <RelativeLayout
-        android:layout_width="200dp"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_weight="2.5"
         android:background="@drawable/bg_main_activity_navi" >
 
         <RelativeLayout
@@ -19,6 +20,7 @@
                 android:id="@+id/navigation_menu_back_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_side_list_back" />
@@ -50,19 +52,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:paddingTop="11dp"
-                android:visibility="invisible"
                 android:src="@drawable/ic_side_green" />
         </RelativeLayout>
-
-        <com.ssl.curriculum.math.component.NavigationListView
-            android:id="@+id/navi_list_view"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/navi_activity_top_container"
-            android:cacheColorHint="#00000000"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="2dp"
-            android:fadingEdge="none" />
 
         <ImageView
                 android:id="@+id/download_management_entry"
@@ -73,20 +64,32 @@
                 />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/small_green_square"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_side_shadow"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/small_green_square"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_side_shadow"
                 />
 
-
+        <com.ssl.curriculum.math.component.NavigationListView
+            android:id="@+id/navi_list_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/download_management_entry"
+            android:layout_below="@id/navi_activity_top_container"
+            android:cacheColorHint="#00000000"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="2dp"
+            android:fadingEdge="none"
+            android:layout_marginBottom="2dp"
+                />
     </RelativeLayout>
 
     <FrameLayout
-        android:layout_width="600dp"
-        android:layout_height="fill_parent">
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -114,9 +117,10 @@
             android:layout_height="fill_parent"
             android:background="#F6F2E4"
             android:orientation="vertical"
-            android:visibility="invisible" >
+            android:visibility="visible" >
 
             <RelativeLayout
+                android:id="@+id/title_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
@@ -205,26 +209,47 @@
                 </RelativeLayout>
             </RelativeLayout>
 
+            <FrameLayout
+                    android:id="@+id/section_activities_wrapper"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    >
+                <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="180dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_main_scroll_background"
+                        />
+                <com.ssl.curriculum.math.component.HorizontalListView
+                        android:id="@+id/lv_section_activities"
+                        android:layout_width="fill_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_gravity="center_vertical"
+                        />
+            </FrameLayout>
+
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingTop="10dp"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
+                android:layout_above="@id/section_activities_wrapper"
+                android:layout_below="@id/title_bar"
                     >
 
                 <ImageView
                     android:id="@+id/iv_section_thumbnail"
-                    android:layout_width="120dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="0dp"
                     android:layout_marginRight="20dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_navi_section_thumbnail"
                     />
-
 
                 <TextView
                         android:id="@+id/tv_section_name"
@@ -234,7 +259,7 @@
                         android:layout_marginTop="15dp"
                         android:text="Section Name"
                         android:textColor="#26240c"
-                        android:textSize="24dp"
+                        android:textSize="20dp"
                         />
 
                 <TextView
@@ -248,21 +273,12 @@
                         android:textColor="#594c25"
                         />
 
-                <com.ssl.curriculum.math.component.HorizontalListView
-                        android:id="@+id/lv_section_activities"
-                        android:layout_width="wrap_content"
-                        android:layout_height="100dp"
-                        android:layout_marginBottom="0dp"
-                        android:layout_alignParentBottom="true"
-                        />
-
                 <ScrollView
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_below="@id/iv_section_thumbnail"
-                        android:layout_above="@id/lv_section_activities"
-                        android:layout_marginBottom="20dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
                         >
                     <TextView android:id="@+id/tv_section_description"
                               android:layout_width="fill_parent"
@@ -273,7 +289,6 @@
                               android:textColor="#594c25"
                             />
                 </ScrollView>
-
             </RelativeLayout>
         </RelativeLayout>
     </FrameLayout>
