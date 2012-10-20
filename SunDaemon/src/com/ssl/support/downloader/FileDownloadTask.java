@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import com.ssl.support.utils.IOUtils;
+import com.ssl.support.utils.JSONSerializable;
 import com.ssl.support.utils.ListenableAsyncTask;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -18,9 +19,8 @@ public class FileDownloadTask extends ListenableAsyncTask<Uri, Integer, Integer>
 
     private HttpClient httpClient;
     Context context;
-    private Uri remoteUri;
+    Uri remoteUri, localUri;
 
-    Uri localUri;
     private long contentLength;
 
     public static final int SUCCESS = 0;

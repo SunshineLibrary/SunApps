@@ -2,8 +2,10 @@ package com.ssl.support.services;
 
 import android.app.Service;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
+import com.ssl.support.downloader.DownloadQueue;
 import com.ssl.support.downloader.MonitoredFileDownloadTask;
 import com.ssl.support.utils.Listener;
 
@@ -19,7 +21,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class DownloadService extends Service {
 
-    private LinkedBlockingQueue<MonitoredFileDownloadTask> downloadTasks;
+    private DownloadQueue downloadQueue;
     private Listener<Integer> startNextListener;
     private DownloadBinder mBinder;
     private boolean downloading;
@@ -34,16 +36,18 @@ public class DownloadService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        downloadTasks = new LinkedBlockingQueue<MonitoredFileDownloadTask>();
+        downloadQueue = new DownloadQueue(getBaseContext(), new MonitoredFileDownloadTask.Factory(getBaseContext()));
         downloading = false;
         startNextListener = new Listener<Integer>() {
             @Override
             public void onResult(Integer integer) {
-                startNextTask();
                 downloading = false;
+                downloadQueue.pop();
+                startNextTask();
             }
         };
         mBinder = new DownloadBinder();
+        startNextTask();
     }
 
     @Override
@@ -51,19 +55,19 @@ public class DownloadService extends Service {
         return mBinder;
     }
 
-    public synchronized void addDownloadTask(MonitoredFileDownloadTask downloadTask) {
-        downloadTasks.add(downloadTask);
-        if (!downloading) {
-            startNextTask();
-        }
+    public void addDownloadTask(Uri remoteUri, Uri localUri, Uri updateUri, Uri notifyUri) {
+        downloadQueue.add(remoteUri, localUri, updateUri, notifyUri);
+        startNextTask();
     }
 
-    private void startNextTask() {
-        MonitoredFileDownloadTask task = downloadTasks.poll();
-        if (task != null) {
-            task.addListener(startNextListener);
-            downloading = true;
-            task.execute();
+    private synchronized void startNextTask() {
+        if (!downloading) {
+            MonitoredFileDownloadTask task = downloadQueue.peek();
+            if (task != null) {
+                task.addListener(startNextListener);
+                downloading = true;
+                task.execute();
+            }
         }
     }
 }

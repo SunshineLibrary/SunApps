@@ -104,19 +104,16 @@ public class DownloadableTableObserver extends TableObserver {
             int type = cursor.getInt(cursor.getColumnIndex(Activities._TYPE));
             switch (type) {
                 case Activities.TYPE_VIDEO:
-                    startSerialDownload(new MonitoredFileDownloadTask(context,
-                            apiClient.getDownloadUri("activities", id),
-                            Activities.getActivityVideoUri(id), uri));
+                    startSerialDownload(
+                            apiClient.getDownloadUri("activities", id), Activities.getActivityVideoUri(id), uri, null);
                     break;
                 case Activities.TYPE_TEXT:
-                    startSerialDownload(new MonitoredFileDownloadTask(context,
-                            apiClient.getDownloadUri("activities", id),
-                            Activities.getActivityTextUri(id), uri));
+                    startSerialDownload(
+                            apiClient.getDownloadUri("activities", id), Activities.getActivityTextUri(id), uri, null);
                     break;
                 case Activities.TYPE_HTML:
-                    startSerialDownload(new MonitoredFileDownloadTask(context,
-                            apiClient.getDownloadUri("activities", id),
-                            Activities.getActivityHtmlUri(id), uri));
+                    startSerialDownload(
+                            apiClient.getDownloadUri("activities", id), Activities.getActivityHtmlUri(id), uri, null);
                     break;
                 case Activities.TYPE_GALLERY:
                     ContentValues values = new ContentValues();
@@ -125,10 +122,7 @@ public class DownloadableTableObserver extends TableObserver {
                             GalleryImages._GALLERY_ID + "=?", new String[]{String.valueOf(id)});
                     break;
                 case Activities.TYPE_QUIZ:
-                    values = new ContentValues();
-                    values.put(Activities._DOWNLOAD_STATUS, MetadataContract.Downloadable.STATUS_DOWNLOADED);
-                    context.getContentResolver().update(uri, values, null, null);
-                    context.getContentResolver().notifyChange(uri, null);
+                    startSerialDownload(null, null, uri, null);
                     break;
                 default:
             }
@@ -148,8 +142,8 @@ public class DownloadableTableObserver extends TableObserver {
                 GalleryImages.getGalleryImageUri(id), uri).execute();
     }
 
-    private void startSerialDownload(MonitoredFileDownloadTask task) {
-        getDownloadService().addDownloadTask(task);
+    private void startSerialDownload(Uri remoteUri, Uri localUri, Uri updateUri, Uri notifyUri) {
+        getDownloadService().addDownloadTask(remoteUri, localUri, updateUri, notifyUri);
     }
 
     private DownloadService getDownloadService() {
