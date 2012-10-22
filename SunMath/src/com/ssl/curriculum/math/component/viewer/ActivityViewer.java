@@ -19,7 +19,7 @@ public class ActivityViewer extends FrameLayout{
     private ActivityView mCurrentView;
     private FlipAnimationManager mAnimationManager;
 
-    private ActivityView mVideoView, mQuizView, mHtmlView, mTextView, mGalleryView;
+    private ActivityView mVideoView, mQuizView, mHtmlView, mTextView, mGalleryView, mPdfView;
 
     public ActivityViewer(Context context) {
         super(context);
@@ -111,6 +111,8 @@ public class ActivityViewer extends FrameLayout{
                 return getHtmlView();
             case TYPE_GALLERY:
                 return getGalleryView();
+            case TYPE_PDF:
+            	return getPdfView();
         }
         return null;
     }
@@ -153,6 +155,14 @@ public class ActivityViewer extends FrameLayout{
             addView(mGalleryView);
         }
         return mGalleryView;
+    }
+    
+    private ActivityView getPdfView() {
+        if (mPdfView == null) {
+        	mPdfView = new PdfActivityView(getContext(), this);
+            addView(mPdfView);
+        }
+        return mPdfView;
     }
 
     @Override

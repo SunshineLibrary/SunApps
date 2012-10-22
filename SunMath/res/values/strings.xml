@@ -11,5 +11,6 @@
 
     <string name="correct">正确</string>
     <string name="web_view_activity_title">我是WebView</string>
+    <string name="open_file">打开文件</string>
 
 </resources>
