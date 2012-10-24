@@ -140,6 +140,10 @@ public class DownloadableTableObserver extends TableObserver {
             case Activities.TYPE_QUIZ:
                 enqueueDownloadTask(null, null, uri, notifyUri);
                 break;
+            case Activities.TYPE_PDF:
+                enqueueDownloadTask(
+                        apiClient.getDownloadUri("activities", id), Activities.getActivityPdfUri(id), uri, notifyUri);
+                break;
             default:
         }
 
