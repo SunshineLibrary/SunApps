@@ -3,23 +3,19 @@ package com.ssl.curriculum.math.component.activity;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Comparator;
 
-import android.R.bool;
-import android.R.integer;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.ParcelFileDescriptor;
-import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +27,6 @@ import android.widget.Toast;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.viewer.ActivityViewer;
 import com.ssl.curriculum.math.model.activity.LinkedActivityData;
-import com.ssl.curriculum.math.utils.IOUtils;
 import com.ssl.metadata.provider.MetadataContract;
 
 /**
@@ -81,6 +76,7 @@ public class PdfActivityView extends ActivityView implements View.OnClickListene
 
 	@Override
 	public void onClick(View v) {
+		
 		try{
 			synchronized (this) {
 				if(task.getStatus().equals(AsyncTask.Status.FINISHED)){
@@ -128,19 +124,40 @@ public class PdfActivityView extends ActivityView implements View.OnClickListene
 			out.flush();
 		}
 		
+		void clearCache(File baseDir){
+			File[] cachesFiles = baseDir.listFiles(new FilenameFilter() {				
+				@Override
+				public boolean accept(File dir, String filename) {
+					return filename.startsWith("_pdf_cache_") && filename.endsWith(".pdf");
+				}
+			});
+			Arrays.sort(cachesFiles, new Comparator<File>(){
+				@Override
+				public int compare(File lhs, File rhs) {
+					return new Long(lhs.lastModified()).compareTo(rhs.lastModified());
+				}});
+			if(cachesFiles.length>3){
+				for(int i=0;i<cachesFiles.length-3;i++){
+					cachesFiles[i].deleteOnExit();
+				}
+			}
+		}
+		
         @Override
         protected File doInBackground(Integer... params) {    
         	int activityId = params[0];
-            File baseDir = context.getCacheDir();
-            File cacheFile = new File(baseDir, "_"+activityId+".pdf");
+            File baseDir = context.getFilesDir();
+            clearCache(baseDir);
+            String cacheFileName = "_pdf_cache_"+activityId+".pdf";
+            File cacheFile = new File(baseDir, cacheFileName);
             if(!cacheFile.exists()){
             	InputStream in = null;
             	OutputStream out = null;
             	try {
             		cacheFile.createNewFile();
-                	ParcelFileDescriptor pfd = getContext().getContentResolver().openFileDescriptor(MetadataContract.Activities.getActivityVideoUri(activityId), "r");
+                	ParcelFileDescriptor pfd = getContext().getContentResolver().openFileDescriptor(MetadataContract.Activities.getActivityPdfUri(activityId), "r");
 					in = new BufferedInputStream(new ParcelFileDescriptor.AutoCloseInputStream(pfd));
-					out = new BufferedOutputStream(new FileOutputStream(cacheFile));
+					out = new BufferedOutputStream(context.openFileOutput(cacheFileName, Context.MODE_WORLD_READABLE));
 					transfer(in, out);					
 				} catch (IOException e) {
 					Log.e("PdfActivityView", "CachePdfTask", e);
