@@ -95,6 +95,8 @@ public class Matcher {
 
             matcher.addURI(AUTHORITY, "activities/video/#", ACTIVITIES_VIDEO);
             matcher.addURI(AUTHORITY, "activities/text/#", ACTIVITIES_TEXT);
+            matcher.addURI(AUTHORITY, "activities/html/#", ACTIVITIES_HTML);
+            matcher.addURI(AUTHORITY, "activities/pdf/#", ACTIVITIES_PDF);
             matcher.addURI(AUTHORITY, "activities/thumbnail/#", ACTIVITIES_THUMBNAIL);
             matcher.addURI(AUTHORITY, "activities/gallery/images/#", GALLERY_IMAGES_ID);
             matcher.addURI(AUTHORITY, "activities/gallery/images/thumbnail/#", GALLERY_IMAGES_THUMBNAIL);
