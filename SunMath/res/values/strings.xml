@@ -1,11 +1,11 @@
 <resources>
 
-    <string name="app_name">阳光数学</string>
+    <string name="app_name">阳光课堂</string>
     <string name="main_activity_navi_btn_text">Navi</string>
     <string name="main_activity_stat_btn_text">Stat</string>
     <string name="title_main_activity">MainActivity</string>
-    <string name="title_navi_activity">阳光数学</string>
-    <string name="gallery_page_title">故宫图片集</string>
+    <string name="title_navi_activity">阳光课堂</string>
+    <string name="gallery_page_title">图集</string>
     <string name="url">URL to streaming video</string>
     <string name="gallery_flipper_activity_title">Gallery Image</string>
 
