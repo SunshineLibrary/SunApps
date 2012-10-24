@@ -149,7 +149,8 @@ public final class MetadataContract {
         public static final int TYPE_GALLERY = 3;
         public static final int TYPE_QUIZ = 4;
         public static final int TYPE_HTML = 5;
-
+        public static final int TYPE_PDF = 6;
+        
         public static Uri getActivityVideoUri(long id) {
             return CONTENT_URI.buildUpon().appendPath("video").appendPath(String.valueOf(id)).build();
         }
@@ -168,6 +169,10 @@ public final class MetadataContract {
 
         public static Uri getActivityHtmlUri(long id) {
             return CONTENT_URI.buildUpon().appendPath("html").appendPath(String.valueOf(id)).build();
+        }
+        
+        public static Uri getActivityPdfUri(long id) {
+            return CONTENT_URI.buildUpon().appendPath("pdf").appendPath(String.valueOf(id)).build();
         }
     }
 
