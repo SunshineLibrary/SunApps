@@ -155,11 +155,11 @@ public class NavigationActivity extends Activity implements View.OnClickListener
         iv_download_lesson = (ImageView)findViewById(R.id.iv_navi_activity_download_lesson);
         iv_downloading = (ImageView)findViewById(R.id.iv_navi_activity_downloading);
         btn_study = (ImageButton)findViewById(R.id.btn_navi_activity_study);
-        btn_stat = (ImageButton)findViewById(R.id.btn_navi_activity_statistic);
+        //btn_stat = (ImageButton)findViewById(R.id.btn_navi_activity_statistic);
         iv_section_thumbnail =(ImageView)findViewById(R.id.iv_section_thumbnail);
         tv_section_description = (TextView) this.findViewById(R.id.tv_section_description);
         lv_section_activities = (HorizontalListView) findViewById(R.id.lv_section_activities);
-        download_management_entry = (ImageView)findViewById(R.id.download_management_entry) ;
+        //download_management_entry = (ImageView)findViewById(R.id.download_management_entry) ;
     }
 
     private void initComponent() {
@@ -169,8 +169,8 @@ public class NavigationActivity extends Activity implements View.OnClickListener
         iv_back_button.setOnClickListener(this);
         iv_download_lesson.setOnClickListener(this);
         btn_study.setOnClickListener(this);
-        btn_stat.setOnClickListener(this);
-        download_management_entry.setOnClickListener(this);
+        //btn_stat.setOnClickListener(this);
+        //download_management_entry.setOnClickListener(this);
         initSectionActivitiesView();
     }
 
