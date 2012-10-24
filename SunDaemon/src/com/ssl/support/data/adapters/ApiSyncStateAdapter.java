@@ -52,15 +52,15 @@ public class ApiSyncStateAdapter extends CursorAdapter {
         switch (state.lastSyncStatus) {
             case APISyncStateTable.ApiSyncStates.SYNC_SUCCESS:
                 tv_last_sync_status.setTextColor(Color.GREEN);
-                tv_last_sync_status.setText("SUCCESS");
+                tv_last_sync_status.setText(R.string.metadata_download_success);
                 break;
             case APISyncStateTable.ApiSyncStates.SYNC_ONGOING:
                 tv_last_sync_status.setTextColor(Color.YELLOW);
-                tv_last_sync_status.setText("SYNCING");
+                tv_last_sync_status.setText(R.string.metadata_download_syncing);
                 break;
             case APISyncStateTable.ApiSyncStates.SYNC_FAILURE:
                 tv_last_sync_status.setTextColor(Color.RED);
-                tv_last_sync_status.setText("FAILURE");
+                tv_last_sync_status.setText(R.string.metadata_download_failure);
                 break;
         }
         return;

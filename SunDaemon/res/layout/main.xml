@@ -15,7 +15,7 @@
         <TextView android:id="@+id/tv_view_metadata_updates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="查看 Metadata 更新"
+                android:text="查看数据"
                 android:textSize="24dp"
                 android:paddingTop="24dp"
                 android:paddingBottom="24dp"
@@ -34,7 +34,7 @@
                 android:paddingTop="24dp"
                 android:paddingBottom="24dp"
                 android:paddingLeft="48dp"
-                android:text="查看 App 更新"
+                android:text="查看应用程序"
                 android:textSize="24dp"
                 android:clickable="true"
                 />
@@ -51,7 +51,7 @@
                   android:paddingTop="24dp"
                   android:paddingBottom="24dp"
                   android:paddingLeft="48dp"
-                  android:text="本机参数设置"
+                  android:text="参数设置（请勿随意修改）"
                   android:textSize="24dp"
                   android:clickable="true"
                 />
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="24dp"
                 android:padding="24dp"
-                android:text="更新 Metadata"
+                android:text="同步数据"
                 />
 
         <Button android:id="@+id/btn_update_app"
@@ -87,7 +87,7 @@
                 android:textSize="24dp"
                 android:layout_marginTop="24dp"
                 android:padding="24dp"
-                android:text="更新 App"
+                android:text="安装/更新应用程序"
                 />
 
     </LinearLayout>
