@@ -43,6 +43,8 @@ public class SharedStorageManager {
         switch (sUriMatcher.match(uri)) {
             case Matcher.ACTIVITIES_VIDEO:
             case Matcher.ACTIVITIES_TEXT:
+            case Matcher.ACTIVITIES_PDF:
+            case Matcher.ACTIVITIES_HTML:
             case Matcher.ACTIVITIES_THUMBNAIL:
             case Matcher.SECTIONS_THUMBNAIL:
             case Matcher.GALLERY_IMAGES_ID:

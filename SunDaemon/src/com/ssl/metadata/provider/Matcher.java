@@ -27,21 +27,21 @@ public class Matcher {
     public static final int ACTIVITIES_ID = 301;
     public static final int ACTIVITIES_THUMBNAIL = 302;
 
-    public static final int ACTIVITIES_VIDEO = 303;
-
     public static final int GALLERY_IMAGES = 304;
     public static final int GALLERY_IMAGES_ID = 305;
     public static final int GALLERY_IMAGES_THUMBNAIL = 306;
 
-    public static final int PROBLEMS = 307;
-    public static final int QUIZ_COMPONENTS = 308;
-    public static final int QUIZ_PROBLEMS = 309;
-
-    public static final int EDGES = 310;
-
+    public static final int EDGES = 307;
+    public static final int PROBLEMS = 308;
+    public static final int QUIZ_COMPONENTS = 309;
+    public static final int QUIZ_PROBLEMS = 3010;
     public static final int PROBLEM_CHOICES = 311;
 
-    public static final int ACTIVITIES_TEXT = 312;
+    public static final int ACTIVITIES_VIDEO = 312;
+    public static final int ACTIVITIES_PDF = 313;
+    public static final int ACTIVITIES_HTML = 314;
+    public static final int ACTIVITIES_TEXT = 315;
+
 
     public static final int AUTHORS = 400;
     public static final int BOOKS = 401;
