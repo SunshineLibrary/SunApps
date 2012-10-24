@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 import com.ssl.support.downloader.DownloadQueue;
+import com.ssl.support.downloader.DownloadTaskParams;
 import com.ssl.support.downloader.MonitoredFileDownloadTask;
 import com.ssl.support.utils.Listener;
 
@@ -23,15 +25,8 @@ public class DownloadService extends Service {
 
     private DownloadQueue downloadQueue;
     private Listener<Integer> startNextListener;
-    private DownloadBinder mBinder;
     private boolean downloading;
-
-
-    public class DownloadBinder extends Binder {
-        public DownloadService getService() {
-            return DownloadService.this;
-        }
-    }
+    public static final String PARAMS_KEY = "task_params";
 
     @Override
     public void onCreate() {
@@ -41,33 +36,48 @@ public class DownloadService extends Service {
         startNextListener = new Listener<Integer>() {
             @Override
             public void onResult(Integer integer) {
+                MonitoredFileDownloadTask task = downloadQueue.pop();
+                Log.d("DownloadService", "Completed Task: " + task.toJSON());
                 downloading = false;
-                downloadQueue.pop();
                 startNextTask();
             }
         };
-        mBinder = new DownloadBinder();
-        startNextTask();
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        return mBinder;
+        return null;
     }
 
-    public void addDownloadTask(Uri remoteUri, Uri localUri, Uri updateUri, Uri notifyUri) {
-        downloadQueue.add(remoteUri, localUri, updateUri, notifyUri);
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent.hasExtra(PARAMS_KEY)) {
+            DownloadTaskParams params = (DownloadTaskParams) intent.getParcelableExtra(PARAMS_KEY);
+            downloadQueue.add(params.remoteUri, params.localUri, params.updateUri, params.notifyUri);
+        }
+
         startNextTask();
+        return START_STICKY;
     }
 
-    private synchronized void startNextTask() {
+    private void startNextTask() {
         if (!downloading) {
             MonitoredFileDownloadTask task = downloadQueue.peek();
             if (task != null) {
+                Log.d("DownloadService", "Starting Task: " + task.toJSON());
                 task.addListener(startNextListener);
                 downloading = true;
                 task.execute();
+            } else {
+                stopSelf();
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("DownloadService", "Stopping");
+        downloadQueue.release();
     }
 }

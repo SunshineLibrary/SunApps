@@ -3,7 +3,6 @@ package com.ssl.curriculum.math.presenter;
 import android.content.*;
 import android.database.ContentObserver;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.provider.BaseColumns;
@@ -48,7 +47,7 @@ public class SectionPresenter {
         currentActivities = SectionHelper.getSectionActivitiesCursor(navigationActivity, id);
         navigationActivity.setSectionActivities(currentActivities);
         showDownloadButton();
-        registerObservers();
+        registerObserver();
     }
 
     private void showDownloadButton() {
@@ -61,35 +60,10 @@ public class SectionPresenter {
         }
     }
 
-    private void loadActivities() {
-        CursorLoader loader = SectionHelper.getSectionActivitiesCursorLoader(navigationActivity, currentSection.id);
-        loader.registerListener(0, new Loader.OnLoadCompleteListener<Cursor>() {
-          @Override
-          public void onLoadComplete(Loader<Cursor> cursorLoader, Cursor cursor) {
-              currentActivities = cursor;
-              navigationActivity.setSectionActivities(currentActivities);
-            }
-        });
-        loader.startLoading();
-    }
-
-    public void registerObservers() {
+    public void registerObserver() {
         ContentResolver resolver = navigationActivity.getContentResolver();
         resolver.unregisterContentObserver(mObserver);
-
-        Uri activityUri;
-        int activityId;
-        try {
-            if (currentActivities.moveToFirst()) {
-                do {
-                    activityId = currentActivities.getInt(currentActivities.getColumnIndex(BaseColumns._ID));
-                    activityUri = MetadataContract.Activities.getActivityUri(activityId);
-                    resolver.registerContentObserver(activityUri, false, mObserver);
-                } while (currentActivities.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.e(getClass().getName(), "Failed registering observer", e);
-        }
+        resolver.registerContentObserver(MetadataContract.Sections.getSectionUri(currentSection.id), false, mObserver);
     }
 
 
@@ -98,27 +72,11 @@ public class SectionPresenter {
             @Override
             protected Object doInBackground(Object... params) {
                 ContentValues values = new ContentValues();
-                values.put(MetadataContract.Downloadable._DOWNLOAD_STATUS, MetadataContract.Downloadable.STATUS_QUEUED);
+                values.put(MetadataContract.Downloadable._DOWNLOAD_STATUS,
+                        MetadataContract.Downloadable.STATUS_QUEUED);
                 ContentResolver resolver = navigationActivity.getContentResolver();
-
-                Uri activityUri;
-                try {
-                    if (currentActivities.moveToFirst()) {
-                        do {
-                        int status = currentActivities.getInt(
-                                currentActivities.getColumnIndex(MetadataContract.Downloadable._DOWNLOAD_STATUS));
-                        if (status == MetadataContract.Downloadable.STATUS_NOT_DOWNLOADED) {
-                            int activityId = currentActivities.getInt(currentActivities.getColumnIndex(BaseColumns._ID));
-                            activityUri = MetadataContract.Activities.getActivityUri(activityId);
-                            resolver.update(activityUri, values, null, null);
-                        }
-                        } while (currentActivities.moveToNext());
-                    }
-                } catch (Exception e) {
-                    Log.e(getClass().getName(), "Error starting download:", e);
-                } finally {
-                    return null;
-                }
+                resolver.update(MetadataContract.Sections.getSectionUri(currentSection.id), values, null, null);
+                return null;
             }
         }.execute();
     }
@@ -140,7 +98,8 @@ public class SectionPresenter {
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
-            loadActivities();
+            navigationActivity.notifySectionContentChange();
         }
     }
+
 }

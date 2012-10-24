@@ -19,8 +19,9 @@ public class Matcher {
     public static final int CHAPTERS = 201;
     public static final int LESSONS = 202;
     public static final int SECTIONS = 203;
-    public static final int SECTIONS_ACTIVITIES = 204;
-    public static final int SECTIONS_THUMBNAIL = 205;
+    public static final int SECTIONS_ID = 204;
+    public static final int SECTIONS_ACTIVITIES = 205;
+    public static final int SECTIONS_THUMBNAIL = 206;
 
     public static final int ACTIVITIES = 300;
     public static final int ACTIVITIES_ID = 301;
@@ -82,6 +83,7 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "chapters", CHAPTERS);
             matcher.addURI(AUTHORITY, "lessons", LESSONS);
             matcher.addURI(AUTHORITY, "sections", SECTIONS);
+            matcher.addURI(AUTHORITY, "sections/#", SECTIONS_ID);
             matcher.addURI(AUTHORITY, "sections/thumbnail/#", SECTIONS_THUMBNAIL);
             matcher.addURI(AUTHORITY, "sections/activities/#", SECTIONS_ACTIVITIES);
 

@@ -32,7 +32,6 @@ public class MetadataDBHandlerFactory {
         dbHandler.addTableManager(CourseTable.TABLE_NAME, new CourseTable(dbHandler));
         dbHandler.addTableManager(ChapterTable.TABLE_NAME, new ChapterTable(dbHandler));
         dbHandler.addTableManager(LessonTable.TABLE_NAME, new LessonTable(dbHandler));
-        dbHandler.addTableManager(SectionTable.TABLE_NAME, new SectionTable(dbHandler));
         dbHandler.addTableManager(EdgeTable.TABLE_NAME, new EdgeTable(dbHandler));
         dbHandler.addTableManager(ProblemTable.TABLE_NAME, new ProblemTable(dbHandler));
         dbHandler.addTableManager(ProblemChoiceTable.TABLE_NAME, new ProblemChoiceTable(dbHandler));
@@ -55,6 +54,10 @@ public class MetadataDBHandlerFactory {
         table.addObserver(downloadableObserver);
         //table.addObserver(thumbnailObserver);
         dbHandler.addTableManager(ActivityTable.TABLE_NAME, table);
+
+        table = new ObservableTable(new SectionTable(dbHandler));
+        table.addObserver(downloadableObserver);
+        dbHandler.addTableManager(SectionTable.TABLE_NAME, table);
 
         table = new ObservableTable(new GalleryImageTable(dbHandler));
         table.addObserver(downloadableObserver);

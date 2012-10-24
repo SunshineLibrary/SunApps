@@ -109,6 +109,10 @@ public final class MetadataContract {
         public static final String _DESCRIPTION = "description";
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("sections").build();
 
+        public static Uri getSectionUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
+
+        }
         public static Uri getSectionActivitiesUri(int id) {
             return CONTENT_URI.buildUpon().appendPath("activities").appendPath(String.valueOf(id)).build();
         }

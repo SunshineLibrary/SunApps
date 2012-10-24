@@ -2,9 +2,7 @@ package com.ssl.curriculum.math.data;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.content.CursorLoader;
 import com.ssl.curriculum.math.model.Section;
-import com.ssl.curriculum.math.model.activity.LinkedActivityData;
 import com.ssl.metadata.provider.MetadataContract;
 
 /**
@@ -29,12 +27,6 @@ public class SectionHelper {
         Cursor cursor = context.getContentResolver().query(MetadataContract.Sections.getSectionActivitiesUri(id),
                 null, MetadataContract.SectionComponents._SECTION_ID + "=" + id, null, null);
         return cursor;
-    }
-
-    public static CursorLoader getSectionActivitiesCursorLoader(Context context, int id) {
-        CursorLoader loader = new CursorLoader(context, MetadataContract.Sections.getSectionActivitiesUri(id),
-                null, MetadataContract.SectionComponents._SECTION_ID + "=" + id, null, null);
-        return loader;
     }
 
     private static Section sectionFromCursor(Cursor cursor) {

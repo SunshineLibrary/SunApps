@@ -62,7 +62,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
             menuPresenter.menuBack();
         } else if (v == iv_download_lesson){
             sectionPresenter.startDownload();
-            showDownloaded();
+            showDownloading();
         } else if (v == btn_study) {
 
         } else if (v == btn_stat) {
@@ -102,14 +102,13 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     }
 
     public void setSectionActivities(Cursor cursor){
-        CursorAdapter adapter = (CursorAdapter) lv_section_activities.getAdapter();
-        Cursor oldCursor = adapter.getCursor();
-        if (cursor != oldCursor) {
-            adapter.changeCursor(cursor);
-            if (oldCursor != null) {
-                oldCursor.close();
-            }
-        }
+        ActivityListAdapter adapter = new ActivityListAdapter(this, cursor);
+        lv_section_activities.setAdapter(adapter);
+    }
+
+    public void notifySectionContentChange() {
+        ActivityListAdapter adapter = (ActivityListAdapter) lv_section_activities.getAdapter();
+        adapter.notifyContentChange();
     }
 
     public void activateMenuItem(int id) {

@@ -45,8 +45,7 @@ public class MonitoredFileDownloadTask extends FileDownloadTask implements JSONS
     protected void onPreExecute() {
         super.onPreExecute();
         if (remoteUri == null || localUri == null) {
-            context.getContentResolver().update(updateUri, DOWNLOADED, null, null);
-            context.getContentResolver().notifyChange(updateUri, null);
+            onPostExecute(SUCCESS);
             cancel(true);
         } else {
             context.getContentResolver().update(updateUri, DOWNLOADING, null, null);

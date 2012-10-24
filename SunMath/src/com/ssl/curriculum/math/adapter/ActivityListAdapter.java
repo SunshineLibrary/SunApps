@@ -19,7 +19,7 @@ import static com.ssl.metadata.provider.MetadataContract.Activities;
 public class ActivityListAdapter extends CursorAdapter {
 
     public ActivityListAdapter(Context context, Cursor c) {
-        super(context, c, false);
+        super(context, c, true);
     }
 
     @Override
@@ -34,12 +34,8 @@ public class ActivityListAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         ImageView iv_image = (ImageView) view.findViewById(R.id.image);
         TextView tv_title = (TextView) view.findViewById(R.id.title);
-        TextView tv_status = (TextView) view.findViewById(R.id.status);
-        View v_mask = view.findViewById(R.id.mask);
 
         long id = cursor.getLong(cursor.getColumnIndex(Activities._ID));
-        int status = cursor.getInt(cursor.getColumnIndex(Activities._DOWNLOAD_STATUS));
-        int progress = cursor.getInt(cursor.getColumnIndex(Activities._DOWNLOAD_PROGRESS));
         int type = cursor.getInt(cursor.getColumnIndex(Activities._TYPE));
         String title = cursor.getString(cursor.getColumnIndex(Activities._NAME));
 
@@ -56,6 +52,11 @@ public class ActivityListAdapter extends CursorAdapter {
                 break;
         }
 
+        TextView tv_status = (TextView) view.findViewById(R.id.status);
+        int status = cursor.getInt(cursor.getColumnIndex(Activities._DOWNLOAD_STATUS));
+        int progress = cursor.getInt(cursor.getColumnIndex(Activities._DOWNLOAD_PROGRESS));
+        View v_mask = view.findViewById(R.id.mask);
+
         switch (status) {
             case Activities.STATUS_NOT_DOWNLOADED:
                 tv_status.setText("未下载");
@@ -71,5 +72,9 @@ public class ActivityListAdapter extends CursorAdapter {
                 v_mask.setVisibility(View.INVISIBLE);
                 break;
         }
+    }
+
+    public void notifyContentChange() {
+        onContentChanged();
     }
 }

@@ -83,6 +83,7 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.SECTIONS_ACTIVITIES:
                 return view.query(uri, projection,
                         SectionComponents._SECTION_ID + "=?", new String[]{uri.getLastPathSegment()}, sortOrder);
+
             case Matcher.QUIZ_PROBLEMS:
             case Matcher.BOOK_INFO:
             case Matcher.BOOK_COLLECTION_INFO:
@@ -116,6 +117,7 @@ public class MetadataProvider extends ContentProvider {
             // Elements
             case Matcher.ACTIVITIES_ID:
             case Matcher.PACKAGES_ID:
+            case Matcher.SECTIONS_ID:
                 return table.query(uri, projection, BaseColumns._ID + "=" + uri.getLastPathSegment(), null, null);
 
             default:
@@ -198,6 +200,7 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.BOOKS_ID:
             case Matcher.GALLERY_IMAGES_ID:
             case Matcher.PACKAGES_ID:
+            case Matcher.SECTIONS_ID:
                 selection = BaseColumns._ID + " = ?";
                 selectionArgs = new String[]{uri.getLastPathSegment()};
             case Matcher.PACKAGES:
@@ -245,6 +248,7 @@ public class MetadataProvider extends ContentProvider {
                 }
                 return lessonTable;
             case Matcher.SECTIONS:
+            case Matcher.SECTIONS_ID:
                 if (sectionTable == null) {
                     sectionTable = dbHandler.getTableManager(SectionTable.TABLE_NAME);
                 }
