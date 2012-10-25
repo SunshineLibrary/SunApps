@@ -34,8 +34,13 @@ public class SectionPresenter {
         mObserver = new MContentObserver(new Handler());
 
         navigationActivity.setOnActivityClickListener(new AdapterView.OnItemClickListener() {
+
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity((int) id);
+                Cursor cursor = (Cursor) parent.getAdapter().getItem(position);
+                if (cursor.getInt(cursor.getColumnIndex(MetadataContract.Activities._DOWNLOAD_STATUS))
+                        == MetadataContract.Downloadable.STATUS_DOWNLOADED) {
+                    startActivity((int) id);
+                }
             }
         });
     }

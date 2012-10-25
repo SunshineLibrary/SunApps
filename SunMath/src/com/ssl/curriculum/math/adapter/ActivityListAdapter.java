@@ -74,6 +74,11 @@ public class ActivityListAdapter extends CursorAdapter {
         }
     }
 
+    @Override
+    public Object getItem(int position) {
+        return super.getItem(position);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
     public void notifyContentChange() {
         onContentChanged();
     }
