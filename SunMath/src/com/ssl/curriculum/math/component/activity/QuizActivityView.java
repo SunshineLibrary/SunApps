@@ -51,8 +51,21 @@ public class QuizActivityView extends ActivityView {
 
     private void initListener() {
         mQuizComponentViewer.setControlButtons(confirmBtn, nextBtn);
+        mQuizComponentViewer.setActivityViewer(mActivityViewer);
         nextBtn.setOnClickListener(mQuizComponentViewer);
         confirmBtn.setOnClickListener(mQuizComponentViewer);
+    }
+
+    @Override
+    public void onAfterFlippingIn() {
+        super.onAfterFlippingIn();
+        mActivityViewer.disableNextBtn();
+    }
+
+    @Override
+    public void onBeforeFlippingOut() {
+        super.onBeforeFlippingOut();
+        mActivityViewer.enableNextBtn();
     }
 
     @Override

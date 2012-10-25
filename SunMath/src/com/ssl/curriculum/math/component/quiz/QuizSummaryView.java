@@ -2,6 +2,7 @@ package com.ssl.curriculum.math.component.quiz;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,7 +20,7 @@ public class QuizSummaryView extends QuizComponentView implements QuestionResult
 
     private QuizSummaryViewPresenter mSummaryPresenter;
 
-    private ImageView iv_quiz_banner, iv_summary_stars;
+    private ImageView iv_quiz_banner, iv_summary_stars, iv_btn_done;
     private TextView tv_quiz_score;
 
     public QuizSummaryView(Context context, QuizComponentViewer quizComponentViewer) {
@@ -35,10 +36,18 @@ public class QuizSummaryView extends QuizComponentView implements QuestionResult
         iv_quiz_banner = (ImageView) viewGroup.findViewById(R.id.iv_banner);
         iv_summary_stars = (ImageView) viewGroup.findViewById(R.id.iv_summary_stars);
         tv_quiz_score = (TextView) viewGroup.findViewById(R.id.tv_quiz_score);
+        iv_btn_done = (ImageView) viewGroup.findViewById(R.id.btn_done);
     }
 
     private void initComponents() {
         mSummaryPresenter = new QuizSummaryViewPresenter(getContext(), this);
+        iv_btn_done.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mQuizComponentViewer.onCompleteButtonClicked(view);
+                iv_btn_done.setEnabled(false);
+            }
+        });
     }
 
 
@@ -50,6 +59,7 @@ public class QuizSummaryView extends QuizComponentView implements QuestionResult
     public void reset() {
         setVisibility(INVISIBLE);
         initComponents();
+        iv_btn_done.setEnabled(true);
     }
 
     @Override
