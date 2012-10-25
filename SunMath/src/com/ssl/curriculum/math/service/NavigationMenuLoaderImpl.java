@@ -4,6 +4,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
+
 import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.model.menu.MenuItem;
 import com.ssl.metadata.provider.MetadataContract.Chapters;
@@ -14,18 +16,22 @@ import com.ssl.metadata.provider.MetadataContract.Sections;
 import java.util.HashMap;
 
 public class NavigationMenuLoaderImpl implements NavigationMenuLoader {
-    private static final String ROOT_MENU_NAME = "Root Menu Name";
+    private static String rootMenuName = "阳光课堂";
     private Context context;
     private final ContentResolver contentResolver;
+    private String courseSelection;
 
-    public NavigationMenuLoaderImpl(Context context) {
+    public NavigationMenuLoaderImpl(Context context, String courseSelection, String subject) {
         this.context = context;
         contentResolver = this.context.getContentResolver();
+        this.courseSelection = courseSelection;
+        NavigationMenuLoaderImpl.rootMenuName = subject;
+        Log.i("menu load", courseSelection);
     }
 
     @Override
     public Menu loadNavigationMenu() {
-        Menu rootMenu = Menu.createMenuWithoutParent(ROOT_MENU_NAME, 0);
+        Menu rootMenu = Menu.createMenuWithoutParent(rootMenuName, 0);
         HashMap<Integer, Menu> coursesMap = fetchCoursesMap(rootMenu);
         HashMap<Integer, Menu> chapterMap = fetchChildMenu(coursesMap, Chapters.CONTENT_URI, Chapters._ID, Chapters._PARENT_ID, Chapters._NAME);
         HashMap<Integer, Menu> lessonMap = fetchChildMenu(chapterMap, Lessons.CONTENT_URI,Lessons._ID , Lessons._PARENT_ID, Lessons._NAME);
@@ -76,7 +82,7 @@ public class NavigationMenuLoaderImpl implements NavigationMenuLoader {
     private HashMap<Integer, Menu> fetchCoursesMap(Menu rootMenu) {
         HashMap<Integer, Menu> map = new HashMap<Integer, Menu>();
         String[] columns = {Courses._ID, Courses._NAME};
-        Cursor cursor = contentResolver.query(Courses.CONTENT_URI, columns, null, null, null);
+        Cursor cursor = contentResolver.query(Courses.CONTENT_URI, columns, courseSelection, null, null);
         if (cursor.moveToFirst()) {
             int nameIndex = cursor.getColumnIndex(Courses._NAME);
             int idIndex = cursor.getColumnIndex(Courses._ID);

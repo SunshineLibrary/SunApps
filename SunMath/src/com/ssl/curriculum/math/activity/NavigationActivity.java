@@ -15,6 +15,7 @@ import com.ssl.curriculum.math.model.Section;
 import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.presenter.NavigationMenuPresenter;
 import com.ssl.curriculum.math.presenter.SectionPresenter;
+import com.ssl.metadata.provider.MetadataContract.Courses;
 
 public class NavigationActivity extends Activity implements View.OnClickListener {
 
@@ -35,14 +36,24 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     private HorizontalListView lv_section_activities;
     private SectionPresenter sectionPresenter;
     private ImageView download_management_entry;
+    
+    private String subject;
+    private String subjectSelection;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initUI();
+		handleSubjectSelection();
     }
-
+    
     @Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		handleSubjectSelection();
+	}
+
+	@Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         initComponent();
@@ -59,7 +70,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v == iv_back_button) {
-            menuPresenter.menuBack();
+            if(!menuPresenter.menuBack()) destroy();
         } else if (v == iv_download_lesson){
             sectionPresenter.startDownload();
             showDownloading();
@@ -72,6 +83,49 @@ public class NavigationActivity extends Activity implements View.OnClickListener
             intent.setClass(this, DownloadManageActivity.class);
             this.startActivity(intent);
         }
+    }
+    
+    private void handleSubjectSelection(){
+    	//TODO:NEED MODIFIED!!
+    	//selection should be based on subject type
+    	Intent intent = this.getIntent();
+        subject = intent.getStringExtra("subject");
+    	if(subject == null){
+    		subjectSelection = null;
+    		return;
+    	}
+    	StringBuffer sb = new StringBuffer();
+    	if(subject.equals(EntranceActivity.SUBJECTS[0])){
+    		//math
+    		sb.append(Courses._ID).append(" = 1 or ").append(Courses._ID).append(" = 8");
+    		subjectSelection = sb.toString();
+    		return;
+    	}else if(subject.equals(EntranceActivity.SUBJECTS[1])){
+    		//English
+    		sb.append(Courses._ID).append(" = 2 or ").append(Courses._ID).append(" = 3 or ");
+    		sb.append(Courses._ID).append(" = 5 or ").append(Courses._ID).append(" = 6 or ");
+    		sb.append(Courses._ID).append(" = 7");
+    		subjectSelection = sb.toString();
+    		return;
+    	}else if(subject.equals(EntranceActivity.SUBJECTS[2])){
+    		//test
+    		sb.append(Courses._ID).append(" = 4 or ").append(Courses._ID).append(" = 9 or ");
+    		sb.append(Courses._ID).append(" = 10");
+    		subjectSelection = sb.toString();
+    		return;
+    	}else{
+    		//null
+    		sb.append(Courses._ID).append(" = -1");
+    		subjectSelection = sb.toString();
+    		return;
+    	}
+    	
+    }
+    
+    private void destroy(){
+    	menuPresenter = null;
+    	sectionPresenter = null;
+    	NavigationActivity.this.finish();
     }
 
     public void presentSection(int id) {
@@ -163,7 +217,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     }
 
     private void initComponent() {
-        menuPresenter = new NavigationMenuPresenter(this);
+        menuPresenter = new NavigationMenuPresenter(this, subjectSelection, subject);
         sectionPresenter = new SectionPresenter(this);
         navigationListView.setNextLevelMenuChangedListener(menuPresenter);
         iv_back_button.setOnClickListener(this);

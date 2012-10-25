@@ -24,11 +24,20 @@
                      android:enabled="false"
                      android:layout_alignParentLeft="true"
                      android:layout_centerVertical="true"/>
+        
+         <ImageButton android:id="@+id/video_player_media_rollback"
+                     style="@style/MediaButton"
+                     android:layout_height="wrap_content"
+                     android:layout_width="wrap_content"
+                     android:src="@drawable/ic_media_rollback"
+                     android:enabled="false"
+                     android:layout_toRightOf="@id/video_player_media_btn"
+                     android:layout_centerVertical="true"/>
 
         <RelativeLayout android:id="@+id/video_player_progress_bar_and_full_screen"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/video_player_media_btn"
+                        android:layout_toRightOf="@+id/video_player_media_rollback"
                         android:layout_centerVertical="true">
 
             <ImageButton android:id="@+id/video_player_full_screen_btn"
