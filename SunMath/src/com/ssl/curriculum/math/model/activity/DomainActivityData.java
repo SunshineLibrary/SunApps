@@ -9,17 +9,21 @@ public class DomainActivityData {
     public String name;
     public String notes;
     public int duration;
+    public String result;
 
     public DomainActivityData(int type) {
         this.type = type;
+        this.result = EMPTY_RESULT;
     }
 
     public DomainActivityData() {
     }
 
     public String getResult() {
-        return EMPTY_RESULT;
+        return result;
     }
 
-
+    public void setResult(String result) {
+        this.result = result;
+    }
 }

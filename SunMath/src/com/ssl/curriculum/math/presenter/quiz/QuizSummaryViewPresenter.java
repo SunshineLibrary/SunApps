@@ -35,10 +35,12 @@ public class QuizSummaryViewPresenter implements QuestionResultListener{
         return numCorrect + "/" + (numIncorrect + numCorrect);
     }
 
+
     public void onDisplayed() {
+        mSummaryView.setCorrectCount(String.valueOf(numCorrect));
         mSummaryView.setScore(getScore());
         if (numIncorrect == 0) {
-            mSummaryView.setTryAgain();
+            mSummaryView.setGreat();
         } else if (numCorrect > numIncorrect) {
             mSummaryView.setGood();
         } else {

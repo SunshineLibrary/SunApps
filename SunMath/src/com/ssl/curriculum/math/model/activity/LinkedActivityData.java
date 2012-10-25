@@ -1,9 +1,11 @@
 package com.ssl.curriculum.math.model.activity;
 
 import android.database.Cursor;
+import android.util.Log;
 import com.ssl.curriculum.math.logic.EdgeConditionMatcher;
 import com.ssl.curriculum.math.logic.strategy.EdgeConditionMatcherImpl;
 
+import javax.security.auth.login.LoginException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,9 +31,12 @@ public class LinkedActivityData extends DomainActivityData {
 
     public LinkedActivityData getNextActivity() {
         for (Map.Entry<String, LinkedActivityData> entry : getConditionalNextActivities().entrySet()) {
+            Log.d("Condition Matcher", entry.getKey() + " " + getResult());
             if (getConditionMatcher().isMatchedWithCondition(entry.getKey(), getResult())) {
+                Log.d("Condition Matcher", "Condition Matched");
                 return entry.getValue();
             }
+            Log.d("Condition Matcher", "Condition Not Matched");
         }
         return defaultNextActivityData;
     }

@@ -32,6 +32,7 @@ public class QuizActivityView extends ActivityView {
     public void setActivity(LinkedActivityData activityData) {
         super.setActivity(activityData);
         mQuizComponentViewer.reset();
+        mQuizComponentViewer.setActivityData(activityData);
         new LoadQuestionTask(activityData).execute();
     }
 

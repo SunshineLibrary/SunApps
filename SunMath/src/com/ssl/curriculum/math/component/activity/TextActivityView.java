@@ -36,7 +36,7 @@ public class TextActivityView extends ActivityView {
     public void setActivity(LinkedActivityData activityData) {
         super.setActivity(activityData);
         tv_notes.setText(activityData.notes);
-        new LoadTextTask(activityData.activityId).execute();
+        //new LoadTextTask(activityData.activityId).execute();
     }
 
     private FileInputStream getTextFileInput(int activityId) {

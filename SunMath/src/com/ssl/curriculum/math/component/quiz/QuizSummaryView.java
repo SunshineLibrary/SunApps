@@ -60,6 +60,11 @@ public class QuizSummaryView extends QuizComponentView implements QuestionResult
         }
     }
 
+    @Override
+    public void onAfterFlippingIn() {
+        super.onAfterFlippingIn();
+    }
+
     public void setScore(String score) {
         tv_quiz_score.setText(score);
     }
@@ -77,6 +82,10 @@ public class QuizSummaryView extends QuizComponentView implements QuestionResult
     public void setTryAgain() {
         iv_quiz_banner.setImageResource(R.drawable.ic_quiz_banner_try_again);
         iv_summary_stars.setImageResource(R.drawable.ic_quiz_one_stars);
+    }
+
+    public void setCorrectCount(String result) {
+        mQuizComponentViewer.setResult(result);
     }
 
     public void onDestroy() {

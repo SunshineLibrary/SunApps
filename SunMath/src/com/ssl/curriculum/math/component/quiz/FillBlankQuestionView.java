@@ -27,6 +27,7 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
     public void setQuestion(QuizQuestion question) {
         super.setQuestion(question);
         mPresenter.setQuestion(question);
+        clearTexts();
     }
 
     protected void initUI() {
@@ -40,6 +41,12 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
 
     public void setShowAnswerText(String text) {
         showAnswerField.setText(text);
+    }
+
+    public void clearTexts() {
+        showAnswerField.setText("");
+        answerEditText.setText("");
+        answerEditText.clearComposingText();
     }
 
     public String getUserAnswer() {

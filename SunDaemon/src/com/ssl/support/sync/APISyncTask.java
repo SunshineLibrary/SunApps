@@ -12,7 +12,6 @@ import com.ssl.support.services.APISyncService;
 
 public class APISyncTask extends AsyncTask<String, String, Integer> {
 
-	private Table syncTable;
 	private DBHandler dbHandler;
 	private APISyncService context;
 
@@ -25,6 +24,7 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
 
             // Activities
             ActivityTable.TABLE_NAME,
+            EdgeTable.TABLE_NAME,
             GalleryImageTable.TABLE_NAME,
             QuizComponentsTable.TABLE_NAME,
             SectionComponentsTable.TABLE_NAME,

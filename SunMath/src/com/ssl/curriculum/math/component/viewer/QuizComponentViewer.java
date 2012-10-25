@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.component.quiz.*;
 import com.ssl.curriculum.math.listener.QuestionResultListener;
+import com.ssl.curriculum.math.model.activity.LinkedActivityData;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
 
     private QuizQuestionView mFillBlankView, mMultipleChoiceView;
     private QuizSummaryView mSummaryView;
+    private LinkedActivityData mActivityData;
 
     public QuizComponentViewer(Context context) {
         super(context);
@@ -60,9 +62,20 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
             mCurrentComponentView = null;
         }
         mQuestions = null;
+        mActivityData = null;
         mCurrentPosition = -1;
         mSummaryView.reset();
         hideButtons();
+    }
+
+    public void setActivityData(LinkedActivityData activityData) {
+        mActivityData = activityData;
+    }
+
+    public void setResult(String result) {
+        if (mActivityData != null) {
+            mActivityData.setResult(result);
+        }
     }
 
     public void setQuestions(List<QuizQuestion> questions) {
@@ -215,5 +228,4 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
     protected LayoutParams generateDefaultLayoutParams() {
         return new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
     }
-
 }
