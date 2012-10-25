@@ -50,11 +50,14 @@ public class ChoiceButton extends ImageView implements View.OnClickListener {
         deActiveButton();
     }
 
-    public void toggle() {
+    // only used by multiple answer multiple choice
+    public void toggle(MultipleAnswersChoiceTableView v) {
         if (isSelected()) {
             deActiveButton();
+            v.decreaseCounter();
         } else {
             activateButton();
+            v.increaseCounter();
         }
     }
 

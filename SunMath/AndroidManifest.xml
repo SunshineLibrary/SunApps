@@ -9,14 +9,18 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
         <activity
-            android:name=".activity.NavigationActivity"
-            android:label="@string/title_navi_activity"
+            android:name=".activity.EntranceActivity"
+            android:label="@string/title_main_activity"
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.NavigationActivity"
+            android:label="@string/title_navi_activity"
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name=".activity.MainActivity"

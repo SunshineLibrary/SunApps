@@ -32,6 +32,7 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
     private QuizQuestionView mFillBlankView, mMultipleChoiceView;
     private QuizSummaryView mSummaryView;
     private LinkedActivityData mActivityData;
+    private ActivityViewer mActivityViewer;
 
     public QuizComponentViewer(Context context) {
         super(context);
@@ -113,7 +114,7 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
         setQuestion(question);
 
         flipCurrentQuestionIn();
-        showConfirmButton();
+        hideConfirmButton(); // hide by default, only show when user answer the question
         mCurrentComponentView.onAfterFlippingIn();
     }
 
@@ -169,19 +170,21 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
     }
 
     public void onConfirmButtonClicked() {
-        //check if user answered the question or not
-        if (((QuizQuestionView) mCurrentComponentView).isQuestionAnswered()) {
-            ((QuizQuestionView) mCurrentComponentView).onQuestionAnswered();
-            showNextButton();
-        }
+        ((QuizQuestionView) mCurrentComponentView).onQuestionAnswered();
+        showNextButton();
     }
 
     public void onNextButtonClicked() {
         startNextQuestion();
     }
 
-    private void showConfirmButton() {
+    public void showConfirmButton() {
         iv_confirmButton.setVisibility(VISIBLE);
+        iv_nextButton.setVisibility(GONE);
+    }
+
+    public void hideConfirmButton() {
+        iv_confirmButton.setVisibility(INVISIBLE);
         iv_nextButton.setVisibility(GONE);
     }
 
@@ -227,5 +230,13 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
     @Override
     protected LayoutParams generateDefaultLayoutParams() {
         return new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+    }
+
+    public void onCompleteButtonClicked(View v) {
+        mActivityViewer.onNextBtnClicked(v);
+    }
+
+    public void setActivityViewer(ActivityViewer activityViewer) {
+        mActivityViewer = activityViewer;
     }
 }

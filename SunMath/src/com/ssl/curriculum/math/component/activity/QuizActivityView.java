@@ -33,7 +33,7 @@ public class QuizActivityView extends ActivityView {
         super.setActivity(activityData);
         mQuizComponentViewer.reset();
         mQuizComponentViewer.setActivityData(activityData);
-        new LoadQuestionTask(activityData).execute();
+        new LoadQuestionsTask(activityData).execute();
     }
 
     private void initUI() {
@@ -51,8 +51,21 @@ public class QuizActivityView extends ActivityView {
 
     private void initListener() {
         mQuizComponentViewer.setControlButtons(confirmBtn, nextBtn);
+        mQuizComponentViewer.setActivityViewer(mActivityViewer);
         nextBtn.setOnClickListener(mQuizComponentViewer);
         confirmBtn.setOnClickListener(mQuizComponentViewer);
+    }
+
+    @Override
+    public void onAfterFlippingIn() {
+        super.onAfterFlippingIn();
+        mActivityViewer.disableNextBtn();
+    }
+
+    @Override
+    public void onBeforeFlippingOut() {
+        super.onBeforeFlippingOut();
+        mActivityViewer.enableNextBtn();
     }
 
     @Override
@@ -61,11 +74,11 @@ public class QuizActivityView extends ActivityView {
         mQuizComponentViewer.onDestroy();
     }
 
-    private class LoadQuestionTask extends AsyncTask {
+    private class LoadQuestionsTask extends AsyncTask {
         private LinkedActivityData mActivityData;
         private List<QuizQuestion> mQuestions;
 
-        public LoadQuestionTask(LinkedActivityData activityData) {
+        public LoadQuestionsTask(LinkedActivityData activityData) {
             mActivityData = activityData;
         }
 
