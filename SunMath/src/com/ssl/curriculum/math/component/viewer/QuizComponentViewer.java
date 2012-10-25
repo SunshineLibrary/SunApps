@@ -156,10 +156,11 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
     }
 
     public void onConfirmButtonClicked() {
-        if (mCurrentComponentView instanceof QuizQuestionView) {
+        //check if user answered the question or not
+        if (((QuizQuestionView) mCurrentComponentView).isQuestionAnswered()) {
             ((QuizQuestionView) mCurrentComponentView).onQuestionAnswered();
+            showNextButton();
         }
-        showNextButton();
     }
 
     public void onNextButtonClicked() {

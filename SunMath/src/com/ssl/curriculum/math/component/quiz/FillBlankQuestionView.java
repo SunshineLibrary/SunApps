@@ -47,6 +47,11 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
     }
 
     @Override
+    public boolean isQuestionAnswered() {
+        return !("" == mPresenter.getUserAnswer());
+    }
+
+    @Override
     public void onQuestionAnswered() {
         mPresenter.onQuestionAnswered();
     }
