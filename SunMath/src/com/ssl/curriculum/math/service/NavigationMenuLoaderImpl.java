@@ -21,11 +21,11 @@ public class NavigationMenuLoaderImpl implements NavigationMenuLoader {
     private final ContentResolver contentResolver;
     private String courseSelection;
 
-    public NavigationMenuLoaderImpl(Context context, String courseSelection, String subject) {
+    public NavigationMenuLoaderImpl(Context context, String courseSelection, String subject, String subjectName) {
         this.context = context;
         contentResolver = this.context.getContentResolver();
         this.courseSelection = courseSelection;
-        NavigationMenuLoaderImpl.rootMenuName = subject;
+        NavigationMenuLoaderImpl.rootMenuName = subjectName;
         Log.i("menu load", courseSelection);
     }
 

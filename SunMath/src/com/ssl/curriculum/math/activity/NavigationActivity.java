@@ -37,7 +37,8 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     private SectionPresenter sectionPresenter;
     private ImageView download_management_entry;
     
-    private String subject;
+    private String subjectId;
+    private String subjectName;
     private String subjectSelection;
 
     @Override
@@ -86,39 +87,18 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     }
     
     private void handleSubjectSelection(){
-    	//TODO:NEED MODIFIED!!
-    	//selection should be based on subject type
     	Intent intent = this.getIntent();
-        subject = intent.getStringExtra("subject");
-    	if(subject == null){
+        subjectId = intent.getStringExtra("subjectId");
+        subjectName = intent.getStringExtra("subjectName");
+    	if(subjectId == null){
     		subjectSelection = null;
     		return;
     	}
     	StringBuffer sb = new StringBuffer();
-    	if(subject.equals(EntranceActivity.SUBJECTS[0])){
-    		//math
-    		sb.append(Courses._ID).append(" = 1 or ").append(Courses._ID).append(" = 8");
-    		subjectSelection = sb.toString();
-    		return;
-    	}else if(subject.equals(EntranceActivity.SUBJECTS[1])){
-    		//English
-    		sb.append(Courses._ID).append(" = 2 or ").append(Courses._ID).append(" = 3 or ");
-    		sb.append(Courses._ID).append(" = 5 or ").append(Courses._ID).append(" = 6 or ");
-    		sb.append(Courses._ID).append(" = 7");
-    		subjectSelection = sb.toString();
-    		return;
-    	}else if(subject.equals(EntranceActivity.SUBJECTS[2])){
-    		//test
-    		sb.append(Courses._ID).append(" = 4 or ").append(Courses._ID).append(" = 9 or ");
-    		sb.append(Courses._ID).append(" = 10");
-    		subjectSelection = sb.toString();
-    		return;
-    	}else{
-    		//null
-    		sb.append(Courses._ID).append(" = -1");
-    		subjectSelection = sb.toString();
-    		return;
-    	}
+    	
+		sb.append(Courses._PARENT_ID).append(" = ").append(subjectId);
+		subjectSelection = sb.toString();
+		return;
     	
     }
     
@@ -217,7 +197,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     }
 
     private void initComponent() {
-        menuPresenter = new NavigationMenuPresenter(this, subjectSelection, subject);
+        menuPresenter = new NavigationMenuPresenter(this, subjectSelection, subjectId, subjectName);
         sectionPresenter = new SectionPresenter(this);
         navigationListView.setNextLevelMenuChangedListener(menuPresenter);
         iv_back_button.setOnClickListener(this);
