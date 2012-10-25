@@ -6,15 +6,31 @@ import com.ssl.curriculum.math.utils.Constants;
 import java.util.Arrays;
 import java.util.List;
 
-public class MultipleChoiceTableView extends ChoiceTableView {
+public class MultipleAnswersChoiceTableView extends ChoiceTableView {
 
-    public MultipleChoiceTableView(Context context) {
-        super(context);
+    private int iSelectedCounter;
+
+    public MultipleAnswersChoiceTableView(Context context, QuizQuestionView quizQuestionView) {
+        super(context, quizQuestionView);
+        iSelectedCounter = 0;
+    }
+
+    public void increaseCounter() {
+        iSelectedCounter++;
+    }
+
+    public void decreaseCounter() {
+        iSelectedCounter--;
     }
 
     @Override
     protected void selectChoice(ChoiceButton choiceButton) {
-        choiceButton.toggle();
+        choiceButton.toggle(this);
+        if (iSelectedCounter > 0) {
+            showConfirmButton();
+        } else {
+            hideConfirmButton();
+        }
     }
 
     @Override

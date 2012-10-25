@@ -19,7 +19,7 @@ import android.support.v4.app.NavUtils;
         wb.getSettings().setJavaScriptEnabled(true);  
         wb.loadUrl("file:///android_asset/test.html");
         //wb.loadUrl("file:///android_asset/MathJax/test/index.html");
-        //wb.loadUrl("file:///android_asset/MathJax/test/sample-asciimath.html");
+        //wb.loadUrl("file:///android_asset/MathJax/test/question_body_template.html");
     }
 
     @Override

@@ -2,10 +2,10 @@ package com.ssl.curriculum.math.component.quiz;
 
 import android.content.Context;
 
-public class SingleChoiceTableView extends ChoiceTableView {
+public class SingleAnswerChoiceTableView extends ChoiceTableView {
 
-    public SingleChoiceTableView(Context context) {
-        super(context);
+    public SingleAnswerChoiceTableView(Context context, QuizQuestionView quizQuestionView) {
+        super(context, quizQuestionView);
     }
 
     @Override
@@ -15,6 +15,7 @@ public class SingleChoiceTableView extends ChoiceTableView {
             itemView.setSelected(false);
         }
         choiceButton.setSelected(true);
+        showConfirmButton();
     }
 
     @Override

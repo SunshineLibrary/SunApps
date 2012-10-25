@@ -45,11 +45,6 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
     }
 
     @Override
-    public boolean isQuestionAnswered() {
-        return !("" == choiceTableView.getUserAnswer());
-    }
-
-    @Override
     public void onQuestionAnswered() {
         choiceTableView.checkAnswer(mQuestion.getAnswer());
         mQuizComponentViewer.onQuestionResult(mQuestion, choiceTableView.getUserAnswer(), choiceTableView.isCorrect());
@@ -70,7 +65,7 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
 
     private ChoiceTableView getSingleChoiceTableView() {
         if (singleChoiceTableView == null) {
-            singleChoiceTableView = new SingleChoiceTableView(getContext());
+            singleChoiceTableView = new SingleAnswerChoiceTableView(getContext(), this);
             viewGroup.addView(singleChoiceTableView, getChoiceTableLayoutParams());
         }
         return singleChoiceTableView;
@@ -78,7 +73,7 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
 
     public ChoiceTableView getMultipleChoiceTableView() {
         if (multipleChoiceTableView == null) {
-            multipleChoiceTableView = new MultipleChoiceTableView(getContext());
+            multipleChoiceTableView = new MultipleAnswersChoiceTableView(getContext(), this);
             viewGroup.addView(multipleChoiceTableView, getChoiceTableLayoutParams());
         }
         return multipleChoiceTableView;

@@ -16,9 +16,11 @@ public abstract class ChoiceTableView extends LinearLayout implements OnChoiceCh
 
     private String userAnswer;
     private boolean isCorrect;
+    private QuizQuestionView mQuizQuestionView;
 
-    protected ChoiceTableView(Context context) {
+    protected ChoiceTableView(Context context, QuizQuestionView quizQuestionView) {
         super(context);
+        mQuizQuestionView = quizQuestionView;
         initUI();
     }
 
@@ -46,8 +48,9 @@ public abstract class ChoiceTableView extends LinearLayout implements OnChoiceCh
     protected abstract void selectChoice(ChoiceButton choiceButton);
 
     public void checkAnswer(String answer) {
+        //init answer
         userAnswer = "";
-        isCorrect = true;
+        setIncorrect();
     }
 
     public boolean isCorrect() {
@@ -71,5 +74,13 @@ public abstract class ChoiceTableView extends LinearLayout implements OnChoiceCh
         for (QuizChoiceQuestion.Choice choice : choices) {
             addChoiceTableRow(new ChoiceTableItemView(getContext(), choice.body, choice.choice));
         }
+    }
+
+    public void showConfirmButton() {
+        this.mQuizQuestionView.mQuizComponentViewer.showConfirmButton();
+    }
+
+    public void hideConfirmButton() {
+        this.mQuizQuestionView.mQuizComponentViewer.hideConfirmButton();
     }
 }

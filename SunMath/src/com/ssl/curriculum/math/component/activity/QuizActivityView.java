@@ -33,7 +33,7 @@ public class QuizActivityView extends ActivityView {
         super.setActivity(activityData);
         mQuizComponentViewer.reset();
         mQuizComponentViewer.setActivityData(activityData);
-        new LoadQuestionTask(activityData).execute();
+        new LoadQuestionsTask(activityData).execute();
     }
 
     private void initUI() {
@@ -61,11 +61,11 @@ public class QuizActivityView extends ActivityView {
         mQuizComponentViewer.onDestroy();
     }
 
-    private class LoadQuestionTask extends AsyncTask {
+    private class LoadQuestionsTask extends AsyncTask {
         private LinkedActivityData mActivityData;
         private List<QuizQuestion> mQuestions;
 
-        public LoadQuestionTask(LinkedActivityData activityData) {
+        public LoadQuestionsTask(LinkedActivityData activityData) {
             mActivityData = activityData;
         }
 

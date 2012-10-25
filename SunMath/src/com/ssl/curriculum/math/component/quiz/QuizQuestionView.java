@@ -26,7 +26,6 @@ public abstract class QuizQuestionView extends QuizComponentView {
         questionWebView.setScrollBarStyle(0);
     }
 
-    public abstract boolean isQuestionAnswered();
     public abstract void onQuestionAnswered();
 
     public void setQuestion(QuizQuestion question) {
@@ -41,7 +40,7 @@ public abstract class QuizQuestionView extends QuizComponentView {
     }
 
     protected void loadQuizHtml(String quizContent) {
-        final String data = QuizHtmlLoader.getInstance(getContext()).loadQuizHtmlWithNewContent(quizContent);
+        final String data = QuizHtmlLoader.getInstance(getContext()).loadQuestionBodyWithNewContent(quizContent);
 
       /*
        * Android thinks file:// schema insecure, so we use http:// here.
