@@ -37,4 +37,9 @@ public class FillBlankQuestionPresenter {
     public boolean isCorrect(String answer){
         return mQuestion.getAnswer().equals(answer);
     }
+
+    public String getUserAnswer() {
+        return mQuestionView.getUserAnswer();
+    }
+
 }

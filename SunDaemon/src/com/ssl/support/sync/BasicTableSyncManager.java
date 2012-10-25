@@ -24,8 +24,9 @@ public class BasicTableSyncManager implements TableSyncManager {
 	private static final int MAX_RETRY_COUNT = 3;
 	private static final int BATCH_SIZE = 100;
     private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    private static final long TIME_ZERO = parseTime("1970-01-01T08:00:00+08:00");
 
-	private Table table;
+    private Table table;
     private ApiSyncState syncState;
     private ApiClient apiClient;
 
@@ -117,8 +118,13 @@ public class BasicTableSyncManager implements TableSyncManager {
 		return jsonArr.length() < BATCH_SIZE;
 	}
 
-    private long parseTime(String updated_at) throws ParseException, JSONException {
-        return TIME_FORMAT.parse(updated_at).getTime();
+    private static long parseTime(String time) {
+        try {
+            return TIME_FORMAT.parse(time).getTime();
+        } catch (ParseException e) {
+            Log.e(BasicTableSyncManager.class.getName(), "Failed to parse time " + time, e);
+        }
+        return 0;
     }
 
     protected ContentValues getContentValuesFromRow(JSONObject row) {
@@ -157,9 +163,8 @@ public class BasicTableSyncManager implements TableSyncManager {
 
     private boolean deleted(JSONObject row) {
         try {
-            return parseTime(row.getString("created_at")) == 0;
-        } catch (ParseException e) {
-            Log.e(getClassName(), "Failed to parse time " + row.toString(), e);
+            long time = parseTime(row.getString("created_at"));
+            return  time == 0 || time == TIME_ZERO;
         } catch (JSONException e) {
             Log.e(getClassName(), "Failed to get created_at " + row.toString(), e);
         }

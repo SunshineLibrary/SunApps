@@ -29,6 +29,7 @@ public class MetadataDBHandlerFactory {
     }
 
     private static void initNormalTables(DBHandler dbHandler) {
+        dbHandler.addTableManager(SubjectTable.TABLE_NAME, new SubjectTable(dbHandler));
         dbHandler.addTableManager(CourseTable.TABLE_NAME, new CourseTable(dbHandler));
         dbHandler.addTableManager(ChapterTable.TABLE_NAME, new ChapterTable(dbHandler));
         dbHandler.addTableManager(LessonTable.TABLE_NAME, new LessonTable(dbHandler));

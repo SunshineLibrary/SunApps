@@ -12,12 +12,12 @@ import com.ssl.support.services.APISyncService;
 
 public class APISyncTask extends AsyncTask<String, String, Integer> {
 
-	private Table syncTable;
 	private DBHandler dbHandler;
 	private APISyncService context;
 
 	private static final String[] SYNCED_TABLES = {
             // Courses
+            SubjectTable.TABLE_NAME,
             CourseTable.TABLE_NAME,
             ChapterTable.TABLE_NAME,
             LessonTable.TABLE_NAME,
@@ -25,6 +25,7 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
 
             // Activities
             ActivityTable.TABLE_NAME,
+            EdgeTable.TABLE_NAME,
             GalleryImageTable.TABLE_NAME,
             QuizComponentsTable.TABLE_NAME,
             SectionComponentsTable.TABLE_NAME,

@@ -124,8 +124,7 @@ public class DownloadableTableObserver extends TableObserver {
                         apiClient.getDownloadUri("activities", id), Activities.getActivityVideoUri(id), uri, notifyUri);
                 break;
             case Activities.TYPE_TEXT:
-                enqueueDownloadTask(
-                        apiClient.getDownloadUri("activities", id), Activities.getActivityTextUri(id), uri, notifyUri);
+                enqueueDownloadTask(null, null, uri, notifyUri);
                 break;
             case Activities.TYPE_HTML:
                 enqueueDownloadTask(

@@ -15,13 +15,14 @@ public class Matcher {
     public static final int PACKAGES_ID = 101;
     public static final int API_SYNC_STATES = 102;
 
-    public static final int COURSES = 200;
-    public static final int CHAPTERS = 201;
-    public static final int LESSONS = 202;
-    public static final int SECTIONS = 203;
-    public static final int SECTIONS_ID = 204;
-    public static final int SECTIONS_ACTIVITIES = 205;
-    public static final int SECTIONS_THUMBNAIL = 206;
+    public static final int SUBJECTS = 200;
+    public static final int COURSES = 201;
+    public static final int CHAPTERS = 202;
+    public static final int LESSONS = 203;
+    public static final int SECTIONS = 204;
+    public static final int SECTIONS_ID = 205;
+    public static final int SECTIONS_ACTIVITIES = 206;
+    public static final int SECTIONS_THUMBNAIL = 207;
 
     public static final int ACTIVITIES = 300;
     public static final int ACTIVITIES_ID = 301;
@@ -79,6 +80,7 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "packages/#", PACKAGES_ID);
             matcher.addURI(AUTHORITY, "api_sync_states", API_SYNC_STATES);
 
+            matcher.addURI(AUTHORITY, "subjects", SUBJECTS);
             matcher.addURI(AUTHORITY, "courses", COURSES);
             matcher.addURI(AUTHORITY, "chapters", CHAPTERS);
             matcher.addURI(AUTHORITY, "lessons", LESSONS);

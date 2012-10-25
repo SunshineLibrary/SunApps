@@ -41,8 +41,12 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
 
     public void loadQuiz(QuizQuestion question) {
         QuizChoiceQuestion quizChoiceQuestion = (QuizChoiceQuestion) question;
-        questionWebView.loadDataWithBaseURL("http://test", quizChoiceQuestion.getQuizContent(), "text/html", "utf-8", null);
         choiceTableView.loadChoices(quizChoiceQuestion.getChoices());
+    }
+
+    @Override
+    public boolean isQuestionAnswered() {
+        return !("" == choiceTableView.getUserAnswer());
     }
 
     @Override

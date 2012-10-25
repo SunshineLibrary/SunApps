@@ -26,7 +26,7 @@ public abstract class QuizQuestionView extends QuizComponentView {
         questionWebView.setScrollBarStyle(0);
     }
 
-
+    public abstract boolean isQuestionAnswered();
     public abstract void onQuestionAnswered();
 
     public void setQuestion(QuizQuestion question) {

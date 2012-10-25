@@ -54,7 +54,7 @@
                 android:paddingTop="11dp"
                 android:src="@drawable/ic_side_green" />
         </RelativeLayout>
-
+    <!--
         <ImageView
                 android:id="@+id/download_management_entry"
                 android:layout_width="fill_parent"
@@ -62,7 +62,7 @@
                 android:layout_alignParentBottom="true"
                 android:src="@drawable/ic_side_download_manager"
                 />
-
+    -->
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
@@ -76,7 +76,6 @@
             android:id="@+id/navi_list_view"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/download_management_entry"
             android:layout_below="@id/navi_activity_top_container"
             android:cacheColorHint="#00000000"
             android:divider="@android:color/transparent"
@@ -187,9 +186,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/btn_navi_activity_statistic"
+                        android:layout_alignParentRight="true"
                         android:src="@drawable/ic_main_top_single_divider" />
-
+          <!--
                     <ImageButton
                         android:id="@+id/btn_navi_activity_statistic"
                         android:layout_width="wrap_content"
@@ -206,6 +205,9 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_main_top_single_divider" />
+
+            -->
+
                 </RelativeLayout>
             </RelativeLayout>
 

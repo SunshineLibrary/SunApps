@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 import com.ssl.metadata.database.tables.APISyncStateTable;
 import com.ssl.support.data.models.ApiSyncState;
 
@@ -14,14 +15,20 @@ import com.ssl.support.data.models.ApiSyncState;
 public class ApiSyncStateHelper {
 
     public static ApiSyncState getOrCreateNewFromTableName(Context context, String tableName) {
+        ApiSyncState entry = null;
+
         Cursor cursor = context.getContentResolver().query(APISyncStateTable.ApiSyncStates.CONTENT_URI,
                 APISyncStateTable.ALL_COLUMNS, APISyncStateTable.ApiSyncStates._TABLE_NAME + "=?",
                 new String[]{tableName}, null);
+
         if (cursor.moveToFirst()) {
-            return newEntryFromCursor(cursor);
+            entry = newEntryFromCursor(cursor);
         } else {
-            return createNewFromTableName(context, tableName);
+            entry = createNewFromTableName(context, tableName);
         }
+        cursor.close();
+
+        return entry;
     }
 
     public static void saveApiSyncState(Context context, ApiSyncState syncState) {

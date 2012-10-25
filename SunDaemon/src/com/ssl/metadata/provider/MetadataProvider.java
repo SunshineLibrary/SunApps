@@ -31,6 +31,7 @@ public class MetadataProvider extends ContentProvider {
 
     private Table packageTable;
     private Table apiSyncStateTable;
+    private Table subjectTable;
     private Table courseTable;
     private Table chapterTable;
     private Table lessonTable;
@@ -93,6 +94,7 @@ public class MetadataProvider extends ContentProvider {
             // Collections
             case Matcher.PACKAGES:
             case Matcher.API_SYNC_STATES:
+            case Matcher.SUBJECTS:
             case Matcher.COURSES:
             case Matcher.CHAPTERS:
             case Matcher.LESSONS:
@@ -130,6 +132,7 @@ public class MetadataProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
             case Matcher.PACKAGES:
             case Matcher.API_SYNC_STATES:
+            case Matcher.SUBJECTS:
             case Matcher.COURSES:
             case Matcher.CHAPTERS:
             case Matcher.LESSONS:
@@ -232,6 +235,11 @@ public class MetadataProvider extends ContentProvider {
                     apiSyncStateTable = dbHandler.getTableManager(APISyncStateTable.TABLE_NAME);
                 }
                 return apiSyncStateTable;
+            case Matcher.SUBJECTS:
+                if (subjectTable== null) {
+                    subjectTable= dbHandler.getTableManager(SubjectTable.TABLE_NAME);
+                }
+                return subjectTable;
             case Matcher.COURSES:
                 if (courseTable == null) {
                     courseTable = dbHandler.getTableManager(CourseTable.TABLE_NAME);
