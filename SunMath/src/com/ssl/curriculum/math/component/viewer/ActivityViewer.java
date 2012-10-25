@@ -146,7 +146,7 @@ public class ActivityViewer extends FrameLayout{
             mHtmlView = new HtmlActivityView(getContext(), this);
             addView(mHtmlView);
         }
-        return mQuizView;
+        return mHtmlView;
     }
 
     private ActivityView getGalleryView() {

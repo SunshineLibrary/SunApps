@@ -59,13 +59,13 @@ public class ActivityListAdapter extends CursorAdapter {
 
         switch (status) {
             case Activities.STATUS_NOT_DOWNLOADED:
-                tv_status.setText("未下载");
+                tv_status.setText(context.getString(R.string.not_downloaded));
                 break;
             case Activities.STATUS_QUEUED:
-                tv_status.setText("等待下载");
+                tv_status.setText(context.getString(R.string.download_pending));
                 break;
             case Activities.STATUS_DOWNLOADING:
-                tv_status.setText("正在下载:" + progress + "%");
+                tv_status.setText(context.getString(R.string.downloading) + progress + "%");
                 break;
             case Activities.STATUS_DOWNLOADED:
                 tv_status.setVisibility(View.INVISIBLE);
