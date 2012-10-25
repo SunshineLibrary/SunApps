@@ -32,6 +32,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     private MediaPlayer player;
     private SurfaceHolder holder;
     private ImageButton playButton;
+    private ImageButton rollbackButton;
     private ViewGroup content;
     private ViewGroup mFullScreenLayout;
     private View savedContentView;
@@ -79,7 +80,8 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         controlPanel = findViewById(R.id.video_player_control_panel);
         playerProgress = (ProgressBar) findViewById(R.id.video_player_time_line);
         playButton = (ImageButton) findViewById(R.id.video_player_media_btn);
-
+        rollbackButton = (ImageButton) findViewById(R.id.video_player_media_rollback);
+        
         holder = surface.getHolder();
         holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         fullScreenButton = (ImageButton) findViewById(R.id.video_player_full_screen_btn);
@@ -93,8 +95,8 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
                 lastActionTime = SystemClock.elapsedRealtime();
                 if (controlPanel.getVisibility() == View.GONE)
                     controlPanel.setVisibility(View.VISIBLE);
-                else
-                    controlPanel.setVisibility(View.GONE);
+//                else
+//                    controlPanel.setVisibility(View.GONE);
             }
         };
         surface.addTapListener(tapListener);
@@ -105,7 +107,13 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
                 handlePlayBtnClick();
             }
         });
-
+        
+        rollbackButton.setOnClickListener(new OnClickListener() {
+        	public void onClick(View v) {
+                handleRollBackBtnClick();
+            }
+        });
+        
         fullScreenButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,11 +151,20 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         else if (player.isPlaying()) pause();
         else resume();
     }
-
+    
+    private void handleRollBackBtnClick() {
+    	if (player == null || !player.isPlaying()) return;
+    	int position = player.getCurrentPosition();
+    	if(position > 10000) playVedioFromPosition(position - 10000);
+    	else playVedioFromPosition(0);
+    }
+    
     private void play() {
         playVideo();
         hideControlPanel();
         onStart();
+        toFullScreen();
+        toFullScreen = true;
     }
 
     public void pause() {
@@ -185,6 +202,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
             player.setOnPreparedListener(this);
             player.prepareAsync();
             player.setOnCompletionListener(this);
+            
         } catch (Exception t) {
             t.printStackTrace();
             showErrorDialog(t);
@@ -193,8 +211,8 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
 
     public void setToFullScreen(boolean toFullScreen) {
         if (player == null || !player.isPlaying()) return;
-        player.pause();
         savedPlayedPosition = player.getCurrentPosition();
+        player.pause();
         if (toFullScreen) toFullScreen();
         else toOriginalScreen();
     }
@@ -240,28 +258,35 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         playerProgress.setProgress(0);
         playerProgress.setMax(player.getDuration());
         //player.start();
+        Log.i("mediaplayer", "player prepared");
         playButton.setEnabled(true);
+        rollbackButton.setEnabled(true);
     }
 
     private void showErrorDialog(Throwable t) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Exception!").setMessage(t.toString()).setPositiveButton("OK", null).show();
     }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        if (player == null || player.isPlaying()) return;
-        try {
+    
+    private void playVedioFromPosition(int position){
+    	try {
             player.reset();
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.setDataSource(getVideoFileDescriptor(activityId));
             player.setDisplay(holder);
             player.prepare();
-            player.seekTo(savedPlayedPosition);
+            player.seekTo(position);
             player.start();
         } catch (IOException e) {
             Log.e(TAG, "when switch to different screen, recreate the media player error!");
         }
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        if (player == null || player.isPlaying()) return;
+        Log.i("mediaplayer", "surfaceCreated");
+        playVedioFromPosition(savedPlayedPosition);
     }
 
     @Override

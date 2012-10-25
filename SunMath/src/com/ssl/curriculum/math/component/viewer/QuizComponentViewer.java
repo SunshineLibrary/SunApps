@@ -32,6 +32,7 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
     private QuizQuestionView mFillBlankView, mMultipleChoiceView;
     private QuizSummaryView mSummaryView;
     private LinkedActivityData mActivityData;
+    private ActivityViewer mActivityViewer;
 
     public QuizComponentViewer(Context context) {
         super(context);
@@ -229,5 +230,13 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
     @Override
     protected LayoutParams generateDefaultLayoutParams() {
         return new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+    }
+
+    public void onCompleteButtonClicked(View v) {
+        mActivityViewer.onNextBtnClicked(v);
+    }
+
+    public void setActivityViewer(ActivityViewer activityViewer) {
+        mActivityViewer = activityViewer;
     }
 }
