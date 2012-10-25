@@ -24,7 +24,7 @@ public class BasicTableSyncManager implements TableSyncManager {
 	private static final int MAX_RETRY_COUNT = 3;
 	private static final int BATCH_SIZE = 100;
     private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    private static final long TIME_ZERO = parseTime("1970-01-01T08:00:00+08:00");
+    private static final long TIME_ZERO = getZeroTime();
 
     private Table table;
     private ApiSyncState syncState;
@@ -118,9 +118,18 @@ public class BasicTableSyncManager implements TableSyncManager {
 		return jsonArr.length() < BATCH_SIZE;
 	}
 
+    private static long getZeroTime() {
+        try {
+            return TIME_FORMAT.parse("1970-01-01T08:00:00+08:00").getTime();
+        } catch (ParseException e) {
+            Log.e(BasicTableSyncManager.class.getName(), "Failed to parse zero time", e);
+        }
+        return 0;
+    }
+
     private static long parseTime(String time) {
         try {
-            return TIME_FORMAT.parse(time).getTime();
+            return TIME_FORMAT.parse(time).getTime() - TIME_ZERO;
         } catch (ParseException e) {
             Log.e(BasicTableSyncManager.class.getName(), "Failed to parse time " + time, e);
         }
@@ -163,8 +172,7 @@ public class BasicTableSyncManager implements TableSyncManager {
 
     private boolean deleted(JSONObject row) {
         try {
-            long time = parseTime(row.getString("created_at"));
-            return  time == 0 || time == TIME_ZERO;
+            return  parseTime(row.getString("created_at")) == 0;
         } catch (JSONException e) {
             Log.e(getClassName(), "Failed to get created_at " + row.toString(), e);
         }
