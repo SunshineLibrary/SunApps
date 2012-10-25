@@ -15,6 +15,7 @@ import com.ssl.curriculum.math.model.Section;
 import com.ssl.curriculum.math.model.menu.Menu;
 import com.ssl.curriculum.math.presenter.NavigationMenuPresenter;
 import com.ssl.curriculum.math.presenter.SectionPresenter;
+import com.ssl.metadata.provider.MetadataContract.Courses;
 
 public class NavigationActivity extends Activity implements View.OnClickListener {
 
@@ -35,14 +36,25 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     private HorizontalListView lv_section_activities;
     private SectionPresenter sectionPresenter;
     private ImageView download_management_entry;
+    
+    private String subjectId;
+    private String subjectName;
+    private String subjectSelection;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initUI();
+		handleSubjectSelection();
     }
-
+    
     @Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		handleSubjectSelection();
+	}
+
+	@Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         initComponent();
@@ -59,7 +71,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v == iv_back_button) {
-            menuPresenter.menuBack();
+            if(!menuPresenter.menuBack()) destroy();
         } else if (v == iv_download_lesson){
             sectionPresenter.startDownload();
             showDownloading();
@@ -72,6 +84,28 @@ public class NavigationActivity extends Activity implements View.OnClickListener
             intent.setClass(this, DownloadManageActivity.class);
             this.startActivity(intent);
         }
+    }
+    
+    private void handleSubjectSelection(){
+    	Intent intent = this.getIntent();
+        subjectId = intent.getStringExtra("subjectId");
+        subjectName = intent.getStringExtra("subjectName");
+    	if(subjectId == null){
+    		subjectSelection = null;
+    		return;
+    	}
+    	StringBuffer sb = new StringBuffer();
+    	
+		sb.append(Courses._PARENT_ID).append(" = ").append(subjectId);
+		subjectSelection = sb.toString();
+		return;
+    	
+    }
+    
+    private void destroy(){
+    	menuPresenter = null;
+    	sectionPresenter = null;
+    	NavigationActivity.this.finish();
     }
 
     public void presentSection(int id) {
@@ -163,7 +197,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     }
 
     private void initComponent() {
-        menuPresenter = new NavigationMenuPresenter(this);
+        menuPresenter = new NavigationMenuPresenter(this, subjectSelection, subjectId, subjectName);
         sectionPresenter = new SectionPresenter(this);
         navigationListView.setNextLevelMenuChangedListener(menuPresenter);
         iv_back_button.setOnClickListener(this);
