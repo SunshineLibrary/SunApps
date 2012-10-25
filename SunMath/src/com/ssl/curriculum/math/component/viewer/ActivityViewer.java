@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.model.activity.LinkedActivityData;
 import com.ssl.curriculum.math.component.activity.*;
@@ -20,6 +21,7 @@ public class ActivityViewer extends FrameLayout{
     private FlipAnimationManager mAnimationManager;
 
     private ActivityView mVideoView, mQuizView, mHtmlView, mTextView, mGalleryView, mPdfView;
+    private ImageView mBtnNext;
 
     public ActivityViewer(Context context) {
         super(context);
@@ -33,6 +35,18 @@ public class ActivityViewer extends FrameLayout{
 
     public void onNextBtnClicked(View v){
         mCurrentView.onNextBtnClicked(v);
+    }
+
+    public void setNextBtn(ImageView btn) {
+        mBtnNext = btn;
+    }
+
+    public void enableNextBtn() {
+        mBtnNext.setEnabled(true);
+    }
+
+    public void disableNextBtn() {
+        mBtnNext.setEnabled(false);
     }
 
     public void onPrevBtnClicked(View v){

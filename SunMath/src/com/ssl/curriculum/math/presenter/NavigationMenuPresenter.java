@@ -15,9 +15,9 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 	private Menu currentMenu;
     private NavigationActivity navigationActivity;
 
-    public NavigationMenuPresenter(NavigationActivity navigationActivity) {
+    public NavigationMenuPresenter(NavigationActivity navigationActivity, String courseSelection, String subject, String subjectName) {
         this.navigationActivity = navigationActivity;
-		loader = new NavigationMenuLoaderImpl(navigationActivity);
+		loader = new NavigationMenuLoaderImpl(navigationActivity, courseSelection, subject, subjectName);
 	}
 
 	public void loadMenuData() {
@@ -53,8 +53,9 @@ public class NavigationMenuPresenter implements NextLevelMenuChangedListener {
 	}
 
 	public boolean menuBack() {
-		if (currentMenu.getParent() == null)
+		if (currentMenu.getParent() == null){
 			return false;
+		}
         navigationActivity.hideSectionDetails();
 		currentMenu = currentMenu.getParent();
 		updateMenu();

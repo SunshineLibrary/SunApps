@@ -94,6 +94,24 @@
             <arg value="am"/>
             <arg value="start"/>
             <arg value="-n"/>
+            <arg value="com.ssl.curriculum.math/com.ssl.curriculum.math.activity.EntranceActivity"/>
+        </exec>
+    </target>
+
+    <target name="install_app">
+        <exec executable="${sdk.dir}/platform-tools/adb">
+            <arg value="uninstall"/>
+            <arg value="com.ssl.curriculum.math"/>
+        </exec>
+        <exec executable="${sdk.dir}/platform-tools/adb">
+            <arg value="install"/>
+            <arg value="./bin/SunMathApp-release.apk"/>
+        </exec>
+        <exec executable="${sdk.dir}/platform-tools/adb">
+            <arg value="shell"/>
+            <arg value="am"/>
+            <arg value="start"/>
+            <arg value="-n"/>
             <arg value="com.ssl.curriculum.math/com.ssl.curriculum.math.activity.NavigationActivity"/>
         </exec>
     </target>

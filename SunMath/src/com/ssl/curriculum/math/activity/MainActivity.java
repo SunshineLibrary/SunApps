@@ -14,7 +14,6 @@ import com.ssl.curriculum.math.model.activity.LinkedActivityData;
 
 public class MainActivity extends Activity {
 
-
     private ImageView leftBtn;
     private ImageView rightBtn;
     private ImageView naviBtn;
@@ -52,6 +51,7 @@ public class MainActivity extends Activity {
         rightBtn = (ImageView) this.findViewById(R.id.main_activity_right_btn);
         naviBtn = (ImageView) this.findViewById(R.id.main_activity_navi_btn);
         mActivityViewer = (ActivityViewer) this.findViewById(R.id.main_activity_view_flipper);
+        mActivityViewer.setNextBtn(rightBtn);
     }
 
     private void initComponents() {
