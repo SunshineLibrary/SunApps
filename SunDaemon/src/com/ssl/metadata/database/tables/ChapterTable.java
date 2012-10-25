@@ -1,7 +1,6 @@
 package com.ssl.metadata.database.tables;
 
 import com.ssl.metadata.database.DBHandler;
-import com.ssl.metadata.provider.MetadataContract;
 
 import static com.ssl.metadata.provider.MetadataContract.Chapters;
 import static com.ssl.metadata.provider.MetadataContract.Courses;
@@ -38,6 +37,6 @@ public class ChapterTable extends MenuWithForeignKeyTable {
 
 	@Override
 	protected String getForeignKeyColumn() {
-		return MetadataContract.Chapters._PARENT_ID;
+		return Chapters._PARENT_ID;
 	}
 }

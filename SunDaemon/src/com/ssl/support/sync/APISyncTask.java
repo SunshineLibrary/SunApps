@@ -17,6 +17,7 @@ public class APISyncTask extends AsyncTask<String, String, Integer> {
 
 	private static final String[] SYNCED_TABLES = {
             // Courses
+            SubjectTable.TABLE_NAME,
             CourseTable.TABLE_NAME,
             ChapterTable.TABLE_NAME,
             LessonTable.TABLE_NAME,
