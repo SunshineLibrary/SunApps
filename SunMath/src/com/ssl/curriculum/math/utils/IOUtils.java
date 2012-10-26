@@ -5,15 +5,38 @@ import java.io.*;
 public class IOUtils {
     private static final int BUFFER_SIZE = 4096;
 
+    
+    /**
+     * transfer all data from in to out, without closing them.
+     * @param in
+     * @param out
+     * @throws IOException
+     */
+    public static void transfer(InputStream in, OutputStream out) throws IOException{
+		byte[] buf = new byte[BUFFER_SIZE];
+		int len = in.read(buf);
+		while (len>0) {
+			out.write(buf,0,len);
+			len = in.read(buf);
+		}
+		out.flush();
+	}
+    
+    /**
+     * transfer all data from in to out, then close them.
+     * @param input
+     * @param output
+     * @throws IOException
+     */
     public static void copy(InputStream input, OutputStream output) throws IOException {
         copy(input, output, null);
     }
 
     public static void copy(InputStream input, OutputStream output, ProgressUpdater updater) throws IOException{
         if(input == null ) {
-            throw new IOException("Null Input");
+            throw new NullPointerException("Null Input");
         } else if(output == null) {
-            throw new IOException("Null Output");
+            throw new NullPointerException("Null Output");
         } else {
             IOException exception = null;
             try {
