@@ -11,6 +11,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ssl.curriculum.math.R;
@@ -42,6 +47,8 @@ public class HtmlActivityView extends ActivityView implements
 	int activityId;
 	Context context;
 	CacheHtmlTask task;
+	TextView titleTextView;
+	TextView noteTextView;
 	boolean autoOpen = false;
 	
 	public HtmlActivityView(Context context, ActivityViewer activityViewer) {
@@ -54,23 +61,26 @@ public class HtmlActivityView extends ActivityView implements
 	public void setActivity(LinkedActivityData activityData) {
 		super.setActivity(activityData);
 		activityId = activityData.activityId;
-		task = new CacheHtmlTask();
-		task.execute(activityId);
-		
+		titleTextView.setText(activityData.name);
+        noteTextView.setText(activityData.notes==null?"":activityData.notes);
+        task = new CacheHtmlTask();
+		task.execute(activityId);		
 	}
 
 	private void initUI() {
 		LayoutInflater layoutInflater = (LayoutInflater) getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(
-				R.layout.flipper_html_layout, this, false);
+				R.layout.flipper_external_layout, this, false);
 		addView(viewGroup);
-
+	    titleTextView = (TextView) findViewById(R.id.flipper_external_title);
+        noteTextView = (TextView) findViewById(R.id.flipper_external_notes);
+    
 	}
 
 	private void initComponents(final Context context) {
 		this.context = context;
-		Button button = (Button) findViewById(R.id.flipper_html_button);
+		Button button = (Button) findViewById(R.id.flipper_external_button);
 		button.setOnClickListener(this);
 	}
 
@@ -104,7 +114,7 @@ public class HtmlActivityView extends ActivityView implements
 			return;
 		}
 		Intent intent = new Intent();
-		intent.putExtra("indexPath", indexPath);
+		intent.putExtra("indexPath", indexPath.getAbsolutePath());
 		intent.setClass(context, WebViewActivity.class);
 		context.startActivity(intent);
 	}
@@ -115,14 +125,22 @@ public class HtmlActivityView extends ActivityView implements
 		protected File doInBackground(Integer... params) {
 			int activityId = params[0];
 			File baseDir = context.getCacheDir();
-			File cacheDir = new File(baseDir, "_html_cache+" + activityId);
+			File cacheDir = new File(baseDir, "_html_cache_" + activityId);
+			File cacheFile = new File(baseDir, "_html_cache_zip_"+activityId+".zip");
 			FileUtil.rmr(cacheDir);
+			FileUtil.rmr(cacheFile);
 			return super.doInBackground(params);
 		}
 	}
 	
 	private class CacheHtmlTask extends AsyncTask<Integer, Integer, File> {
 
+		Pattern[] indexPatterns = new Pattern[]{
+				Pattern.compile("^\\/?index.html?$",Pattern.CASE_INSENSITIVE),
+				Pattern.compile("^\\/?(.*\\/)*index.html?$",Pattern.CASE_INSENSITIVE),
+				Pattern.compile("^\\/?(.*\\/)*(.*).html?$",Pattern.CASE_INSENSITIVE)
+		};
+		
 		void clearCache(File baseDir){
 			File[] cachesFiles = baseDir.listFiles(new FileFilter() {
 
@@ -145,6 +163,38 @@ public class HtmlActivityView extends ActivityView implements
 			}
 		}
 		
+		File findHtml(File baseDir, Pattern... patterns){
+			Queue<File> bfsfinder = new LinkedList<File>();
+			File[] matches = new File[patterns.length];
+			bfsfinder.offer(baseDir);
+			while (bfsfinder.size()>0) {
+				File f = bfsfinder.poll();
+				if(f.isDirectory()){
+					for(File sf:f.listFiles()){
+						bfsfinder.offer(sf);
+					}
+				}else{
+					String relName=f.getAbsolutePath();
+					if(relName.startsWith(baseDir.getAbsolutePath())){
+						relName = relName.substring(baseDir.getAbsolutePath().length());
+						for (int i = 0; i < matches.length; i++) {
+							if(matches[i]==null && patterns[i].matcher(relName).matches()){
+								matches[i] = f;
+							}
+						}
+					}else{
+						continue;
+					}
+				}				
+			}
+			for (int i = 0; i < matches.length; i++) {
+				if(matches[i]!=null){
+					return matches[i];
+				}
+			}
+			return null;
+		}
+		
 		@Override
 		protected File doInBackground(Integer... params) {
 			int activityId = params[0];
@@ -152,9 +202,9 @@ public class HtmlActivityView extends ActivityView implements
 			clearCache(baseDir);
 			
 			File cacheFile = new File(baseDir, "_html_cache_zip_"+activityId+".zip");
-			File cacheDir = new File(baseDir, "_html_cache_+" + activityId);
+			File cacheDir = new File(baseDir, "_html_cache_" + activityId);
 			if(cacheDir.exists() && cacheDir.isDirectory()){
-				return new File(cacheDir, "index.html");
+				return findHtml(cacheDir, indexPatterns);
 			}
 			
             if(!cacheFile.exists()){
@@ -162,7 +212,7 @@ public class HtmlActivityView extends ActivityView implements
             	OutputStream out = null;
             	try {
             		cacheFile.createNewFile();
-                	ParcelFileDescriptor pfd = getContext().getContentResolver().openFileDescriptor(MetadataContract.Activities.getActivityPdfUri(activityId), "r");
+                	ParcelFileDescriptor pfd = getContext().getContentResolver().openFileDescriptor(MetadataContract.Activities.getActivityHtmlUri(activityId), "r");
 					in = new BufferedInputStream(new ParcelFileDescriptor.AutoCloseInputStream(pfd));
 					try{
 					out = new BufferedOutputStream(new FileOutputStream(cacheFile));
@@ -173,11 +223,7 @@ public class HtmlActivityView extends ActivityView implements
 						}
 					}
 					UnpackZipUtil.unZipUtf8(cacheFile, cacheDir);
-					File f1=new File(cacheDir, "index.html");
-					if(f1.exists()) return f1;
-					File f2=new File(cacheDir, "index.htm");
-					if(f2.exists()) return f2;
-					return null;
+					return findHtml(cacheDir, indexPatterns);
 				} catch (IOException e) {
 					Log.e("HtmlActivityView", "CacheHtmlTask", e);
 					return null;
@@ -193,11 +239,7 @@ public class HtmlActivityView extends ActivityView implements
             }else{
             	try{
 	            	UnpackZipUtil.unZipUtf8(cacheFile, cacheDir);
-					File f1=new File(cacheDir, "index.html");
-					if(f1.exists()) return f1;
-					File f2=new File(cacheDir, "index.htm");
-					if(f2.exists()) return f2;
-					return null;
+	            	return findHtml(cacheDir, indexPatterns);
             	}catch (IOException e) {
             		Log.e("HtmlActivityView", "CacheHtmlTask", e);
             		return null;

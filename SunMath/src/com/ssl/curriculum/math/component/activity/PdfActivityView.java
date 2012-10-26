@@ -65,15 +65,15 @@ public class PdfActivityView extends ActivityView implements View.OnClickListene
 
     private void initUI() {
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.flipper_pdf_layout, this, false);
+        ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.flipper_external_layout, this, false);
         addView(viewGroup);
-        titleTextView = (TextView) findViewById(R.id.flipper_pdf_title);
-        noteTextView = (TextView) findViewById(R.id.flipper_pdf_notes);
+        titleTextView = (TextView) findViewById(R.id.flipper_external_title);
+        noteTextView = (TextView) findViewById(R.id.flipper_external_notes);
     }
 
     private void initComponents(final Context context) {
     	this.context = context;
-        Button button = (Button) findViewById(R.id.flipper_pdf_button);
+        Button button = (Button) findViewById(R.id.flipper_external_button);
         button.setOnClickListener(this);
     }
 
