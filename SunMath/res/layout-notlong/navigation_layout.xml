@@ -94,12 +94,12 @@
             android:background="#F6F2E4"
             android:visibility="visible" >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:paddingTop="11dp"
-                android:src="@drawable/ic_navi_activity_curri" />
+            <ImageView android:id="@+id/iv_curr_menu"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_alignParentLeft="true"
+                       android:paddingTop="11dp"
+                       android:src="@drawable/ic_navi_activity_curri" />
 
             <ImageView
                 android:layout_width="wrap_content"

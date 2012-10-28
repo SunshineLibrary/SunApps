@@ -114,7 +114,7 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
         setQuestion(question);
 
         flipCurrentQuestionIn();
-        hideConfirmButton(); // hide by default, only show when user answer the question
+        hideConfirmButton();
         mCurrentComponentView.onAfterFlippingIn();
     }
 
@@ -139,8 +139,8 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
         switch(question.getType()) {
             case TYPE_FB:
                 return getFillBlankView();
-            case TYPE_SC:
-            case TYPE_MC:
+            case TYPE_SA:
+            case TYPE_MA:
                 return getMultipleChoiceView();
         }
         return null;

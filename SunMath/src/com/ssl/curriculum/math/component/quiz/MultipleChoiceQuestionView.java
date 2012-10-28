@@ -1,35 +1,58 @@
 package com.ssl.curriculum.math.component.quiz;
 
 import android.content.Context;
+
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.RelativeLayout;
+import android.widget.Toast;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.viewer.QuizComponentViewer;
 import com.ssl.curriculum.math.model.activity.quiz.QuizChoiceQuestion;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
+import com.ssl.curriculum.math.presenter.quiz.MultipleChoiceQuestionPresenter;
 
-import static com.ssl.metadata.provider.MetadataContract.Problems.TYPE_MC;
-import static com.ssl.metadata.provider.MetadataContract.Problems.TYPE_SC;
+import java.util.List;
+
+import static com.ssl.curriculum.math.model.activity.quiz.QuizChoiceQuestion.Choice;
+import static com.ssl.metadata.provider.MetadataContract.Problems.TYPE_MA;
+import static com.ssl.metadata.provider.MetadataContract.Problems.TYPE_SA;
 
 public class MultipleChoiceQuestionView extends QuizQuestionView {
 
-    private ChoiceTableView choiceTableView, singleChoiceTableView, multipleChoiceTableView;
-    private ViewGroup viewGroup;
-    private QuizQuestion mQuestion;
+    private static final String DIV_FORMAT = "<div class=\"%s\">%s</div>";
+    private static final String RADIO_FORMAT =
+            "<input type=\"radio\" id=\"%s\" name=\"answer\" value=\"%s\" class=\"choice\"/>" +
+                    "<label for=\"%s\">%s %s</label>";
+    private static final String CHECKBOX_FORMAT =
+            "<input type=\"checkbox\" id=\"%s\" name=\"answer[]\" value=\"%s\" class=\"choice\"/>" +
+                    "<label for=\"%s\">%s %s</label>";
 
+
+    private MultipleChoiceQuestionPresenter mPresenter;
+    private ViewGroup viewGroup;
+    private QuizChoiceQuestion mQuestion;
+    private Handler uiHandler;
 
     public MultipleChoiceQuestionView(Context context, QuizComponentViewer quizComponentViewer) {
         super(context, quizComponentViewer);
+        mPresenter = new MultipleChoiceQuestionPresenter(this);
+        uiHandler = new Handler();
     }
 
     @Override
     public void setQuestion(QuizQuestion question) {
-        super.setQuestion(question);
-        mQuestion = question;
-        setAndShowChoiceTableView();
-        loadQuiz(question);
+        mQuestion = (QuizChoiceQuestion) question;
+        mPresenter.setQuestion(question);
+        questionWebView.clearView();
+        loadQuizHtml(getQuizContent());
+        questionWebView.addJavascriptInterface(mPresenter.getJSInterface(), "Question");
+    }
+
+    @Override
+    protected String getQuizContent() {
+        return getBodyHtml() + getChoicesHtml();
     }
 
     protected void initUI() {
@@ -39,64 +62,55 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
         questionWebView = (WebView) findViewById(R.id.quiz_choice_flipper_child_question);
     }
 
-    public void loadQuiz(QuizQuestion question) {
-        QuizChoiceQuestion quizChoiceQuestion = (QuizChoiceQuestion) question;
-        choiceTableView.loadChoices(quizChoiceQuestion.getChoices());
-    }
-
     @Override
     public void onQuestionAnswered() {
-        choiceTableView.checkAnswer(mQuestion.getAnswer());
-        mQuizComponentViewer.onQuestionResult(mQuestion, choiceTableView.getUserAnswer(), choiceTableView.isCorrect());
+        questionWebView.loadUrl("javascript:onSubmitAnswer()");
+        mQuizComponentViewer.onQuestionResult(mQuestion, mPresenter.getUserAnswer(), mPresenter.isCorrect());
     }
 
-    public void setAndShowChoiceTableView() {
-        switch (mQuestion.getType()) {
-            case TYPE_SC:
-                choiceTableView = getSingleChoiceTableView();
-                showSingleChoiceTableView();
-                break;
-            case TYPE_MC:
-                choiceTableView = getMultipleChoiceTableView();
-                showMultipleChoiceTableView();
-                break;
+    public void onAnswerNotEmpty() {
+        uiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mQuizComponentViewer.showConfirmButton();
+            }
+        });
+    }
+
+    public void onAnswerEmpty() {
+        uiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mQuizComponentViewer.hideConfirmButton();
+            }
+        });
+    }
+
+    private String getBodyHtml() {
+        return String.format(DIV_FORMAT, "question", mQuestion.getQuizContent());
+    }
+
+    private String getChoicesHtml() {
+        List<Choice> choices = mQuestion.getChoices();
+        int type = mQuestion.getType();
+
+        String html = "";
+        for (int i = 0; i < choices.size(); i++) {
+            html += getChoiceHtml(choices.get(i), "choice" + i ,type);
+        }
+
+        return String.format(DIV_FORMAT, "choices", html);
+    }
+
+    private String getChoiceHtml(Choice choice, String htmlId, int type) {
+        switch (type) {
+            case TYPE_SA:
+                return String.format(RADIO_FORMAT, htmlId, choice.choice, htmlId, choice.choice, choice.body);
+            case TYPE_MA:
+                return String.format(CHECKBOX_FORMAT, htmlId, choice.choice, htmlId, choice.choice, choice.body);
+            default:
+                return "";
         }
     }
 
-    private ChoiceTableView getSingleChoiceTableView() {
-        if (singleChoiceTableView == null) {
-            singleChoiceTableView = new SingleAnswerChoiceTableView(getContext(), this);
-            viewGroup.addView(singleChoiceTableView, getChoiceTableLayoutParams());
-        }
-        return singleChoiceTableView;
-    }
-
-    public ChoiceTableView getMultipleChoiceTableView() {
-        if (multipleChoiceTableView == null) {
-            multipleChoiceTableView = new MultipleAnswersChoiceTableView(getContext(), this);
-            viewGroup.addView(multipleChoiceTableView, getChoiceTableLayoutParams());
-        }
-        return multipleChoiceTableView;
-    }
-
-    private void showSingleChoiceTableView() {
-        if (multipleChoiceTableView != null) {
-            multipleChoiceTableView.setVisibility(INVISIBLE);
-        }
-        singleChoiceTableView.setVisibility(VISIBLE);
-    }
-
-    private void showMultipleChoiceTableView() {
-        if (singleChoiceTableView != null) {
-            singleChoiceTableView.setVisibility(INVISIBLE);
-        }
-        multipleChoiceTableView.setVisibility(VISIBLE);
-    }
-
-    private RelativeLayout.LayoutParams getChoiceTableLayoutParams() {
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
-        layoutParams.addRule(RelativeLayout.BELOW, R.id.quiz_choice_flipper_child_question);
-        return layoutParams;
-    }
 }

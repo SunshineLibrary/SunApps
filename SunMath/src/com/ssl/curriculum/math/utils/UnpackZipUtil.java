@@ -6,9 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
-
-import org.apache.tools.zip.ZipEntry;
-import org.apache.tools.zip.ZipFile;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
 * @version
@@ -25,7 +24,7 @@ public class UnpackZipUtil {
 	       ZipFile zipFile;
 	       try {
 	           zipFile = new ZipFile( new File(zipfile));
-	           Enumeration enumeration = zipFile.getEntries();
+	           Enumeration enumeration = zipFile.entries();
 	           ZipEntry zipEntry = null ;
 	 
 	           while (enumeration.hasMoreElements()) {

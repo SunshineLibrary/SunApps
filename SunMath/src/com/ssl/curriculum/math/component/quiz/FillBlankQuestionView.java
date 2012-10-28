@@ -15,6 +15,7 @@ import com.ssl.curriculum.math.presenter.quiz.FillBlankQuestionPresenter;
 public class FillBlankQuestionView extends QuizQuestionView implements QuestionResultListener {
     private TextView showAnswerField;
     private EditText answerEditText;
+    private QuizQuestion mQuestion;
 
     private FillBlankQuestionPresenter mPresenter;
 
@@ -25,9 +26,15 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
 
     @Override
     public void setQuestion(QuizQuestion question) {
-        super.setQuestion(question);
+        mQuestion = question;
         mPresenter.setQuestion(question);
+        loadQuizHtml(question.getQuizContent());
         clearTexts();
+    }
+
+    @Override
+    protected String getQuizContent() {
+        return mQuestion.getQuizContent();
     }
 
     protected void initUI() {
@@ -55,11 +62,17 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
 
     @Override
     public void onQuestionAnswered() {
-        mPresenter.onQuestionAnswered();
+        mQuizComponentViewer.showConfirmButton();
     }
 
     @Override
     public void onQuestionResult(QuizQuestion question, String answer, boolean isCorrect) {
         mQuizComponentViewer.onQuestionResult(question, answer, isCorrect);
+    }
+
+    @Override
+    public void onAfterFlippingIn() {
+        super.onAfterFlippingIn();
+        mQuizComponentViewer.showConfirmButton();
     }
 }

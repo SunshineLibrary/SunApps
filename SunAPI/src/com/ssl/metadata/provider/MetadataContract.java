@@ -29,8 +29,8 @@ public final class MetadataContract {
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problems").build();
 
         public static final int TYPE_FB = 0;
-        public static final int TYPE_SC = 1;
-        public static final int TYPE_MC = 2;
+        public static final int TYPE_SA = 1;
+        public static final int TYPE_MA = 2;
 
         public static int getInternalType(String type) {
             return 0;

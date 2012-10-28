@@ -29,13 +29,14 @@ public class NavigationActivity extends Activity implements View.OnClickListener
     private ImageView iv_download_lesson;
     private ImageView iv_downloading;
     private ImageButton btn_study;
-    private ImageButton btn_stat;
     private TextView tv_section_name;
-    private ImageView iv_section_thumbnail;
     private TextView tv_section_description;
     private HorizontalListView lv_section_activities;
     private SectionPresenter sectionPresenter;
+    private ImageButton btn_stat;
+    private ImageView iv_section_thumbnail;
     private ImageView download_management_entry;
+    private ImageView ic_curr_menu;
     
     private String subjectId;
     private String subjectName;
@@ -80,9 +81,11 @@ public class NavigationActivity extends Activity implements View.OnClickListener
         } else if (v == btn_stat) {
 
         } else if (v == download_management_entry ) {
-            Intent intent = new Intent();
-            intent.setClass(this, DownloadManageActivity.class);
-            this.startActivity(intent);
+            Intent intent = new Intent(this, DownloadManageActivity.class);
+            startActivity(intent);
+        } else if (v == ic_curr_menu) {
+            Intent intent = new Intent(this, WebViewActivity.class);
+            startActivity(intent);
         }
     }
     
@@ -191,9 +194,10 @@ public class NavigationActivity extends Activity implements View.OnClickListener
         btn_study = (ImageButton)findViewById(R.id.btn_navi_activity_study);
         //btn_stat = (ImageButton)findViewById(R.id.btn_navi_activity_statistic);
         iv_section_thumbnail =(ImageView)findViewById(R.id.iv_section_thumbnail);
-        tv_section_description = (TextView) this.findViewById(R.id.tv_section_description);
+        tv_section_description = (TextView) findViewById(R.id.tv_section_description);
         lv_section_activities = (HorizontalListView) findViewById(R.id.lv_section_activities);
         //download_management_entry = (ImageView)findViewById(R.id.download_management_entry) ;
+        ic_curr_menu = (ImageView) findViewById(R.id.iv_curr_menu);
     }
 
     private void initComponent() {
@@ -205,6 +209,7 @@ public class NavigationActivity extends Activity implements View.OnClickListener
         btn_study.setOnClickListener(this);
         //btn_stat.setOnClickListener(this);
         //download_management_entry.setOnClickListener(this);
+        ic_curr_menu.setOnClickListener(this);
         initSectionActivitiesView();
     }
 

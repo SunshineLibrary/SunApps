@@ -17,7 +17,7 @@ public class QuizHtmlLoader {
     private String htmlChoiceString;
 
     private QuizHtmlLoader(Context context) {
-        htmlBodyString = generateTemplateString(context, "question_body_template.html");
+        htmlBodyString = generateTemplateString(context, "question_template.html");
         htmlChoiceString = generateTemplateString(context, "question_choice_template.html");
     }
 

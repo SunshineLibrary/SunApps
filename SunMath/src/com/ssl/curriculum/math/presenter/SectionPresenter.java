@@ -1,14 +1,12 @@
 package com.ssl.curriculum.math.presenter;
 
-import android.content.*;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.provider.BaseColumns;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import com.ssl.curriculum.math.activity.MainActivity;

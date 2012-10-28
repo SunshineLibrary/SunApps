@@ -1,0 +1,38 @@
+body {
+    font-size: 16pt;
+    background-color: #F6F1F1;
+}
+
+label {
+    display: inline;
+    min-height: 30pt;
+    line-height: 30pt;
+    vertical-align: middle;
+}
+
+.choice {
+    display:none;
+}
+
+.choice + label {
+    margin: 10pt 0pt;
+    display: block;
+    background: url('ic_choice_blank_selection.png') no-repeat;
+    padding-left: 50pt;
+}
+
+.choice:checked + label {
+    background: url('ic_choice_selected.png') no-repeat;
+}
+
+.answered label {
+    background: none;
+}
+
+.answered label.correct {
+    background: url('ic_choice_correct.png') no-repeat;
+}
+
+.answered label.incorrect {
+    background: url('ic_choice_incorrect.png') no-repeat;
+}

@@ -1,6 +1,7 @@
 package com.ssl.curriculum.math.component.quiz;
 
 import android.content.Context;
+import android.util.Log;
 import android.webkit.WebView;
 import com.ssl.curriculum.math.component.viewer.QuizComponentViewer;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
@@ -8,8 +9,6 @@ import com.ssl.curriculum.math.utils.QuizHtmlLoader;
 
 public abstract class QuizQuestionView extends QuizComponentView {
     protected WebView questionWebView;
-
-    protected QuizQuestion mQuestion;
 
     public QuizQuestionView(Context context, QuizComponentViewer quizComponentViewer) {
         super(context, quizComponentViewer);
@@ -28,10 +27,9 @@ public abstract class QuizQuestionView extends QuizComponentView {
 
     public abstract void onQuestionAnswered();
 
-    public void setQuestion(QuizQuestion question) {
-        mQuestion = question;
-        loadQuizHtml(question.getQuizContent());
-    }
+    public abstract void setQuestion(QuizQuestion question);
+
+    protected abstract String getQuizContent();
 
     public void onDestroy() {
         if (questionWebView != null) {
