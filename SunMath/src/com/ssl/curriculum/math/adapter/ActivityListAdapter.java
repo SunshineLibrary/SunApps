@@ -44,12 +44,21 @@ public class ActivityListAdapter extends CursorAdapter {
             case Activities.TYPE_VIDEO:
                 iv_image.setImageResource(R.drawable.ic_main_thumbnail_video);
                 break;
-            case Activities.TYPE_TEXT:
+            case Activities.TYPE_AUDIO:
+                iv_image.setImageResource(R.drawable.ic_main_thumbnail_audio);
+                break;
+            case Activities.TYPE_GALLERY:
                 iv_image.setImageResource(R.drawable.ic_main_thumbnail_photo_album);
                 break;
             case Activities.TYPE_QUIZ:
                 iv_image.setImageResource(R.drawable.ic_main_thumbnail_quiz);
                 break;
+            case Activities.TYPE_TEXT:
+            case Activities.TYPE_PDF:
+            case Activities.TYPE_HTML:
+                iv_image.setImageResource(R.drawable.ic_main_thumbnail_text);
+                break;
+
         }
 
         TextView tv_status = (TextView) view.findViewById(R.id.status);
@@ -72,11 +81,6 @@ public class ActivityListAdapter extends CursorAdapter {
                 v_mask.setVisibility(View.INVISIBLE);
                 break;
         }
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return super.getItem(position);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     public void notifyContentChange() {
