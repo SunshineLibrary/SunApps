@@ -163,8 +163,8 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         playVideo();
         hideControlPanel();
         onStart();
-        toFullScreen();
-        toFullScreen = true;
+        //toFullScreen = true;
+        //setToFullScreen(toFullScreen);
     }
 
     public void pause() {
