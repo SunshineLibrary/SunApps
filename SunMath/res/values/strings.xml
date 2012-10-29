@@ -15,5 +15,8 @@
     <string name="downloading">正在下载:</string>
     <string name="download_pending">等待下载</string>
     <string name="not_downloaded">未下载</string>
+    <string name="multiple_answer_multiple_choice">多项选择题</string>
+    <string name="single_answer_multiple_choice">单项选择题</string>
+    <string name="fill_in_the_blank">填空题</string>
 
 </resources>

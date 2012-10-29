@@ -2,9 +2,12 @@ package com.ssl.curriculum.math.component.quiz;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.viewer.QuizComponentViewer;
@@ -18,6 +21,7 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
     private QuizQuestion mQuestion;
 
     private FillBlankQuestionPresenter mPresenter;
+    private LinearLayout answerContainer;
 
     public FillBlankQuestionView(Context context, QuizComponentViewer quizComponentViewer) {
         super(context, quizComponentViewer);
@@ -28,8 +32,8 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
     public void setQuestion(QuizQuestion question) {
         mQuestion = question;
         mPresenter.setQuestion(question);
+        resetView();
         loadQuizHtml(question.getQuizContent());
-        clearTexts();
     }
 
     @Override
@@ -44,10 +48,20 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
         questionWebView = (WebView) findViewById(R.id.quiz_fill_in_flipper_child_question);
         showAnswerField = (TextView) findViewById(R.id.quiz_fill_in_showAnswerField);
         answerEditText = (EditText) findViewById(R.id.quiz_fill_in_flipper_child_answer);
+        progressBar = (ProgressBar) findViewById(R.id.quiz_fill_in_progress_bar);
+        questionTitle = (TextView) findViewById(R.id.quiz_fill_in_flipper_child_title);
+        answerContainer = (LinearLayout) findViewById(R.id.quiz_fill_in_answer_container);
     }
 
     public void setShowAnswerText(String text) {
         showAnswerField.setText(text);
+    }
+
+    @Override
+    protected void resetView() {
+        super.resetView();
+        clearTexts();
+        answerContainer.setVisibility(View.INVISIBLE);
     }
 
     public void clearTexts() {
@@ -58,6 +72,12 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
 
     public String getUserAnswer() {
         return answerEditText.getText().toString();
+    }
+
+    @Override
+    protected void onLoadComplete() {
+        super.onLoadComplete();
+        answerContainer.setVisibility(View.VISIBLE);
     }
 
     @Override

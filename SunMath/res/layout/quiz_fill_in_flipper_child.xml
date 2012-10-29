@@ -12,12 +12,13 @@
               android:id="@+id/quiz_fill_in_flipper_child_title"
               android:textSize="22sp"
               android:layout_marginBottom="10dp"
-              android:text="小测试１"/>
+              android:text="填空题"/>
 
     <LinearLayout android:id="@+id/quiz_fill_in_answer_container" android:layout_height="wrap_content"
                   android:layout_width="wrap_content"
                   android:paddingLeft="30dp"
                   android:layout_marginTop="10dp"
+                  android:visibility="invisible"
                   android:gravity="center_vertical"
                   android:layout_alignParentBottom="true"
                   android:orientation="horizontal">
@@ -41,6 +42,14 @@
              android:layout_width="fill_parent"
              android:layout_below="@id/quiz_fill_in_flipper_child_title"
              android:layout_above="@id/quiz_fill_in_answer_container"
-             android:id="@+id/quiz_fill_in_flipper_child_question"/>
+             android:visibility="invisible"
+             android:id="@+id/quiz_fill_in_flipper_child_question"
+            />
+
+    <ProgressBar android:layout_height="wrap_content"
+                 android:layout_width="wrap_content"
+                 android:layout_centerInParent="true"
+                 android:id="@+id/quiz_fill_in_progress_bar"
+            />
 
 </RelativeLayout>

@@ -2,13 +2,20 @@ package com.ssl.curriculum.math.component.quiz;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.viewer.QuizComponentViewer;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 import com.ssl.curriculum.math.utils.QuizHtmlLoader;
 
 public abstract class QuizQuestionView extends QuizComponentView {
     protected WebView questionWebView;
+    protected ProgressBar progressBar;
+    protected TextView  questionTitle;
 
     public QuizQuestionView(Context context, QuizComponentViewer quizComponentViewer) {
         super(context, quizComponentViewer);
@@ -23,6 +30,14 @@ public abstract class QuizQuestionView extends QuizComponentView {
         questionWebView.getSettings().setAllowFileAccess(true);
         questionWebView.getSettings().setDomStorageEnabled(true);
         questionWebView.setScrollBarStyle(0);
+
+        questionWebView.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int progress) {
+                if (progress == 100) {
+                    onLoadComplete();
+                }
+            }
+        });
     }
 
     public abstract void onQuestionAnswered();
@@ -30,6 +45,17 @@ public abstract class QuizQuestionView extends QuizComponentView {
     public abstract void setQuestion(QuizQuestion question);
 
     protected abstract String getQuizContent();
+
+    protected void resetView() {
+        questionWebView.clearView();
+        questionWebView.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    protected void onLoadComplete() {
+        progressBar.setVisibility(View.INVISIBLE);
+        questionWebView.setVisibility(View.VISIBLE);
+    }
 
     public void onDestroy() {
         if (questionWebView != null) {

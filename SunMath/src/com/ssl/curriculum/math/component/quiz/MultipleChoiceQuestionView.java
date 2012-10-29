@@ -1,12 +1,12 @@
 package com.ssl.curriculum.math.component.quiz;
 
 import android.content.Context;
-
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.Toast;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.viewer.QuizComponentViewer;
 import com.ssl.curriculum.math.model.activity.quiz.QuizChoiceQuestion;
@@ -24,10 +24,10 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
     private static final String DIV_FORMAT = "<div class=\"%s\">%s</div>";
     private static final String RADIO_FORMAT =
             "<input type=\"radio\" id=\"%s\" name=\"answer\" value=\"%s\" class=\"choice\"/>" +
-                    "<label for=\"%s\">%s %s</label>";
+                    "<label for=\"%s\">%s) %s</label>";
     private static final String CHECKBOX_FORMAT =
             "<input type=\"checkbox\" id=\"%s\" name=\"answer[]\" value=\"%s\" class=\"choice\"/>" +
-                    "<label for=\"%s\">%s %s</label>";
+                    "<label for=\"%s\">%s) %s</label>";
 
 
     private MultipleChoiceQuestionPresenter mPresenter;
@@ -45,9 +45,18 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
     public void setQuestion(QuizQuestion question) {
         mQuestion = (QuizChoiceQuestion) question;
         mPresenter.setQuestion(question);
-        questionWebView.clearView();
+        resetView();
         loadQuizHtml(getQuizContent());
         questionWebView.addJavascriptInterface(mPresenter.getJSInterface(), "Question");
+        
+        switch (mQuestion.getType()) {
+            case TYPE_MA:
+                questionTitle.setText(R.string.multiple_answer_multiple_choice);
+                break;
+            case TYPE_SA:
+                questionTitle.setText(R.string.single_answer_multiple_choice);
+                break;
+        }
     }
 
     @Override
@@ -60,6 +69,8 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
         viewGroup = (ViewGroup) inflater.inflate(R.layout.quiz_choice_flip_layout, this, false);
         addView(viewGroup);
         questionWebView = (WebView) findViewById(R.id.quiz_choice_flipper_child_question);
+        progressBar = (ProgressBar) findViewById(R.id.quiz_choice_progress_bar);
+        questionTitle = (TextView) findViewById(R.id.quiz_choice_flipper_child_title);
     }
 
     @Override
