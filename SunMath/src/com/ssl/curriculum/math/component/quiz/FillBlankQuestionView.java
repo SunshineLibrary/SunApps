@@ -62,7 +62,7 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
 
     @Override
     public void onQuestionAnswered() {
-        mQuizComponentViewer.showConfirmButton();
+        mPresenter.onQuestionAnswered();
     }
 
     @Override
