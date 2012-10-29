@@ -9,7 +9,7 @@ import com.ssl.metadata.database.views.*;
 
 public class MetadataDBHandlerFactory {
 
-    private static final int DB_VERSION = 104;
+    private static final int DB_VERSION = 112;
     private static final String DB_NAME = "metadata";
 
     public static DBHandler newMetadataDBHandler(Context context) {

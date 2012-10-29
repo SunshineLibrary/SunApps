@@ -1,5 +1,6 @@
 package com.ssl.metadata.database.tables;
 
+import android.database.sqlite.SQLiteDatabase;
 import com.ssl.metadata.database.DBHandler;
 import com.ssl.metadata.provider.MetadataContract.Packages;
 
@@ -28,4 +29,9 @@ public class PackageTable extends DownloadableTable {
 	public PackageTable(DBHandler db) {
 		super(db, TABLE_NAME, COLUMN_DEFINITIONS, ALL_COLUMNS);
 	}
+
+    @Override
+    public void upgradeTable(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Do not drop this table
+    }
 }

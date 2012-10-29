@@ -86,7 +86,7 @@ public abstract class AbstractTable implements Table {
 	}
 
 	private void dropTable(SQLiteDatabase db) {
-		db.execSQL("DROP TABLE " + this.getTableName() + ";");
+		db.execSQL("DROP TABLE IF EXISTS " + this.getTableName() + ";");
 	}
 
     public SQLiteDatabase getDatabase() {
