@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 public class ProblemDownloadTask extends DownloadTask implements JSONSerializable {
 
-    private static String[] COLUMNS = {MetadataContract.Problems._ID, MetadataContract.Problems._ATTACHMENTS};
+    private static String[] COLUMNS = {MetadataContract.Problems._ID};
 
     private static Uri URI = MetadataContract.Problems.CONTENT_URI;
 
@@ -27,15 +27,6 @@ public class ProblemDownloadTask extends DownloadTask implements JSONSerializabl
     @Override
     protected int execute() {
         int status = SUCCESS;
-        Cursor cursor = mContext.getContentResolver().query(MetadataContract.Problems.CONTENT_URI,
-                COLUMNS, null, null, null);
-        if(cursor.moveToFirst()) {
-            do {
-                int id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Activities._ID));
-                int type = cursor.getInt(cursor.getColumnIndex(MetadataContract.Activities._TYPE));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
         return status;
     }
 

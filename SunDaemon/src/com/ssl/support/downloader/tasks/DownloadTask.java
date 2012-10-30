@@ -46,7 +46,6 @@ public abstract class DownloadTask implements JSONSerializable {
     }
 
     public void run() {
-        int result = execute();
         setResult(execute());
     }
 
