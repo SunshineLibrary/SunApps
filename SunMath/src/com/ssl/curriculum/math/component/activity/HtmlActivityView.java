@@ -41,8 +41,7 @@ import com.ssl.metadata.provider.MetadataContract;
  * Created with IntelliJ IDEA. User: mendlin Date: 12-8-13 Time: 下午10:09 To
  * change this template use File | Settings | File Templates.
  */
-public class HtmlActivityView extends ActivityView implements
-		View.OnClickListener {
+public class HtmlActivityView extends ActivityView implements View.OnClickListener {
 
 	int activityId;
 	Context context;
@@ -97,7 +96,7 @@ public class HtmlActivityView extends ActivityView implements
 				}			
 			}	
 		}catch (Exception e) {
-			Log.e("PdfActivityView", "onClick", e);			
+			Log.e("HtmlActivityView", "onClick", e);
 		}
 	}
 	

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center" >
+    <LinearLayout 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:gravity="center" 
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/section_finished_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:text="完成"
+            android:textSize="100dp"
+            android:textColor="@color/navi_activity_navi_list_view_text" />
+		<TextView
+		    android:id="@+id/section_finished_subtitle"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:paddingBottom="50dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+		    android:text="恭喜你，已经完成本小节的学习，赶快进入下一小节吧！"
+		    android:textSize="24dp"
+            />
+        <ImageView android:id="@+id/section_finished_button"
+                   android:layout_height="wrap_content"
+                   android:layout_width="wrap_content"
+                   android:layout_alignParentRight="true"
+                   android:layout_alignParentBottom="true"
+                   android:src="@drawable/ic_done"
+                   />
+
+    </LinearLayout>
+</RelativeLayout>

@@ -29,13 +29,13 @@ public class WebViewActivity extends Activity {
 		dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		setContentView(R.layout.webview_layout);
 		
-		loadUrl = "file:///"+getIntent().getCharSequenceExtra("indexPath");
+		loadUrl = "file:///" + getIntent().getCharSequenceExtra("indexPath");
 		
 		webView = (WebView) findViewById(R.id.webview_main);
 		webView.getSettings().setJavaScriptEnabled(true);
 	 
 		dialog.dismiss();
-		webView.loadUrl("file:///" + loadUrl);
+		webView.loadUrl(loadUrl);
 		System.out.println(loadUrl);
 	}
 }
