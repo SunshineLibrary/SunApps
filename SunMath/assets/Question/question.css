@@ -12,6 +12,7 @@ label {
 
 .choice {
     display:none;
+    font-size: 14pt;
 }
 
 .choice + label {

@@ -59,6 +59,12 @@ public class MainActivity extends Activity {
         sectionId = intent.getExtras().getInt("sectionId");
         initActivityId = intent.getExtras().getInt("activityId");
         mActivitiesLoader = new SectionActivitiesLoader(this, sectionId);
+        mActivityViewer.setActivityFinishListener(new ActivityViewer.ActivityFinishListener() {
+            @Override
+            public void onActivityFinish() {
+                finish();
+            }
+        });
     }
 
 

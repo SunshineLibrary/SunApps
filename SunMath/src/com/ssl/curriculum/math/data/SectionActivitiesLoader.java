@@ -83,6 +83,12 @@ public class SectionActivitiesLoader {
             }
         }
 
+        // add finish activity as the last one
+        LinkedActivityData finishActivityData = new LinkedActivityData(Activities.TYPE_FINISH);
+        //    hacking here, on Server, id is stored as -1 if pointed to the end of a section
+        current.defaultNextActivityData = finishActivityData;
+        activityDataMap.put(-1, finishActivityData);
+
         return activityDataMap;
     }
 

@@ -20,8 +20,9 @@ public class ActivityViewer extends FrameLayout{
     private ActivityView mCurrentView;
     private FlipAnimationManager mAnimationManager;
 
-    private ActivityView mVideoView, mQuizView, mHtmlView, mTextView, mGalleryView, mPdfView;
+    private ActivityView mVideoView, mQuizView, mHtmlView, mTextView, mGalleryView, mPdfView, mFinishView;
     private ImageView mBtnNext;
+    private ActivityFinishListener mActivityFinishListener;
 
     public ActivityViewer(Context context) {
         super(context);
@@ -127,6 +128,8 @@ public class ActivityViewer extends FrameLayout{
                 return getGalleryView();
             case TYPE_PDF:
             	return getPdfView();
+            case TYPE_FINISH:
+                return getFinishView();
         }
         return null;
     }
@@ -179,6 +182,14 @@ public class ActivityViewer extends FrameLayout{
         return mPdfView;
     }
 
+    private ActivityView getFinishView() {
+        if (mFinishView == null) {
+            mFinishView = new FinishActivityView(getContext(), this);
+            addView(mFinishView);
+        }
+        return mFinishView;
+    }
+
     @Override
     protected LayoutParams generateDefaultLayoutParams() {
         return new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
@@ -191,5 +202,19 @@ public class ActivityViewer extends FrameLayout{
         if (mQuizView != null) {
             mQuizView.onDestroy();
         }
+    }
+
+    public void setActivityFinishListener(ActivityFinishListener listener) {
+        mActivityFinishListener = listener;
+    }
+
+    public void finish() {
+        if (mActivityFinishListener != null) {
+            mActivityFinishListener.onActivityFinish();
+        }
+    }
+
+    public static interface ActivityFinishListener {
+        public void onActivityFinish();
     }
 }

@@ -8,8 +8,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
+
+import org.apache.tools.zip.ZipFile;
+import org.apache.tools.zip.ZipEntry;
 
 /**
 * @version
@@ -29,10 +30,11 @@ public class UnpackZipUtil {
 		   ZipFile zipFile = null;
 	       try {
 	           zipFile = new ZipFile(inFile);
-	           Enumeration<ZipEntry> enumeration = (Enumeration<ZipEntry>) zipFile.entries();
+	           Enumeration entries = zipFile.getEntries();
 	           ZipEntry zipEntry = null ;
-	           while (enumeration.hasMoreElements()) {
-	              zipEntry = enumeration.nextElement();	             
+
+	           while (entries.hasMoreElements()) {
+	              zipEntry = (ZipEntry) entries.nextElement();
 	              File loadFile = new File(destDir, zipEntry.getName());
 	              FileUtil.rmr(loadFile);
 	              if (zipEntry.isDirectory()) {
@@ -58,7 +60,4 @@ public class UnpackZipUtil {
 	    	   }
 	       }	       
 	    }
-	
-	
-	
 }
