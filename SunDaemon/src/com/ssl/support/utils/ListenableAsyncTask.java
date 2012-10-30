@@ -12,7 +12,7 @@ public abstract class ListenableAsyncTask<Param, Progress, Result> extends Async
     @Override
     protected void onPostExecute(Result result) {
         super.onPostExecute(result);
-        for (Listener listener: getListeners()) {
+        for (Listener listener : getListeners()) {
             listener.onResult(result);
         }
     }

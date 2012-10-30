@@ -162,7 +162,6 @@ public class NavigationActivity extends Activity implements View.OnClickListener
 
     public void setOnActivityClickListener(AdapterView.OnItemClickListener listener) {
         lv_section_activities.setOnItemClickListener(listener);
-
     }
 
     public void showDownloadLesson(){

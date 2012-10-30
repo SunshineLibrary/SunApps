@@ -1,37 +1,32 @@
 package com.ssl.metadata.database.observers;
 
-import android.content.*;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.IBinder;
 import android.provider.BaseColumns;
-import com.ssl.metadata.database.views.SectionActivitiesView;
-import com.ssl.support.downloader.DownloadTaskParams;
-import com.ssl.support.downloader.MonitoredFileDownloadTask;
 import com.ssl.metadata.provider.Matcher;
 import com.ssl.metadata.provider.MetadataContract;
 import com.ssl.support.api.ApiClient;
 import com.ssl.support.api.ApiClientFactory;
+import com.ssl.support.downloader.DownloadTaskParams;
+import com.ssl.support.downloader.tasks.DownloadTask;
 import com.ssl.support.services.DownloadService;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
-import java.util.concurrent.LinkedBlockingQueue;
 
-import static com.ssl.metadata.provider.MetadataContract.Activities;
 import static com.ssl.metadata.provider.MetadataContract.Downloadable._DOWNLOAD_STATUS;
-import static com.ssl.metadata.provider.MetadataContract.GalleryImages;
 
 public class DownloadableTableObserver extends TableObserver {
 
     private UriMatcher sUriMatcher = Matcher.Factory.getMatcher();
     private Context context;
-    private ApiClient apiClient;
 
     public DownloadableTableObserver(Context context) {
         this.context = context;
-        this.apiClient = ApiClientFactory.newApiClient(context);
     }
 
     @Override
@@ -94,74 +89,25 @@ public class DownloadableTableObserver extends TableObserver {
 
     private void downloadSection(Uri uri) {
         int section_id = Integer.parseInt(uri.getLastPathSegment());
-        Cursor cursor = context.getContentResolver().query(
-                MetadataContract.Sections.getSectionActivitiesUri(section_id),
-                new String[]{Activities._ID, Activities._TYPE}, null, null, null);
-        if(cursor.moveToFirst()) {
-            do {
-                int id = cursor.getInt(cursor.getColumnIndex(Activities._ID));
-                int type = cursor.getInt(cursor.getColumnIndex(Activities._TYPE));
-                downloadActivity(Activities.getActivityUri(id), id, type, uri);
-            } while (cursor.moveToNext());
-        }
+        enqueueDownloadTask(DownloadTask.TYPE_SECTION, section_id);
     }
 
 
     private void downloadActivity(Uri uri) {
-        Cursor cursor = context.getContentResolver().query(uri, new String[]{Activities._TYPE}, null, null, null);
-        if (cursor.moveToFirst()) {
-            int id = Integer.parseInt(uri.getLastPathSegment());
-            int type = cursor.getInt(cursor.getColumnIndex(Activities._TYPE));
-            downloadActivity(uri, id, type, null);
-        }
-        cursor.close();
-    }
-
-    private void downloadActivity(Uri uri, int id, int type, Uri notifyUri) {
-        switch (type) {
-            case Activities.TYPE_VIDEO:
-                enqueueDownloadTask(
-                        apiClient.getDownloadUri("activities", id), Activities.getActivityVideoUri(id), uri, notifyUri);
-                break;
-            case Activities.TYPE_TEXT:
-                enqueueDownloadTask(null, null, uri, notifyUri);
-                break;
-            case Activities.TYPE_HTML:
-                enqueueDownloadTask(
-                        apiClient.getDownloadUri("activities", id), Activities.getActivityHtmlUri(id), uri, notifyUri);
-                break;
-            case Activities.TYPE_GALLERY:
-                ContentValues values = new ContentValues();
-                values.put(Activities._DOWNLOAD_STATUS, MetadataContract.Downloadable.STATUS_QUEUED);
-                context.getContentResolver().update(GalleryImages.CONTENT_URI, values,
-                        GalleryImages._GALLERY_ID + "=?", new String[]{String.valueOf(id)});
-                break;
-            case Activities.TYPE_QUIZ:
-                enqueueDownloadTask(null, null, uri, notifyUri);
-                break;
-            case Activities.TYPE_PDF:
-                enqueueDownloadTask(
-                        apiClient.getDownloadUri("activities", id), Activities.getActivityPdfUri(id), uri, notifyUri);
-                break;
-            default:
-        }
-
+        int activity_id= Integer.parseInt(uri.getLastPathSegment());
+        enqueueDownloadTask(DownloadTask.TYPE_ACTIVITY, activity_id);
     }
 
     private void downloadBook(Uri uri) {
-        int id = Integer.parseInt(uri.getLastPathSegment());
-        new MonitoredFileDownloadTask(context, apiClient.getDownloadUri("books", id), uri, uri).execute();
+        throw new UnsupportedOperationException();
     }
 
     public void downloadGalleryImage(Uri uri) {
-        int id = Integer.parseInt(uri.getLastPathSegment());
-        new MonitoredFileDownloadTask(context,
-                apiClient.getDownloadUri("images", id),
-                GalleryImages.getGalleryImageUri(id), uri).execute();
+        throw new UnsupportedOperationException();
     }
 
-    private void enqueueDownloadTask(Uri remoteUri, Uri localUri, Uri updateUri, Uri notifyUri) {
-        DownloadTaskParams params = new DownloadTaskParams(remoteUri, localUri, updateUri, notifyUri);
+    private void enqueueDownloadTask(int type, int id) {
+        DownloadTaskParams params = new DownloadTaskParams(type, id);
         Intent intent = new Intent(context, DownloadService.class);
         intent.putExtra(DownloadService.PARAMS_KEY, params);
         context.startService(intent);

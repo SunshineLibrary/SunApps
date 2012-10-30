@@ -5,18 +5,18 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
-import com.ssl.api.R;
 import com.ssl.metadata.provider.MetadataContract;
 import com.ssl.metadata.storage.ExternalFileStorage;
+import com.ssl.metadata.storage.FileStorage;
+import com.ssl.metadata.storage.FileStorageManager;
 import com.ssl.support.api.ApiClient;
 import com.ssl.support.api.ApiClientFactory;
 import com.ssl.support.data.helpers.PackageHelper;
 import com.ssl.support.data.models.Package;
-import com.ssl.support.downloader.FileDownloadTask;
-import com.ssl.support.downloader.MonitoredFileDownloadTask;
+import com.ssl.support.downloader.tasks.MonitoredFileDownloadTask;
+import com.ssl.support.downloader.tasks.AsyncFileDownloadTask;
+import com.ssl.support.downloader.tasks.FileDownloadTask;
 import com.ssl.support.services.UpdateService;
-import com.ssl.metadata.storage.FileStorage;
-import com.ssl.metadata.storage.FileStorageManager;
 import com.ssl.support.utils.Listener;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -132,7 +132,7 @@ public class UpdateTask extends AsyncTask {
         Uri localUri = getLocalFilePath(pkg);
 
         PackageHelper.createNewPackage(context, pkg);
-        FileDownloadTask task = new MonitoredFileDownloadTask(context, remoteUri, localUri,
+        AsyncFileDownloadTask task = new MonitoredFileDownloadTask(context, remoteUri, localUri,
                 pkg.getUpdateUri(), MetadataContract.Packages.CONTENT_URI);
         task.addListener(new InstallListener(pkg, localUri));
         Log.v(getClass().getName(), "Start downloading package: " + pkg);

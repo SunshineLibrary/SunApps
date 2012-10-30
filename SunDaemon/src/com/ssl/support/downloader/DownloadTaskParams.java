@@ -12,13 +12,11 @@ import java.io.Serializable;
  */
 public class DownloadTaskParams implements Parcelable{
 
-    public final Uri remoteUri, localUri, updateUri, notifyUri;
+    public final int type, id;
 
-    public DownloadTaskParams(Uri remoteUri, Uri localUri, Uri updateUri, Uri notifyUri) {
-        this.remoteUri = remoteUri;
-        this.localUri = localUri;
-        this.updateUri = updateUri;
-        this.notifyUri = notifyUri;
+    public DownloadTaskParams(int type, int id) {
+        this.type = type;
+        this.id = id;
     }
 
     @Override
@@ -28,20 +26,16 @@ public class DownloadTaskParams implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(remoteUri, flags);
-        dest.writeParcelable(localUri, flags);
-        dest.writeParcelable(updateUri, flags);
-        dest.writeParcelable(notifyUri, flags);
+        dest.writeInt(type);
+        dest.writeInt(id);
     }
 
     public static final Creator<DownloadTaskParams> CREATOR = new Creator<DownloadTaskParams>() {
         @Override
         public DownloadTaskParams createFromParcel(Parcel source) {
-            Uri remoteUri = (Uri) source.readParcelable(ClassLoader.getSystemClassLoader());
-            Uri localUri = (Uri) source.readParcelable(ClassLoader.getSystemClassLoader());
-            Uri updateUri = (Uri) source.readParcelable(ClassLoader.getSystemClassLoader());
-            Uri notifyUri = (Uri) source.readParcelable(ClassLoader.getSystemClassLoader());
-            return new DownloadTaskParams(remoteUri, localUri, updateUri, notifyUri);
+            int type = source.readInt();
+            int id = source.readInt();
+            return new DownloadTaskParams(type, id);
         }
 
         @Override

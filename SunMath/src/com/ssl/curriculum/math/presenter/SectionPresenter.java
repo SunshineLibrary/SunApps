@@ -35,9 +35,11 @@ public class SectionPresenter {
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Cursor cursor = (Cursor) parent.getAdapter().getItem(position);
-                if (cursor.getInt(cursor.getColumnIndex(MetadataContract.Activities._DOWNLOAD_STATUS))
-                        == MetadataContract.Downloadable.STATUS_DOWNLOADED) {
-                    startActivity((int) id);
+                int status = cursor.getInt(cursor.getColumnIndex(MetadataContract.Activities._DOWNLOAD_STATUS));
+                switch (status) {
+                    case MetadataContract.Downloadable.STATUS_DOWNLOADED:
+                        startActivity((int) id);
+                        break;
                 }
             }
         });
@@ -101,8 +103,8 @@ public class SectionPresenter {
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
+            showDownloadButton();
             navigationActivity.notifySectionContentChange();
         }
     }
-
 }

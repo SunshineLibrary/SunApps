@@ -1,11 +1,10 @@
-package com.ssl.support.downloader;
+package com.ssl.support.downloader.tasks;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import com.ssl.support.utils.IOUtils;
-import com.ssl.support.utils.JSONSerializable;
 import com.ssl.support.utils.ListenableAsyncTask;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -13,19 +12,22 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-public class FileDownloadTask extends ListenableAsyncTask<Uri, Integer, Integer> {
-
-    private HttpClient httpClient;
-    Context context;
-    Uri remoteUri, localUri;
-
-    private long contentLength;
+public class FileDownloadTask {
 
     public static final int SUCCESS = 0;
     public static final int FAILURE = 1;
     private static final int RETRY_COUNT = 3;
+
+    private Context context;
+    private Uri remoteUri, localUri;
+    private HttpClient httpClient;
+    private long contentLength;
+    private DownloadProgressListener mDownloadProgressListener;
 
     public FileDownloadTask(Context context, Uri remoteUri, Uri localUri) {
         this.remoteUri = remoteUri;
@@ -34,8 +36,11 @@ public class FileDownloadTask extends ListenableAsyncTask<Uri, Integer, Integer>
         this.context = context;
     }
 
-    @Override
-    protected Integer doInBackground(Uri... uris) {
+    public void setDownloadProgressListener(DownloadProgressListener listener) {
+        mDownloadProgressListener = listener;
+    }
+
+    protected int execute() {
         int retryLimit = RETRY_COUNT;
         while (retryLimit-- > 0) {
             Log.d(getClass().getName(), "Requesting file: " + remoteUri);
@@ -66,7 +71,7 @@ public class FileDownloadTask extends ListenableAsyncTask<Uri, Integer, Integer>
             } else {
                 return response.getEntity().getContent();
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             get.abort();
             Log.e(getClass().getName(), "Failed to download file for " + uri, e);
             return null;
@@ -79,13 +84,17 @@ public class FileDownloadTask extends ListenableAsyncTask<Uri, Integer, Integer>
             ParcelFileDescriptor fid = context.getContentResolver().openFileDescriptor(uri, "w");
             if (fid != null)
                 return new ParcelFileDescriptor.AutoCloseOutputStream(fid);
-        } catch (FileNotFoundException e) {
-            Log.e(getClass().getName(), "Failed to open file for writing");
+        } catch (Exception e) {
+            Log.e(getClass().getName(), "Failed to open file for writing", e);
         }
         return null;
     }
 
-    public class DownloadProgressUpdater extends IOUtils.ProgressUpdater {
+    public static interface DownloadProgressListener {
+        public void onProgressUpdate(int progress);
+    }
+
+    private class DownloadProgressUpdater extends IOUtils.ProgressUpdater {
         private static final int PROGRESS_SAMPLE_RATE = 10;
 
         private long contentLength;
@@ -98,8 +107,10 @@ public class FileDownloadTask extends ListenableAsyncTask<Uri, Integer, Integer>
 
         public void onProgressUpdate(long totalBytesProcessed) {
             if (totalBytesProcessed * 100 / contentLength >= lastProgress + PROGRESS_SAMPLE_RATE) {
-                Integer[] progress = new Integer[]{(int) (totalBytesProcessed * 100 / contentLength)};
-                FileDownloadTask.this.onProgressUpdate(progress);
+                int progress = (int) (totalBytesProcessed * 100 / contentLength);
+                if (mDownloadProgressListener != null) {
+                    mDownloadProgressListener.onProgressUpdate(progress);
+                }
                 Log.d(getClass().getName(), String.format("Downloading[%d]: %s)", totalBytesProcessed * 100 / contentLength, remoteUri.toString()));
                 lastProgress += PROGRESS_SAMPLE_RATE;
             }

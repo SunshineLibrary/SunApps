@@ -1,17 +1,17 @@
 package com.ssl.support.services;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Binder;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.util.Log;
 import com.ssl.support.downloader.DownloadQueue;
+import com.ssl.support.downloader.DownloadTaskFactory;
 import com.ssl.support.downloader.DownloadTaskParams;
-import com.ssl.support.downloader.MonitoredFileDownloadTask;
+import com.ssl.support.downloader.tasks.AsyncDownloadTask;
+import com.ssl.support.downloader.tasks.DownloadTask;
 import com.ssl.support.utils.Listener;
-
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * @author Bowen Sun
@@ -23,6 +23,8 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class DownloadService extends Service {
 
+    private PowerManager.WakeLock wakeLock;
+
     private DownloadQueue downloadQueue;
     private Listener<Integer> startNextListener;
     private boolean downloading;
@@ -31,13 +33,16 @@ public class DownloadService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        downloadQueue = new DownloadQueue(getBaseContext(), new MonitoredFileDownloadTask.Factory(getBaseContext()));
+        downloadQueue = new DownloadQueue(getBaseContext(), new DownloadTaskFactory(getBaseContext()));
         downloading = false;
+
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
+
         startNextListener = new Listener<Integer>() {
             @Override
             public void onResult(Integer integer) {
-                MonitoredFileDownloadTask task = downloadQueue.pop();
-                Log.d("DownloadService", "Completed Task: " + task.toJSON());
+                AsyncDownloadTask task = new AsyncDownloadTask(downloadQueue.pop());
                 downloading = false;
                 startNextTask();
             }
@@ -51,23 +56,25 @@ public class DownloadService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d("DownloadService", intent.toString());
         if (intent.hasExtra(PARAMS_KEY)) {
             DownloadTaskParams params = (DownloadTaskParams) intent.getParcelableExtra(PARAMS_KEY);
-            downloadQueue.add(params.remoteUri, params.localUri, params.updateUri, params.notifyUri);
+            downloadQueue.add(params);
+            acquireLock();
         }
-
         startNextTask();
         return START_STICKY;
     }
 
     private void startNextTask() {
         if (!downloading) {
-            MonitoredFileDownloadTask task = downloadQueue.peek();
+            DownloadTask task = downloadQueue.peek();
             if (task != null) {
+                AsyncDownloadTask asyncTask = new AsyncDownloadTask(task);
                 Log.d("DownloadService", "Starting Task: " + task.toJSON());
-                task.addListener(startNextListener);
+                asyncTask.addListener(startNextListener);
                 downloading = true;
-                task.execute();
+                asyncTask.execute();
             } else {
                 stopSelf();
             }
@@ -77,7 +84,20 @@ public class DownloadService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        releaseLock();
         Log.d("DownloadService", "Stopping");
         downloadQueue.release();
+    }
+
+    private void acquireLock() {
+        if (!wakeLock.isHeld()) {
+            wakeLock.acquire();
+        }
+    }
+
+    private void releaseLock() {
+        if (wakeLock.isHeld()) {
+            wakeLock.release();
+        }
     }
 }

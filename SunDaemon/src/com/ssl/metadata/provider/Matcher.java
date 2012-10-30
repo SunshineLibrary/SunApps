@@ -33,15 +33,18 @@ public class Matcher {
     public static final int GALLERY_IMAGES_THUMBNAIL = 306;
 
     public static final int EDGES = 307;
-    public static final int PROBLEMS = 308;
     public static final int QUIZ_COMPONENTS = 309;
-    public static final int QUIZ_PROBLEMS = 3010;
-    public static final int PROBLEM_CHOICES = 311;
+    public static final int QUIZ_PROBLEMS = 310;
 
     public static final int ACTIVITIES_VIDEO = 312;
     public static final int ACTIVITIES_PDF = 313;
     public static final int ACTIVITIES_HTML = 314;
     public static final int ACTIVITIES_TEXT = 315;
+
+    public static final int PROBLEMS = 350;
+    public static final int PROBLEM_CHOICES = 351;
+    public static final int PROBLEMS_IMAGE_ID = 352;
+    public static final int PROBLEMS_AUDIO_ID = 353;
 
 
     public static final int AUTHORS = 400;
@@ -115,10 +118,14 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "book_info", BOOK_INFO);
             matcher.addURI(AUTHORITY, "book_collection_info", BOOK_COLLECTION_INFO);
             
-            matcher.addURI(AUTHORITY, "problems", PROBLEMS);
             matcher.addURI(AUTHORITY, "quiz_components", QUIZ_COMPONENTS);
             matcher.addURI(AUTHORITY, "quiz_problems", QUIZ_PROBLEMS);
             matcher.addURI(AUTHORITY, "problem_choices", PROBLEM_CHOICES);
+            matcher.addURI(AUTHORITY, "problems", PROBLEMS);
+            matcher.addURI(AUTHORITY, "problems/image/#", PROBLEMS_IMAGE_ID);
+            matcher.addURI(AUTHORITY, "problems/image/#.*", PROBLEMS_IMAGE_ID);
+            matcher.addURI(AUTHORITY, "problems/audio/#", PROBLEMS_AUDIO_ID);
+            matcher.addURI(AUTHORITY, "problems/audio/#.*", PROBLEMS_AUDIO_ID);
 
             matcher.addURI(AUTHORITY, "tags", TAGS);
             matcher.addURI(AUTHORITY, "book_tag", BOOK_TAG);
