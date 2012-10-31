@@ -62,7 +62,7 @@ public class VideoActivityView extends ActivityView {
     public void onBeforeFlippingOut() {
         super.onBeforeFlippingOut();
         videoPlayer.pause();
-        videoPlayer.setVisibility(INVISIBLE);
+        videoPlayer.setVisibility(GONE);
     }
 
     @Override

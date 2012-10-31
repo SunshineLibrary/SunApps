@@ -103,6 +103,7 @@ public class SectionPresenter {
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
+            currentSection = SectionHelper.getSection(navigationActivity, currentSection.id);
             showDownloadButton();
             navigationActivity.notifySectionContentChange();
         }

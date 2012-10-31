@@ -1,11 +1,9 @@
 package com.ssl.curriculum.math.model.activity;
 
-import android.database.Cursor;
 import android.util.Log;
 import com.ssl.curriculum.math.logic.EdgeConditionMatcher;
 import com.ssl.curriculum.math.logic.strategy.EdgeConditionMatcherImpl;
 
-import javax.security.auth.login.LoginException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +12,8 @@ import java.util.Map;
  * @version 1.0
  */
 public class LinkedActivityData extends DomainActivityData {
+
+    private static final String TAG = "ActivityData";
 
     public LinkedActivityData defaultNextActivityData;
     public LinkedActivityData defaultPreviousActivityData;
@@ -30,6 +30,7 @@ public class LinkedActivityData extends DomainActivityData {
     }
 
     public LinkedActivityData getNextActivity() {
+        Log.d(TAG, "Finding next activity");
         for (Map.Entry<String, LinkedActivityData> entry : getConditionalNextActivities().entrySet()) {
             Log.d("Condition Matcher", entry.getKey() + " " + getResult());
             if (getConditionMatcher().isMatchedWithCondition(entry.getKey(), getResult())) {
@@ -38,6 +39,7 @@ public class LinkedActivityData extends DomainActivityData {
             }
             Log.d("Condition Matcher", "Condition Not Matched");
         }
+        Log.d(TAG, "No edge found, returning default: " + defaultNextActivityData);
         return defaultNextActivityData;
     }
 

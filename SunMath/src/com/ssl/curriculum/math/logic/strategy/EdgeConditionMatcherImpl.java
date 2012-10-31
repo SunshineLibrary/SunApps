@@ -1,11 +1,13 @@
 package com.ssl.curriculum.math.logic.strategy;
 
+import android.util.Log;
 import com.ssl.curriculum.math.logic.EdgeConditionMatcher;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class EdgeConditionMatcherImpl implements EdgeConditionMatcher {
+
     @Override
     public boolean isMatchedWithCondition(String condition, String result) {
         Pattern pattern = Pattern.compile("CorrectCount\\((\\d+),\\s*(\\d+)\\)");
