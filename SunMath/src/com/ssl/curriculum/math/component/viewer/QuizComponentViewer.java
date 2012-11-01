@@ -37,19 +37,16 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
     public QuizComponentViewer(Context context) {
         super(context);
         mAnimationManager = new FlipAnimationManager(context);
-        createResultView();
     }
 
     public QuizComponentViewer(Context context, AttributeSet attrs) {
         super(context, attrs);
         mAnimationManager = new FlipAnimationManager(context);
-        createResultView();
     }
 
     public QuizComponentViewer(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mAnimationManager = new FlipAnimationManager(context);
-        createResultView();
     }
 
     public void setControlButtons(ImageView confirmButton, ImageView nextButton) {
@@ -65,7 +62,8 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
         mQuestions = null;
         mActivityData = null;
         mCurrentPosition = -1;
-        mSummaryView.reset();
+        removeResultView();
+        createResultView();
         hideButtons();
     }
 
@@ -162,9 +160,17 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
         return mMultipleChoiceView;
     }
 
+    private void removeResultView() {
+        if (mSummaryView != null) {
+            removeView(mSummaryView);
+            mSummaryView = null;
+        }
+    }
+
     private void createResultView() {
         if (mSummaryView == null) {
             mSummaryView = new QuizSummaryView(getContext(), this);
+            mSummaryView.setVisibility(INVISIBLE);
             addView(mSummaryView);
         }
     }

@@ -50,16 +50,9 @@ public class QuizSummaryView extends QuizComponentView implements QuestionResult
         });
     }
 
-
     @Override
     public void onQuestionResult(QuizQuestion question, String answer, boolean isCorrect) {
         mSummaryPresenter.onQuestionResult(question, answer, isCorrect);
-    }
-
-    public void reset() {
-        setVisibility(INVISIBLE);
-        initComponents();
-        iv_btn_done.setEnabled(true);
     }
 
     @Override
