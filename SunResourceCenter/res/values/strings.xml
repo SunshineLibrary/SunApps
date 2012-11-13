@@ -1,9 +1,9 @@
 <resources>
 
-    <string name="app_name">课外中心</string>
+    <string name="app_name">阳光书屋</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">课外中心</string>
+    <string name="title_activity_main">阳光书屋</string>
     <string name="my_resources">我的资料库</string>
     <string name="search_resources">搜索...</string>
     <string name="res_reading">正在阅读</string>
