@@ -6,6 +6,8 @@ import android.util.Log;
 import com.ssl.metadata.database.Table;
 import com.ssl.support.api.ApiClient;
 import com.ssl.support.data.models.ApiSyncState;
+import com.ssl.support.utils.IOUtils;
+import com.ssl.support.utils.JSONUtils;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.json.JSONArray;
@@ -15,6 +17,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,67 +42,23 @@ public class BasicTableSyncManager implements TableSyncManager {
 	public boolean sync() {
 		boolean isInSync = false;
 		int retryCount = 0;
-        HttpClient httpClient = apiClient.newHttpClient();
 		while (!isInSync && retryCount <= MAX_RETRY_COUNT) {
-			String requestURI = getRequestURI();
-            Log.i(this.getClassName(), requestURI);
-
-            HttpGet request = new HttpGet(requestURI);
-            InputStream result = null;
-			try {
-				result = httpClient.execute(request).getEntity().getContent();
-				JSONArray jsonArr = getJsonArrayFromInputStream(result);
-				isInSync = processJsonArray(jsonArr);
-			} catch (IOException e) {
-				Log.e(getClassName(), "Failed to get " + requestURI, e);
-				retryCount++;
-			} catch (JSONException e) {
-				Log.e(getClassName(), "Failed to parse response", e);
-				break;
-			} catch (ParseException e) {
-				Log.e(getClassName(), "Failed to parse update time", e);
-				break;
-			} finally {
-                closeConnection(result);
+            JSONArray jsonArr = JSONUtils.fetchJSONArrayFromUri(apiClient, new HttpGet(getRequestURI()));
+            try {
+                isInSync = processJsonArray(jsonArr);
+            } catch (JSONException e) {
+                Log.e(getClassName(), "Failed to parse response", e);
+                break;
+            } catch (ParseException e) {
+                Log.e(getClassName(), "Failed to parse update time", e);
+                break;
             }
 		}
 		return isInSync;
 	}
 
-    private void closeConnection(InputStream result) {
-        if (result != null) {
-            try {
-                result.close();
-            } catch (IOException e) {
-                Log.e(getClassName(), "Error closing connection.", e);
-            }
-        }
-    }
-
     protected String getRequestURI() {
 		return apiClient.getSyncRequestUrl(table.getTableName(), syncState.lastUpdateTime);
-	}
-
-	protected JSONArray getJsonArrayFromInputStream(InputStream result)
-			throws IOException, JSONException {
-		StringBuilder builder = new StringBuilder();
-        InputStreamReader reader = new InputStreamReader(result);
-
-		int bufferSize = 4096;
-		int readCount, offset = 0;
-		char[] buffer = new char[bufferSize];
-		while ((readCount = reader.read(buffer, offset, bufferSize - offset)) > 0) {
-            offset += readCount;
-			if (offset >= bufferSize) {
-				builder.append(buffer);
-				offset = 0;
-			}
-		}
-		if (offset > 0) {
-			builder.append(buffer, 0, offset);
-		}
-
-		return new JSONArray(builder.toString());
 	}
 
 	protected boolean processJsonArray(JSONArray jsonArr) throws JSONException,

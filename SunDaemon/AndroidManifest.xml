@@ -50,6 +50,11 @@
                 android:screenOrientation="portrait" >
         </activity>
 
+        <activity
+                android:name="com.ssl.support.activities.SignInActivity"
+                android:screenOrientation="portrait" >
+        </activity>
+
         <service
                 android:name="com.ssl.support.services.APISyncService"
                 android:enabled="true"/>

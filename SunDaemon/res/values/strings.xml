@@ -13,6 +13,8 @@
     <string name="name_input_legend">姓名</string>
     <string name="birthday_input_legend">生日</string>
     <string name="signin_submit_legend">生日</string>
+    <string name="fetching_school">正在获取...</string>
+    <string name="auth_failure">登录失败</string>
 
     <string-array name="grade_array">
         <item>一年级</item>

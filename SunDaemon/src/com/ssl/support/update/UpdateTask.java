@@ -13,14 +13,13 @@ import com.ssl.support.api.ApiClient;
 import com.ssl.support.api.ApiClientFactory;
 import com.ssl.support.data.helpers.PackageHelper;
 import com.ssl.support.data.models.Package;
-import com.ssl.support.downloader.tasks.MonitoredFileDownloadTask;
 import com.ssl.support.downloader.tasks.AsyncFileDownloadTask;
 import com.ssl.support.downloader.tasks.FileDownloadTask;
+import com.ssl.support.downloader.tasks.MonitoredFileDownloadTask;
 import com.ssl.support.services.UpdateService;
+import com.ssl.support.utils.JSONUtils;
 import com.ssl.support.utils.Listener;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
@@ -28,7 +27,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class UpdateTask extends AsyncTask {
     private static final Uri PKG_DIR = Uri.parse(
             "file://" + Environment.getExternalStorageDirectory().getAbsolutePath()
                     + "/" + ExternalFileStorage.BASE_PATH).buildUpon().appendPath(PKG_DIR_NAME).build();
+    private static final String TAG = "UpdateTask";
 
     public UpdateTask(UpdateService context) {
         this.context = context;
@@ -57,7 +59,7 @@ public class UpdateTask extends AsyncTask {
     @Override
     protected Object doInBackground(Object... params) {
         List<Package> updates = getUpdates(getLocalPackages());
-        Log.v(getClass().getName(), "Packages to be updated: " + updates);
+        Log.v(TAG, "Packages to be updated: " + updates);
         numInstalls = updates.size();
         for (Package pkg: updates) {
             downloadAndInstallApk(pkg);
@@ -86,37 +88,22 @@ public class UpdateTask extends AsyncTask {
                 jsonArr.put(obj);
             }
         } catch (JSONException e) {
-            Log.e(getClass().getName(), "Failure converting packages to JSON...");
+            Log.e(TAG, "Failure converting packages to JSON...");
         }
         return jsonArr;
     }
 
     private JSONArray getPendingPackagesFromServer(JSONArray jsonArr) {
-        Log.v(getClass().getName(), "Sending local packages: " + jsonArr.toString());
-        HttpClient httpClient = apiClient.newHttpClient();
-        StringWriter writer = new StringWriter();
-        JSONArray result = new JSONArray();
-
         try {
+            Log.v(TAG, "Sending Local Packages: " + jsonArr);
             HttpPost post = getPostMessage(jsonArr);
-            HttpResponse response = httpClient.execute(post);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                writer.write(line);
-            }
-
-            result = new JSONArray(writer.toString());
-            Log.v(getClass().getName(), "Received package list: " + result);
+            JSONArray packages = JSONUtils.fetchJSONArrayFromUri(apiClient, post);
+            Log.v(TAG, "Received Packages: " + packages);
+            return packages;
         } catch (UnsupportedEncodingException e) {
-            Log.e(getClass().getName(), "URL encoding failed for data: " + jsonArr.toString(), e);
-        } catch (IOException e) {
-            Log.e(getClass().getName(), "Failed to post packages: " + jsonArr.toString(), e);
-        } catch (JSONException e) {
-            Log.e(getClass().getName(), "Failed to parse result: " + writer.toString(), e);
+            Log.e(TAG, "URL encoding failed for data: " + jsonArr.toString(), e);
         }
-        return result;
+        return new JSONArray();
     }
 
     private HttpPost getPostMessage(JSONArray jsonArr) throws UnsupportedEncodingException {
@@ -135,7 +122,7 @@ public class UpdateTask extends AsyncTask {
         AsyncFileDownloadTask task = new MonitoredFileDownloadTask(context, remoteUri, localUri,
                 pkg.getUpdateUri(), MetadataContract.Packages.CONTENT_URI);
         task.addListener(new InstallListener(pkg, localUri));
-        Log.v(getClass().getName(), "Start downloading package: " + pkg);
+        Log.v(TAG, "Start downloading package: " + pkg);
         task.execute();
     }
 
@@ -154,7 +141,7 @@ public class UpdateTask extends AsyncTask {
         try {
             file.createNewFile();
         } catch (IOException e) {
-            Log.e(getClass().getName(), "Failed to create file for download: " + filePath);
+            Log.e(TAG, "Failed to create file for download: " + filePath);
         }
     }
 
@@ -201,7 +188,7 @@ public class UpdateTask extends AsyncTask {
         }
 
         private void sendInstallRequest(Package pkg, Uri filePath) {
-            Log.v(getClass().getName(), "Sending install request for package: " + pkg);
+            Log.v(TAG, "Sending install request for package: " + pkg);
             Intent intent = new Intent();
             intent.setAction("com.ssl.support.action.scheduleInstall");
             intent.setData(filePath);

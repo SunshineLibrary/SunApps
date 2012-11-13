@@ -5,14 +5,12 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import com.ssl.support.utils.IOUtils;
-import com.ssl.support.utils.ListenableAsyncTask;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -48,7 +46,7 @@ public class FileDownloadTask {
             OutputStream output = getOutputStreamForUri(localUri);
 
             try {
-                IOUtils.copy(input, output, new DownloadProgressUpdater(contentLength));
+                IOUtils.copyByteStream(input, output, new DownloadProgressUpdater(contentLength));
                 return SUCCESS;
             } catch (IOException e) {
                 Log.w(getClass().getName(), "Failed during download for uris." + remoteUri + "," + localUri);

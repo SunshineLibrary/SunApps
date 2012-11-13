@@ -47,4 +47,12 @@ public class ApiClient {
     public Uri getApkUpdateUri() {
         return apiServerUri.buildUpon().appendPath("apks").appendPath("get_updates").build();
     }
+
+    public Uri getAllSchoolsUri() {
+        return apiServerUri.buildUpon().appendPath("schools").appendEncodedPath("get_all.json").build();
+    }
+
+    public Uri getLoginUri() {
+        return apiServerUri.buildUpon().appendPath("machines").appendPath("sign_in.json").build();
+    }
 }

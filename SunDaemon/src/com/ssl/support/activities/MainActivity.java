@@ -20,6 +20,8 @@ import static com.ssl.metadata.provider.MetadataContract.Activities;
 public class MainActivity extends Activity implements View.OnClickListener {
     private PackageManager localPackageManager;
 
+    private static final int SIGN_IN_REQUEST = 100;
+
     /**
      * Called when the activities is first created.
      */
@@ -33,6 +35,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.main);
         initUI();
         initComponents();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SIGN_IN_REQUEST && resultCode != RESULT_OK) {
+            finish();
+        }
     }
 
     private void initUI() {
@@ -55,7 +65,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        Log.v(getClass().getName(), "Starting API sync service.");
+        startActivityForResult(new Intent(this, SignInActivity.class), SIGN_IN_REQUEST);
     }
 
     private void prepareData(int id, int type) {
