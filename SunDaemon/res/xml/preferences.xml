@@ -2,7 +2,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="服务地址">
+    <PreferenceCategory android:title="服务器地址">
 
         <EditTextPreference android:key="local_server_address"
                             android:title="API服务器地址"
@@ -22,13 +22,18 @@
 
     <PreferenceCategory android:title="通用设置">
         <com.ssl.support.components.ResetPreference
-                android:title="重置设置"
-                android:dialogMessage="您确定要重置对Daemon的设置么?"
-                android:dialogTitle="重置Daemon的设置"
+                android:title="恢复默认设置"
+                android:dialogMessage="您确定要将设置参数恢复成默认数值吗?"
+                android:dialogTitle="恢复默认设置"
                 />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/app_version">
+    <PreferenceCategory android:title="关于">
+        <Preference android:key="version_name"
+                    style="?android:attr/preferenceInformationStyle"
+                    android:title="版本"
+                    android:summary="版本号"
+                    android:persistent="false" />
     </PreferenceCategory>
 
 
