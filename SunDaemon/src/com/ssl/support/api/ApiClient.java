@@ -5,6 +5,8 @@ import com.ssl.support.config.Configurations;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.net.URI;
+
 public class ApiClient {
 
     private Uri apiServerUri;
@@ -54,5 +56,9 @@ public class ApiClient {
 
     public Uri getLoginUri() {
         return apiServerUri.buildUpon().appendPath("machines").appendPath("sign_in.json").build();
+    }
+
+    public Uri getUserRecordPostUri() {
+        return uploadServerUri.buildUpon().appendPath("user_records").appendPath("batch_update.json").build();
     }
 }

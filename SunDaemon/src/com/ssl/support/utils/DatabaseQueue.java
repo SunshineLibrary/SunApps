@@ -9,13 +9,15 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class DatabaseQueue<T extends JSONSerializable> {
 
     private DatabaseQueueDBHandler dbHandler;
     private String queueName;
     private JSONSerializable.Factory<T> factory;
     private T peeked;
-
 
     public DatabaseQueue(Context context, String queueName, JSONSerializable.Factory<T> factory) {
         dbHandler = new DatabaseQueueDBHandler(context, queueName);
@@ -47,6 +49,19 @@ public class DatabaseQueue<T extends JSONSerializable> {
         return null;
     }
 
+    public List<T> peekBatch(int batchSize) {
+        List<T> batch = new LinkedList<T>();
+        List<String> stringBatch = dbHandler.getFirstBatch(batchSize);
+        for (String str: stringBatch) {
+            try {
+                batch.add(factory.createNewFromJSON(new JSONObject(str)));
+            } catch (JSONException e) {
+                Log.e(getClass().getName(), "Failed to parse JSON for value: " + str);
+            }
+        }
+        return batch;
+    }
+
     public T pop() {
         peeked = null;
         String value = dbHandler.getAndRemoveFirst();
@@ -61,11 +76,26 @@ public class DatabaseQueue<T extends JSONSerializable> {
         return null;
     }
 
+    public List<T> popBatch(int batchSize) {
+        List<T> batch = new LinkedList<T>();
+        List<String> stringBatch = dbHandler.getAndRemoveFirstBatch(batchSize);
+        for (String str: stringBatch) {
+            try {
+                batch.add(factory.createNewFromJSON(new JSONObject(str)));
+            } catch (JSONException e) {
+                Log.e(getClass().getName(), "Failed to parse JSON for value: " + str);
+            }
+        }
+        return batch;
+    }
+
     public void release() {
         dbHandler.close();
     }
 
     private static class DatabaseQueueDBHandler extends SQLiteOpenHelper {
+
+        private static final String DB_QUEUES = "db_queues";
 
         private static String[] COLUMNS = {"id", "value"};
         private static String ID = COLUMNS[0];
@@ -74,7 +104,7 @@ public class DatabaseQueue<T extends JSONSerializable> {
         private String queueName;
 
         public DatabaseQueueDBHandler(Context context, String queueName) {
-            super(context, queueName, null, 1);
+            super(context, DB_QUEUES, null, 1);
             this.queueName = queueName;
         }
 
@@ -101,29 +131,54 @@ public class DatabaseQueue<T extends JSONSerializable> {
         }
 
         public synchronized String getFirst() {
+            List<String> batch = getFirstBatch(1);
+            if (batch.size() == 0) {
+                return null;
+            }
+            return batch.get(0);
+        }
+
+        public synchronized List<String> getFirstBatch(int batchSize) {
+            List<String> batch = new LinkedList<String>();
             Cursor cursor = getWritableDatabase().query(queueName, COLUMNS, null, null, null, null, null);
-            String value = null;
             if(cursor.moveToFirst()) {
-                value = cursor.getString(cursor.getColumnIndex(VALUE));
+                for (int i = 0; i < batchSize; i ++) {
+                    batch.add(cursor.getString(cursor.getColumnIndex(VALUE)));
+                    if (!cursor.moveToNext()) {
+                        break;
+                    }
+                }
             }
             cursor.close();
-
-            return value;
+            return batch;
         }
 
         public synchronized String getAndRemoveFirst() {
+            List<String> batch = getAndRemoveFirstBatch(1);
+            if (batch.size() == 0) {
+                return null;
+            }
+            return batch.get(0);
+        }
+
+        public synchronized List<String> getAndRemoveFirstBatch(int batchSize) {
+            List<String> batch = new LinkedList<String>();
+
             SQLiteDatabase db = getWritableDatabase();
             Cursor cursor = db.query(queueName, COLUMNS, null, null, null, null, null);
-            String value = null;
+
             if(cursor.moveToFirst()) {
-                int id = cursor.getInt(cursor.getColumnIndex(ID));
-                value = cursor.getString(cursor.getColumnIndex(VALUE));
-                cursor.close();
-                db.delete(queueName, ID + "=?", new String[]{String.valueOf(id)});
-            } else {
-                cursor.close();
+                for (int i = 0; i < batchSize; i++) {
+                    int id = cursor.getInt(cursor.getColumnIndex(ID));
+                    batch.add(cursor.getString(cursor.getColumnIndex(VALUE)));
+                    db.delete(queueName, ID + "=?", new String[]{String.valueOf(id)});
+                    if (!cursor.moveToNext()) {
+                        break;
+                    }
+                }
             }
-            return value;
+            cursor.close();
+            return batch;
         }
     }
 }

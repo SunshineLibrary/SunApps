@@ -10,10 +10,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import com.ssl.support.config.AccessToken;
 import com.ssl.support.services.UpdateService;
 import com.ssl.metadata.database.tables.ActivityTable;
 import com.ssl.support.daemon.R;
 import com.ssl.support.services.APISyncService;
+import com.ssl.support.utils.StringUtils;
 
 import static com.ssl.metadata.provider.MetadataContract.Activities;
 
@@ -65,7 +67,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        startActivityForResult(new Intent(this, SignInActivity.class), SIGN_IN_REQUEST);
+        if (StringUtils.isEmpty(AccessToken.getAccessToken(this)))
+            startActivityForResult(new Intent(this, SignInActivity.class), SIGN_IN_REQUEST);
     }
 
     private void prepareData(int id, int type) {

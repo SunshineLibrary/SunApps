@@ -42,7 +42,7 @@ public class DownloadService extends Service {
         startNextListener = new Listener<Integer>() {
             @Override
             public void onResult(Integer integer) {
-                AsyncDownloadTask task = new AsyncDownloadTask(downloadQueue.pop());
+                downloadQueue.pop();
                 downloading = false;
                 startNextTask();
             }

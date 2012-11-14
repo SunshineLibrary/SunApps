@@ -1,5 +1,6 @@
 package com.ssl.support.utils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public interface JSONSerializable {

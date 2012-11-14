@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.KeyEvent;
+import com.ssl.support.config.AccessToken;
 import com.ssl.support.config.Configurations;
 import com.ssl.support.presenter.SignInPresenter;
 import com.ssl.support.utils.ConnectionUtils;
@@ -41,20 +42,13 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
     private String[] schoolStrings;
     private String[] gradeStrings;
     private String[] classStrings;
-    private Configurations configs;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        configs = new Configurations(this);
-        if (StringUtils.isEmpty(configs.getString("access_token"))) {
-            setContentView(R.layout.sign_in);
-            initUI();
-            initComponents();
-            initSpinners();
-        } else {
-            setResult(RESULT_OK);
-            finish();
-        }
+        setContentView(R.layout.sign_in);
+        initUI();
+        initComponents();
+        initSpinners();
     }
 
     private void initUI() {
@@ -127,7 +121,7 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
                     protected void onPostExecute(String accessToken) {
                         super.onPostExecute(accessToken);
                         if (!StringUtils.isEmpty(accessToken)) {
-                            configs.putString("access_token", accessToken);
+                            AccessToken.storeAccessToken(SignInActivity.this, accessToken);
                             setResult(RESULT_OK);
                             finish();
                         } else {
