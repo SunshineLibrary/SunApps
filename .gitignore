@@ -10,5 +10,5 @@ local.properties
 tmp
 reports
 reports/**/*
-.gitignore
 .DS_Store
+SunMath/build/local_properties/*
