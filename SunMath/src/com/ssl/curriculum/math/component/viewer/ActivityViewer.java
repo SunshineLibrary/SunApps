@@ -20,7 +20,7 @@ public class ActivityViewer extends FrameLayout{
     private ActivityView mCurrentView;
     private FlipAnimationManager mAnimationManager;
 
-    private ActivityView mVideoView, mQuizView, mHtmlView, mTextView, mGalleryView, mPdfView, mFinishView;
+    private ActivityView mAudioView, mVideoView, mQuizView, mHtmlView, mTextView, mGalleryView, mPdfView, mFinishView;
     private ImageView mBtnNext;
     private ActivityFinishListener mActivityFinishListener;
 
@@ -116,6 +116,8 @@ public class ActivityViewer extends FrameLayout{
 
     private ActivityView getViewForActivity(LinkedActivityData activityData) {
         switch (activityData.type) {
+        	case TYPE_AUDIO:
+        	return getAudioView();
             case TYPE_VIDEO:
                 return getVideoView();
             case TYPE_TEXT:
@@ -134,6 +136,14 @@ public class ActivityViewer extends FrameLayout{
         return null;
     }
 
+    private ActivityView getAudioView() {
+        if (mAudioView == null) {
+        	mAudioView = new AudioActivityView(getContext(), this);
+            addView(mAudioView);
+        }
+        return mAudioView;
+    }
+    
     private ActivityView getVideoView() {
         if (mVideoView == null) {
             mVideoView = new VideoActivityView(getContext(), this);

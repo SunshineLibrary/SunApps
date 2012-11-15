@@ -36,6 +36,7 @@ public class Matcher {
     public static final int QUIZ_COMPONENTS = 309;
     public static final int QUIZ_PROBLEMS = 310;
 
+    public static final int ACTIVITIES_AUDIO = 311;
     public static final int ACTIVITIES_VIDEO = 312;
     public static final int ACTIVITIES_PDF = 313;
     public static final int ACTIVITIES_HTML = 314;
@@ -98,6 +99,7 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "activities/#", ACTIVITIES_ID);
             matcher.addURI(AUTHORITY, "activities/gallery/images", GALLERY_IMAGES);
 
+            matcher.addURI(AUTHORITY, "activities/audio/#", ACTIVITIES_AUDIO);
             matcher.addURI(AUTHORITY, "activities/video/#", ACTIVITIES_VIDEO);
             matcher.addURI(AUTHORITY, "activities/text/#", ACTIVITIES_TEXT);
             matcher.addURI(AUTHORITY, "activities/html/#", ACTIVITIES_HTML);
