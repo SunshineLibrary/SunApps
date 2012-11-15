@@ -63,7 +63,8 @@ public class HtmlActivityView extends ActivityView implements View.OnClickListen
 		titleTextView.setText(activityData.name);
         noteTextView.setText(activityData.notes==null?"":activityData.notes);
         task = new CacheHtmlTask();
-		task.execute(activityId);		
+		task.execute(activityId);	
+		//test
 	}
 
 	private void initUI() {
