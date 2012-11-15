@@ -10,5 +10,4 @@ local.properties
 tmp
 reports
 reports/**/*
-.gitignore
 .DS_Store
