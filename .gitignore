@@ -11,3 +11,4 @@ tmp
 reports
 reports/**/*
 .DS_Store
+SunMath/build/local_properties/*
