@@ -159,7 +159,10 @@ public final class MetadataContract {
         public static final int TYPE_HTML = 5;
         public static final int TYPE_PDF = 6;
         public static final int TYPE_FINISH = 99;
-
+        public static Uri getActivityAudioUri(long id) {
+            return CONTENT_URI.buildUpon().appendPath("audio").appendPath(String.valueOf(id)).build();
+        }
+        
         public static Uri getActivityVideoUri(long id) {
             return CONTENT_URI.buildUpon().appendPath("video").appendPath(String.valueOf(id)).build();
         }

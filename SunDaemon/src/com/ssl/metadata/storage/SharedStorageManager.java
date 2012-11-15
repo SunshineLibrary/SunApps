@@ -29,6 +29,8 @@ public class SharedStorageManager {
 
     public String getType(Uri uri) {
         switch (sUriMatcher.match(uri)) {
+        	case Matcher.ACTIVITIES_AUDIO:
+    		return "audio/mp3";
             case Matcher.ACTIVITIES_VIDEO:
                 return "video/mp4";
             case Matcher.ACTIVITIES_TEXT:
@@ -41,6 +43,7 @@ public class SharedStorageManager {
     public synchronized ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
         Log.i(context.toString(), "openFile Uri:" + uri.toString());
         switch (sUriMatcher.match(uri)) {
+        	case Matcher.ACTIVITIES_AUDIO:
             case Matcher.ACTIVITIES_VIDEO:
             case Matcher.ACTIVITIES_TEXT:
             case Matcher.ACTIVITIES_PDF:

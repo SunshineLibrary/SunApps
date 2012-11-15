@@ -50,6 +50,8 @@ public class ActivityDownloadTask extends DownloadTask implements JSONSerializab
         }
 
         switch (activityType) {
+        	case Activities.TYPE_AUDIO:
+    		return downloadToLocalUri(Activities.getActivityAudioUri(mId));
             case Activities.TYPE_HTML:
                 return downloadToLocalUri(Activities.getActivityHtmlUri(mId));
             case Activities.TYPE_PDF:

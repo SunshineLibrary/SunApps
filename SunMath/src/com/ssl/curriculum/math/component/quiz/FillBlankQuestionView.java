@@ -1,9 +1,11 @@
 package com.ssl.curriculum.math.component.quiz;
 
 import android.content.Context;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -51,6 +53,26 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
         progressBar = (ProgressBar) findViewById(R.id.quiz_fill_in_progress_bar);
         questionTitle = (TextView) findViewById(R.id.quiz_fill_in_flipper_child_title);
         answerContainer = (LinearLayout) findViewById(R.id.quiz_fill_in_answer_container);
+        
+        answerEditText.setOnKeyListener(new OnKeyListener() {
+
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				// TODO Auto-generated method stub
+				if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    InputMethodManager imm = (InputMethodManager) v
+                            .getContext().getSystemService(
+                                    Context.INPUT_METHOD_SERVICE);
+                    if (imm.isActive()) {
+                        imm.hideSoftInputFromWindow(
+                                v.getApplicationWindowToken(), 0);
+                    }
+                    onQuestionAnswered();
+                    return true;
+                }
+				return false;
+			}
+        });
     }
 
     public void setShowAnswerText(String text) {
