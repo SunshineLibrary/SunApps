@@ -63,8 +63,7 @@ public class HtmlActivityView extends ActivityView implements View.OnClickListen
 		titleTextView.setText(activityData.name);
         noteTextView.setText(activityData.notes==null?"":activityData.notes);
         task = new CacheHtmlTask();
-		task.execute(activityId);	
-		//test
+		task.execute(activityId);
 	}
 
 	private void initUI() {
@@ -213,20 +212,32 @@ public class HtmlActivityView extends ActivityView implements View.OnClickListen
             	try {
             		cacheFile.createNewFile();
                 	ParcelFileDescriptor pfd = getContext().getContentResolver().openFileDescriptor(MetadataContract.Activities.getActivityHtmlUri(activityId), "r");
-					in = new BufferedInputStream(new ParcelFileDescriptor.AutoCloseInputStream(pfd));
 					try{
-					out = new BufferedOutputStream(new FileOutputStream(cacheFile));
-					IOUtils.transfer(in, out);	
+						in = new BufferedInputStream(new ParcelFileDescriptor.AutoCloseInputStream(pfd));
+						out = new BufferedOutputStream(new FileOutputStream(cacheFile));
+						IOUtils.transfer(in, out);	
 					}finally{
-						if(out != null){
-							out.close();
+						try{
+							if(in!=null){
+								in.close();
+							}
+						}finally{
+							if(out != null){
+								out.close();
+							}
 						}
 					}
 					UnpackZipUtil.unZipUtf8(cacheFile, cacheDir);
 					return findHtml(cacheDir, indexPatterns);
 				} catch (IOException e) {
 					Log.e("HtmlActivityView", "CacheHtmlTask", e);
-					return null;
+					File f = findHtml(cacheDir, indexPatterns);
+					if(f!=null){
+						Toast.makeText(context, 
+				                "缓存HTML文件时出错，文件可能有部分内容显示错误", 
+				                Toast.LENGTH_SHORT).show();
+					}
+					return f;
 				} finally{
 					try{
 						if(in!=null){
@@ -242,7 +253,13 @@ public class HtmlActivityView extends ActivityView implements View.OnClickListen
 	            	return findHtml(cacheDir, indexPatterns);
             	}catch (IOException e) {
             		Log.e("HtmlActivityView", "CacheHtmlTask", e);
-            		return null;
+            		File f = findHtml(cacheDir, indexPatterns);
+					if(f!=null){
+						Toast.makeText(context, 
+				                "缓存HTML文件时出错，文件可能有部分内容显示错误", 
+				                Toast.LENGTH_SHORT).show();
+					}
+					return f;
 				}
             }
 		}

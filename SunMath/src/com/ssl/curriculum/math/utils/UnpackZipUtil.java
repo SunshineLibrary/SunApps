@@ -12,6 +12,8 @@ import java.util.Enumeration;
 import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipEntry;
 
+import android.util.Log;
+
 /**
 * @version
 *       1.0, 2012-10-24 下午8:18:56
@@ -30,27 +32,41 @@ public class UnpackZipUtil {
 		   ZipFile zipFile = null;
 	       try {
 	           zipFile = new ZipFile(inFile);
-	           Enumeration entries = zipFile.getEntries();
+	           Enumeration<?> entries = zipFile.getEntries();
 	           ZipEntry zipEntry = null ;
 
 	           while (entries.hasMoreElements()) {
 	              zipEntry = (ZipEntry) entries.nextElement();
 	              File loadFile = new File(destDir, zipEntry.getName());
-	              FileUtil.rmr(loadFile);
 	              if (zipEntry.isDirectory()) {
+	            	  if(loadFile.exists()&&!loadFile.isDirectory()){
+	            		  FileUtil.rmr(loadFile);
+	            	  }
 	                  loadFile.mkdirs();
 	              } else {
+	            	  if(loadFile.exists()&&!loadFile.isFile()){
+	            		  FileUtil.rmr(loadFile);
+	            	  }
 	                  if (!loadFile.getParentFile().exists())
 	                     loadFile.getParentFile().mkdirs();
-	 
-	                  InputStream inputStream = zipFile.getInputStream(zipEntry);	                  
-	                  OutputStream outputStream = null;
 	                  
+	                  //Log.i("zip", loadFile.toString());
+	                  InputStream inputStream = null;	                  
+	                  OutputStream outputStream = null;
 	                  try{
+	                	  inputStream = zipFile.getInputStream(zipEntry);
 	                	  outputStream = new BufferedOutputStream(new FileOutputStream(loadFile));
 	                	  IOUtils.transfer(inputStream, outputStream);
 	                  }finally{
-	                	  outputStream.close();
+	                	  try{
+		                	  if(inputStream!=null){
+		                		  inputStream.close();
+		                	  }
+	                	  }finally{
+	                		  if(outputStream!=null){
+	                			  outputStream.close();
+	                		  }
+	                	  }
 	                  }
 	              }
 	           }	           
