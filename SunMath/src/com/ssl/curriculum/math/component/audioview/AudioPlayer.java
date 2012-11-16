@@ -14,6 +14,8 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.os.Handler;
+import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -47,6 +49,8 @@ public class AudioPlayer extends RelativeLayout implements OnCompletionListener,
 	private Button play_pause;
 	private Button rollback;
 	private Button restart;
+	private TextView total_time;
+	private TextView current_time;
 	
 	private int activityId;
 	private MediaPlayer player = null;
@@ -58,6 +62,17 @@ public class AudioPlayer extends RelativeLayout implements OnCompletionListener,
 	
 	private Timer mTimer = null;
 	private TimerTask mTimerTask = null;
+	
+	private int currentPosition;
+	
+	private Handler handler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			String currentTime = (String)msg.obj;
+			current_time.setText(currentTime);
+		}
+	};
 	
 	public AudioPlayer(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -77,6 +92,9 @@ public class AudioPlayer extends RelativeLayout implements OnCompletionListener,
         play_pause = (Button) findViewById(R.id.play_pause);
         rollback = (Button) findViewById(R.id.rollback);
         restart = (Button) findViewById(R.id.restart);
+        
+        total_time = (TextView) findViewById(R.id.total_time);
+        current_time = (TextView) findViewById(R.id.current_time);
     }
 	
 	private void initListener()
@@ -149,6 +167,7 @@ public class AudioPlayer extends RelativeLayout implements OnCompletionListener,
 	public void play(FileDescriptor fileDescriptor){
 		 try {
 			 	player = new MediaPlayer();
+			 
 	            player.setDataSource(getAudioFileDescriptor(activityId));
 	            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
 	            player.prepare();
@@ -157,23 +176,42 @@ public class AudioPlayer extends RelativeLayout implements OnCompletionListener,
 	            isPlaying = true;
 	            isPause = false;
 	           play_pause.setText("暂停");
+	           
+	           int mMax = player.getDuration(); 
+			   total_time.setText(showTime(mMax));
 	            
 	            if(isFirst){//
 	            	seekBar.setMax(player.getDuration());
                    
-                   mTimer = new Timer();    
+                   mTimer = new Timer();  
                    mTimerTask = new TimerTask() {    
                        @Override    
-                       public void run() {     
+                       public void run() {    
                            if(isChanging==true) {   
                                return;    
-                           }  
-                           seekBar.setProgress(player.getCurrentPosition());  
+                           } 
+                           currentPosition = player.getCurrentPosition();
+                           seekBar.setProgress(currentPosition);
+                           //current_time.setText(showTime(currentPosition));
+                           Message message = new Message();
+                           message.obj = showTime(currentPosition);
+                           handler.sendMessage(message);
+                           
+                           /*Runnable runner = new Runnable(){
+               				@Override
+               				public void run() {
+               					// TODO Auto-generated method stub
+               					int currentPosition = player.getCurrentPosition();
+                                current_time.setText(showTime(currentPosition));
+               				}
+               	           };*/
                        }    
                    };   
                    mTimer.schedule(mTimerTask, 0, 10);
                    isFirst=false;
 	            }
+	           
+	           
 	        } catch (Exception t) {
 	            t.printStackTrace();
 	            Toast.makeText(getContext(), "播放音频失败", 0).show();
@@ -248,6 +286,13 @@ public class AudioPlayer extends RelativeLayout implements OnCompletionListener,
 		}
 	}
 	
+	 public String showTime(int time) {  
+	  time /= 1000;  
+	  int minute = time / 60;  
+	  int second = time % 60;  
+	  minute %= 60;  
+	  return String.format("%02d:%02d", minute, second);  
+	 }  
 	/*@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
