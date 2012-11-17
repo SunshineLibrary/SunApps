@@ -14,17 +14,28 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
+import android.R.bool;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,15 +52,69 @@ import com.ssl.metadata.provider.MetadataContract;
  * Created with IntelliJ IDEA. User: mendlin Date: 12-8-13 Time: 下午10:09 To
  * change this template use File | Settings | File Templates.
  */
-public class HtmlActivityView extends ActivityView implements View.OnClickListener {
+public class HtmlActivityView extends ActivityView {
+	
+	class WebViewClientWithFramesAndGoBack extends WebViewClient{
+		
+		boolean startOverride=false;
+    	boolean goingBack=false;
+    	
+    	public void goBackOnce(){
+    		goingBack = true;
+    	}
+    	
+    	
+    	@Override
+    	public boolean shouldOverrideUrlLoading(WebView view, String url) {
+    		if(goingBack){
+    			return false;
+    		}else if(startOverride){
+    			view.loadUrl(url);
+    			return true;
+    		}else{
+    			return false;
+    		}
+    	}
+    	
+    	@Override
+    	public void onPageFinished(WebView view, String url) {
+    		super.onPageFinished(view, url);
+    		startOverride = true;
+    		goingBack = false;
+    		super.onPageFinished(view, url);
+    		startOverride = true;
+    		goingBack = false;
+    		view.addJavascriptInterface(new Object(){
+    			@SuppressWarnings("unused") //javascript engine will invoke this by reflection
+				public void close(){
+    				backHandler.sendMessage(new Message());
+    			}    			
+    		}, "closeHandler");
+    		view.loadUrl("javascript:window.close=function(){closeHandler.close();};");
+    		view.loadUrl("javascript:var t=document.getElementsByTagName(\"input\");for(var i in t){if(t[i]&&t[i].setAttribute)t[i].setAttribute(\"style\",\"display:none;\")};");
+    	}
+    	
+    	@Override
+    	public void onPageStarted(WebView view, String url, Bitmap favicon) {
+    		startOverride = false;
+    		super.onPageStarted(view, url, favicon);
+    	}
+    	
+    	
+	}
 
 	int activityId;
 	Context context;
 	CacheHtmlTask task;
 	TextView titleTextView;
-	TextView noteTextView;
-	boolean autoOpen = false;
-	
+	WebView web;
+	WebViewClientWithFramesAndGoBack client;
+	Handler backHandler;
+	Button backButton;
+	Button fullButton;
+	ProgressBar progressBar;
+	boolean autoopen=false;
+	LinearLayout mask;
 	public HtmlActivityView(Context context, ActivityViewer activityViewer) {
 		super(context, activityViewer);
 		initUI();
@@ -61,63 +126,109 @@ public class HtmlActivityView extends ActivityView implements View.OnClickListen
 		super.setActivity(activityData);
 		activityId = activityData.activityId;
 		titleTextView.setText(activityData.name);
-        noteTextView.setText(activityData.notes==null?"":activityData.notes);
-        task = new CacheHtmlTask();
-		task.execute(activityId);
+        //noteTextView.setText(activityData.notes==null?"":activityData.notes);
+        task = new ForceClearCacheHtmlTask();
+        if(progressBar!=null){
+	    	task.setProgressBar(progressBar);
+	    }
+        task.execute(activityId);
 	}
 
 	private void initUI() {
 		LayoutInflater layoutInflater = (LayoutInflater) getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(
-				R.layout.flipper_external_layout, this, false);
+				R.layout.flipper_html_layout, this, false);
 		addView(viewGroup);
-	    titleTextView = (TextView) findViewById(R.id.flipper_external_title);
-        noteTextView = (TextView) findViewById(R.id.flipper_external_notes);
+	    titleTextView = (TextView) findViewById(R.id.flipper_html_title);
+	    web = (WebView)findViewById(R.id.flipper_html_layout_webview);
+	    backButton = (Button) findViewById(R.id.flipper_html_backbutton);
+	    fullButton = (Button) findViewById(R.id.flipper_html_fullscreenbutton);
+	    progressBar = (ProgressBar) findViewById(R.id.flipper_html_progress);
+	    mask = (LinearLayout) findViewById(R.id.flipper_html_mask);
+	    if(task!=null){
+	    	task.setProgressBar(progressBar);
+	    }
+	    //noteTextView = (TextView) findViewById(R.id.flipper_external_notes);
     
 	}
 
 	private void initComponents(final Context context) {
 		this.context = context;
-		Button button = (Button) findViewById(R.id.flipper_external_button);
-		button.setOnClickListener(this);
+		//Button button = (Button) findViewById(R.id.flipper_external_button);
+		//button.setOnClickListener(this);
+		web.getSettings().setJavaScriptEnabled(true);
+		
+		client = new WebViewClientWithFramesAndGoBack();
+		web.setWebViewClient(client);
+		web.setWebChromeClient(new WebChromeClient(){
+        	@Override
+        	public void onCloseWindow(WebView window) {
+        		backHandler.sendMessage(new Message());
+        	}
+        });
+		
+		backHandler = new Handler(){
+        	
+    		public void handleMessage(android.os.Message msg) {
+    			HtmlActivityView.this.back();
+    		};
+    	};
+    	backButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				back();
+			}
+		});
+    	fullButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				try{
+					if(task.getStatus().equals(AsyncTask.Status.FINISHED)){
+							String viewing = web.getUrl();
+							if(viewing.startsWith("file://")){
+								openHtmlFullscreen(viewing);
+							}else{
+								openHtmlFullscreen(task.get().getAbsolutePath());
+							}
+						}else{
+							Toast.makeText(context, 
+						                "正在缓存HTML文件，稍后自动打开", 
+						                Toast.LENGTH_SHORT).show();	
+							autoopen = true;
+						}			
+						
+				}catch (Exception e) {
+					Log.e("HtmlActivityView", "onClick", e);
+				}				
+			}
+		});
 	}
 
-	public void onClick(View v) {
-		try{
-			synchronized (this) {
-				if(task.getStatus().equals(AsyncTask.Status.FINISHED)){
-					openHtml(task.get());
-				}else{
-					Toast.makeText(context, 
-				                "正在缓存HTML文件，稍后自动打开", 
-				                Toast.LENGTH_SHORT).show();
-					autoOpen = true;									
-				}			
-			}	
-		}catch (Exception e) {
-			Log.e("HtmlActivityView", "onClick", e);
-		}
-	}
-	
 	public void openHtml(File indexPath){
 		if(indexPath==null||!indexPath.exists()){
 			Toast.makeText(context, 
-	                "缓存HTML文件时出错，请重试打开该文件", 
+	                "缓存HTML文件时出错，正在重试缓存该文件", 
 	                Toast.LENGTH_SHORT).show();
-			synchronized (this) {
-				autoOpen = false;
-			}
 			task = new ForceClearCacheHtmlTask();
-			task.execute(activityId);
+			task.setProgressBar(progressBar);
+			task.execute(activityId);			
 			return;
 		}
+		mask.setVisibility(View.INVISIBLE);
+		web.loadUrl("file://"+indexPath.getAbsolutePath());
+	}
+	
+	public void openHtmlFullscreen(String indexPath){
 		Intent intent = new Intent();
-		intent.putExtra("indexPath", indexPath.getAbsolutePath());
+		intent.putExtra("indexPath", indexPath);
 		intent.setClass(context, WebViewActivity.class);
 		context.startActivity(intent);
 	}
 
+	
+	
 	private class ForceClearCacheHtmlTask extends CacheHtmlTask{
 		
 		@Override
@@ -134,11 +245,17 @@ public class HtmlActivityView extends ActivityView implements View.OnClickListen
 	
 	private class CacheHtmlTask extends AsyncTask<Integer, Integer, File> {
 
+		ProgressBar progressBar;
+		
 		Pattern[] indexPatterns = new Pattern[]{
-				Pattern.compile("^\\/?index.html?$",Pattern.CASE_INSENSITIVE),
-				Pattern.compile("^\\/?(.*\\/)*index.html?$",Pattern.CASE_INSENSITIVE),
-				Pattern.compile("^\\/?(.*\\/)*(.*).html?$",Pattern.CASE_INSENSITIVE)
+			Pattern.compile("^\\/?index.html?$", Pattern.CASE_INSENSITIVE),
+			Pattern.compile("^\\/?(.*\\/)*index.html?$", Pattern.CASE_INSENSITIVE),
+			Pattern.compile("^\\/?(.*\\/)*(.*).html?$", Pattern.CASE_INSENSITIVE)
 		};
+		
+		public void setProgressBar(ProgressBar progressBar) {
+			this.progressBar = progressBar;
+		}
 		
 		void clearCache(File baseDir){
 			File[] cachesFiles = baseDir.listFiles(new FileFilter() {
@@ -212,10 +329,21 @@ public class HtmlActivityView extends ActivityView implements View.OnClickListen
             	try {
             		cacheFile.createNewFile();
                 	ParcelFileDescriptor pfd = getContext().getContentResolver().openFileDescriptor(MetadataContract.Activities.getActivityHtmlUri(activityId), "r");
+                	final long total = pfd.getStatSize();
 					try{
 						in = new BufferedInputStream(new ParcelFileDescriptor.AutoCloseInputStream(pfd));
 						out = new BufferedOutputStream(new FileOutputStream(cacheFile));
-						IOUtils.transfer(in, out);	
+						if(total>0){
+							IOUtils.transfer(in, out, new IOUtils.ProgressUpdater() {							
+								@Override
+								public void onProgressUpdate(long totalBytesProcessed) {
+									publishProgress((int)(totalBytesProcessed*30/total));
+								}
+							});	
+						}else{
+							publishProgress(-1);
+							IOUtils.transfer(in, out);
+						}
 					}finally{
 						try{
 							if(in!=null){
@@ -227,7 +355,17 @@ public class HtmlActivityView extends ActivityView implements View.OnClickListen
 							}
 						}
 					}
-					UnpackZipUtil.unZipUtf8(cacheFile, cacheDir);
+					if(total>0){
+						UnpackZipUtil.unZipUtf8(cacheFile, cacheDir, new IOUtils.ProgressUpdater() {
+							@Override
+							public void onProgressUpdate(long totalBytesProcessed) {
+								publishProgress(30+(int)(totalBytesProcessed*60/total));
+							}
+						});
+					}else{
+						publishProgress(-1);
+						UnpackZipUtil.unZipUtf8(cacheFile, cacheDir, null);
+					}
 					return findHtml(cacheDir, indexPatterns);
 				} catch (IOException e) {
 					Log.e("HtmlActivityView", "CacheHtmlTask", e);
@@ -249,7 +387,18 @@ public class HtmlActivityView extends ActivityView implements View.OnClickListen
 				}
             }else{
             	try{
-	            	UnpackZipUtil.unZipUtf8(cacheFile, cacheDir);
+            		final long total = cacheFile.length();
+            		if(total>0){
+						UnpackZipUtil.unZipUtf8(cacheFile, cacheDir, new IOUtils.ProgressUpdater() {
+							@Override
+							public void onProgressUpdate(long totalBytesProcessed) {
+								publishProgress(50+(int)(totalBytesProcessed*50/total));
+							}
+						});
+					}else{
+						publishProgress(-1);
+						UnpackZipUtil.unZipUtf8(cacheFile, cacheDir, null);
+					}
 	            	return findHtml(cacheDir, indexPatterns);
             	}catch (IOException e) {
             		Log.e("HtmlActivityView", "CacheHtmlTask", e);
@@ -265,13 +414,32 @@ public class HtmlActivityView extends ActivityView implements View.OnClickListen
 		}
 
 		@Override
+		protected void onProgressUpdate(Integer... values) {
+			if(progressBar!=null){
+				if(values[0]<0){
+					progressBar.setIndeterminate(true);
+				}else{
+					progressBar.setMax(100);
+					progressBar.setProgress(values[0]);
+				}
+			}
+		}
+		
+		@Override
 		protected void onPostExecute(File indexPath) {
 			super.onPostExecute(indexPath);
 			synchronized (HtmlActivityView.this) {
-            	if(autoOpen){
-                	openHtml(indexPath);
-                }
+            	openHtml(indexPath);
+            	if(autoopen){
+            		openHtmlFullscreen(indexPath.getAbsolutePath());
+            	}
 			}  
+		}
+	}
+	
+	public void back() {
+		if(web.canGoBack()){
+			web.goBack();
 		}
 	}
 }

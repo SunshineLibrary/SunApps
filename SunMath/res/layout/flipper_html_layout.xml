@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center" >
+
+    
+    
+   
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/flipper_html_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        
+        <WebView
+	        android:id="@+id/flipper_html_layout_webview"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+        />
+
+		
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/flipper_html_mask"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="正在缓存内容" />
+        
+         <ProgressBar
+             android:id="@+id/flipper_html_progress"
+             style="?android:attr/progressBarStyleHorizontal"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:paddingLeft="32dp"
+             android:paddingRight="32dp" />
+        
+        </LinearLayout>
+
+    
+   
+	 <Button
+	     android:id="@+id/flipper_html_backbutton"
+	     android:layout_width="wrap_content"
+	     android:layout_height="wrap_content"
+	     android:layout_alignParentBottom="true"
+	     android:background="@drawable/flipper_html_back" />
+	 
+	 <Button
+	     android:id="@+id/flipper_html_fullscreenbutton"
+	     android:layout_width="wrap_content"
+	     android:layout_height="wrap_content"
+	     android:layout_alignParentBottom="true"
+	     android:layout_alignParentRight="true"
+	     android:background="@drawable/flipper_html_fullscreen" />
+    
+</RelativeLayout>

@@ -5,6 +5,27 @@ import java.io.*;
 public class IOUtils {
     private static final int BUFFER_SIZE = 4096;
 
+   
+    /**
+     * transfer all data from in to out, without closing them.
+     * progress notification will be sent during copying
+     * @param in
+     * @param out
+     * @throws IOException
+     */
+    public static long transfer(InputStream in, OutputStream out, ProgressUpdater listener) throws IOException{
+		byte[] buf = new byte[BUFFER_SIZE];
+		int len = in.read(buf);
+		long all = 0;
+		while (len>0) {
+			out.write(buf,0,len);
+			all += len;
+			listener.onProgressUpdate(all);
+			len = in.read(buf);
+		}
+		out.flush();
+		return all;
+	}
     
     /**
      * transfer all data from in to out, without closing them.
@@ -12,14 +33,17 @@ public class IOUtils {
      * @param out
      * @throws IOException
      */
-    public static void transfer(InputStream in, OutputStream out) throws IOException{
+    public static long transfer(InputStream in, OutputStream out) throws IOException{
 		byte[] buf = new byte[BUFFER_SIZE];
 		int len = in.read(buf);
+		long all = 0;
 		while (len>0) {
 			out.write(buf,0,len);
+			all += len;
 			len = in.read(buf);
 		}
 		out.flush();
+		return all;
 	}
     
     /**

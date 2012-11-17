@@ -21,6 +21,7 @@ import android.util.Log;
 */
 public class UnpackZipUtil {
 
+	
 	/**
 	 * Unzip a zip file from a stream to baseDir, then close the stream
 	 * @param inFile input zip stream
@@ -28,13 +29,13 @@ public class UnpackZipUtil {
 	 * @throws IOException any IOException, "in" will be closed even an IOException is thrown.
 	 */
 
-	public static void unZipUtf8(File inFile, File destDir) throws IOException{
+	public static void unZipUtf8(File inFile, File destDir, IOUtils.ProgressUpdater notifier) throws IOException{
 		   ZipFile zipFile = null;
 	       try {
 	           zipFile = new ZipFile(inFile);
 	           Enumeration<?> entries = zipFile.getEntries();
 	           ZipEntry zipEntry = null ;
-
+	           long totalBytes = 0;
 	           while (entries.hasMoreElements()) {
 	              zipEntry = (ZipEntry) entries.nextElement();
 	              File loadFile = new File(destDir, zipEntry.getName());
@@ -56,7 +57,10 @@ public class UnpackZipUtil {
 	                  try{
 	                	  inputStream = zipFile.getInputStream(zipEntry);
 	                	  outputStream = new BufferedOutputStream(new FileOutputStream(loadFile));
-	                	  IOUtils.transfer(inputStream, outputStream);
+	                	  totalBytes += IOUtils.transfer(inputStream, outputStream);
+	                	  if(notifier!=null){
+	                		  notifier.onProgressUpdate(totalBytes);
+	                	  }
 	                  }finally{
 	                	  try{
 		                	  if(inputStream!=null){
