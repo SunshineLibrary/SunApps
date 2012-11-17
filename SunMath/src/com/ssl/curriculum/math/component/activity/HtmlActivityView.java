@@ -115,6 +115,7 @@ public class HtmlActivityView extends ActivityView {
 	ProgressBar progressBar;
 	boolean autoopen=false;
 	LinearLayout mask;
+	
 	public HtmlActivityView(Context context, ActivityViewer activityViewer) {
 		super(context, activityViewer);
 		initUI();
@@ -126,11 +127,9 @@ public class HtmlActivityView extends ActivityView {
 		super.setActivity(activityData);
 		activityId = activityData.activityId;
 		titleTextView.setText(activityData.name);
+		mask.setVisibility(VISIBLE);
         //noteTextView.setText(activityData.notes==null?"":activityData.notes);
         task = new CacheHtmlTask();
-        if(progressBar!=null){
-	    	task.setProgressBar(progressBar);
-	    }
         task.execute(activityId);
 	}
 
@@ -146,9 +145,7 @@ public class HtmlActivityView extends ActivityView {
 	    fullButton = (Button) findViewById(R.id.flipper_html_fullscreenbutton);
 	    progressBar = (ProgressBar) findViewById(R.id.flipper_html_progress);
 	    mask = (LinearLayout) findViewById(R.id.flipper_html_mask);
-	    if(task!=null){
-	    	task.setProgressBar(progressBar);
-	    }
+	    mask.setVisibility(INVISIBLE);
 	    //noteTextView = (TextView) findViewById(R.id.flipper_external_notes);
     
 	}
@@ -169,7 +166,7 @@ public class HtmlActivityView extends ActivityView {
         });
 		
 		backHandler = new Handler(){
-        	
+			@Override
     		public void handleMessage(android.os.Message msg) {
     			HtmlActivityView.this.back();
     		};
@@ -212,7 +209,6 @@ public class HtmlActivityView extends ActivityView {
 	                "缓存HTML文件时出错，正在重试缓存该文件", 
 	                Toast.LENGTH_SHORT).show();
 			task = new ForceClearCacheHtmlTask();
-			task.setProgressBar(progressBar);
 			task.execute(activityId);			
 			return;
 		}
@@ -245,17 +241,12 @@ public class HtmlActivityView extends ActivityView {
 	
 	private class CacheHtmlTask extends AsyncTask<Integer, Integer, File> {
 
-		ProgressBar progressBar;
-		
 		Pattern[] indexPatterns = new Pattern[]{
 			Pattern.compile("^\\/?index.html?$", Pattern.CASE_INSENSITIVE),
 			Pattern.compile("^\\/?(.*\\/)*index.html?$", Pattern.CASE_INSENSITIVE),
 			Pattern.compile("^\\/?(.*\\/)*(.*).html?$", Pattern.CASE_INSENSITIVE)
 		};
 		
-		public void setProgressBar(ProgressBar progressBar) {
-			this.progressBar = progressBar;
-		}
 		
 		void clearCache(File baseDir){
 			File[] cachesFiles = baseDir.listFiles(new FileFilter() {
@@ -371,9 +362,14 @@ public class HtmlActivityView extends ActivityView {
 					Log.e("HtmlActivityView", "CacheHtmlTask", e);
 					File f = findHtml(cacheDir, indexPatterns);
 					if(f!=null){
-						Toast.makeText(context, 
-				                "缓存HTML文件时出错，文件可能有部分内容显示错误", 
-				                Toast.LENGTH_SHORT).show();
+						backHandler.post(new Runnable() {							
+							@Override
+							public void run() {
+								Toast.makeText(context, 
+						                "缓存HTML文件时出错，文件可能有部分内容显示错误", 
+						                Toast.LENGTH_LONG).show();								
+							}
+						});
 					}
 					return f;
 				} finally{
@@ -404,9 +400,14 @@ public class HtmlActivityView extends ActivityView {
             		Log.e("HtmlActivityView", "CacheHtmlTask", e);
             		File f = findHtml(cacheDir, indexPatterns);
 					if(f!=null){
-						Toast.makeText(context, 
-				                "缓存HTML文件时出错，文件可能有部分内容显示错误", 
-				                Toast.LENGTH_SHORT).show();
+						backHandler.post(new Runnable() {							
+							@Override
+							public void run() {
+								Toast.makeText(context, 
+						                "缓存HTML文件时出错，文件可能有部分内容显示错误", 
+						                Toast.LENGTH_LONG).show();								
+							}
+						});
 					}
 					return f;
 				}
