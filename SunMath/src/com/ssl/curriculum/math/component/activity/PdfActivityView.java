@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,8 @@ public class PdfActivityView extends ActivityView implements View.OnClickListene
 	TextView noteTextView;
 	Context context;
 	CachePdfTask task;
+	ProgressBar progressBar;
+	Button openButton;
 	
     public PdfActivityView(Context context, ActivityViewer activityViewer) {
         super(context, activityViewer);
@@ -61,20 +64,28 @@ public class PdfActivityView extends ActivityView implements View.OnClickListene
         noteTextView.setText(activityData.notes);
         task = new CachePdfTask();
         task.execute(activityId);
+        if(progressBar!=null){
+        	progressBar.setProgress(0);
+        	progressBar.setVisibility(VISIBLE);
+        }
+        if(openButton!=null)openButton.setVisibility(INVISIBLE);
     }
 
     private void initUI() {
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.flipper_external_layout, this, false);
+        ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.flipper_external_cache_layout, this, false);
         addView(viewGroup);
-        titleTextView = (TextView) findViewById(R.id.flipper_external_title);
-        noteTextView = (TextView) findViewById(R.id.flipper_external_notes);
+        titleTextView = (TextView) findViewById(R.id.flipper_external_cache_title);
+        noteTextView = (TextView) findViewById(R.id.flipper_external_cache_notes);
+        progressBar = (ProgressBar) findViewById(R.id.flipper_external_cache_progressbar);
+        progressBar.setVisibility(VISIBLE);
+        openButton = (Button) findViewById(R.id.flipper_external_cache_button);
+        openButton.setVisibility(INVISIBLE);
+        openButton.setOnClickListener(this);
     }
 
     private void initComponents(final Context context) {
-    	this.context = context;
-        Button button = (Button) findViewById(R.id.flipper_external_button);
-        button.setOnClickListener(this);
+    	this.context = context;    	
     }
 
 	@Override
@@ -116,7 +127,7 @@ public class PdfActivityView extends ActivityView implements View.OnClickListene
 	boolean autoOpen = false;
 	
 	private class CachePdfTask extends AsyncTask<Integer,Integer,File> {
-
+		
 		void clearCache(File baseDir){
 			File[] cachesFiles = baseDir.listFiles(new FilenameFilter() {				
 				@Override
@@ -136,6 +147,8 @@ public class PdfActivityView extends ActivityView implements View.OnClickListene
 			}
 		}
 		
+		
+		
 		@SuppressLint("WorldReadableFiles")		
         @Override
         protected File doInBackground(Integer... params) {    
@@ -152,7 +165,18 @@ public class PdfActivityView extends ActivityView implements View.OnClickListene
                 	ParcelFileDescriptor pfd = getContext().getContentResolver().openFileDescriptor(MetadataContract.Activities.getActivityPdfUri(activityId), "r");
 					in = new BufferedInputStream(new ParcelFileDescriptor.AutoCloseInputStream(pfd));
 					out = new BufferedOutputStream(context.openFileOutput(cacheFileName, Context.MODE_WORLD_READABLE));
-					IOUtils.transfer(in, out);					
+					final long total = pfd.getStatSize();
+					if(total>0){
+						IOUtils.copy(in, out, new IOUtils.ProgressUpdater() {
+							@Override
+							public void onProgressUpdate(long totalBytesProcessed) {
+								publishProgress((int)(100*totalBytesProcessed/total));
+							}
+						});
+					}else{
+						publishProgress(-1);
+						IOUtils.transfer(in, out);	
+					}									
 				} catch (IOException e) {
 					Log.e("PdfActivityView", "CachePdfTask", e);
 					return null;
@@ -175,11 +199,25 @@ public class PdfActivityView extends ActivityView implements View.OnClickListene
         @Override
         protected void onPostExecute(File o) {
             super.onPostExecute(o);  
+            if(openButton!=null){
+            	openButton.setVisibility(VISIBLE);
+            }
+            if(progressBar!=null){
+            	progressBar.setVisibility(INVISIBLE);
+            }
             synchronized (PdfActivityView.this) {
             	if(autoOpen){
                 	openPdfFile(o);
                 }
 			}            
+        }
+        
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+        	if(progressBar!=null){
+        		progressBar.setMax(100);
+        		progressBar.setProgress(values[0]);
+        	}
         }
     }
 	
