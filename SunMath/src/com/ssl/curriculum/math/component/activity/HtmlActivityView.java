@@ -127,7 +127,7 @@ public class HtmlActivityView extends ActivityView {
 		activityId = activityData.activityId;
 		titleTextView.setText(activityData.name);
         //noteTextView.setText(activityData.notes==null?"":activityData.notes);
-        task = new ForceClearCacheHtmlTask();
+        task = new CacheHtmlTask();
         if(progressBar!=null){
 	    	task.setProgressBar(progressBar);
 	    }
