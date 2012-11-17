@@ -133,5 +133,6 @@ class WebViewClientWithFramesAndGoBack extends WebViewClient {
 		Intent i = new Intent();
 		i.putExtra("url", webView.getUrl());
 		this.setResult(RESULT_OK, i);
+		this.finish();
 	}
 }
