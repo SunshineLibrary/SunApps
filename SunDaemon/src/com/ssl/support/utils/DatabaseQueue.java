@@ -94,8 +94,6 @@ public class DatabaseQueue<T extends JSONSerializable> {
 
     private static class DatabaseQueueDBHandler extends SQLiteOpenHelper {
 
-        private static final String DB_QUEUES = "db_queues";
-
         private static String[] COLUMNS = {"id", "value"};
         private static String ID = COLUMNS[0];
         private static String VALUE = COLUMNS[1];
@@ -103,7 +101,7 @@ public class DatabaseQueue<T extends JSONSerializable> {
         private String queueName;
 
         public DatabaseQueueDBHandler(Context context, String queueName) {
-            super(context, DB_QUEUES, null, 1);
+            super(context, queueName, null, 1);
             this.queueName = queueName;
         }
 

@@ -26,7 +26,7 @@ public class ActivityTable extends DownloadableTable {
             {Activities._NOTES, "TEXT"},
             {Activities._DURATION, "INTEGER"},
             {Activities._RESULT, "TEXT"},
-            {Activities._STATUS, "INTEGER"},
+            {Activities._STATUS, "TEXT"},
     };
 
     public ActivityTable(DBHandler db) {
@@ -34,8 +34,8 @@ public class ActivityTable extends DownloadableTable {
     }
 
     @Override
-    public void upgradeTable(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void upgradeTableInSteps(SQLiteDatabase db, int oldVersion, int newVersion) {
         addColumn(db, oldVersion, 114, Activities._RESULT, "TEXT");
-        addColumn(db, oldVersion, 114, Activities._STATUS, "INTEGER");
+        addColumn(db, oldVersion, 114, Activities._STATUS, "TEXT");
     }
 }

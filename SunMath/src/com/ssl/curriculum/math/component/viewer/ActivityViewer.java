@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
-import com.ssl.curriculum.math.model.activity.LinkedActivityData;
 import com.ssl.curriculum.math.component.activity.*;
+import com.ssl.curriculum.math.model.activity.LinkedActivityData;
 
 import static com.ssl.metadata.provider.MetadataContract.Activities.*;
 
@@ -17,6 +17,7 @@ import static com.ssl.metadata.provider.MetadataContract.Activities.*;
  */
 public class ActivityViewer extends FrameLayout{
 
+    private int mSectionId;
     private ActivityView mCurrentView;
     private FlipAnimationManager mAnimationManager;
 
@@ -222,6 +223,14 @@ public class ActivityViewer extends FrameLayout{
         if (mActivityFinishListener != null) {
             mActivityFinishListener.onActivityFinish();
         }
+    }
+
+    public int getSectionId() {
+        return mSectionId;
+    }
+
+    public void setSectionId(int mSectionId) {
+        this.mSectionId = mSectionId;
     }
 
     public static interface ActivityFinishListener {

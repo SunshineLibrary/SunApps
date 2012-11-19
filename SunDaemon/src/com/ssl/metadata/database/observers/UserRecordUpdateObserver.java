@@ -65,7 +65,9 @@ public class UserRecordUpdateObserver extends TableObserver {
             } else if (itemType.equals("Book")) {
                 int percent = values.getAsInteger(MetadataContract.Books._PROGRESS);
                 builder.putParam("percent", percent);
-                builder.putParam("status", percent == 100);
+                builder.putParam("status", (percent == 100) ? "done" : "in_progress");
+            } else if (itemType.equals("Section")) {
+
             } else {
                 return;
             }

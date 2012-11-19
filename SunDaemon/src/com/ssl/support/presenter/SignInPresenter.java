@@ -37,6 +37,7 @@ public class SignInPresenter {
     private String machineId = StringUtils.EMPTY_STRING;
 
     private String mSchoolId = StringUtils.EMPTY_STRING;
+    private String mAccountType = StringUtils.EMPTY_STRING;
     private String mBirthday = StringUtils.EMPTY_STRING;
     private String mGrade = StringUtils.EMPTY_STRING;
     private String mClass = StringUtils.EMPTY_STRING;
@@ -78,12 +79,20 @@ public class SignInPresenter {
         mSchoolId = (mSchoolId != null) ? mSchoolId : StringUtils.EMPTY_STRING;
     }
 
+    public void setAccountType(String accountType) {
+        mAccountType = accountType;
+    }
+
     public void setGrade(String grade) {
         mGrade = grade;
     }
 
     public void setClass(String cls) {
         mClass = cls;
+    }
+
+    public String getName() {
+        return mName;
     }
 
     public void setName(String name) {
@@ -125,7 +134,7 @@ public class SignInPresenter {
         postParameters.add(new BasicNameValuePair("machine_id", machineId));
         postParameters.add(new BasicNameValuePair("android_version", Build.VERSION.RELEASE));
         postParameters.add(new BasicNameValuePair("name", mName));
-        postParameters.add(new BasicNameValuePair("user_type", "student"));
+        postParameters.add(new BasicNameValuePair("user_type", mAccountType));
         postParameters.add(new BasicNameValuePair("school_id", mSchoolId));
         postParameters.add(new BasicNameValuePair("grade", mGrade));
         postParameters.add(new BasicNameValuePair("class", mClass));

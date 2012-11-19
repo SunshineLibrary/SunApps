@@ -1,5 +1,6 @@
 package com.ssl.metadata.database.tables;
 
+import android.database.sqlite.SQLiteDatabase;
 import com.ssl.metadata.database.DBHandler;
 import com.ssl.metadata.provider.MetadataContract;
 
@@ -14,7 +15,8 @@ public class SectionTable extends MenuWithForeignKeyTable {
             Sections._NAME,
             Sections._PARENT_ID,
             Sections._DESCRIPTION,
-            Sections._DOWNLOAD_STATUS
+            Sections._DOWNLOAD_STATUS,
+            Sections._STATUS
     };
 
     private static final String[][] COLUMN_DEFINITIONS = {
@@ -23,6 +25,7 @@ public class SectionTable extends MenuWithForeignKeyTable {
             {Sections._PARENT_ID, "INTEGER NOT NULL"},
             {Sections._DESCRIPTION, "TEXT"},
             {Sections._DOWNLOAD_STATUS, "INTEGER"},
+            {Sections._STATUS, "TEXT"},
     };
 
     public SectionTable(DBHandler handler) {
@@ -43,4 +46,9 @@ public class SectionTable extends MenuWithForeignKeyTable {
 	protected String getForeignKeyColumn() {
 		return MetadataContract.Sections._PARENT_ID;
 	}
+
+    @Override
+    public void upgradeTableInSteps(SQLiteDatabase db, int oldVersion, int newVersion) {
+        addColumn(db, oldVersion, 114, Sections._STATUS, "TEXT");
+    }
 }

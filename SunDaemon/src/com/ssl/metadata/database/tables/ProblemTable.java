@@ -30,7 +30,7 @@ public class ProblemTable extends DownloadableTable {
     }
 
     @Override
-    public void upgradeTable(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void upgradeTableInSteps(SQLiteDatabase db, int oldVersion, int newVersion) {
         addColumn(db, oldVersion, 114, Problems._USER_ANSWER, "TEXT");
         addColumn(db, oldVersion, 114, Problems._IS_CORRECT, "INTEGER");
     }

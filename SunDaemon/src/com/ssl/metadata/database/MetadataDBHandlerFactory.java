@@ -60,6 +60,7 @@ public class MetadataDBHandlerFactory {
 
         table = new ObservableTable(new SectionTable(dbHandler));
         table.addObserver(downloadableObserver);
+        table.addObserver(userRecordObserver);
         dbHandler.addTableManager(SectionTable.TABLE_NAME, table);
 
         table = new ObservableTable(new GalleryImageTable(dbHandler));

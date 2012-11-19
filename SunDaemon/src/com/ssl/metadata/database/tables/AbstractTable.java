@@ -81,11 +81,24 @@ public abstract class AbstractTable implements Table {
 	 * create a new one.
 	 */
 	public void upgradeTable(SQLiteDatabase db, int oldVersion, int newVersion) {
-		dropTable(db);
-		createTable(db);
+        /*
+         * upgradeTableInSteps method is introduced since database version 114,
+         * it can be used to upgrade from version 113. For previous versions, we
+         * must drop and recreate the table instead.
+         */
+        if (oldVersion < 113) {
+            dropTable(db);
+            createTable(db);
+        } else {
+            upgradeTableInSteps(db, oldVersion, newVersion);
+        }
 	}
 
-	private void dropTable(SQLiteDatabase db) {
+    public void upgradeTableInSteps(SQLiteDatabase db, int oldVersion, int newVersion) {
+        return;
+    }
+
+    private void dropTable(SQLiteDatabase db) {
 		db.execSQL("DROP TABLE IF EXISTS " + this.getTableName() + ";");
 	}
 

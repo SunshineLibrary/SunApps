@@ -83,6 +83,14 @@
                     android:paddingBottom="5dp"
                     />
 
+            <Spinner
+                    android:id="@+id/account_type_spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    />
+
             <RelativeLayout
                     android:id="@+id/classroom_selection"
                     android:layout_width="fill_parent"
