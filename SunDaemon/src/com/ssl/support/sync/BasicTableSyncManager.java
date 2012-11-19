@@ -6,18 +6,12 @@ import android.util.Log;
 import com.ssl.metadata.database.Table;
 import com.ssl.support.api.ApiClient;
 import com.ssl.support.data.models.ApiSyncState;
-import com.ssl.support.utils.IOUtils;
 import com.ssl.support.utils.JSONUtils;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

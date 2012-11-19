@@ -81,13 +81,19 @@ public abstract class AbstractTable implements Table {
 	 * create a new one.
 	 */
 	public void upgradeTable(SQLiteDatabase db, int oldVersion, int newVersion) {
-		this.dropTable(db);
-		this.createTable(db);
+		dropTable(db);
+		createTable(db);
 	}
 
 	private void dropTable(SQLiteDatabase db) {
 		db.execSQL("DROP TABLE IF EXISTS " + this.getTableName() + ";");
 	}
+
+    public void addColumn(SQLiteDatabase db, int oldVersion, int upgradeVersion, String columnName, String columnDef) {
+        if (oldVersion < upgradeVersion) {
+            db.execSQL(String.format("ALTER TABLE %s ADD COLUMN %s %s", getTableName(), columnName, columnDef));
+        }
+    }
 
     public SQLiteDatabase getDatabase() {
         return dbHandler.getWritableDatabase();

@@ -22,9 +22,11 @@ public final class MetadataContract {
 
     public static final class Problems {
         public static final String _ID = BaseColumns._ID;
-        public static final String _ANSWER = "answer";
         public static final String _BODY = "body";
         public static final String _TYPE = "problem_type";
+        public static final String _ANSWER = "answer";
+        public static final String _IS_CORRECT = "is_correct";
+        public static final String _USER_ANSWER = "user_answer";
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problems").build();
 
@@ -32,10 +34,13 @@ public final class MetadataContract {
         public static final int TYPE_SA = 1;
         public static final int TYPE_MA = 2;
 
+        public static final Uri getProblemUri(int id) {
+            return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
+        }
+
         public static int getInternalType(String type) {
             return 0;
         }
-
     }
 
     public static final class ProblemChoices {
@@ -115,6 +120,7 @@ public final class MetadataContract {
         public static final String _PARENT_ID = "lesson_id";
         public static final String _NAME = "name";
         public static final String _DESCRIPTION = "description";
+        public static final String _STATUS = "status";
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("sections").build();
 
         public static Uri getSectionUri(int id) {
@@ -147,6 +153,8 @@ public final class MetadataContract {
         public static final String _NAME = "name";
         public static final String _DURATION = "duration";
         public static final String _NOTES = "notes";
+        public static final String _RESULT = "result";
+        public static final String _STATUS = "status";
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("activities").build();
 

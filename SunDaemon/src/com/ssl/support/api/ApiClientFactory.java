@@ -11,7 +11,7 @@ public class ApiClientFactory {
 
     public static ApiClient newApiClient(Context context) {
         Configurations configs = getConfigurations(context);
-        return new ApiClient(configs);
+        return new ApiClient(context, configs);
     }
 
     private static Configurations getConfigurations(Context context) {

@@ -4,12 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 import com.ssl.support.utils.JSONSerializable;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,29 +57,38 @@ public class UserRecordRequest implements Parcelable, JSONSerializable {
         return mAsJson;
     }
 
+    @Override
+    public String toString() {
+        return mAsJson.toString();
+    }
+
     public static class Builder {
-        public static final String RECORD_TYPE = "record_type";
-        public static final String RECORD_PARAMS = "record_params";
+        public static final String RECORD_TYPE = "item_type";
+        public static final String RECORD_ID = "item_id";
+        public static final String RECORD_PARAMS = "params";
 
-        public String mRecordType;
-        private Map<String, String> mRecordParams;
+        public String mItemType;
+        private Map<String, Object> mParams;
+        private int mItemId;
 
-        public Builder(String recordType) {
-            mRecordType = recordType;
-            mRecordParams = new HashMap<String, String>();
+        public Builder(String itemType, int itemId) {
+            mItemType = itemType;
+            mItemId = itemId;
+            mParams = new HashMap<String, Object>();
         }
 
-        public void putParam(String key, String value) {
-            mRecordParams.put(key, value);
+        public void putParam(String key, Object value) {
+            mParams.put(key, value);
         }
 
         public UserRecordRequest build() {
             JSONObject newJson = new JSONObject();
             try {
-                newJson.put(RECORD_TYPE, mRecordType);
-                newJson.put(RECORD_PARAMS, mRecordParams);
+                newJson.put(RECORD_ID, mItemId);
+                newJson.put(RECORD_TYPE, mItemType);
+                newJson.put(RECORD_PARAMS, new JSONObject(mParams));
             } catch (JSONException e) {
-                Log.e("UserRecordParams", String.format("Error creating json: {%s, %s}", mRecordType, mRecordParams));
+                Log.e("UserRecordParams", String.format("Error creating json: {%s, %s}", mItemType, mParams));
                 return null;
             }
             return new UserRecordRequest(newJson);

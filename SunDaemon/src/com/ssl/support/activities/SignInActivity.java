@@ -84,13 +84,15 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
         new AsyncTask() {
             @Override
             protected Object doInBackground(Object... params) {
-                schoolStrings = mPresenter.loadSchools();
-                return null;
+                return schoolStrings = mPresenter.loadSchools();
             }
 
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
+                if (schoolStrings == null || schoolStrings.length == 0) {
+                    schoolStrings = new String[] {getString(R.string.no_network_connection)};
+                }
                 spSchool.setAdapter(getAdapterForStrings(schoolStrings));
             }
         }.execute();

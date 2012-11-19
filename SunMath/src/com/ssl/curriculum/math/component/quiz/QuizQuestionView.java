@@ -1,14 +1,11 @@
 package com.ssl.curriculum.math.component.quiz;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.viewer.QuizComponentViewer;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 import com.ssl.curriculum.math.utils.QuizHtmlLoader;
