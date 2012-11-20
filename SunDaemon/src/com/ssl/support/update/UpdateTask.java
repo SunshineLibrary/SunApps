@@ -19,6 +19,7 @@ import com.ssl.support.downloader.tasks.MonitoredFileDownloadTask;
 import com.ssl.support.services.UpdateService;
 import com.ssl.support.utils.JSONUtils;
 import com.ssl.support.utils.Listener;
+import com.ssl.support.utils.LockManager;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -31,44 +32,53 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class UpdateTask extends AsyncTask {
 
     private static final String DAEMON_PACKAGE_NAME = "com.ssl.support.daemon";
-
-    private static Package daemonPkg;
-    private static Uri daemonFilePath;
-
-    private UpdateService context;
-    private FileStorage fileStorage;
-    private ApiClient apiClient;
-    private int numInstalls;
-
     private static final String PKG_DIR_NAME = "apks";
+    private static final String TAG = "UpdateTask";
     private static final Uri PKG_DIR = Uri.parse(
             "file://" + Environment.getExternalStorageDirectory().getAbsolutePath()
                     + "/" + ExternalFileStorage.BASE_PATH).buildUpon().appendPath(PKG_DIR_NAME).build();
-    private static final String TAG = "UpdateTask";
+
+
+    private UpdateService mContext;
+    private ApiClient apiClient;
+    private FileStorage fileStorage;
+    private LinkedList<AsyncFileDownloadTask> tasks;
+    private LockManager lockManager;
+    private LockManager.Token lockToken;
 
     public UpdateTask(UpdateService context) {
-        this.context = context;
+        mContext = context;
         apiClient = ApiClientFactory.newApiClient(context);
+        tasks = new LinkedList<AsyncFileDownloadTask>();
+        lockManager = LockManager.getInstance(context);
     }
 
     @Override
     protected Object doInBackground(Object... params) {
         List<Package> updates = getUpdates(getLocalPackages());
         Log.v(TAG, "Packages to be updated: " + updates);
-        numInstalls = updates.size();
+
         for (Package pkg: updates) {
-            downloadAndInstallApk(pkg);
+            if (pkg.getName().equals(DAEMON_PACKAGE_NAME)) {
+                tasks.addLast(getDownloadTask(pkg));
+            } else {
+                tasks.addFirst(getDownloadTask(pkg));
+            }
         }
+        lockToken = lockManager.acquireWifiLock(lockToken);
+        tasks.getFirst().execute();
+
         return null;
     }
 
     private List<Package> getLocalPackages() {
-        return PackageHelper.getLocalPackages(this.context);
+        return PackageHelper.getLocalPackages(this.mContext);
     }
 
     private List<Package> getUpdates(List<Package> localPackages) {
@@ -114,16 +124,15 @@ public class UpdateTask extends AsyncTask {
         return post;
     }
 
-    private void downloadAndInstallApk(Package pkg) {
+    private AsyncFileDownloadTask getDownloadTask(Package pkg) {
         Uri remoteUri = apiClient.getDownloadUri("apks", pkg.getId());
         Uri localUri = getLocalFilePath(pkg);
 
-        PackageHelper.createNewPackage(context, pkg);
-        AsyncFileDownloadTask task = new MonitoredFileDownloadTask(context, remoteUri, localUri,
+        PackageHelper.createNewPackage(mContext, pkg);
+        AsyncFileDownloadTask task = new MonitoredFileDownloadTask(mContext, remoteUri, localUri,
                 pkg.getUpdateUri(), MetadataContract.Packages.CONTENT_URI);
         task.addListener(new InstallListener(pkg, localUri));
-        Log.v(TAG, "Start downloading package: " + pkg);
-        task.execute();
+        return task;
     }
 
     private Uri getLocalFilePath(Package pkg) {
@@ -173,17 +182,14 @@ public class UpdateTask extends AsyncTask {
         @Override
         public void onResult(Integer integer) {
             if (integer == FileDownloadTask.SUCCESS) {
-                if (pkg.getName().equals(DAEMON_PACKAGE_NAME)) {
-                    daemonPkg = pkg;
-                    daemonFilePath = filePath;
-                } else {
-                    sendInstallRequest(pkg, filePath);
-                }
+                sendInstallRequest(pkg, filePath);
             }
 
-            numInstalls--;
-            if (numInstalls == 0 && daemonPkg != null) {
-                sendInstallRequest(daemonPkg, daemonFilePath);
+            tasks.removeFirst();
+            if (tasks.isEmpty()) {
+                lockManager.releaseLock(lockToken);
+            } else {
+                tasks.getFirst().execute();
             }
         }
 
@@ -192,8 +198,8 @@ public class UpdateTask extends AsyncTask {
             Intent intent = new Intent();
             intent.setAction("com.ssl.support.action.scheduleInstall");
             intent.setData(filePath);
-            context.startService(intent);
-            PackageHelper.setInstallStatus(context, pkg.id, MetadataContract.Packages.INSTALL_STATUS_PENDING);
+            mContext.startService(intent);
+            PackageHelper.setInstallStatus(mContext, pkg.id, MetadataContract.Packages.INSTALL_STATUS_PENDING);
         }
     }
 }

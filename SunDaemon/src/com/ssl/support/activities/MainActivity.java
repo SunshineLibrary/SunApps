@@ -20,7 +20,6 @@ import com.ssl.support.utils.StringUtils;
 import static com.ssl.metadata.provider.MetadataContract.Activities;
 
 public class MainActivity extends Activity implements View.OnClickListener {
-    private PackageManager localPackageManager;
 
     private static final int SIGN_IN_REQUEST = 100;
 
@@ -67,8 +66,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        //if (StringUtils.isEmpty(AccessToken.getAccessToken(this)))
-        //    startActivityForResult(new Intent(this, SignInActivity.class), SIGN_IN_REQUEST);
+        if (StringUtils.isEmpty(AccessToken.getAccessToken(this)))
+            startActivityForResult(new Intent(this, SignInActivity.class), SIGN_IN_REQUEST);
     }
 
     private void prepareData(int id, int type) {

@@ -29,6 +29,7 @@ import com.ssl.support.data.adapters.PackageAdapter;
 public class SignInActivity extends Activity implements OnItemSelectedListener, View.OnClickListener {
 
     private Spinner spSchool;
+    private Spinner spAccountType;
     private Spinner spGrade;
     private Spinner spClass;
     private EditText etName;
@@ -40,15 +41,21 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
     private SignInPresenter mPresenter;
 
     private String[] schoolStrings;
+    private String[] accountTypeStrings;
     private String[] gradeStrings;
     private String[] classStrings;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_in);
-        initUI();
-        initComponents();
-        initSpinners();
+        if (StringUtils.isEmpty(AccessToken.getAccessToken(this))) {
+            setContentView(R.layout.sign_in);
+            initUI();
+            initComponents();
+            initSpinners();
+        } else {
+            setResult(Activity.RESULT_OK);
+            finish();
+        }
     }
 
     private void initUI() {
@@ -58,6 +65,7 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
         btnConfirm = (ImageButton) findViewById(R.id.btn_signin);
 
         spSchool = (Spinner) findViewById(R.id.school_spinner);
+        spAccountType = (Spinner) findViewById(R.id.account_type_spinner);
         spGrade = (Spinner) findViewById(R.id.grade_spinner);
         spClass = (Spinner) findViewById(R.id.class_spinner);
     }
@@ -66,6 +74,14 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
         spSchool.setOnItemSelectedListener(this);
         schoolStrings = new String[] {getString(R.string.fetching_school)};
         spSchool.setAdapter(getAdapterForStrings(schoolStrings));
+
+        accountTypeStrings = new String[] {
+                getString(R.string.account_type_student),
+                getString(R.string.account_type_teacher),
+                getString(R.string.account_type_staff)
+        };
+        spAccountType.setAdapter(getAdapterForStrings(accountTypeStrings));
+        spAccountType.setOnItemSelectedListener(this);
 
         // Grade selection
         gradeStrings = getResources().getStringArray(R.array.grade_array);
@@ -84,13 +100,15 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
         new AsyncTask() {
             @Override
             protected Object doInBackground(Object... params) {
-                schoolStrings = mPresenter.loadSchools();
-                return null;
+                return schoolStrings = mPresenter.loadSchools();
             }
 
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
+                if (schoolStrings == null || schoolStrings.length == 0) {
+                    schoolStrings = new String[] {getString(R.string.no_network_connection)};
+                }
                 spSchool.setAdapter(getAdapterForStrings(schoolStrings));
             }
         }.execute();
@@ -121,7 +139,7 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
                     protected void onPostExecute(String accessToken) {
                         super.onPostExecute(accessToken);
                         if (!StringUtils.isEmpty(accessToken)) {
-                            AccessToken.storeAccessToken(SignInActivity.this, accessToken);
+                            AccessToken.storeAccessToken(SignInActivity.this, mPresenter.getName(), accessToken);
                             setResult(RESULT_OK);
                             finish();
                         } else {
@@ -139,6 +157,16 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent == spSchool) {
             mPresenter.setSchool(schoolStrings[position]);
+        } else if (parent == spAccountType) {
+            if (position == 0) {
+                mPresenter.setAccountType("student");
+                spGrade.setVisibility(View.VISIBLE);
+                spClass.setVisibility(View.VISIBLE);
+            } else {
+                mPresenter.setAccountType((position == 1) ? "teacher" : "staff");
+                spGrade.setVisibility(View.GONE);
+                spClass.setVisibility(View.GONE);
+            }
         } else if (parent == spGrade) {
             mPresenter.setGrade(String.valueOf(position+1));
         } else if (parent == spClass) {
@@ -150,6 +178,8 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
     public void onNothingSelected(AdapterView<?> parent) {
         if (parent == spSchool) {
             mPresenter.setSchool(StringUtils.EMPTY_STRING);
+        } else if (parent == spAccountType) {
+            mPresenter.setAccountType(StringUtils.EMPTY_STRING);
         } else if (parent == spGrade) {
             mPresenter.setGrade(StringUtils.EMPTY_STRING);
         } else if (parent == spClass) {

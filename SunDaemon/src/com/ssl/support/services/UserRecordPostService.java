@@ -58,10 +58,12 @@ public class UserRecordPostService extends Service {
         mAccessToken = AccessToken.getAccessToken(this);
         startNextBatchListener = new Listener<Boolean>() {
             @Override
-            public void onResult(Boolean aBoolean) {
-                requestQueue.popBatch(BATCH_SIZE);
+            public void onResult(Boolean isSuccess) {
                 inProgress = false;
-                startNextBatch();
+                if (isSuccess == true) {
+                    requestQueue.popBatch(BATCH_SIZE);
+                    startNextBatch();
+                }
             }
         };
     }
@@ -73,7 +75,7 @@ public class UserRecordPostService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("DownloadService", intent.toString());
+        Log.d(TAG, intent.toString());
         if (intent.hasExtra(USER_RECORD_REQUEST_KEY)) {
             UserRecordRequest request = (UserRecordRequest) intent.getParcelableExtra(USER_RECORD_REQUEST_KEY);
             requestQueue.add(request);
@@ -101,7 +103,8 @@ public class UserRecordPostService extends Service {
     public void onDestroy() {
         super.onDestroy();
         releaseLock();
-        Log.d("DownloadService", "Stopping");
+        Log.d(TAG, "Stopping");
+        requestQueue.release();
     }
 
     private void acquireLock() {
@@ -118,17 +121,20 @@ public class UserRecordPostService extends Service {
 
     private class UserRecordPostTask extends ListenableAsyncTask<Object, Object, Boolean> {
 
-        private List<UserRecordRequest> mRequests;
+        private JSONArray mRequests;
 
         public UserRecordPostTask(List<UserRecordRequest> requests) {
-            mRequests = requests;
+            mRequests = new JSONArray();
+            for (UserRecordRequest request: requests) {
+                mRequests.put(request.toJSON());
+            }
         }
 
         @Override
         protected Boolean doInBackground(Object... params) {
             HttpPost post = new HttpPost(apiClient.getUserRecordPostUri().toString());
             ArrayList<BasicNameValuePair> postParams= new ArrayList<BasicNameValuePair>();
-            postParams.add(new BasicNameValuePair("records", new JSONArray(mRequests).toString()));
+            postParams.add(new BasicNameValuePair("records", mRequests.toString()));
             postParams.add(new BasicNameValuePair("access_token", mAccessToken));
             try {
                 post.setEntity(new UrlEncodedFormEntity(postParams, "utf8"));

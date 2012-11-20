@@ -1,5 +1,6 @@
 package com.ssl.curriculum.math.component.viewer;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.ssl.curriculum.math.component.quiz.*;
 import com.ssl.curriculum.math.listener.QuestionResultListener;
 import com.ssl.curriculum.math.model.activity.LinkedActivityData;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
+import com.ssl.metadata.provider.MetadataContract;
 
 import java.util.List;
 
@@ -216,9 +218,17 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
 
     @Override
     public void onQuestionResult(QuizQuestion question, String answer, boolean isCorrect) {
+        saveQuestionRecord(question.getId(), answer, isCorrect);
         if (mSummaryView != null) {
             mSummaryView.onQuestionResult(question, answer, isCorrect);
         }
+    }
+
+    private void saveQuestionRecord(int id, String answer, boolean isCorrect) {
+        ContentValues values = new ContentValues();
+        values.put(MetadataContract.Problems._USER_ANSWER, answer);
+        values.put(MetadataContract.Problems._IS_CORRECT, isCorrect);
+        getContext().getContentResolver().update(MetadataContract.Problems.getProblemUri(id), values, null, null);
     }
 
     public void onDestroy() {

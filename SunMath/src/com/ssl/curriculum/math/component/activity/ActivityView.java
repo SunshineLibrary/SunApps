@@ -1,10 +1,12 @@
 package com.ssl.curriculum.math.component.activity;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.view.View;
 import com.ssl.curriculum.math.model.activity.LinkedActivityData;
 import com.ssl.curriculum.math.component.FlipperChildView;
 import com.ssl.curriculum.math.component.viewer.ActivityViewer;
+import com.ssl.metadata.provider.MetadataContract;
 
 /**
  * @author Bowen Sun
@@ -25,6 +27,7 @@ public abstract class ActivityView extends FlipperChildView {
     }
 
     public void onNextBtnClicked(View v) {
+        updateActivityStatus(mActivityData.activityId);
         LinkedActivityData next = mActivityData.getNextActivity();
         if (next != null) {
             next.currentPreviousActivityData = mActivityData;
@@ -39,4 +42,12 @@ public abstract class ActivityView extends FlipperChildView {
             mActivityViewer.startPreviousActivity(prev);
         }
     }
+
+    private void updateActivityStatus(int id) {
+        ContentValues values = new ContentValues();
+        values.put(MetadataContract.Activities._RESULT, "0");
+        values.put(MetadataContract.Activities._STATUS, "done");
+        getContext().getContentResolver().update(MetadataContract.Activities.getActivityUri(id), values, null, null);
+    }
+
 }

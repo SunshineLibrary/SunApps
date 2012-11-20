@@ -15,7 +15,6 @@ import java.util.List;
 public class DatabaseQueue<T extends JSONSerializable> {
 
     private DatabaseQueueDBHandler dbHandler;
-    private String queueName;
     private JSONSerializable.Factory<T> factory;
     private T peeked;
 
@@ -95,8 +94,6 @@ public class DatabaseQueue<T extends JSONSerializable> {
 
     private static class DatabaseQueueDBHandler extends SQLiteOpenHelper {
 
-        private static final String DB_QUEUES = "db_queues";
-
         private static String[] COLUMNS = {"id", "value"};
         private static String ID = COLUMNS[0];
         private static String VALUE = COLUMNS[1];
@@ -104,7 +101,7 @@ public class DatabaseQueue<T extends JSONSerializable> {
         private String queueName;
 
         public DatabaseQueueDBHandler(Context context, String queueName) {
-            super(context, DB_QUEUES, null, 1);
+            super(context, queueName, null, 1);
             this.queueName = queueName;
         }
 
@@ -141,15 +138,19 @@ public class DatabaseQueue<T extends JSONSerializable> {
         public synchronized List<String> getFirstBatch(int batchSize) {
             List<String> batch = new LinkedList<String>();
             Cursor cursor = getWritableDatabase().query(queueName, COLUMNS, null, null, null, null, null);
-            if(cursor.moveToFirst()) {
-                for (int i = 0; i < batchSize; i ++) {
-                    batch.add(cursor.getString(cursor.getColumnIndex(VALUE)));
-                    if (!cursor.moveToNext()) {
-                        break;
+
+            try {
+                if(cursor.moveToFirst()) {
+                    for (int i = 0; i < batchSize; i ++) {
+                        batch.add(cursor.getString(cursor.getColumnIndex(VALUE)));
+                        if (!cursor.moveToNext()) {
+                            break;
+                        }
                     }
                 }
+            } finally {
+               cursor.close();
             }
-            cursor.close();
             return batch;
         }
 
@@ -167,17 +168,20 @@ public class DatabaseQueue<T extends JSONSerializable> {
             SQLiteDatabase db = getWritableDatabase();
             Cursor cursor = db.query(queueName, COLUMNS, null, null, null, null, null);
 
-            if(cursor.moveToFirst()) {
-                for (int i = 0; i < batchSize; i++) {
-                    int id = cursor.getInt(cursor.getColumnIndex(ID));
-                    batch.add(cursor.getString(cursor.getColumnIndex(VALUE)));
-                    db.delete(queueName, ID + "=?", new String[]{String.valueOf(id)});
-                    if (!cursor.moveToNext()) {
-                        break;
+            try {
+                if(cursor.moveToFirst()) {
+                    for (int i = 0; i < batchSize; i++) {
+                        int id = cursor.getInt(cursor.getColumnIndex(ID));
+                        batch.add(cursor.getString(cursor.getColumnIndex(VALUE)));
+                        db.delete(queueName, ID + "=?", new String[]{String.valueOf(id)});
+                        if (!cursor.moveToNext()) {
+                            break;
+                        }
                     }
                 }
+            } finally {
+                cursor.close();
             }
-            cursor.close();
             return batch;
         }
     }

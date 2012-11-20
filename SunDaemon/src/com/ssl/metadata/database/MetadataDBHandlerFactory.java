@@ -4,12 +4,13 @@ import android.content.Context;
 import com.ssl.metadata.database.observers.DownloadableTableObserver;
 import com.ssl.metadata.database.observers.TableObserver;
 import com.ssl.metadata.database.observers.ThumbnailFetchObserver;
+import com.ssl.metadata.database.observers.UserRecordUpdateObserver;
 import com.ssl.metadata.database.tables.*;
 import com.ssl.metadata.database.views.*;
 
 public class MetadataDBHandlerFactory {
 
-    private static final int DB_VERSION = 112;
+    private static final int DB_VERSION = 114;
     private static final String DB_NAME = "metadata";
 
     public static DBHandler newMetadataDBHandler(Context context) {
@@ -34,7 +35,6 @@ public class MetadataDBHandlerFactory {
         dbHandler.addTableManager(ChapterTable.TABLE_NAME, new ChapterTable(dbHandler));
         dbHandler.addTableManager(LessonTable.TABLE_NAME, new LessonTable(dbHandler));
         dbHandler.addTableManager(EdgeTable.TABLE_NAME, new EdgeTable(dbHandler));
-        dbHandler.addTableManager(ProblemTable.TABLE_NAME, new ProblemTable(dbHandler));
         dbHandler.addTableManager(ProblemChoiceTable.TABLE_NAME, new ProblemChoiceTable(dbHandler));
         dbHandler.addTableManager(BookListTable.TABLE_NAME, new BookListTable(dbHandler));
         dbHandler.addTableManager(TagTable.TABLE_NAME, new TagTable(dbHandler));
@@ -51,13 +51,16 @@ public class MetadataDBHandlerFactory {
     private static void initObservableTables(DBHandler dbHandler, Context context){
         TableObserver downloadableObserver = new DownloadableTableObserver(context);
         TableObserver thumbnailObserver = new ThumbnailFetchObserver(context);
+        TableObserver userRecordObserver = new UserRecordUpdateObserver(context);
         ObservableTable table = new ObservableTable(new ActivityTable(dbHandler));
         table.addObserver(downloadableObserver);
         //table.addObserver(thumbnailObserver);
+        table.addObserver(userRecordObserver);
         dbHandler.addTableManager(ActivityTable.TABLE_NAME, table);
 
         table = new ObservableTable(new SectionTable(dbHandler));
         table.addObserver(downloadableObserver);
+        table.addObserver(userRecordObserver);
         dbHandler.addTableManager(SectionTable.TABLE_NAME, table);
 
         table = new ObservableTable(new GalleryImageTable(dbHandler));
@@ -68,12 +71,17 @@ public class MetadataDBHandlerFactory {
         table = new ObservableTable(new BookTable(dbHandler));
         table.addObserver(downloadableObserver);
         //table.addObserver(thumbnailObserver);
+        table.addObserver(userRecordObserver);
         dbHandler.addTableManager(BookTable.TABLE_NAME, table);
 
         table = new ObservableTable(new BookCollectionTable(dbHandler));
         table.addObserver(downloadableObserver);
         //table.addObserver(thumbnailObserver);
         dbHandler.addTableManager(BookCollectionTable.TABLE_NAME, table);
+
+        table = new ObservableTable(new ProblemTable(dbHandler));
+        table.addObserver(userRecordObserver);
+        dbHandler.addTableManager(ProblemTable.TABLE_NAME, table);
 
     }
 

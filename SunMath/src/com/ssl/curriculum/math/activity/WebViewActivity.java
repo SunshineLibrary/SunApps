@@ -2,14 +2,18 @@ package com.ssl.curriculum.math.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 
 import com.ssl.curriculum.math.R;
 
@@ -17,9 +21,9 @@ import com.ssl.curriculum.math.R;
  * Created with IntelliJ IDEA. User: mendlin Date: 12-8-14 Time: 下午4:44 To
  * change this template use File | Settings | File Templates.
  */
-public class WebViewActivity extends Activity {
+public class WebViewActivity extends Activity implements OnClickListener{
 	
-class WebViewClientWithFramesAndGoBack extends WebViewClient{
+class WebViewClientWithFramesAndGoBack extends WebViewClient {
 		
 		boolean startOverride=false;
     	boolean goingBack=false;
@@ -65,7 +69,6 @@ class WebViewClientWithFramesAndGoBack extends WebViewClient{
     		super.onPageStarted(view, url, favicon);
     	}
     	
-    	
 	}
 	
 	private WebView webView;
@@ -73,6 +76,7 @@ class WebViewClientWithFramesAndGoBack extends WebViewClient{
 	private ProgressDialog dialog;
 	private WebViewClientWithFramesAndGoBack client;
 	Handler backHandler;
+	Button exitButton;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -110,6 +114,9 @@ class WebViewClientWithFramesAndGoBack extends WebViewClient{
     			WebViewActivity.this.onBackPressed();
     		};
     	};
+    	
+    	exitButton = (Button) findViewById(R.id.webview_exit_fullscreen);
+    	exitButton.setOnClickListener(this);
 	}
 	
 	@Override
@@ -117,7 +124,15 @@ class WebViewClientWithFramesAndGoBack extends WebViewClient{
 		if(webView.canGoBack()){
 			webView.goBack();
 		}else{
-			super.onBackPressed();
+			this.finish();
 		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		Intent i = new Intent();
+		i.putExtra("url", webView.getUrl());
+		this.setResult(RESULT_OK, i);
+		this.finish();
 	}
 }

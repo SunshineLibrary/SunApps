@@ -120,6 +120,7 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.ACTIVITIES_ID:
             case Matcher.PACKAGES_ID:
             case Matcher.SECTIONS_ID:
+            case Matcher.PROBLEMS_ID:
                 return table.query(uri, projection, BaseColumns._ID + "=" + uri.getLastPathSegment(), null, null);
 
             default:
@@ -204,6 +205,7 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.GALLERY_IMAGES_ID:
             case Matcher.PACKAGES_ID:
             case Matcher.SECTIONS_ID:
+            case Matcher.PROBLEMS_ID:
                 selection = BaseColumns._ID + " = ?";
                 selectionArgs = new String[]{uri.getLastPathSegment()};
             case Matcher.PACKAGES:
@@ -211,6 +213,7 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.GALLERY_IMAGES:
             case Matcher.BOOKS:
             case Matcher.API_SYNC_STATES:
+            case Matcher.PROBLEMS:
                 return table.update(uri, values, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException();
@@ -325,6 +328,7 @@ public class MetadataProvider extends ContentProvider {
 //                }
 //                return bookInfoView;
             case Matcher.PROBLEMS:
+            case Matcher.PROBLEMS_ID:
                 if (problemTable == null) {
                     problemTable = dbHandler.getTableManager(ProblemTable.TABLE_NAME);
                 }
@@ -346,7 +350,6 @@ public class MetadataProvider extends ContentProvider {
                 return userBookTable;
             default:
             	return null;
-//                throw new IllegalArgumentException("Illegal match("+match+") argument for getTableForMatch");
         }
 
     }

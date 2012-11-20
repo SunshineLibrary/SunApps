@@ -43,9 +43,10 @@ public class Matcher {
     public static final int ACTIVITIES_TEXT = 315;
 
     public static final int PROBLEMS = 350;
-    public static final int PROBLEM_CHOICES = 351;
-    public static final int PROBLEMS_IMAGE_ID = 352;
-    public static final int PROBLEMS_AUDIO_ID = 353;
+    public static final int PROBLEMS_ID = 351;
+    public static final int PROBLEM_CHOICES = 352;
+    public static final int PROBLEMS_IMAGE_ID = 353;
+    public static final int PROBLEMS_AUDIO_ID = 354;
 
 
     public static final int AUTHORS = 400;
@@ -124,6 +125,7 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "quiz_problems", QUIZ_PROBLEMS);
             matcher.addURI(AUTHORITY, "problem_choices", PROBLEM_CHOICES);
             matcher.addURI(AUTHORITY, "problems", PROBLEMS);
+            matcher.addURI(AUTHORITY, "problems/#", PROBLEMS_ID);
             matcher.addURI(AUTHORITY, "problems/image/#", PROBLEMS_IMAGE_ID);
             matcher.addURI(AUTHORITY, "problems/image/#.*", PROBLEMS_IMAGE_ID);
             matcher.addURI(AUTHORITY, "problems/audio/#", PROBLEMS_AUDIO_ID);

@@ -12,6 +12,7 @@ import com.ssl.support.downloader.DownloadTaskParams;
 import com.ssl.support.downloader.tasks.AsyncDownloadTask;
 import com.ssl.support.downloader.tasks.DownloadTask;
 import com.ssl.support.utils.Listener;
+import com.ssl.support.utils.LockManager;
 
 /**
  * @author Bowen Sun
@@ -23,7 +24,8 @@ import com.ssl.support.utils.Listener;
  */
 public class DownloadService extends Service {
 
-    private PowerManager.WakeLock wakeLock;
+    private LockManager lockManager;
+    private LockManager.Token lockToken;
 
     private DownloadQueue downloadQueue;
     private Listener<Integer> startNextListener;
@@ -36,8 +38,7 @@ public class DownloadService extends Service {
         downloadQueue = new DownloadQueue(getBaseContext(), new DownloadTaskFactory(getBaseContext()));
         downloading = false;
 
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
+        lockManager = LockManager.getInstance(this);
 
         startNextListener = new Listener<Integer>() {
             @Override
@@ -90,14 +91,10 @@ public class DownloadService extends Service {
     }
 
     private void acquireLock() {
-        if (!wakeLock.isHeld()) {
-            wakeLock.acquire();
-        }
+        lockToken = lockManager.acquireWifiLock(lockToken);
     }
 
     private void releaseLock() {
-        if (wakeLock.isHeld()) {
-            wakeLock.release();
-        }
+        lockManager.releaseLock(lockToken);
     }
 }

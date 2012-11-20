@@ -1,27 +1,21 @@
 package com.ssl.support.api;
 
+import android.content.Context;
 import android.net.Uri;
+import com.ssl.support.config.AccessToken;
 import com.ssl.support.config.Configurations;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import java.net.URI;
-
 public class ApiClient {
 
-    private Uri apiServerUri;
-    private Uri uploadServerUri;
-    private Uri logServerUri;
+    private Context mContext;
+    private Configurations mConfigs;
+    private String accessToken;
 
-    public ApiClient(Configurations configs) {
-        String host = configs.getString(Configurations.API_SERVER_ADDRESS);
-        apiServerUri = new Uri.Builder().scheme("http").encodedAuthority(host).build();
-
-        host = configs.getString(Configurations.UPLOAD_SERVER_ADDRESS);
-        uploadServerUri = new Uri.Builder().scheme("http").encodedAuthority(host).build();
-
-        host = configs.getString(Configurations.LOG_SERVER_ADDRESS);
-        logServerUri = new Uri.Builder().scheme("http").encodedAuthority(host).build();
+    public ApiClient(Context context, Configurations configs) {
+        mContext = context;
+        mConfigs = configs;
     }
 
     public HttpClient newHttpClient() {
@@ -29,9 +23,22 @@ public class ApiClient {
     }
 
     public String getSyncRequestUrl(String tableName, long lastUpdateTime) {
-        return apiServerUri.buildUpon().appendPath("api").appendPath(getApiPath(tableName))
-                .appendQueryParameter("timestamp", String.valueOf(lastUpdateTime/1000)).build()
-                .toString();
+        return getApiServerUri().buildUpon().appendPath("api").appendPath(getApiPath(tableName))
+            .appendQueryParameter("timestamp", String.valueOf(lastUpdateTime / 1000))
+            .appendQueryParameter("access_token", getAccessToken()).build()
+            .toString();
+    }
+
+    private Uri getApiServerUri() {
+        String host = mConfigs.getString(Configurations.API_SERVER_ADDRESS);
+        return new Uri.Builder().scheme("http").encodedAuthority(host).build();
+    }
+
+    private String getAccessToken() {
+        if (accessToken == null) {
+            accessToken = AccessToken.getAccessToken(mContext);
+        }
+        return accessToken;
     }
 
     private String getApiPath(String tableName) {
@@ -39,26 +46,28 @@ public class ApiClient {
     }
 
     public Uri getDownloadUri(String type, long id) {
-        return apiServerUri.buildUpon().appendPath("download").appendPath(type).appendPath(String.valueOf(id)).build();
+        return getApiServerUri().buildUpon().appendPath("download").appendPath(type).appendPath(String.valueOf(id))
+            .appendQueryParameter("access_token", getAccessToken()).build();
     }
 
     public Uri getThumbnailUri(String type, int id) {
-        return apiServerUri.buildUpon().appendPath("download").appendPath(type + "_thumb").appendPath(String.valueOf(id)).build();
+        return getApiServerUri().buildUpon().appendPath("download").appendPath(type + "_thumb").appendPath(String.valueOf(id)).build();
     }
 
     public Uri getApkUpdateUri() {
-        return apiServerUri.buildUpon().appendPath("apks").appendPath("get_updates").build();
+        return getApiServerUri().buildUpon().appendPath("apks").appendPath("get_updates")
+            .appendQueryParameter("access_token", getAccessToken()).build();
     }
 
     public Uri getAllSchoolsUri() {
-        return apiServerUri.buildUpon().appendPath("schools").appendEncodedPath("get_all.json").build();
+        return getApiServerUri().buildUpon().appendPath("schools").appendEncodedPath("get_all.json").build();
     }
 
     public Uri getLoginUri() {
-        return apiServerUri.buildUpon().appendPath("machines").appendPath("sign_in.json").build();
+        return getApiServerUri().buildUpon().appendPath("machines").appendPath("sign_in.json").build();
     }
 
     public Uri getUserRecordPostUri() {
-        return uploadServerUri.buildUpon().appendPath("user_records").appendPath("batch_update.json").build();
+        return getApiServerUri().buildUpon().appendPath("user_records").appendPath("batch_update.json").build();
     }
 }

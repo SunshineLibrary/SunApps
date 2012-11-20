@@ -2,6 +2,7 @@ package com.ssl.curriculum.math.component.activity;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.viewer.ActivityViewer;
+import com.ssl.metadata.provider.MetadataContract;
 
 
 /**
@@ -46,11 +48,14 @@ public class FinishActivityView extends ActivityView implements View.OnClickList
 
 	@Override
 	public void onClick(View v) {
+        updateSectionStatus(mActivityViewer.getSectionId());
         mActivityViewer.flipCurrentViewOutToRight();
         mActivityViewer.finish();
 	}
 
-
-
-	
+    private void updateSectionStatus(int id) {
+        ContentValues values = new ContentValues();
+        values.put(MetadataContract.Sections._STATUS, "done");
+        getContext().getContentResolver().update(MetadataContract.Sections.getSectionUri(id), values, null, null);
+    }
 }

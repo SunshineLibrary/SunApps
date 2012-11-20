@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.util.Log;
-import com.ssl.metadata.provider.MetadataContract;
 import com.ssl.support.data.models.Package;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -121,16 +120,17 @@ public class PackageHelper {
 
     private static ContentValues getNewRecordContentValues(Package pkg) {
         ContentValues values = new ContentValues();
-        values.put(MetadataContract.Packages._ID, pkg.getId());
-        values.put(MetadataContract.Packages._VERSION, pkg.getVersion());
-        values.put(MetadataContract.Packages._NAME, pkg.getName());
+        values.put(Packages._ID, pkg.getId());
+        values.put(Packages._VERSION, pkg.getVersion());
+        values.put(Packages._NAME, pkg.getName());
         return values;
     }
 
     private static ContentValues getUpdateRecordContentValues(Package pkg) {
         ContentValues values = new ContentValues();
-        values.put(MetadataContract.Packages._VERSION, pkg.getVersion());
-        values.put(MetadataContract.Packages._NAME, pkg.getName());
+        values.put(Packages._VERSION, pkg.getVersion());
+        values.put(Packages._NAME, pkg.getName());
+        values.put(Packages._INSTALL_STATUS, Packages.STATUS_DOWNLOADING);
         return values;
     }
 
