@@ -47,10 +47,15 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_in);
-        initUI();
-        initComponents();
-        initSpinners();
+        if (StringUtils.isEmpty(AccessToken.getAccessToken(this))) {
+            setContentView(R.layout.sign_in);
+            initUI();
+            initComponents();
+            initSpinners();
+        } else {
+            setResult(Activity.RESULT_OK);
+            finish();
+        }
     }
 
     private void initUI() {

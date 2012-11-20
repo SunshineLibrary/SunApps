@@ -20,7 +20,6 @@ import com.ssl.support.utils.StringUtils;
 import static com.ssl.metadata.provider.MetadataContract.Activities;
 
 public class MainActivity extends Activity implements View.OnClickListener {
-    private PackageManager localPackageManager;
 
     private static final int SIGN_IN_REQUEST = 100;
 

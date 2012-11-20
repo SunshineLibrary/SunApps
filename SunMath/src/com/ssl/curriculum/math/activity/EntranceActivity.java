@@ -21,7 +21,11 @@ import android.widget.SimpleAdapter;
 public class EntranceActivity extends Activity implements OnItemClickListener {
 	
 	public static ArrayList<String> subjectIds, subjectNames;
-	
+
+    private static final int SIGN_IN_REQUEST = 100;
+
+    private static final String ACTION_SIGN_IN_ACTIVITY = "com.ssl.support.action.SIGN_IN";
+
 	private GridView gridView;
 	private SimpleAdapter gridAdapter;
 	private ArrayList<HashMap<String, Object>> gridItems;
@@ -50,7 +54,22 @@ public class EntranceActivity extends Activity implements OnItemClickListener {
 		gridView.setAdapter(gridAdapter);
 		
 	}
-	
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        Intent intent = new Intent(ACTION_SIGN_IN_ACTIVITY);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        startActivityForResult(intent, SIGN_IN_REQUEST);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SIGN_IN_REQUEST && resultCode != RESULT_OK) {
+            finish();
+        }
+    }
+
 	private void loadData(){
 		subjectIds = new ArrayList<String>();
 		subjectNames = new ArrayList<String>();
