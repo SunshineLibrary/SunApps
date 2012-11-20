@@ -157,7 +157,8 @@ public class AudioPlayer extends RelativeLayout implements OnCompletionListener,
 	public FileDescriptor getAudioFileDescriptor(int activityId) {
         ParcelFileDescriptor pfdInput = null;
         try {
-            pfdInput = getContext().getContentResolver().openFileDescriptor(MetadataContract.Activities.getActivityAudioUri(activityId), "r");
+            //getContext().getContentResolver().o
+        	pfdInput = getContext().getContentResolver().openFileDescriptor(MetadataContract.Activities.getActivityAudioUri(activityId), "r");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

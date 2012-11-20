@@ -3,6 +3,7 @@ package com.ssl.curriculum.math.component.quiz;
 import android.content.Context;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -21,6 +22,7 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
     private TextView showAnswerField;
     private EditText answerEditText;
     private QuizQuestion mQuestion;
+    //private QuizComponentViewer mQuizViewer;
 
     private FillBlankQuestionPresenter mPresenter;
     private LinearLayout answerContainer;
@@ -35,6 +37,7 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
         mQuestion = question;
         mPresenter.setQuestion(question);
         resetView();
+        
         loadQuizHtml(question.getQuizContent());
     }
 
@@ -54,6 +57,8 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
         questionTitle = (TextView) findViewById(R.id.quiz_fill_in_flipper_child_title);
         answerContainer = (LinearLayout) findViewById(R.id.quiz_fill_in_answer_container);
         
+        //mQuizViewer = new QuizComponentViewer(getContext());
+        
         answerEditText.setOnKeyListener(new OnKeyListener() {
 
 			@Override
@@ -65,14 +70,33 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
                                     Context.INPUT_METHOD_SERVICE);
                     if (imm.isActive()) {
                         imm.hideSoftInputFromWindow(
-                                v.getApplicationWindowToken(), 0);
+                            v.getApplicationWindowToken(), 0);
                     }
                     onQuestionAnswered();
+                    //mQuizViewer.showNextButton();
                     return true;
                 }
 				return false;
 			}
         });
+        
+        //hereLiu
+        
+    }
+    
+    public void closeKeyBoard() {
+    	answerEditText.clearFocus();
+        InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(answerEditText.getApplicationWindowToken(), 0);
+
+    }
+    
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+    	// TODO Auto-generated method stub
+System.out.println("HelloWorld");
+    	closeKeyBoard();
+    	return super.onTouchEvent(event);
     }
 
     public void setShowAnswerText(String text) {
@@ -110,6 +134,8 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
     @Override
     public void onQuestionResult(QuizQuestion question, String answer, boolean isCorrect) {
         mQuizComponentViewer.onQuestionResult(question, answer, isCorrect);
+        //hereLiu
+        mQuizComponentViewer.showNextButton();
     }
 
     @Override

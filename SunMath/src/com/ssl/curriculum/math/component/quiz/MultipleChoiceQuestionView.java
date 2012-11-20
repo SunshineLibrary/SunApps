@@ -61,7 +61,8 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
 
     @Override
     protected String getQuizContent() {
-        return getBodyHtml() + getChoicesHtml();
+    	//String imageStr = "这是个简单的测试，包含图片<IMG src=\"file:///android_asset/ladder-shaped.jpg\">";
+        return getBodyHtml() + getChoicesHtml();//between body and choice is the picture
     }
 
     protected void initUI() {

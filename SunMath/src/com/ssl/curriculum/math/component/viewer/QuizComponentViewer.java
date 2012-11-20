@@ -194,7 +194,7 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
         iv_nextButton.setVisibility(GONE);
     }
 
-    private void showNextButton() {
+    public void showNextButton() {
         iv_confirmButton.setVisibility(GONE);
         iv_nextButton.setVisibility(VISIBLE);
     }
