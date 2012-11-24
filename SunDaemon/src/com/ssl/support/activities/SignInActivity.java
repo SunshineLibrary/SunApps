@@ -80,12 +80,12 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
         spGrade = (Spinner) findViewById(R.id.grade_spinner);
         spClass = (Spinner) findViewById(R.id.class_spinner);
         
-        // get the current date
+        // get the default display date (2000-1-1)
         mYear = 2000;
         mMonth = 0;
         mDay = 1;
 
-        // display the current date
+        // display the default date
         updateDisplay();
     }
 
