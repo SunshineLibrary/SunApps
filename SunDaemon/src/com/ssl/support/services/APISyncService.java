@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.PowerManager;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.ssl.support.sync.APISyncTask;
 
 public class APISyncService extends Service {
@@ -18,9 +21,23 @@ public class APISyncService extends Service {
 	private static final long MIN_DELAY = 1200000;
 	private ConnectivityManager cm;
     private PowerManager.WakeLock wakeLock;
+    private static final int DONE = 1;
 
     private static Runnable wakeUpRunner;
     private static Handler handler;
+    private Handler mhandler = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+if(msg.what == DONE){
+	System.out.println("Liu:更新数据成功");
+	Toast.makeText(getApplicationContext(), "成功更新数据", 0).show();
+}
+stopSelf();
+		}
+    	
+    };
 
     @Override
 	public IBinder onBind(Intent intent) {
@@ -49,10 +66,15 @@ public class APISyncService extends Service {
 			protected void onPostExecute(Integer result) {
 				if (result.intValue() == SUCCESS) {
                     Log.v(getClass().getName(), "API sync completed successfully.");
+                    //hereLiu:
+                    mhandler.sendEmptyMessage(DONE);
+System.out.println("发送消息出去");
 				} else {
                     Log.v(getClass().getName(), "API sync failed.");
                 }
-				stopSelf();
+				/*if(isSuccessful){
+					stopSelf();
+				}*/
 			}
 		};
 	}

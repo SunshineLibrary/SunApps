@@ -32,7 +32,6 @@ public class MainActivity extends Activity {
         initListeners();
     }
 
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -68,7 +67,6 @@ public class MainActivity extends Activity {
         });
     }
 
-
     private void initListeners() {
         leftBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -93,5 +91,19 @@ public class MainActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         mActivityViewer.destroy();
+    }
+    
+    /*@Override
+     * Suggest this method ,because it's the method leading to the target 
+    protected void onUserLeaveHint() {
+    	// TODO Auto-generated method stub
+    	super.onUserLeaveHint();
+    }*/
+    
+    @Override
+    protected void onPause() {
+    	// TODO Auto-generated method stub
+    	super.onPause();
+    	mActivityViewer.pause();
     }
 }

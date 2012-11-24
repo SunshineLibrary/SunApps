@@ -160,6 +160,33 @@
                         android:layout_alignParentLeft="true"
                         />
 
+<<<<<<< HEAD
+                <LinearLayout 
+                  	android:layout_width="240dp"
+                  	android:layout_height="wrap_content"
+                  	android:layout_alignParentRight="true"
+                  	android:orientation="horizontal"
+                    >
+                    <EditText 
+                        android:id="@+id/et_year"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        />
+                    <EditText 
+                        android:id="@+id/et_month"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        />
+                    <EditText 
+                        android:id="@+id/et_day"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        />
+                </LinearLayout>
+=======
                 <TextView
                     android:id="@+id/birthday_input_field"
                     android:layout_width="240dp"
@@ -170,6 +197,7 @@
                     android:layout_alignParentRight="true"
                     />
 
+>>>>>>> 241be5c771d4c43ba3f729d5452d8199ae9b44bc
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

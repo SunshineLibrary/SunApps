@@ -39,7 +39,7 @@ public class AudioActivityView extends ActivityView {
     private void initUI() {
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.audio_flip_layout, this, false);
-        audioPlayer = (AudioPlayer) viewGroup.findViewById(R.id.content_screen_audio_field);
+       audioPlayer = (AudioPlayer) viewGroup.findViewById(R.id.content_screen_audio_field);
         tv_title = (TextView) viewGroup.findViewById(R.id.audio_title);
         tv_description = (TextView) viewGroup.findViewById(R.id.audio_descr);
         this.addView(viewGroup);

@@ -99,6 +99,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.btn_update_metadata:
                 startService(new Intent(this, APISyncService.class));
+                Intent intent = new Intent(getApplicationContext(), ViewMetadataUpdatesActivity.class);
+                startActivity(intent);
                 break;
             default:
                 return;

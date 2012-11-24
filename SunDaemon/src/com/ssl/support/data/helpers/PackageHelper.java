@@ -3,6 +3,9 @@ package com.ssl.support.data.helpers;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -26,7 +29,7 @@ public class PackageHelper {
                         String.valueOf(Packages.INSTALL_STATUS_DOWNLOADING),
                         String.valueOf(Packages.INSTALL_STATUS_FAILED)};
         Cursor cursor = context.getContentResolver().query(Packages.CONTENT_URI, null, selection, selectionArgs, null);
-        return getPackageListFromCursor(cursor);
+        return getPackageListFromCursor(cursor, context);
     }
 
     public static Package getPackageForFile(Context context, Uri data) {
@@ -36,7 +39,7 @@ public class PackageHelper {
             Cursor cursor = context.getContentResolver().query(Packages.CONTENT_URI, null,
                     Packages._NAME + "= ? and " + Packages._VERSION + "= ?", values, null);
             if (cursor.moveToFirst()) {
-                return newFromCursor(cursor);
+                return newFromCursor(cursor, context);
             }
         }
         return null;
@@ -96,22 +99,31 @@ public class PackageHelper {
         contentResolver.notifyChange(Packages.CONTENT_URI, null);
     }
 
-    public static Package newFromCursor(Cursor cursor) {
+    public static Package newFromCursor(Cursor cursor, Context context) {
         Package pkg = new Package();
         pkg.id = cursor.getInt(cursor.getColumnIndex(Packages._ID));
         pkg.version = cursor.getInt(cursor.getColumnIndex(Packages._VERSION));
-        pkg.name = cursor.getString(cursor.getColumnIndex(Packages._NAME));
+        String packagename = cursor.getString(cursor.getColumnIndex(Packages._NAME));
+        
+        PackageManager pm = context.getPackageManager();
+        try {
+			ApplicationInfo info = pm.getApplicationInfo(packagename, PackageManager.GET_META_DATA);
+			pkg.name = info.loadLabel(pm).toString();
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         pkg.downloadProgress = cursor.getInt(cursor.getColumnIndex(Packages._DOWNLOAD_PROGRESS));
         pkg.downloadStatus = cursor.getInt(cursor.getColumnIndex(Packages._DOWNLOAD_STATUS));
         pkg.installStatus = cursor.getInt(cursor.getColumnIndex(Packages._INSTALL_STATUS));
         return pkg;
     }
 
-    private static List<Package> getPackageListFromCursor(Cursor cursor) {
+    private static List<Package> getPackageListFromCursor(Cursor cursor, Context context) {
         List<Package> packages = new Vector<Package>();
         if (cursor.moveToFirst()) {
             do {
-                packages.add(newFromCursor(cursor));
+                packages.add(newFromCursor(cursor,context));
             } while (cursor.moveToNext());
         }
         cursor.close();
