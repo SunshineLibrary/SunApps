@@ -1,6 +1,7 @@
 package com.ssl.support.activities;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -15,7 +16,11 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
 
@@ -33,7 +38,7 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
     private Spinner spGrade;
     private Spinner spClass;
     private EditText etName;
-    private EditText etBirthday;
+    private TextView etBirthday;
 
     private TextView txError;
     private ImageButton btnConfirm;
@@ -44,6 +49,11 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
     private String[] accountTypeStrings;
     private String[] gradeStrings;
     private String[] classStrings;
+    
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+    static final int DATE_DIALOG_ID = 0;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +62,7 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
             initUI();
             initComponents();
             initSpinners();
+            addListener();
         } else {
             setResult(Activity.RESULT_OK);
             finish();
@@ -60,7 +71,7 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
 
     private void initUI() {
         etName = (EditText) findViewById(R.id.name_input_field);
-        etBirthday = (EditText) findViewById(R.id.birthday_input_field);
+        etBirthday = (TextView) findViewById(R.id.birthday_input_field);
         txError = (TextView) findViewById(R.id.signin_errormsg);
         btnConfirm = (ImageButton) findViewById(R.id.btn_signin);
 
@@ -68,6 +79,14 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
         spAccountType = (Spinner) findViewById(R.id.account_type_spinner);
         spGrade = (Spinner) findViewById(R.id.grade_spinner);
         spClass = (Spinner) findViewById(R.id.class_spinner);
+        
+        // get the current date
+        mYear = 2000;
+        mMonth = 0;
+        mDay = 1;
+
+        // display the current date
+        updateDisplay();
     }
 
     private void initSpinners() {
@@ -92,6 +111,59 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
         classStrings = getResources().getStringArray(R.array.class_array);
         spClass.setAdapter(getAdapterForStrings(classStrings));
         spClass.setOnItemSelectedListener(this);
+    }
+    
+    private void addListener()
+    {
+    	etBirthday.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showDialog(DATE_DIALOG_ID);
+            }
+        });
+    	
+    	etName.setOnKeyListener(new View.OnKeyListener() {
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				//Close the IME if the enter is pressed
+				if (keyCode == KeyEvent.KEYCODE_ENTER)
+				{
+					InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+					in.hideSoftInputFromWindow(v.getApplicationWindowToken(),
+	                        				   InputMethodManager.HIDE_NOT_ALWAYS);
+				}
+				return false;
+			}
+		});
+    }
+    
+    private void updateDisplay() {
+        this.etBirthday.setText(
+            new StringBuilder()
+            	    .append(mYear).append("-")
+                    .append(mMonth + 1).append("-") // Month is 0 based so add 1
+                    .append(mDay).append(" "));
+    }
+    
+    private DatePickerDialog.OnDateSetListener mDateSetListener =
+    	    new DatePickerDialog.OnDateSetListener() {
+    	        public void onDateSet(DatePicker view, int year, 
+    	                              int monthOfYear, int dayOfMonth) {
+    	            mYear = year;
+    	            mMonth = monthOfYear;
+    	            mDay = dayOfMonth;
+    	            updateDisplay();
+    	        }
+    	    };
+    	    
+    @Override
+    protected Dialog onCreateDialog(int id) {
+       switch (id) {
+       case DATE_DIALOG_ID:
+          return new DatePickerDialog(this,
+                    mDateSetListener,
+                    mYear, mMonth, mDay);
+       }
+       return null;
     }
 
     @Override
@@ -120,7 +192,10 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
     }
 
     private ArrayAdapter<String> getAdapterForStrings(String[] strings) {
-        return new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, strings);
+    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, strings);
+    	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        
+        return adapter;
     }
 
     @Override
