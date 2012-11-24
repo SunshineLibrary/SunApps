@@ -97,6 +97,19 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
                     controlPanel.setVisibility(View.VISIBLE);
 //                else
 //                    controlPanel.setVisibility(View.GONE);
+                //hereLiu:typup lead to play or pause
+                if(player!=null){
+                	if(player.isPlaying()){
+                		//play to pause
+                		playButton.setImageResource(R.drawable.ic_media_play);
+                        player.pause();
+                        isPaused = true;
+                	}else if(isPaused){
+                		//pause to play
+                		 player.start();
+                	     onStart();
+                	}
+                }
             }
         };
         surface.addTapListener(tapListener);
@@ -127,7 +140,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
             public void run() {
                 if (lastActionTime > 0 && SystemClock.elapsedRealtime() - lastActionTime > 3000) {
                     hideControlPanel();
-                }
+                }      
 
                 if (player != null) {
                     playerProgress.setProgress(player.getCurrentPosition());
@@ -199,8 +212,8 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
             player.setDataSource(getVideoFileDescriptor(activityId));
             player.setDisplay(holder);
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setOnPreparedListener(this);
             player.prepareAsync();
+            player.setOnPreparedListener(this);
             player.setOnCompletionListener(this);
             
         } catch (Exception t) {
@@ -210,7 +223,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     }
 
     public void setToFullScreen(boolean toFullScreen) {
-        if (player == null || !player.isPlaying()) return;
+        if (player == null) return;
         savedPlayedPosition = player.getCurrentPosition();
         player.pause();
         if (toFullScreen) toFullScreen();
@@ -257,10 +270,11 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         holder.setFixedSize(width, height);
         playerProgress.setProgress(0);
         playerProgress.setMax(player.getDuration());
-        //player.start();
-        Log.i("mediaplayer", "player prepared");
+        player.start();//should be call player to paly
+        //Log.i("mediaplayer", "player prepared");
         playButton.setEnabled(true);
         rollbackButton.setEnabled(true);
+        System.out.println("begin play!!!");
     }
 
     private void showErrorDialog(Throwable t) {

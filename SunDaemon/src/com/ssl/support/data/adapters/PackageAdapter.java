@@ -45,7 +45,7 @@ public class PackageAdapter extends CursorAdapter {
         TextView tv_progress = (TextView) view.findViewById(R.id.tv_table_progress);
         TextView tv_status = (TextView) view.findViewById(R.id.tv_table_status);
 
-        Package pkg = PackageHelper.newFromCursor(cursor);
+        Package pkg = PackageHelper.newFromCursor(cursor , context);
         tv_apk_name.setText(pkg.getName());
         tv_version.setText(String.valueOf(pkg.getVersion()));
         tv_progress.setText(String.valueOf(pkg.downloadProgress));

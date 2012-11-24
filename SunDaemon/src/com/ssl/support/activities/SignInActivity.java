@@ -2,9 +2,16 @@ package com.ssl.support.activities;
 
 import java.util.ArrayList;
 
+import javax.net.ssl.KeyManager;
+
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View.OnKeyListener;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+
 import com.ssl.support.config.AccessToken;
 import com.ssl.support.config.Configurations;
 import com.ssl.support.presenter.SignInPresenter;
@@ -15,6 +22,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -33,7 +41,9 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
     private Spinner spGrade;
     private Spinner spClass;
     private EditText etName;
-    private EditText etBirthday;
+    private EditText etYear;
+    private EditText etMonth;
+    private EditText etDay;
 
     private TextView txError;
     private ImageButton btnConfirm;
@@ -60,7 +70,16 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
 
     private void initUI() {
         etName = (EditText) findViewById(R.id.name_input_field);
-        etBirthday = (EditText) findViewById(R.id.birthday_input_field);
+        etYear = (EditText) findViewById(R.id.et_year);
+        etMonth = (EditText) findViewById(R.id.et_month);
+        etDay = (EditText) findViewById(R.id.et_day);
+        
+        MyKeyListener mlistener = new MyKeyListener();
+        etName.setOnKeyListener(mlistener);
+        etYear.setOnKeyListener(mlistener);
+        etMonth.setOnKeyListener(mlistener);
+        etDay.setOnKeyListener(mlistener);
+        
         txError = (TextView) findViewById(R.id.signin_errormsg);
         btnConfirm = (ImageButton) findViewById(R.id.btn_signin);
 
@@ -68,6 +87,45 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
         spAccountType = (Spinner) findViewById(R.id.account_type_spinner);
         spGrade = (Spinner) findViewById(R.id.grade_spinner);
         spClass = (Spinner) findViewById(R.id.class_spinner);
+    }
+    
+    private class MyKeyListener implements OnKeyListener{
+
+		@Override
+		public boolean onKey(View v, int keyCode, KeyEvent event) {
+			// TODO Auto-generated method stub
+			if(keyCode == KeyEvent.KEYCODE_ENTER){
+				/*int keyId = v.getId();
+				if(TextUtils.isEmpty(etName.getText().toString().trim())){
+					Toast.makeText(getApplicationContext(), "姓名不能为空", 0).show();
+					return true;
+				}else if(TextUtils.isEmpty(etYear.getText().toString().trim())){
+					Toast.makeText(getApplicationContext(), "生日年份不能为空", 0).show();
+					return true;
+				}else if(TextUtils.isEmpty(etMonth.getText().toString().trim())){
+					Toast.makeText(getApplicationContext(), "生日月份不能为空", 0).show();
+					return true;
+				}else if(TextUtils.isEmpty(etDay.getText().toString().trim())){
+					Toast.makeText(getApplicationContext(), "生日日期不能为空", 0).show();
+					return true;
+				}*/
+				
+				InputMethodManager imm = (InputMethodManager) v
+                        .getContext().getSystemService(
+                                Context.INPUT_METHOD_SERVICE);
+                if (imm.isActive()) {
+                    imm.hideSoftInputFromWindow(
+                        v.getApplicationWindowToken(), 0);
+                }
+               
+                if(v.getId()==R.id.et_day){
+                	connect();
+                    btnConfirm.setVisibility(View.INVISIBLE);
+                }
+                return true;
+			}
+			return false;
+		}
     }
 
     private void initSpinners() {
@@ -119,39 +177,96 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
         btnConfirm.setOnClickListener(this);
     }
 
-    private ArrayAdapter<String> getAdapterForStrings(String[] strings) {
-        return new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, strings);
+    private MyArrayAdapter<String> getAdapterForStrings(String[] strings) {
+        return new MyArrayAdapter<String>(strings);
+    	//return new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, strings);
+    }
+    
+    private class MyArrayAdapter<String> extends BaseAdapter{
+    	private String[] strings;
+    	public MyArrayAdapter(String[] strings)
+    	{
+    		this.strings = strings;
+    	}
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return strings.length;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			// TODO Auto-generated method stub
+			return strings[position];
+		}
+
+		@Override
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			// TODO Auto-generated method stub
+			View view = null;
+			ViewHolder holder;
+			if(convertView == null){
+				view = View.inflate(getApplicationContext(), R.layout.simple_spinner_item, null);
+				holder = new ViewHolder();
+				holder.tv_account_type = (TextView) view.findViewById(R.id.tv_account_type);
+				view.setTag(holder);
+			}else{
+				view = convertView;
+				holder = (ViewHolder) view.getTag();
+			}
+			holder.tv_account_type.setText(strings[position].toString());
+			return view;
+		}
+    	
     }
 
+    private static class ViewHolder{
+    	private TextView tv_account_type;
+    	
+    }
+    
     @Override
     public void onClick(View v) {
         if (v == btnConfirm) {
-            if (ConnectionUtils.isConnected(this)) {
-                mPresenter.setName(etName.getText().toString());
-                mPresenter.setBirthday(etBirthday.getText().toString());
-                new AsyncTask<Object, Object, String>() {
-                    @Override
-                    protected String doInBackground(Object... params) {
-                        return mPresenter.authenticate();
-                    }
-
-                    @Override
-                    protected void onPostExecute(String accessToken) {
-                        super.onPostExecute(accessToken);
-                        if (!StringUtils.isEmpty(accessToken)) {
-                            AccessToken.storeAccessToken(SignInActivity.this, mPresenter.getName(), accessToken);
-                            setResult(RESULT_OK);
-                            finish();
-                        } else {
-                            Toast.makeText(SignInActivity.this, mPresenter.getErrorMessage(), 3000).show();
-                        }
-                    }
-                }.execute();
-            } else {
-                Toast.makeText(this, "无法连接网络，请稍后再试", 3000).show();
-            }
+            connect();
         }
     }
+    
+
+	private void connect() {
+		if (ConnectionUtils.isConnected(this)) {
+		    mPresenter.setName(etName.getText().toString());
+		    //hereLiu:
+		    String birthdayStr = etYear.getText().toString()+"-"+etMonth.getText().toString()+"-"+etDay.getText().toString();
+		    mPresenter.setBirthday(birthdayStr);
+		    new AsyncTask<Object, Object, String>() {
+		        @Override
+		        protected String doInBackground(Object... params) {
+		            return mPresenter.authenticate();
+		        }
+
+		        @Override
+		        protected void onPostExecute(String accessToken) {
+		            super.onPostExecute(accessToken);
+		            if (!StringUtils.isEmpty(accessToken)) {
+		                AccessToken.storeAccessToken(SignInActivity.this, mPresenter.getName(), accessToken);
+		                setResult(RESULT_OK);
+		                finish();
+		            } else {
+		                Toast.makeText(SignInActivity.this, mPresenter.getErrorMessage(), 3000).show();
+		            }
+		        }
+		    }.execute();
+		} else {
+		    Toast.makeText(this, "无法连接网络，请稍后再试", 3000).show();
+		}
+	}
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

@@ -1,11 +1,6 @@
 package com.ssl.curriculum.math.component.quiz;
 
 import android.content.Context;
-<<<<<<< HEAD
-import android.media.MediaPlayer;
-import android.util.Log;
-=======
->>>>>>> d1a82532608dd563274f3829332d6723d51b263e
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;

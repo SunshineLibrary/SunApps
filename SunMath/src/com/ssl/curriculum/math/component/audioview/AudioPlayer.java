@@ -293,15 +293,18 @@ public class AudioPlayer extends RelativeLayout implements OnCompletionListener,
 	  int second = time % 60;  
 	  minute %= 60;  
 	  return String.format("%02d:%02d", minute, second);  
-	 }  
-	/*@Override
+	 } 
+	 
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
-	if(keyCode == KeyEvent.KEYCODE_BACK){
+	if(keyCode == KeyEvent.KEYCODE_HOME){
+System.out.println("Home!!!");
 		player.stop();
 		player.release();
 		player = null;
 	}
-		return false;
-	}*/
+		return super.onKeyDown(keyCode, event);
+	}
+	
 }

@@ -141,7 +141,9 @@ public class ActivityViewer extends FrameLayout{
         if (mAudioView == null) {
         	mAudioView = new AudioActivityView(getContext(), this);
             addView(mAudioView);
+System.out.println("getAudioView");
         }
+System.out.println("getAudioView");
         return mAudioView;
     }
     
@@ -210,8 +212,23 @@ public class ActivityViewer extends FrameLayout{
         if (mVideoView != null) {
             mVideoView.onDestroy();
         }
+        
+        if(mAudioView != null){
+        	mAudioView.onDestroy();
+        }
+        
         if (mQuizView != null) {
             mQuizView.onDestroy();
+        }
+    }
+    
+    public void pause(){
+    	if (mVideoView != null) {
+            mVideoView.onDestroy();
+        }
+        
+        if(mAudioView != null){
+        	mAudioView.onDestroy();
         }
     }
 

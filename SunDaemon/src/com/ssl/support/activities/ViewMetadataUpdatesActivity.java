@@ -5,9 +5,12 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import com.ssl.metadata.database.tables.APISyncStateTable;
 import com.ssl.support.daemon.R;
 import com.ssl.support.data.adapters.ApiSyncStateAdapter;
@@ -17,6 +20,19 @@ public class ViewMetadataUpdatesActivity extends Activity{
     private ListView lv_metadata_list;
     private ApiSyncStateAdapter mAdapter;
     private CursorLoader mLoader;
+    private static final int DONE = 1;
+    private Handler mhandler = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			if(msg.what == DONE){
+System.out.println("Liu:数据更新完毕");
+				Toast.makeText(getApplicationContext(), "更新完毕", 0).show();
+			}
+		}
+    	
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
