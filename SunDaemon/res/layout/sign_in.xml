@@ -138,6 +138,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="24dp"
                         android:layout_alignParentRight="true"
+                        android:singleLine="true"
                         />
             </RelativeLayout>
 
@@ -159,6 +160,7 @@
                         android:layout_alignParentLeft="true"
                         />
 
+<<<<<<< HEAD
                 <LinearLayout 
                   	android:layout_width="240dp"
                   	android:layout_height="wrap_content"
@@ -184,17 +186,31 @@
                         android:layout_weight="1"
                         />
                 </LinearLayout>
+=======
+                <TextView
+                    android:id="@+id/birthday_input_field"
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:textColor="#55A390"
+                    android:textSize="24dp"
+                    android:layout_alignParentRight="true"
+                    />
+
+>>>>>>> 241be5c771d4c43ba3f729d5452d8199ae9b44bc
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 
     <ImageButton
-            android:id="@+id/btn_signin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_confirm"
-            android:paddingTop="15dp"
-            />
+        android:id="@+id/btn_signin"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:src="@drawable/ic_confirm" />
 
 </LinearLayout>
 </RelativeLayout>
