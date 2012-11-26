@@ -81,12 +81,17 @@ public class MultipleChoiceQuestionPresenter {
 
     public boolean isCorrect() {
         String[] answers = mQuestion.getAnswer().split(";");
-        for (String answer : answers) {
-            if (!userAnswer.contains(answer)) {
-                return false;
+        String[] userAnswers = userAnswer.split(";");
+        if(answers.length == userAnswers.length){
+        	for (String answer : answers) {
+                if (!userAnswer.contains(answer)) {
+                    return false;
+                }
             }
+            return true;
+        }else{
+        	return false;
         }
-        return true;
     }
 
     public QuestionJavascriptInterface getJSInterface() {

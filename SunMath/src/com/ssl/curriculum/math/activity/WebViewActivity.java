@@ -68,8 +68,7 @@ class WebViewClientWithFramesAndGoBack extends WebViewClient {
     		startOverride = false;
     		super.onPageStarted(view, url, favicon);
     	}
-    	
-	}
+    }
 	
 	private WebView webView;
 	private String loadUrl;

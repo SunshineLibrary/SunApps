@@ -86,7 +86,9 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
 
     public void startNextQuestion() {
         if (++mCurrentPosition < mQuestions.size()) {
-            startQuestion(mQuestions.get(mCurrentPosition));
+        	int positionNum = mCurrentPosition+1;
+        	//hereLiu:
+            startQuestion(mQuestions.get(mCurrentPosition), positionNum);
         } else {
             startResult();
         }
@@ -105,13 +107,13 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
         mCurrentComponentView.onAfterFlippingIn();
     }
 
-    public void startQuestion(QuizQuestion question) {
+    public void startQuestion(QuizQuestion question, int positionNum) {
         if (mCurrentComponentView != null) {
             mCurrentComponentView.onBeforeFlippingOut();
             flipCurrentQuestionOut();
         }
-
-        setQuestion(question);
+        //hereLiu:
+        setQuestion(question,positionNum);
 
         flipCurrentQuestionIn();
         hideConfirmButton();
@@ -119,9 +121,9 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
     }
 
 
-    public void setQuestion(QuizQuestion question) {
+    public void setQuestion(QuizQuestion question, int positionNum) {
         QuizQuestionView questionView = getQuestionView(question);
-        questionView.setQuestion(question);
+        questionView.setQuestion(question, positionNum);
         mCurrentComponentView = questionView;
     }
 

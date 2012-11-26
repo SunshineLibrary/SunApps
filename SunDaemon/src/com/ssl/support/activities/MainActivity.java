@@ -28,6 +28,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
      */
 
     private TextView tvViewMetadataUpdates, tvViewAppUpdates, tvViewSystemConfigs;
+    private TextView tv_student_name;
     private Button btnUpdateMetadata, btnUpdateApp;
 
     @Override
@@ -47,6 +48,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void initUI() {
+    	String studentName = AccessToken.getUserName(getApplicationContext());
+    	tv_student_name = (TextView) findViewById(R.id.tv_student_name);
+    	tv_student_name.setText(studentName);
         tvViewMetadataUpdates = (TextView) findViewById(R.id.tv_view_metadata_updates);
         tvViewAppUpdates = (TextView) findViewById(R.id.tv_view_app_updates);
         tvViewSystemConfigs = (TextView) findViewById(R.id.tv_view_system_config);

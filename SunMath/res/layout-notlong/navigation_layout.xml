@@ -99,6 +99,7 @@
                        android:layout_height="wrap_content"
                        android:layout_alignParentLeft="true"
                        android:paddingTop="11dp"
+                       android:visibility="invisible"
                        android:src="@drawable/ic_navi_activity_curri" />
 
             <ImageView

@@ -45,7 +45,7 @@ public abstract class QuizQuestionView extends QuizComponentView {
 
     public abstract void onQuestionAnswered();
 
-    public abstract void setQuestion(QuizQuestion question);
+    public abstract void setQuestion(QuizQuestion question, int positionNum);
 
     protected abstract String getQuizContent();
 
@@ -68,8 +68,9 @@ public abstract class QuizQuestionView extends QuizComponentView {
         }
     }
 
-    protected void loadQuizHtml(String quizContent) {
-        final String data = QuizHtmlLoader.getInstance(getContext()).loadQuestionBodyWithNewContent(quizContent);
+    protected void loadQuizHtml(String quizContent, int positionNum) {
+    	//hereLiu:
+        final String data = QuizHtmlLoader.getInstance(getContext()).loadQuestionBodyWithNewContent(quizContent,positionNum);
         
       /*
        * Android thinks file:// schema insecure, so we use http:// here.

@@ -42,15 +42,15 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
     }
 
     @Override
-    public void setQuestion(QuizQuestion question) {
+    public void setQuestion(QuizQuestion question, int positionNum) {
         mQuestion = (QuizChoiceQuestion) question;
         mPresenter.setQuestion(question);
         resetView();
-        loadQuizHtml(getQuizContent());
+        loadQuizHtml(getQuizContent(),positionNum);
         questionWebView.addJavascriptInterface(mPresenter.getJSInterface(), "Question");
         
         switch (mQuestion.getType()) {
-            case TYPE_MA:
+            case TYPE_MA://多项选择的判断方式可能没有改，因此找到哪里是对答案的对错做出判断的地方
                 questionTitle.setText(R.string.multiple_answer_multiple_choice);
                 break;
             case TYPE_SA:

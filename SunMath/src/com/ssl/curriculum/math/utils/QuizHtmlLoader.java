@@ -43,8 +43,9 @@ public class QuizHtmlLoader {
         return loader;
     }
 
-    public String loadQuestionBodyWithNewContent(String newContent) {
-        return QuizTemplateResolver.replaceWithNewContent(htmlBodyString, newContent);
+    public String loadQuestionBodyWithNewContent(String newContent, int positionNum) {
+    	//hereLiu:
+        return QuizTemplateResolver.replaceWithNewContent(htmlBodyString, newContent, positionNum);
     }
 
     public String loadQuestionChoiceWithNewContent(String newContent) {

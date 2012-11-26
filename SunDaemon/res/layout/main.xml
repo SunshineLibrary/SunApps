@@ -6,6 +6,7 @@
 
 
     <LinearLayout
+        android:id="@+id/top"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
@@ -64,11 +65,48 @@
 
     </LinearLayout>
 
+    <LinearLayout 
+        android:id="@+id/medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        
+        android:layout_below="@id/top"
+        
+        >
+       <TextView android:id="@+id/tv_student_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:paddingLeft="60dp"
+                android:paddingRight="5dp"
+                android:text="刘聪"
+                android:textSize="30dp"
+                android:textStyle="bold"
+                android:clickable="true"
+                />
+       <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:paddingRight="15dp"
+                android:text="欢迎来到“晓书”"
+                android:textSize="20dp"
+                android:clickable="true"
+                />
+        
+    </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/bottom"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_below="@id/medium"
             android:orientation="vertical"
             android:padding="24dp"
             >

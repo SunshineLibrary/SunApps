@@ -1,9 +1,12 @@
 package com.ssl.curriculum.math.activity;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.*;
 import com.ssl.curriculum.math.R;
@@ -84,8 +87,13 @@ public class NavigationActivity extends Activity implements View.OnClickListener
             Intent intent = new Intent(this, DownloadManageActivity.class);
             startActivity(intent);
         } else if (v == ic_curr_menu) {
-            Intent intent = new Intent(this, WebViewActivity.class);
-            startActivity(intent);
+            /*Intent intent = new Intent(this, WebViewActivity.class);
+            String path = Environment.getExternalStorageDirectory().getPath();
+            File file = new File(path,"/Download/_html_cache_zip_142/index.htm");
+            String final_path = file.getPath();
+            intent.putExtra("indexPath", final_path);
+      System.out.println("path:"+final_path);
+            startActivity(intent);*/
         }
     }
     

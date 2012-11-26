@@ -101,7 +101,8 @@
                        android:layout_height="wrap_content"
                        android:layout_alignParentLeft="true"
                        android:paddingTop="11dp"
-                       android:src="@drawable/ic_navi_activity_curri" />
+                       android:src="@drawable/ic_navi_activity_curri"
+                       android:visibility="invisible" />
 
             <ImageView
                 android:layout_width="wrap_content"

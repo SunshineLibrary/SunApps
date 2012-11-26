@@ -142,6 +142,7 @@
                         />
             </RelativeLayout>
 
+
             <RelativeLayout
                     android:id="@+id/birthday_input"
                     android:layout_width="fill_parent"

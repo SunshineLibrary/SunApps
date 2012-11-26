@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+
 import com.ssl.support.daemon.R;
 import com.ssl.support.data.helpers.PackageHelper;
 import com.ssl.support.data.models.Package;

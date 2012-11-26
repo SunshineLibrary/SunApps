@@ -33,12 +33,12 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
     }
 
     @Override
-    public void setQuestion(QuizQuestion question) {
+    public void setQuestion(QuizQuestion question, int positionNum) {
         mQuestion = question;
         mPresenter.setQuestion(question);
         resetView();
-        
-        loadQuizHtml(question.getQuizContent());
+        //hereLiu:
+        loadQuizHtml(question.getQuizContent(), positionNum);
     }
 
     @Override
