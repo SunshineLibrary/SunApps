@@ -97,15 +97,12 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
                     controlPanel.setVisibility(View.VISIBLE);
 //                else
 //                    controlPanel.setVisibility(View.GONE);
-                //hereLiu:typup lead to play or pause
                 if(player!=null){
                 	if(player.isPlaying()){
-                		//play to pause
                 		playButton.setImageResource(R.drawable.ic_media_play);
                         player.pause();
                         isPaused = true;
                 	}else if(isPaused){
-                		//pause to play
                 		 player.start();
                 	     onStart();
                 	}
@@ -176,8 +173,6 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         playVideo();
         hideControlPanel();
         onStart();
-        //toFullScreen = true;
-        //setToFullScreen(toFullScreen);
     }
 
     public void pause() {
@@ -238,6 +233,8 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         activity.setContentView(savedContentView);
         container = (RelativeLayout) activity.findViewById(R.id.content_screen_video_frame);
         container.addView(this);
+        
+        onStart();
     }
 
     private void toFullScreen() {
@@ -249,6 +246,8 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         activity.setContentView(mFullScreenLayout);
         container = (FrameLayout) activity.findViewById(R.id.video_player_full_screen_container);
         container.addView(this);
+        
+        onStart();
     }
 
     private void hideControlPanel() {
@@ -270,7 +269,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         holder.setFixedSize(width, height);
         playerProgress.setProgress(0);
         playerProgress.setMax(player.getDuration());
-        player.start();//should be call player to paly
+        player.start();
         //Log.i("mediaplayer", "player prepared");
         playButton.setEnabled(true);
         rollbackButton.setEnabled(true);

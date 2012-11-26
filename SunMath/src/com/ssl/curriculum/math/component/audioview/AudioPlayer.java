@@ -139,17 +139,8 @@ public class AudioPlayer extends RelativeLayout implements OnCompletionListener,
 			break;
 		case R.id.restart:
 			if(player!=null){
-				/*mTimer.cancel();
-				mTimer = null;
-				isFirst = true;
-				
-				player.stop();
-				player.release();
-				player = null;*/
-				
 				playAudioFromPosition(0);
 			}
-			//play(getAudioFileDescriptor(activityId));
 			break;
 		}
 	}
@@ -197,22 +188,11 @@ public class AudioPlayer extends RelativeLayout implements OnCompletionListener,
                            Message message = new Message();
                            message.obj = showTime(currentPosition);
                            handler.sendMessage(message);
-                           
-                           /*Runnable runner = new Runnable(){
-               				@Override
-               				public void run() {
-               					// TODO Auto-generated method stub
-               					int currentPosition = player.getCurrentPosition();
-                                current_time.setText(showTime(currentPosition));
-               				}
-               	           };*/
                        }    
                    };   
                    mTimer.schedule(mTimerTask, 0, 10);
                    isFirst=false;
 	            }
-	           
-	           
 	        } catch (Exception t) {
 	            t.printStackTrace();
 	            Toast.makeText(getContext(), "播放音频失败", 0).show();
@@ -220,35 +200,28 @@ public class AudioPlayer extends RelativeLayout implements OnCompletionListener,
 	}
 	
 	private void playAudioFromPosition(int position){
-    	try {
-            player.reset();
-            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setDataSource(getAudioFileDescriptor(activityId));
-            player.prepare();
+		if(player == null){//第一次就使用拖动来播放音频
+			
+		}
+		
             player.seekTo(position);
             player.start();
             isPlaying = true;
             isPause = false;
             play_pause.setText("暂停");
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), "播放音频失败", 0).show();
-        }
     }
 	
 	@Override
 	public void onCompletion(MediaPlayer mp) {
 		// TODO Auto-generated method stub
 		isPlaying = false;
+		isPause = true;
 		play_pause.setText("播放");
-		seekBar.setProgress(0);//-----播放完毕后要把Bar置为0
-		//isFirst=true;
 	}
 	
 	public void pause() {
         if (player == null) return;
         player.pause();
-        //isPaused = true;
     }
 	
 	public void onDestroy() {
@@ -299,12 +272,10 @@ public class AudioPlayer extends RelativeLayout implements OnCompletionListener,
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 	if(keyCode == KeyEvent.KEYCODE_HOME){
-System.out.println("Home!!!");
 		player.stop();
 		player.release();
 		player = null;
 	}
 		return super.onKeyDown(keyCode, event);
 	}
-	
 }
