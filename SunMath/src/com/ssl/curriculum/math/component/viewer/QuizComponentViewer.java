@@ -36,6 +36,8 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
     private LinkedActivityData mActivityData;
     private ActivityViewer mActivityViewer;
 
+    private long componentStartTime;
+
     public QuizComponentViewer(Context context) {
         super(context);
         mAnimationManager = new FlipAnimationManager(context);
@@ -87,8 +89,8 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
     public void startNextQuestion() {
         if (++mCurrentPosition < mQuestions.size()) {
         	int positionNum = mCurrentPosition+1;
-        	//hereLiu:
             startQuestion(mQuestions.get(mCurrentPosition), positionNum);
+            componentStartTime = System.currentTimeMillis() / 1000;
         } else {
             startResult();
         }
@@ -220,16 +222,17 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
 
     @Override
     public void onQuestionResult(QuizQuestion question, String answer, boolean isCorrect) {
-        saveQuestionRecord(question.getId(), answer, isCorrect);
+        saveQuestionRecord(question.getId(), answer, isCorrect, System.currentTimeMillis() / 1000 - componentStartTime);
         if (mSummaryView != null) {
             mSummaryView.onQuestionResult(question, answer, isCorrect);
         }
     }
 
-    private void saveQuestionRecord(int id, String answer, boolean isCorrect) {
+    private void saveQuestionRecord(int id, String answer, boolean isCorrect, long duration) {
         ContentValues values = new ContentValues();
         values.put(MetadataContract.Problems._USER_ANSWER, answer);
         values.put(MetadataContract.Problems._IS_CORRECT, isCorrect);
+        values.put(MetadataContract.Problems._DURATION, (int) duration);
         getContext().getContentResolver().update(MetadataContract.Problems.getProblemUri(id), values, null, null);
     }
 

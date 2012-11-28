@@ -24,7 +24,7 @@ public class UserRecordUpdateObserver extends TableObserver {
 
     @Override
     public void postUpdate(Uri uri, ContentValues values, String selection, String[] selectionArgs, int result) {
-        if (result == 1) {
+        if (result == 1 && uri != null) {
             switch(sUriMatcher.match(uri)) {
                 case Matcher.ACTIVITIES_ID:
                     if (values.containsKey(MetadataContract.Activities._RESULT)) {
@@ -60,6 +60,7 @@ public class UserRecordUpdateObserver extends TableObserver {
                 builder.putParam("result", values.get(MetadataContract.Activities._RESULT));
             } else if (itemType.equals("Problem")) {
                 builder.putParam("answer", values.get(MetadataContract.Problems._USER_ANSWER));
+                builder.putParam("duration", values.getAsInteger(MetadataContract.Problems._DURATION));
                 boolean is_correct = values.getAsBoolean(MetadataContract.Problems._IS_CORRECT);
                 builder.putParam("is_correct", is_correct);
             } else if (itemType.equals("Book")) {

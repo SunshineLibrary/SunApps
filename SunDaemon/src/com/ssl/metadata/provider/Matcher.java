@@ -14,6 +14,7 @@ public class Matcher {
     public static final int PACKAGES = 100;
     public static final int PACKAGES_ID = 101;
     public static final int API_SYNC_STATES = 102;
+    public static final int FILES = 103;
 
     public static final int SUBJECTS = 200;
     public static final int COURSES = 201;
@@ -84,6 +85,7 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "packages", PACKAGES);
             matcher.addURI(AUTHORITY, "packages/#", PACKAGES_ID);
             matcher.addURI(AUTHORITY, "api_sync_states", API_SYNC_STATES);
+            matcher.addURI(AUTHORITY, "files", FILES);
 
             matcher.addURI(AUTHORITY, "subjects", SUBJECTS);
             matcher.addURI(AUTHORITY, "courses", COURSES);
