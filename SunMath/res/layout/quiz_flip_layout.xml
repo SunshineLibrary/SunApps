@@ -34,4 +34,50 @@
                    android:visibility="gone"/>
     </RelativeLayout>
 
+    <RelativeLayout 
+        android:id="@+id/rv_result_answer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/quiz_question_view"
+        android:layout_marginTop="20dp"
+        >
+        
+        <TextView 
+            android:id="@+id/tv_answerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="8dp"
+            android:text="回答："
+            android:textSize="20sp"
+            />
+        <ImageView 
+            android:id="@+id/iv_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_answerText"
+            android:layout_marginRight="3dp"
+            android:src="@drawable/ic_choice_correct"
+            />
+        <TextView 
+            android:id="@+id/tv_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:text="A;B;C"
+            android:textSize="23dp"
+            android:textColor="#028102"
+            android:textStyle="bold"
+            />
+        <TextView 
+            android:id="@+id/tv_answerString"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/tv_answer"
+            android:text="正确答案是："
+            android:layout_marginLeft="3dp"
+            android:textSize="20sp"
+            />
+    </RelativeLayout>
 </RelativeLayout>
