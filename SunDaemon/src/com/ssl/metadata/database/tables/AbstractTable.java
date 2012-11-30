@@ -64,6 +64,7 @@ public abstract class AbstractTable implements Table {
 	 * @param db
 	 */
 	public void createTable(SQLiteDatabase db) {
+        dropTable(db);
 		db.execSQL(this.getCreateQuery());
 	}
 
@@ -87,7 +88,6 @@ public abstract class AbstractTable implements Table {
          * must drop and recreate the table instead.
          */
         if (oldVersion < 113) {
-            dropTable(db);
             createTable(db);
         } else {
             upgradeTableInSteps(db, oldVersion, newVersion);
