@@ -62,15 +62,23 @@ public abstract class QuizQuestionView extends QuizComponentView {
 
     public void onDestroy() {
         if (questionWebView != null) {
-        	//hereLiu
         	questionWebView.loadUrl("javascript:onDestory()");
             questionWebView.destroy();
         }
     }
 
     protected void loadQuizHtml(String quizContent, int positionNum) {
-    	//hereLiu:
-        final String data = QuizHtmlLoader.getInstance(getContext()).loadQuestionBodyWithNewContent(quizContent, positionNum);
+        // 修改一个紧急BUG, 暂时剔除
+//    	String imageStr = "这是个简单的测试，包含图片<IMG src=\"file:///android_asset/ladder-shaped.jpg\"><br>";
+//    	String audioStr1 = "点击我<input type=\"button\" onclick=\"play()\" value=\"播放\" />开始播放";
+//    	String audioStr2 = "点击我<input type=\"button\" onclick=\"pause()\" value=\"暂停\" />暂停播放";
+//    	String audioStr = audioStr1 + "<br>" + audioStr2;
+
+        // Bowen Edit: 放在这里会好一点
+        String questionNum = "<p style=\"font-size:30px; font-weight:bold;\">第"+positionNum+"题</p>";
+        //add image or audio or video ,as so on...
+        quizContent = questionNum + quizContent;
+        final String data = QuizHtmlLoader.getInstance(getContext()).loadQuestionBodyWithNewContent(quizContent);
         
       /*
        * Android thinks file:// schema insecure, so we use http:// here.

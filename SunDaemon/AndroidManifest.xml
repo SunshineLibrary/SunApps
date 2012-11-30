@@ -52,6 +52,7 @@
 
         <activity
                 android:name="com.ssl.support.activities.SignInActivity"
+                android:screenOrientation="portrait"
                 android:exported="true">
             <intent-filter>
                 <action android:name="com.ssl.support.action.SIGN_IN"/>
