@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.viewer.ActivityViewer;
 import com.ssl.curriculum.math.component.viewer.QuizComponentViewer;
@@ -17,6 +20,13 @@ import java.util.List;
 public class QuizActivityView extends ActivityView {
     private ImageView nextBtn;
     private ImageView confirmBtn;
+    
+    private RelativeLayout rv_result_answer;
+    private TextView tv_answerText;
+    private ImageView iv_result;
+    private TextView tv_answerString;
+    private TextView tv_answer;
+    
     private QuizQuestionsLoader mQuestionLoader;
 
     private QuizComponentViewer mQuizComponentViewer;
@@ -42,6 +52,11 @@ public class QuizActivityView extends ActivityView {
         addView(viewGroup);
         nextBtn = (ImageView) findViewById(R.id.quiz_next_btn);
         confirmBtn = (ImageView) findViewById(R.id.quiz_choice_ok_btn);
+        rv_result_answer = (RelativeLayout) findViewById(R.id.rv_result_answer);
+        tv_answerText = (TextView) findViewById(R.id.tv_answerText);
+        iv_result = (ImageView) findViewById(R.id.iv_result);
+        tv_answerString = (TextView) findViewById(R.id.tv_answerString);
+        tv_answer = (TextView) findViewById(R.id.tv_answer);
         mQuizComponentViewer = (QuizComponentViewer) findViewById(R.id.quiz_question_view);
     }
 
@@ -51,6 +66,7 @@ public class QuizActivityView extends ActivityView {
 
     private void initListener() {
         mQuizComponentViewer.setControlButtons(confirmBtn, nextBtn);
+        mQuizComponentViewer.setResultAnswerView(rv_result_answer, tv_answerText, iv_result, tv_answerString, tv_answer);
         mQuizComponentViewer.setActivityViewer(mActivityViewer);
         nextBtn.setOnClickListener(mQuizComponentViewer);
         confirmBtn.setOnClickListener(mQuizComponentViewer);

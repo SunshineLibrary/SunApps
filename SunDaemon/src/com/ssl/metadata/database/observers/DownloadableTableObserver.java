@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import com.ssl.metadata.provider.Matcher;
 import com.ssl.metadata.provider.MetadataContract;
+
 import com.ssl.support.api.ApiClient;
 import com.ssl.support.api.ApiClientFactory;
 import com.ssl.support.downloader.DownloadTaskParams;

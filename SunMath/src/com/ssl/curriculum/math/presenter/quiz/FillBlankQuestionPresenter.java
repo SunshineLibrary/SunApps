@@ -23,15 +23,17 @@ public class FillBlankQuestionPresenter {
         mQuestion = question;
     }
 
-    public void onQuestionAnswered() {
+    public boolean onQuestionAnswered() {
         String answer = mQuestionView.getUserAnswer();
-        if (isCorrect(answer)) {
+        boolean isCorrected = isCorrect(answer);
+        if (isCorrected) {
             mQuestionView.setShowAnswerText(correctText);
             mQuestionView.onQuestionResult(mQuestion, answer, true);
         } else {
             mQuestionView.setShowAnswerText(mQuestion.getAnswer());
             mQuestionView.onQuestionResult(mQuestion, answer, false);
         }
+        return isCorrected;
     }
 
     public boolean isCorrect(String answer){

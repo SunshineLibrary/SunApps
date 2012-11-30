@@ -6,6 +6,10 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.anim.FlipAnimationManager;
 import com.ssl.curriculum.math.component.quiz.*;
 import com.ssl.curriculum.math.listener.QuestionResultListener;
@@ -27,6 +31,12 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
     private List<QuizQuestion> mQuestions;
 
     private ImageView iv_confirmButton, iv_nextButton;
+    
+    private RelativeLayout rv_result_answer;
+    private TextView tv_answerText;
+    private ImageView iv_result;
+    private TextView tv_answerString;
+    private TextView tv_answer;
 
     private QuizComponentView mCurrentComponentView;
     private FlipAnimationManager mAnimationManager;
@@ -55,6 +65,16 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
         iv_confirmButton = confirmButton;
         iv_nextButton = nextButton;
     }
+    
+    public void setResultAnswerView(RelativeLayout result_answer, TextView answerText,
+    		ImageView result, TextView answerString, TextView answer){
+    	rv_result_answer = result_answer;
+    	tv_answerText = answerText;
+    	iv_result = result;
+    	tv_answerString = answerString;
+    	tv_answer = answer;
+    	
+    }
 
     public void reset() {
         if (mCurrentComponentView != null) {
@@ -67,6 +87,7 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
         removeResultView();
         createResultView();
         hideButtons();
+        hideResultAnswerView();
     }
 
     public void setActivityData(LinkedActivityData activityData) {
@@ -180,7 +201,11 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
     }
 
     public void onConfirmButtonClicked() {
-        ((QuizQuestionView) mCurrentComponentView).onQuestionAnswered();
+       boolean isCorrected = ((QuizQuestionView) mCurrentComponentView).onQuestionAnswered();
+       String answer = mQuestions.get(mCurrentPosition).getAnswer();
+       showResultAnswerView(isCorrected,answer);
+        //when click the confirm button then decide whether correct and show the answer,the next button
+        //isCorrected?answer?
         showNextButton();
     }
 
@@ -208,6 +233,80 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
         iv_nextButton.setVisibility(GONE);
     }
 
+    private void hideResultAnswerView(){
+    	rv_result_answer.setVisibility(GONE);
+    	iv_result.setVisibility(GONE);
+    	tv_answer.setVisibility(GONE);
+    }
+    
+    private void showResultAnswerView(boolean isCorrected, String answer){
+System.out.println("isCorrected:"+isCorrected+"  answer:"+answer);
+    	rv_result_answer.removeAllViews();
+    	android.view.ViewGroup.LayoutParams basic_params = new android.view.ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+    	/*tv_answer = new TextView(rv_result_answer.getContext());
+    	iv_result = new ImageView(rv_result_answer.getContext());
+    	android.view.ViewGroup.LayoutParams basic_params = new android.view.ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+    	
+    	android.widget.RelativeLayout.LayoutParams tv_answerText_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
+    	tv_answerText_layoutParams.setMargins(15, 10, 1, 1);
+    	
+    	android.widget.RelativeLayout.LayoutParams iv_result_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
+    	iv_result_layoutParams.setMargins(1, 10, 200, 1);
+    	
+    	android.widget.RelativeLayout.LayoutParams tv_answerString_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
+    	tv_answerString_layoutParams.setMargins(200, 10, 1, 1);
+    	
+    	android.widget.RelativeLayout.LayoutParams tv_answer_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
+    	tv_answer_layoutParams.setMargins(1, 10, 10, 1);
+    	
+    	//add the child view with the special params
+    	tv_answer.setText(answer);
+    	tv_answer.setTextColor(R.color.answer);
+    	tv_answer.setTextSize(20);
+    	if(isCorrected){
+    		iv_result.setImageResource(R.drawable.ic_choice_correct);
+    	}else{
+    		iv_result.setImageResource(R.drawable.ic_choice_incorrect);
+    	}
+    	
+    	rv_result_answer.addView(tv_answerText, 0, tv_answerText_layoutParams);
+    	rv_result_answer.addView(iv_result, 1, iv_result_layoutParams);
+    	rv_result_answer.addView(tv_answerString, 2, tv_answerString_layoutParams);
+    	rv_result_answer.addView(tv_answer, 3, tv_answer_layoutParams);*/
+    	TextView t1 = new TextView(rv_result_answer.getContext());
+    	t1.setText("回答");
+    	t1.setTextSize(20);
+    	android.widget.RelativeLayout.LayoutParams tv_answerText_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
+    	tv_answerText_layoutParams.setMargins(35, 10, 1, 1);
+    	rv_result_answer.addView(t1, 0, tv_answerText_layoutParams);
+    	
+    	ImageView iv = new ImageView(rv_result_answer.getContext());
+    	if(isCorrected){
+    		iv.setImageResource(R.drawable.ic_choice_correct);
+    	}else{
+    		iv.setImageResource(R.drawable.ic_choice_incorrect);
+    	}
+    	android.widget.RelativeLayout.LayoutParams iv_result_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
+    	iv_result_layoutParams.setMargins(80, 10, 250, 1);
+    	rv_result_answer.addView(iv, 1, iv_result_layoutParams);
+    	
+    	TextView t2 = new TextView(rv_result_answer.getContext());
+    	t2.setText("正确答案是:");
+    	t2.setTextSize(20);
+    	android.widget.RelativeLayout.LayoutParams tv_answerString_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
+    	tv_answerString_layoutParams.setMargins(550, 10, 1, 1);
+    	rv_result_answer.addView(t2, 2, tv_answerString_layoutParams);
+    	
+    	TextView t3 = new TextView(rv_result_answer.getContext());
+    	t3.setText(answer);
+    	t3.setTextSize(25);
+    	t3.setTextColor(R.color.answer);
+    	android.widget.RelativeLayout.LayoutParams tv_answer_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
+    	tv_answer_layoutParams.setMargins(650, 10, 10, 1);
+    	rv_result_answer.addView(t3, 3, tv_answer_layoutParams);
+    	
+    	rv_result_answer.setVisibility(VISIBLE);
+    }
 
     @Override
     public void onClick(View v) {
