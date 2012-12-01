@@ -10,7 +10,7 @@ public class QuizTemplateResolver {
     	//hereLiu
     	String Question_num = "<p style=\"font-size:30px; font-weight:bold;\">第"+positionNum+"题</p>";
     	//add image or audio or video ,as so on...
-        return rawHtmlString.replaceAll("<body>(.*?)</body>", "<body>" + Question_num + newContent + imageStr + audioStr + "</body>");
+        return rawHtmlString.replaceAll("<body>(.*?)</body>", "<body>" + Question_num + newContent + "</body>");
     }
     
     public static String replaceWithNewContent(String rawHtmlString, String newContent){

@@ -19,6 +19,10 @@ public class QuestionJavascriptInterface {
     public void setAnswer(String answer) {
         mPresenter.setAnswer(answer);
     }
+    
+    public void showConfirm(){
+    	mPresenter.showConfirm();
+    }
 
     public void unsetAnswer(String answer) {
         mPresenter.unsetAnswer(answer);
@@ -27,4 +31,6 @@ public class QuestionJavascriptInterface {
     public boolean isCorrectAnswer(String answer) {
         return mPresenter.isCorrectAnswer(answer);
     }
+    
+    
 }

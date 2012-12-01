@@ -2,7 +2,10 @@ package com.ssl.support.activities;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -30,6 +33,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private TextView tvViewMetadataUpdates, tvViewAppUpdates, tvViewSystemConfigs;
     private TextView tv_student_name;
     private Button btnUpdateMetadata, btnUpdateApp;
+    private SharedPreferences sp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void initUI() {
     	String studentName = AccessToken.getUserName(getApplicationContext());
     	tv_student_name = (TextView) findViewById(R.id.tv_student_name);
+    	
+    	sp = getSharedPreferences("studentName", Context.MODE_WORLD_READABLE);
+    	Editor editor = sp.edit();
+    	editor.putString("name", studentName);
+    	editor.commit();
+    	
     	tv_student_name.setText(studentName);
         tvViewMetadataUpdates = (TextView) findViewById(R.id.tv_view_metadata_updates);
         tvViewAppUpdates = (TextView) findViewById(R.id.tv_view_app_updates);

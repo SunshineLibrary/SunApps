@@ -3,9 +3,11 @@ package com.ssl.curriculum.math.component.activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.ParcelFileDescriptor;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.model.activity.LinkedActivityData;
@@ -24,6 +26,7 @@ import java.io.*;
  */
 public class TextActivityView extends ActivityView {
 
+	private ScrollView sv_container;
     private TextView tv_notes;
     private TextView tv_main;
 
@@ -53,8 +56,11 @@ public class TextActivityView extends ActivityView {
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.flipper_text_layout, this, false);
         addView(viewGroup);
+        sv_container = (ScrollView) findViewById(R.id.sv_container);
         tv_notes = (TextView) findViewById(R.id.flipper_text_notes);
         tv_main = (TextView) findViewById(R.id.flipper_text_main);
+System.out.println("TextActivityView");
+        //tv_main.setMovementMethod(ScrollingMovementMethod.getInstance()); 
     }
 
     private class LoadTextTask extends AsyncTask {
@@ -80,7 +86,11 @@ public class TextActivityView extends ActivityView {
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-            tv_main.setText(mText);
+            //android.view.ViewGroup.LayoutParams sv_params = new android.view.ViewGroup.LayoutParams(LayoutParams.FILL_PARENT,300);
+            //sv_container.setLayoutParams(sv_params);
+            //android.view.ViewGroup.LayoutParams tv_params = new android.view.ViewGroup.LayoutParams(LayoutParams.FILL_PARENT,400);
+           // tv_main.setLayoutParams(tv_params);
+            //tv_main.setText(mText);
         }
     }
 }

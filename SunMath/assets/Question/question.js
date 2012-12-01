@@ -3,9 +3,12 @@ window.onload = function() {
     var inputElements = choicesDiv.getElementsByTagName("input");
     for (var i = 0; i < inputElements.length; i++) {
         (function (inputElement) {
+			if (inputElement.checked) {
+				Question.showConfirm();
+			}
             inputElement.onchange = function() {
                 if (inputElement.checked) {
-                    Question.setAnswer(inputElement.getAttribute("value"));
+					Question.setAnswer(inputElement.getAttribute("value"));
                 } else {
                     Question.unsetAnswer(inputElement.getAttribute("value"));
                 }
