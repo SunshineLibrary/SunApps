@@ -3,9 +3,6 @@ package com.ssl.support.data.helpers;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -39,7 +36,7 @@ public class PackageHelper {
             Cursor cursor = context.getContentResolver().query(Packages.CONTENT_URI, null,
                     Packages._NAME + "= ? and " + Packages._VERSION + "= ?", values, null);
             if (cursor.moveToFirst()) {
-                return newFromCursor(cursor, context);
+                return newFromCursor(cursor);
             }
         }
         return null;
@@ -99,20 +96,11 @@ public class PackageHelper {
         contentResolver.notifyChange(Packages.CONTENT_URI, null);
     }
 
-    public static Package newFromCursor(Cursor cursor, Context context) {
+    public static Package newFromCursor(Cursor cursor) {
         Package pkg = new Package();
         pkg.id = cursor.getInt(cursor.getColumnIndex(Packages._ID));
         pkg.version = cursor.getInt(cursor.getColumnIndex(Packages._VERSION));
-        String packagename = cursor.getString(cursor.getColumnIndex(Packages._NAME));
-        
-        PackageManager pm = context.getPackageManager();
-        try {
-			ApplicationInfo info = pm.getApplicationInfo(packagename, PackageManager.GET_META_DATA);
-			pkg.name = info.loadLabel(pm).toString();
-		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        pkg.name = cursor.getString(cursor.getColumnIndex(Packages._NAME));
         pkg.downloadProgress = cursor.getInt(cursor.getColumnIndex(Packages._DOWNLOAD_PROGRESS));
         pkg.downloadStatus = cursor.getInt(cursor.getColumnIndex(Packages._DOWNLOAD_STATUS));
         pkg.installStatus = cursor.getInt(cursor.getColumnIndex(Packages._INSTALL_STATUS));
@@ -123,7 +111,7 @@ public class PackageHelper {
         List<Package> packages = new Vector<Package>();
         if (cursor.moveToFirst()) {
             do {
-                packages.add(newFromCursor(cursor,context));
+                packages.add(newFromCursor(cursor));
             } while (cursor.moveToNext());
         }
         cursor.close();
