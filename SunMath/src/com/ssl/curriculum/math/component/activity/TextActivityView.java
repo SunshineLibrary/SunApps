@@ -27,6 +27,7 @@ import java.io.*;
 public class TextActivityView extends ActivityView {
     private TextView tv_notes;
     private TextView tv_main;
+    private TextView tv_title;
 
     public TextActivityView(Context context, ActivityViewer activityViewer) {
         super(context, activityViewer);
@@ -36,6 +37,7 @@ public class TextActivityView extends ActivityView {
     @Override
     public void setActivity(LinkedActivityData activityData) {
         super.setActivity(activityData);
+        tv_title.setText(activityData.name);
         tv_notes.setText(activityData.notes);
         new LoadTextTask(activityData.activityId).execute();
     }
@@ -54,7 +56,8 @@ public class TextActivityView extends ActivityView {
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.flipper_text_layout, this, false);
         addView(viewGroup);
-        
+
+        tv_title = (TextView) findViewById(R.id.flipper_text_title);
         tv_notes = (TextView) findViewById(R.id.flipper_text_notes);
         tv_notes.setMovementMethod(ScrollingMovementMethod.getInstance());
         tv_main = (TextView) findViewById(R.id.flipper_text_main);

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import com.ssl.support.utils.IOUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -61,7 +62,13 @@ public class FileDownloadTask {
         HttpResponse response;
         try {
             response = httpClient.execute(get);
-            contentLength = Long.parseLong(response.getFirstHeader("Content-Length").getValue());
+            contentLength = 10000;
+
+            Header header;
+            if ((header = response.getFirstHeader("Content-Length")) != null){
+                contentLength = Long.parseLong(header.getValue());
+            }
+
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
                 Log.w(getClass().getName(), "Bad HTTP Response: SC " + response.getStatusLine().getStatusCode());
                 get.abort();

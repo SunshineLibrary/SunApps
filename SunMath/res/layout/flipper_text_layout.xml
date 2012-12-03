@@ -1,38 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="20dp">
 
-    <ScrollView 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        android:focusable="true"
-        >
-        <LinearLayout 
+    <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:scrollbars="vertical"
+            android:focusable="true"
             >
-             <TextView 
-            android:id="@+id/flipper_text_notes"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/ayrdy"
-            android:textSize="20sp"
-            android:layout_weight="1"
-            />
-        <TextView 
-            android:id="@+id/flipper_text_main"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/ayrdy"
-            android:textSize="30sp"
-            android:layout_weight="1"
-            />
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+            <TextView
+                    android:id="@+id/flipper_text_title"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    android:textSize="40sp"/>
+
+            <TextView
+                    android:id="@+id/flipper_text_notes"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:textSize="20sp"
+                    android:lineSpacingMultiplier="1.5"
+                    android:textColor="#333"
+                    android:layout_weight="1"
+                    />
+            <TextView
+                    android:id="@+id/flipper_text_main"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ayrdy"
+                    android:lineSpacingMultiplier="1.5"
+                    android:textSize="24sp"
+                    android:layout_weight="1"
+                    />
         </LinearLayout>
     </ScrollView>
-    
+
 
 </RelativeLayout>

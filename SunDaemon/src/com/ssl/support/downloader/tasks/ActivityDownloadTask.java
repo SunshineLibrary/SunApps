@@ -61,7 +61,7 @@ public class ActivityDownloadTask extends DownloadTask implements JSONSerializab
             case Activities.TYPE_QUIZ:
                 return downloadQuiz();
             case Activities.TYPE_TEXT:
-                return SUCCESS;
+                return downloadToLocalUri(Activities.getActivityTextUri(mId));
             default:
                 return FAILURE;
         }
