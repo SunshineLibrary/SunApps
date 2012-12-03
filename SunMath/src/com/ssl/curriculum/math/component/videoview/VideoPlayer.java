@@ -284,7 +284,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     public void onCompletion(MediaPlayer arg0) {
         playButton.setEnabled(false);
         //if done,then display the next section,should be destroy then be similar as click the right button?but at playing ,then click 
-        //this.videoView.onNextBtnClicked(null);
+        this.videoView.onNextBtnClicked(null);
     }
 
     @Override

@@ -250,7 +250,7 @@ System.out.println("isCorrected:"+isCorrected+"  answer:"+answer);
     	t1.setText("回答");
     	t1.setTextSize(20);
     	android.widget.RelativeLayout.LayoutParams tv_answerText_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
-    	tv_answerText_layoutParams.setMargins(600, 10, 10, 35);
+    	tv_answerText_layoutParams.setMargins(10, 10, 1, 2);
     	rv_result_answer.addView(t1, 0, tv_answerText_layoutParams);
     	
     	ImageView iv = new ImageView(rv_result_answer.getContext());
@@ -260,7 +260,7 @@ System.out.println("isCorrected:"+isCorrected+"  answer:"+answer);
     		iv.setImageResource(R.drawable.ic_choice_incorrect);
     	}
     	android.widget.RelativeLayout.LayoutParams iv_result_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
-    	iv_result_layoutParams.setMargins(650, 10, 10, 35);
+    	iv_result_layoutParams.setMargins(60, 10, 10, 2);
     	rv_result_answer.addView(iv, 1, iv_result_layoutParams);
     	
     	TextView t2 = new TextView(rv_result_answer.getContext());
@@ -275,7 +275,7 @@ System.out.println("isCorrected:"+isCorrected+"  answer:"+answer);
     	t3.setTextSize(25);
     	t3.setTextColor(R.color.answer);
     	android.widget.RelativeLayout.LayoutParams tv_answer_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
-    	tv_answer_layoutParams.setMargins(650, 10, 10, 1);
+    	tv_answer_layoutParams.setMargins(650, 10, 10, 3);
     	rv_result_answer.addView(t3, 3, tv_answer_layoutParams);
     	
     	rv_result_answer.setVisibility(VISIBLE);
