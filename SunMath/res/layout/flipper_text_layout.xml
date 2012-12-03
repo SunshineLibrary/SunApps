@@ -4,22 +4,35 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
 
-    <LinearLayout android:layout_height="fill_parent"
-                  android:layout_width="fill_parent" android:orientation="vertical">
-
-        <TextView android:id="@+id/flipper_text_notes" android:layout_height="wrap_content"
-                  android:layout_width="wrap_content" android:textSize="11pt"/>
-
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android" 
-            android:id="@+id/sv_container" 
-        	android:layout_width="fill_parent" android:layout_height="100dp" 
-        	android:isScrollContainer="true" android:focusable="true"   
-			android:scrollbars="vertical" android:fadingEdge="vertical">
-        		<TextView android:layout_width="fill_parent" android:layout_height="400dp"  
-        		    android:text="@string/ayrdy"  
-					android:id="@+id/flipper_text_main" android:textColor="#071907" android:paddingTop="5dip" />  
-		</ScrollView>  
-
-    </LinearLayout>
+    <ScrollView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:focusable="true"
+        >
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+             <TextView 
+            android:id="@+id/flipper_text_notes"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ayrdy"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            />
+        <TextView 
+            android:id="@+id/flipper_text_main"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ayrdy"
+            android:textSize="30sp"
+            android:layout_weight="1"
+            />
+        </LinearLayout>
+    </ScrollView>
+    
 
 </RelativeLayout>
