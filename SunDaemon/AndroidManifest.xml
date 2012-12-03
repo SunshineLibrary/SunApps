@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.ssl.support.daemon"
-          android:versionCode="114"
-          android:versionName="1.0.14">
+          android:versionCode="115"
+          android:versionName="1.0.15">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
@@ -52,6 +52,7 @@
 
         <activity
                 android:name="com.ssl.support.activities.SignInActivity"
+                android:screenOrientation="portrait"
                 android:exported="true">
             <intent-filter>
                 <action android:name="com.ssl.support.action.SIGN_IN"/>

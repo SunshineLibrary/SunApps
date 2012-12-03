@@ -13,6 +13,7 @@ public class QuizTemplateResolver {
         return rawHtmlString.replaceAll("<body>(.*?)</body>", "<body>" + Question_num + newContent + "</body>");
     }
     
+
     public static String replaceWithNewContent(String rawHtmlString, String newContent){
     	return rawHtmlString.replaceAll("<body>(.*?)</body>", "<body>" + newContent + "</body>");
     }

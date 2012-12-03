@@ -14,6 +14,7 @@ public class ProblemTable extends DownloadableTable {
             Problems._ANSWER,
             Problems._IS_CORRECT,
             Problems._USER_ANSWER,
+            Problems._DURATION,
     };
 
     public static final String[][] COLUMN_DEFINITIONS = {
@@ -23,6 +24,7 @@ public class ProblemTable extends DownloadableTable {
             {Problems._ANSWER, "TEXT"},
             {Problems._USER_ANSWER, "TEXT"},
             {Problems._IS_CORRECT, "INTEGER"},
+            {Problems._DURATION, "INTEGER"},
     };
 
     public ProblemTable(DBHandler db) {
@@ -33,5 +35,6 @@ public class ProblemTable extends DownloadableTable {
     public void upgradeTableInSteps(SQLiteDatabase db, int oldVersion, int newVersion) {
         addColumn(db, oldVersion, 114, Problems._USER_ANSWER, "TEXT");
         addColumn(db, oldVersion, 114, Problems._IS_CORRECT, "INTEGER");
+        addColumn(db, oldVersion, 115, Problems._DURATION, "INTEGER");
     }
 }

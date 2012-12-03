@@ -71,8 +71,11 @@ public class UpdateTask extends AsyncTask {
                 tasks.addFirst(getDownloadTask(pkg));
             }
         }
-        lockToken = lockManager.acquireWifiLock(lockToken);
-        tasks.getFirst().execute();
+
+        if (!tasks.isEmpty()) {
+            lockToken = lockManager.acquireWifiLock(lockToken);
+            tasks.getFirst().execute();
+        }
 
         return null;
     }

@@ -3,12 +3,23 @@ package com.ssl.metadata.provider;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import java.io.File;
+
 public final class MetadataContract {
+
 
     public static final String AUTHORITY = "com.ssl.metadata.provider";
 
     public static final Uri AUTHORITY_URI = new Uri.Builder().scheme("content")
             .authority(AUTHORITY).build();
+
+
+    public static final class Files {
+        public static final String _ID = BaseColumns._ID;
+        public static final String _URI_PATH = "uri_path";
+        public static final String _FILE_PATH = "file_path";
+        public static final String _CONTENT_LENGTH = "content_length";
+    }
 
     public static final class Edges {
         public static final String _ID = BaseColumns._ID;
@@ -27,6 +38,7 @@ public final class MetadataContract {
         public static final String _ANSWER = "answer";
         public static final String _IS_CORRECT = "is_correct";
         public static final String _USER_ANSWER = "user_answer";
+        public static final String _DURATION = "duration";
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problems").build();
 

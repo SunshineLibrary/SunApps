@@ -10,7 +10,7 @@ import com.ssl.metadata.database.views.*;
 
 public class MetadataDBHandlerFactory {
 
-    private static final int DB_VERSION = 114;
+    private static final int DB_VERSION = 116;
     private static final String DB_NAME = "metadata";
 
     public static DBHandler newMetadataDBHandler(Context context) {
@@ -27,6 +27,7 @@ public class MetadataDBHandlerFactory {
     private static void initSystemTables(DBHandler dbHandler) {
         dbHandler.addTableManager(APISyncStateTable.TABLE_NAME, new APISyncStateTable(dbHandler));
         dbHandler.addTableManager(PackageTable.TABLE_NAME, new PackageTable(dbHandler));
+        dbHandler.addTableManager(FileTable.TABLE_NAME, new FileTable(dbHandler));
     }
 
     private static void initNormalTables(DBHandler dbHandler) {
