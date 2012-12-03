@@ -1,6 +1,7 @@
 package com.ssl.support.update;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -51,17 +52,19 @@ public class UpdateTask extends AsyncTask {
     private LinkedList<AsyncFileDownloadTask> tasks;
     private LockManager lockManager;
     private LockManager.Token lockToken;
+    private PackageManager pm;
 
     public UpdateTask(UpdateService context) {
         mContext = context;
         apiClient = ApiClientFactory.newApiClient(context);
         tasks = new LinkedList<AsyncFileDownloadTask>();
         lockManager = LockManager.getInstance(context);
+        pm = mContext.getPackageManager();
     }
 
     @Override
     protected Object doInBackground(Object... params) {
-        List<Package> updates = getUpdates(getLocalPackages());
+        List<Package> updates = getUpdates(getInstalledPackages());
         Log.v(TAG, "Packages to be updated: " + updates);
 
         for (Package pkg: updates) {
@@ -80,14 +83,32 @@ public class UpdateTask extends AsyncTask {
         return null;
     }
 
-    private List<Package> getLocalPackages() {
-        return PackageHelper.getLocalPackages(this.mContext);
+    private List<Package> getInstalledPackages() {
+        List<Package> packages = PackageHelper.getAllPackages(mContext);
+        List<Package> installedPackages = PackageHelper.pickOutInstalledPackages(mContext, packages);
+        for (Package pkg : installedPackages) {
+            PackageHelper.createOrUpdatePackage(mContext, pkg);
+            PackageHelper.setInstallStatus(mContext, pkg.id, MetadataContract.Packages.INSTALL_STATUS_INSTALLED);
+        }
+        for (Package pkg: packages) {
+            PackageHelper.deletePackage(mContext, pkg);
+        }
+        return installedPackages;
     }
 
     private List<Package> getUpdates(List<Package> localPackages) {
         JSONArray jsonArr = packageListToJSONArray(localPackages);
         jsonArr = getPendingPackagesFromServer(jsonArr);
-        return PackageHelper.getPackageListFromJSONArray(jsonArr);
+
+        List<Package> packages = PackageHelper.getPackageListFromJSONArray(jsonArr);
+        List<Package> installedPackages = PackageHelper.pickOutInstalledPackages(mContext, packages);
+
+        for (Package pkg : installedPackages) {
+            PackageHelper.createOrUpdatePackage(mContext, pkg);
+            PackageHelper.setInstallStatus(mContext, pkg.id, MetadataContract.Packages.INSTALL_STATUS_INSTALLED);
+        }
+
+        return packages;
     }
 
     private JSONArray packageListToJSONArray(List<Package> localPackages) {
@@ -131,7 +152,7 @@ public class UpdateTask extends AsyncTask {
         Uri remoteUri = apiClient.getDownloadUri("apks", pkg.getId());
         Uri localUri = getLocalFilePath(pkg);
 
-        PackageHelper.createNewPackage(mContext, pkg);
+        PackageHelper.createOrUpdatePackage(mContext, pkg);
         AsyncFileDownloadTask task = new MonitoredFileDownloadTask(mContext, remoteUri, localUri,
                 pkg.getUpdateUri(), MetadataContract.Packages.CONTENT_URI);
         task.addListener(new InstallListener(pkg, localUri));

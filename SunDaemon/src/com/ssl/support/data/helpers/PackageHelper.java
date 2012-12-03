@@ -3,6 +3,8 @@ package com.ssl.support.data.helpers;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -12,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -19,14 +22,25 @@ import static com.ssl.metadata.provider.MetadataContract.Packages;
 
 public class PackageHelper {
 
-
-    public static List<Package> getLocalPackages(Context context) {
-        String selection = Packages._INSTALL_STATUS + "<>? and " + Packages._INSTALL_STATUS + "<>?";
-        String[] selectionArgs = new String[]{
-                        String.valueOf(Packages.INSTALL_STATUS_DOWNLOADING),
-                        String.valueOf(Packages.INSTALL_STATUS_FAILED)};
-        Cursor cursor = context.getContentResolver().query(Packages.CONTENT_URI, null, selection, selectionArgs, null);
+    public static List<Package> getAllPackages(Context context) {
+        Cursor cursor = context.getContentResolver().query(Packages.CONTENT_URI, null, null, null, null);
         return getPackageListFromCursor(cursor, context);
+    }
+
+    public static List<Package> pickOutInstalledPackages(Context context, List<Package> packages) {
+        List<Package> installed = new LinkedList<Package>();
+        PackageManager pm = context.getPackageManager();
+        for (Package pkg : packages) {
+            try {
+                PackageInfo info = pm.getPackageInfo(pkg.name, 0);
+                if (info.versionCode >= pkg.version) {
+                    pkg.version = info.versionCode;
+                    installed.add(pkg);
+                }
+            } catch (PackageManager.NameNotFoundException e) {}
+        }
+        packages.removeAll(installed);
+        return installed;
     }
 
     public static Package getPackageForFile(Context context, Uri data) {
@@ -59,7 +73,7 @@ public class PackageHelper {
         return packages;
     }
 
-    public static void createNewPackage(Context context, Package pkg) {
+    public static void createOrUpdatePackage(Context context, Package pkg) {
         ContentResolver contentResolver = context.getContentResolver();
         if (isExistingPackage(contentResolver, pkg.id)) {
             contentResolver.update(Packages.CONTENT_URI, getUpdateRecordContentValues(pkg),
@@ -79,6 +93,10 @@ public class PackageHelper {
         }
         cursor.close();
         return isExisting;
+    }
+
+    public static void deletePackage(Context context, Package pkg) {
+        context.getContentResolver().delete(Packages.CONTENT_URI, BaseColumns._ID + "=" + pkg.id, null);
     }
 
     public static void setInstallStatus(Context context, int id, int status) {
@@ -130,13 +148,16 @@ public class PackageHelper {
         ContentValues values = new ContentValues();
         values.put(Packages._VERSION, pkg.getVersion());
         values.put(Packages._NAME, pkg.getName());
-        values.put(Packages._INSTALL_STATUS, Packages.STATUS_DOWNLOADING);
         return values;
     }
 
     private static ContentValues getContentValuesForStatus(int status) {
         ContentValues values = new ContentValues();
         values.put(Packages._INSTALL_STATUS, status);
+        if (status == Packages.INSTALL_STATUS_INSTALLED) {
+            values.put(Packages._DOWNLOAD_PROGRESS, 100);
+            values.put(Packages._DOWNLOAD_STATUS, Packages.STATUS_DOWNLOADED);
+        }
         return values;
     }
 

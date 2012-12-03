@@ -19,11 +19,15 @@ public class PostInstallReceiver extends BroadcastReceiver {
 		if (intent.getAction().equals(ACTION_PACKAGE_INSTALLED)){
             Log.v(getClass().getName(), "Received successful install: " + intent.getData());
             Package pkg = PackageHelper.getPackageForFile(context, intent.getData());
-            PackageHelper.setInstallStatus(context, pkg.id, MetadataContract.Packages.INSTALL_STATUS_INSTALLED);
+            if (pkg != null) {
+                PackageHelper.setInstallStatus(context, pkg.id, MetadataContract.Packages.INSTALL_STATUS_INSTALLED);
+            }
 		} else if (intent.getAction().equals(ACTION_PACKAGE_INSTALL_FAILED)) {
             Log.v(getClass().getName(), "Received failed install: " + intent.getData());
             Package pkg = PackageHelper.getPackageForFile(context, intent.getData());
-            PackageHelper.setInstallStatus(context, pkg.id, MetadataContract.Packages.INSTALL_STATUS_FAILED);
+            if (pkg != null) {
+                PackageHelper.setInstallStatus(context, pkg.id, MetadataContract.Packages.INSTALL_STATUS_FAILED);
+            }
 		} else if (intent.getAction().equals(ACTION_INSTALL_STOPPED)) {
             Log.v(getClass().getName(), "Received install stopped.");
             PackageHelper.setPendingToFailed(context);
