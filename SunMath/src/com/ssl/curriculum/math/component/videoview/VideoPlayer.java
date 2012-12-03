@@ -114,6 +114,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
                         player.pause();
                         isPaused = true;
                 	}else if(isPaused){
+         System.out.println("回来了1");
                 		 player.start();
                 	     onStart();
                 	}
@@ -202,6 +203,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     }
 
     private void resume() {
+    	System.out.println("回来了2");
         player.start();
         onStart();
     }
@@ -284,7 +286,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     public void onCompletion(MediaPlayer arg0) {
         playButton.setEnabled(false);
         //if done,then display the next section,should be destroy then be similar as click the right button?but at playing ,then click 
-        this.videoView.onNextBtnClicked(null);
+        //this.videoView.onNextBtnClicked(null);
     }
 
     @Override
@@ -294,12 +296,26 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         if (width == 0 || height == 0) return;
 
         holder.setFixedSize(width, height);
-        playerProgress.setProgress(0);
+        //playerProgress.setProgress(0);
         playerProgress.setMax(player.getDuration());
+        System.out.println("回来了3");
+        if(playerProgress.getProgress() > 0){
+        	System.out.println("从外来");
+        }else{
+        	System.out.println("第一次");
+        }
+        if(player.getCurrentPosition()>0){
+        	System.out.println("player:从外来");
+        }else{
+        	System.out.println("player:第一次");
+        }
         player.start();
         //Log.i("mediaplayer", "player prepared");
         playButton.setEnabled(true);
         rollbackButton.setEnabled(true);
+        onStart();
+        /*toFullScreen = true;
+        setToFullScreen(toFullScreen);*/
         System.out.println("begin play!!!");
     }
 
@@ -316,6 +332,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
             player.setDisplay(holder);
             player.prepare();
             player.seekTo(position);
+            System.out.println("回来了4");
             player.start();
         } catch (IOException e) {
             Log.e(TAG, "when switch to different screen, recreate the media player error!");

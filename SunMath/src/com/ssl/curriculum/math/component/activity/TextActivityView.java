@@ -26,6 +26,7 @@ import java.io.*;
  */
 public class TextActivityView extends ActivityView {
     private TextView tv_notes;
+    private TextView tv_main;
 
     public TextActivityView(Context context, ActivityViewer activityViewer) {
         super(context, activityViewer);
@@ -35,8 +36,8 @@ public class TextActivityView extends ActivityView {
     @Override
     public void setActivity(LinkedActivityData activityData) {
         super.setActivity(activityData);
-        //tv_notes.setText(activityData.notes);
-        //new LoadTextTask(activityData.activityId).execute();
+        tv_notes.setText(activityData.notes);
+        new LoadTextTask(activityData.activityId).execute();
     }
 
     private FileInputStream getTextFileInput(int activityId) {
@@ -56,6 +57,8 @@ public class TextActivityView extends ActivityView {
         
         tv_notes = (TextView) findViewById(R.id.flipper_text_notes);
         tv_notes.setMovementMethod(ScrollingMovementMethod.getInstance());
+        tv_main = (TextView) findViewById(R.id.flipper_text_main);
+        
 System.out.println("TextActivityView");
     }
 
@@ -86,7 +89,7 @@ System.out.println("TextActivityView");
             //sv_container.setLayoutParams(sv_params);
             //android.view.ViewGroup.LayoutParams tv_params = new android.view.ViewGroup.LayoutParams(LayoutParams.FILL_PARENT,400);
            // tv_main.setLayoutParams(tv_params);
-            tv_notes.setText(mText);
+            tv_main.setText(mText);
         }
     }
 }
