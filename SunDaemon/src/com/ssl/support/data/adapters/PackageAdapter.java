@@ -2,6 +2,8 @@ package com.ssl.support.data.adapters;
 
 import android.content.Context;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -26,9 +28,11 @@ import static com.ssl.metadata.provider.MetadataContract.Packages;
 public class PackageAdapter extends CursorAdapter {
 
     private static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private PackageManager mPackageManager;
 
     public PackageAdapter(Context context, Cursor c) {
         super(context, c, false);
+        mPackageManager = context.getPackageManager();
     }
 
     @Override
@@ -46,8 +50,16 @@ public class PackageAdapter extends CursorAdapter {
         TextView tv_progress = (TextView) view.findViewById(R.id.tv_table_progress);
         TextView tv_status = (TextView) view.findViewById(R.id.tv_table_status);
 
-        Package pkg = PackageHelper.newFromCursor(cursor , context);
-        tv_apk_name.setText(pkg.getName());
+        Package pkg = PackageHelper.newFromCursor(cursor);
+
+        try {
+            ApplicationInfo info = mPackageManager.getApplicationInfo(pkg.name, PackageManager.GET_META_DATA);
+            pkg.displayName = info.loadLabel(mPackageManager).toString();
+        } catch (PackageManager.NameNotFoundException e) {
+            pkg.displayName = pkg.name;
+        }
+
+        tv_apk_name.setText(pkg.getDisplayName());
         tv_version.setText(String.valueOf(pkg.getVersion()));
         tv_progress.setText(String.valueOf(pkg.downloadProgress));
 

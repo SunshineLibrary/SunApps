@@ -6,6 +6,7 @@ import com.ssl.metadata.provider.MetadataContract;
 public class Package {
 	
 	public String name;
+    public String displayName;
 	public int version;
 	public int id;
     public int downloadProgress;
@@ -15,9 +16,14 @@ public class Package {
 
     public Package() {}
 
+
 	public String getName() {
 		return name;
 	}
+
+    public String getDisplayName() {
+        return displayName;
+    }
 
 	public int getVersion() {
 		return version;
