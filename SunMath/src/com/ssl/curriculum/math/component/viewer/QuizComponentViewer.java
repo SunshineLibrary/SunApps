@@ -302,7 +302,7 @@ System.out.println("isCorrected:"+isCorrected+"  answer:"+answer);
         ContentValues values = new ContentValues();
         values.put(MetadataContract.Problems._USER_ANSWER, answer);
         values.put(MetadataContract.Problems._IS_CORRECT, isCorrect);
-       // values.put(MetadataContract.Problems._DURATION, (int) duration);
+       values.put(MetadataContract.Problems._DURATION, (int) duration);
         getContext().getContentResolver().update(MetadataContract.Problems.getProblemUri(id), values, null, null);
     }
 
