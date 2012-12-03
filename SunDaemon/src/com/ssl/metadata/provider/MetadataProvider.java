@@ -183,7 +183,11 @@ public class MetadataProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        switch (sUriMatcher.match(uri)) {
+        int match = sUriMatcher.match(uri);
+        getTableForMatch(match);
+        switch (match) {
+            case Matcher.PACKAGES:
+                return packageTable.delete(uri, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException();
         }
