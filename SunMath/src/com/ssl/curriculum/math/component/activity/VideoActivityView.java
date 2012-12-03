@@ -33,6 +33,7 @@ public class VideoActivityView extends ActivityView {
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.video_flip_layout, this, false);
         videoPlayer = (VideoPlayer) viewGroup.findViewById(R.id.content_screen_video_field);
+        videoPlayer.setVideoView(this);
         tv_title = (TextView) viewGroup.findViewById(R.id.video_title);
         tv_description = (TextView) viewGroup.findViewById(R.id.video_descr);
         this.addView(viewGroup);

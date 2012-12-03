@@ -28,7 +28,9 @@ public abstract class ActivityView extends FlipperChildView {
 
     public void onNextBtnClicked(View v) {
         updateActivityStatus(mActivityData.activityId);
+System.out.println("mActivityData.activityId:"+mActivityData.activityId);
         LinkedActivityData next = mActivityData.getNextActivity();
+System.out.println("LinkedActivityData:"+next);
         if (next != null) {
             next.currentPreviousActivityData = mActivityData;
             mActivityViewer.startNextActivity(next);

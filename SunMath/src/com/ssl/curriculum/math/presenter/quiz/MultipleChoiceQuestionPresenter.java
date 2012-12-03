@@ -48,6 +48,10 @@ public class MultipleChoiceQuestionPresenter {
                         "Non-multiple-choice problem encountered: " + mQuestion);
         }
     }
+    
+    public void showConfirm(){
+    	mQuestionView.onAnswerNotEmpty();
+    }
 
     public void unsetAnswer(String answer) {
         switch (mQuestion.getType()) {

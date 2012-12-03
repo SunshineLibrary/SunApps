@@ -31,9 +31,9 @@ label {
 }
 
 .answered label.correct {
-    background: url('ic_choice_correct.png') no-repeat;
+    background: #468046;
 }
 
 .answered label.incorrect {
-    background: url('ic_choice_incorrect.png') no-repeat;
+    
 }

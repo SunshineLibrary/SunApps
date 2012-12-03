@@ -127,8 +127,8 @@ System.out.println("HelloWorld");
     }
 
     @Override
-    public void onQuestionAnswered() {
-        mPresenter.onQuestionAnswered();
+    public boolean onQuestionAnswered() {
+        return mPresenter.onQuestionAnswered();
     }
 
     @Override

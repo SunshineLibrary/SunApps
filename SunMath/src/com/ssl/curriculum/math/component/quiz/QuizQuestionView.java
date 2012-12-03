@@ -43,7 +43,7 @@ public abstract class QuizQuestionView extends QuizComponentView {
         questionWebView.addJavascriptInterface(new AudioJavascriptInterface(), "audioManager");
     }
 
-    public abstract void onQuestionAnswered();
+    public abstract boolean onQuestionAnswered();
 
     public abstract void setQuestion(QuizQuestion question, int positionNum);
 

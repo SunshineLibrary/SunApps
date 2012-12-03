@@ -75,9 +75,11 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
     }
 
     @Override
-    public void onQuestionAnswered() {
+    public boolean onQuestionAnswered() {
         questionWebView.loadUrl("javascript:onSubmitAnswer()");
-        mQuizComponentViewer.onQuestionResult(mQuestion, mPresenter.getUserAnswer(), mPresenter.isCorrect());
+        boolean isCorrected = mPresenter.isCorrect();
+        mQuizComponentViewer.onQuestionResult(mQuestion, mPresenter.getUserAnswer(), isCorrected);
+        return isCorrected;
     }
 
     public void onAnswerNotEmpty() {

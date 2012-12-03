@@ -14,7 +14,7 @@
             />
 
 
-    <WebView android:layout_height="fill_parent"
+    <WebView android:layout_height="wrap_content"
              android:layout_width="fill_parent"
              android:layout_below="@id/quiz_choice_flipper_child_title"
              android:id="@+id/quiz_choice_flipper_child_question"
@@ -26,5 +26,5 @@
                  android:layout_centerInParent="true"
                  android:id="@+id/quiz_choice_progress_bar"
                  />
-
+	
 </RelativeLayout>

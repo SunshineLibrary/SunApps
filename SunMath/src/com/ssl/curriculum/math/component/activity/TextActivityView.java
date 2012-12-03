@@ -3,9 +3,11 @@ package com.ssl.curriculum.math.component.activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.ParcelFileDescriptor;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.model.activity.LinkedActivityData;
@@ -23,9 +25,7 @@ import java.io.*;
  * To change this template use File | Settings | File Templates.
  */
 public class TextActivityView extends ActivityView {
-
     private TextView tv_notes;
-    private TextView tv_main;
 
     public TextActivityView(Context context, ActivityViewer activityViewer) {
         super(context, activityViewer);
@@ -35,7 +35,7 @@ public class TextActivityView extends ActivityView {
     @Override
     public void setActivity(LinkedActivityData activityData) {
         super.setActivity(activityData);
-        tv_notes.setText(activityData.notes);
+        //tv_notes.setText(activityData.notes);
         //new LoadTextTask(activityData.activityId).execute();
     }
 
@@ -53,8 +53,10 @@ public class TextActivityView extends ActivityView {
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.flipper_text_layout, this, false);
         addView(viewGroup);
+        
         tv_notes = (TextView) findViewById(R.id.flipper_text_notes);
-        tv_main = (TextView) findViewById(R.id.flipper_text_main);
+        tv_notes.setMovementMethod(ScrollingMovementMethod.getInstance());
+System.out.println("TextActivityView");
     }
 
     private class LoadTextTask extends AsyncTask {
@@ -80,7 +82,11 @@ public class TextActivityView extends ActivityView {
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-            tv_main.setText(mText);
+            //android.view.ViewGroup.LayoutParams sv_params = new android.view.ViewGroup.LayoutParams(LayoutParams.FILL_PARENT,300);
+            //sv_container.setLayoutParams(sv_params);
+            //android.view.ViewGroup.LayoutParams tv_params = new android.view.ViewGroup.LayoutParams(LayoutParams.FILL_PARENT,400);
+           // tv_main.setLayoutParams(tv_params);
+            tv_notes.setText(mText);
         }
     }
 }
