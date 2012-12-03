@@ -34,13 +34,15 @@ public class ActivityViewer extends FrameLayout{
         super(context, attrs);
         mAnimationManager = new FlipAnimationManager(context);
     }
-
+    
+    
     public void onNextBtnClicked(View v){
         mCurrentView.onNextBtnClicked(v);
     }
 
     public void setNextBtn(ImageView btn) {
         mBtnNext = btn;
+        
     }
 
     public void enableNextBtn() {
@@ -153,6 +155,14 @@ System.out.println("getAudioView");
             addView(mVideoView);
         }
         return mVideoView;
+    }
+    
+    public ActivityView getVideoViewTo(){
+    	if(mVideoView != null){
+    		return mVideoView;
+    	}else{
+    		return null;
+    	}
     }
 
     private ActivityView getTextView() {

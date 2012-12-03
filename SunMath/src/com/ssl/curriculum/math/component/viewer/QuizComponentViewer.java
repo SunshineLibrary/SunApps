@@ -243,41 +243,12 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
 System.out.println("isCorrected:"+isCorrected+"  answer:"+answer);
     	rv_result_answer.removeAllViews();
     	android.view.ViewGroup.LayoutParams basic_params = new android.view.ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-    	/*tv_answer = new TextView(rv_result_answer.getContext());
-    	iv_result = new ImageView(rv_result_answer.getContext());
-    	android.view.ViewGroup.LayoutParams basic_params = new android.view.ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
     	
-    	android.widget.RelativeLayout.LayoutParams tv_answerText_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
-    	tv_answerText_layoutParams.setMargins(15, 10, 1, 1);
-    	
-    	android.widget.RelativeLayout.LayoutParams iv_result_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
-    	iv_result_layoutParams.setMargins(1, 10, 200, 1);
-    	
-    	android.widget.RelativeLayout.LayoutParams tv_answerString_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
-    	tv_answerString_layoutParams.setMargins(200, 10, 1, 1);
-    	
-    	android.widget.RelativeLayout.LayoutParams tv_answer_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
-    	tv_answer_layoutParams.setMargins(1, 10, 10, 1);
-    	
-    	//add the child view with the special params
-    	tv_answer.setText(answer);
-    	tv_answer.setTextColor(R.color.answer);
-    	tv_answer.setTextSize(20);
-    	if(isCorrected){
-    		iv_result.setImageResource(R.drawable.ic_choice_correct);
-    	}else{
-    		iv_result.setImageResource(R.drawable.ic_choice_incorrect);
-    	}
-    	
-    	rv_result_answer.addView(tv_answerText, 0, tv_answerText_layoutParams);
-    	rv_result_answer.addView(iv_result, 1, iv_result_layoutParams);
-    	rv_result_answer.addView(tv_answerString, 2, tv_answerString_layoutParams);
-    	rv_result_answer.addView(tv_answer, 3, tv_answer_layoutParams);*/
     	TextView t1 = new TextView(rv_result_answer.getContext());
     	t1.setText("回答");
     	t1.setTextSize(20);
     	android.widget.RelativeLayout.LayoutParams tv_answerText_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
-    	tv_answerText_layoutParams.setMargins(35, 10, 1, 1);
+    	tv_answerText_layoutParams.setMargins(600, 10, 10, 35);
     	rv_result_answer.addView(t1, 0, tv_answerText_layoutParams);
     	
     	ImageView iv = new ImageView(rv_result_answer.getContext());
@@ -287,7 +258,7 @@ System.out.println("isCorrected:"+isCorrected+"  answer:"+answer);
     		iv.setImageResource(R.drawable.ic_choice_incorrect);
     	}
     	android.widget.RelativeLayout.LayoutParams iv_result_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
-    	iv_result_layoutParams.setMargins(80, 10, 250, 1);
+    	iv_result_layoutParams.setMargins(650, 10, 10, 35);
     	rv_result_answer.addView(iv, 1, iv_result_layoutParams);
     	
     	TextView t2 = new TextView(rv_result_answer.getContext());
