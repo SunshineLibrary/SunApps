@@ -141,6 +141,7 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
 
         flipCurrentQuestionIn();
         hideConfirmButton();
+        hideResultAnswerView();
         mCurrentComponentView.onAfterFlippingIn();
     }
 
