@@ -2,7 +2,10 @@ package com.ssl.curriculum.math.activity;
 
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -95,6 +98,7 @@ public class MainActivity extends Activity {
         mActivityViewer.destroy();
     }
     
+    
     /*@Override
      * Suggest this method ,because it's the method leading to the target 
     protected void onUserLeaveHint() {
@@ -107,5 +111,19 @@ public class MainActivity extends Activity {
     	// TODO Auto-generated method stub
     	super.onPause();
     	mActivityViewer.pause();
+    }
+    
+    @Override
+    protected void onResume() {
+    	// TODO Auto-generated method stub
+    	super.onResume();
+    	this.registerReceiver(new BroadcastReceiver(){
+
+			@Override
+			public void onReceive(Context arg0, Intent arg1) {
+				// TODO Auto-generated method stub
+				System.out.println("收到广播");
+				mActivityViewer.onNextBtnClicked(rightBtn);
+			}}, new IntentFilter("com.liucong.next"));
     }
 }

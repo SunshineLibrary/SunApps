@@ -27,13 +27,13 @@ label {
 }
 
 .answered label {
-    background: none;
+     background: url('ic_choice_blank_selection.png') no-repeat;
 }
 
 .answered label.correct {
-    background: #468046;
+    background: #c1d5d0;
 }
 
 .answered label.incorrect {
-    
+    background: url('ic_choice_selected.png') no-repeat;
 }
