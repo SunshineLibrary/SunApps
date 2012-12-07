@@ -22,10 +22,10 @@ public class FileDownloadTask {
     public static final int FAILURE = 1;
     private static final int RETRY_COUNT = 3;
 
+    protected long contentLength;
     private Context context;
     private Uri remoteUri, localUri;
-    private HttpClient httpClient;
-    private long contentLength;
+    protected HttpClient httpClient;
     private DownloadProgressListener mDownloadProgressListener;
 
     public FileDownloadTask(Context context, Uri remoteUri, Uri localUri) {
@@ -57,7 +57,7 @@ public class FileDownloadTask {
         return FAILURE;
     }
 
-    private InputStream getInputStreamForUri(Uri uri) {
+    protected InputStream getInputStreamForUri(Uri uri) {
         HttpGet get = new HttpGet(uri.toString());
         HttpResponse response;
         try {
@@ -83,7 +83,7 @@ public class FileDownloadTask {
         }
     }
 
-    private OutputStream getOutputStreamForUri(Uri uri) {
+    protected OutputStream getOutputStreamForUri(Uri uri) {
         try {
             Log.d(getClass().getName(), "Accessing local uri: " + uri);
             ParcelFileDescriptor fid = context.getContentResolver().openFileDescriptor(uri, "w");
