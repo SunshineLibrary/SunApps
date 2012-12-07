@@ -2,10 +2,7 @@ package com.ssl.support.downloader;
 
 import android.content.Context;
 import android.util.Log;
-import com.ssl.support.downloader.tasks.ActivityDownloadTask;
-import com.ssl.support.downloader.tasks.DownloadTask;
-import com.ssl.support.downloader.tasks.ProblemDownloadTask;
-import com.ssl.support.downloader.tasks.SectionDownloadTask;
+import com.ssl.support.downloader.tasks.*;
 import com.ssl.support.utils.JSONSerializable;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +35,12 @@ public class DownloadTaskFactory implements JSONSerializable.Factory<DownloadTas
                     return new ActivityDownloadTask(mContext, id);
                 case TYPE_PROBLEM:
                     return new ProblemDownloadTask(mContext, id);
+                case TYPE_BOOK:
+                    return new BookDownloadTask(mContext, id);
+                case TYPE_BOOK_THUMB:
+                case TYPE_BOOK_COLLECTION_THUMB:
+                    return new ThumbnailDownloadTask(mContext, type, id);
+
             }
         } catch (JSONException e) {
             Log.e(TAG, "Failed creating DownloadTask from json: " + jsonObject.toString(), e);

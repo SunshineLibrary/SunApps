@@ -7,7 +7,6 @@ import java.io.File;
 
 public final class MetadataContract {
 
-
     public static final String AUTHORITY = "com.ssl.metadata.provider";
 
     public static final Uri AUTHORITY_URI = new Uri.Builder().scheme("content")
@@ -19,6 +18,8 @@ public final class MetadataContract {
         public static final String _URI_PATH = "uri_path";
         public static final String _FILE_PATH = "file_path";
         public static final String _CONTENT_LENGTH = "content_length";
+
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("files").build();
     }
 
     public static final class Edges {
@@ -498,17 +499,16 @@ public final class MetadataContract {
         
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_category").build();
     }
-    
+
     public static final class UserBook {
-    	
-    	public static final String _ID = BaseColumns._ID;
-    	public static final String _USER_ID = "user_id";
-    	public static final String _BOOK_ID = "book_id";
-    	public static final String _PROGRESS = "progress";
-    	public static final String _FIRST_READ_AT = "first_read_at";
-    	public static final String _LAST_READ_AT = "last_read_at";
-    	
-    	public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("user_book").build();
+        public static final String _ID = BaseColumns._ID;
+        public static final String _USER_ID = "user_id";
+        public static final String _BOOK_ID = "book_id";
+        public static final String _PROGRESS = "progress";
+        public static final String _FIRST_READ_AT = "first_read_at";
+        public static final String _LAST_READ_AT = "last_read_at";
+
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("user_book").build();
     }
 
     public static final class Packages extends Downloadable {
@@ -530,7 +530,6 @@ public final class MetadataContract {
     }
 
     public static class Downloadable {
-
         public static final String _DOWNLOAD_STATUS = "download_status";
         public static final String _DOWNLOAD_PROGRESS = "download_progress";
         public static final String _DOWNLOAD_TIME = "download_time";
