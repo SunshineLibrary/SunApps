@@ -71,13 +71,13 @@ public class MetadataDBHandlerFactory {
 
         table = new ObservableTable(new BookTable(dbHandler));
         table.addObserver(downloadableObserver);
-        //table.addObserver(thumbnailObserver);
-        table.addObserver(userRecordObserver);
+        table.addObserver(thumbnailObserver);
+        //table.addObserver(userRecordObserver);
         dbHandler.addTableManager(BookTable.TABLE_NAME, table);
 
         table = new ObservableTable(new BookCollectionTable(dbHandler));
         table.addObserver(downloadableObserver);
-        //table.addObserver(thumbnailObserver);
+        table.addObserver(thumbnailObserver);
         dbHandler.addTableManager(BookCollectionTable.TABLE_NAME, table);
 
         table = new ObservableTable(new ProblemTable(dbHandler));

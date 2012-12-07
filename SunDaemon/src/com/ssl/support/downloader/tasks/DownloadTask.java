@@ -21,6 +21,9 @@ public abstract class DownloadTask implements JSONSerializable {
     public static final int TYPE_SECTION = 1;
     public static final int TYPE_ACTIVITY = 2;
     public static final int TYPE_PROBLEM = 3;
+    public static final int TYPE_BOOK = 4;
+    public static final int TYPE_BOOK_THUMB = 5;
+    public static final int TYPE_BOOK_COLLECTION_THUMB = 6;
 
     protected static final ContentValues NOT_DOWNLOADED = new ContentValues();
     protected static final ContentValues DOWNLOADING = new ContentValues();
@@ -78,17 +81,21 @@ public abstract class DownloadTask implements JSONSerializable {
     protected abstract Uri getNotifyUri();
 
     protected void updateProgress(int progress) {
-        ContentResolver resolver = mContext.getContentResolver();
-        resolver.update(getUpdateUri(), getProgressContentValues(progress), null, null);
-        resolver.notifyChange(getNotifyUri(), null);
+        if (getUpdateUri() != null) {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.update(getUpdateUri(), getProgressContentValues(progress), null, null);
+            resolver.notifyChange(getNotifyUri(), null);
+        }
     }
 
     protected void setResult(int status) {
         Log.d(TAG, String.format("Task[type=%d] finished with status: %d", getType(), status));
         mResult = status;
-        ContentResolver resolver = mContext.getContentResolver();
-        resolver.update(getUpdateUri(), getStatusContentValues(status), null, null);
-        resolver.notifyChange(getNotifyUri(), null);
+        if (getUpdateUri() != null) {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.update(getUpdateUri(), getStatusContentValues(status), null, null);
+            resolver.notifyChange(getNotifyUri(), null);
+        }
     }
 
     private static ContentValues getProgressContentValues(int progress) {
@@ -108,4 +115,5 @@ public abstract class DownloadTask implements JSONSerializable {
                 return NOT_DOWNLOADED;
         }
     }
+
 }

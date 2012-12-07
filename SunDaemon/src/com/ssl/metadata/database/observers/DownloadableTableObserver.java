@@ -95,12 +95,13 @@ public class DownloadableTableObserver extends TableObserver {
 
 
     private void downloadActivity(Uri uri) {
-        int activity_id= Integer.parseInt(uri.getLastPathSegment());
+        int activity_id = Integer.parseInt(uri.getLastPathSegment());
         enqueueDownloadTask(DownloadTask.TYPE_ACTIVITY, activity_id);
     }
 
     private void downloadBook(Uri uri) {
-        throw new UnsupportedOperationException();
+        int book_id = Integer.parseInt(uri.getLastPathSegment());
+        enqueueDownloadTask(DownloadTask.TYPE_BOOK, book_id);
     }
 
     public void downloadGalleryImage(Uri uri) {

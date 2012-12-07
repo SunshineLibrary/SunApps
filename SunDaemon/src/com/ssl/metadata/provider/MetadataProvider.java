@@ -6,6 +6,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
+import android.net.UrlQuerySanitizer;
 import android.os.ParcelFileDescriptor;
 import android.provider.BaseColumns;
 import com.ssl.metadata.database.DBHandler;
@@ -15,6 +16,7 @@ import com.ssl.metadata.database.tables.*;
 import com.ssl.metadata.database.views.*;
 import com.ssl.metadata.storage.SharedStorageManager;
 import com.ssl.support.application.DaemonApplication;
+import org.apache.http.impl.auth.DigestSchemeFactory;
 
 import java.io.FileNotFoundException;
 
@@ -30,6 +32,7 @@ public class MetadataProvider extends ContentProvider {
     private SharedStorageManager sharedStorageManager;
 
     private Table packageTable;
+    private Table fileTable;
     private Table apiSyncStateTable;
     private Table subjectTable;
     private Table courseTable;
@@ -61,7 +64,8 @@ public class MetadataProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         dbHandler = ((DaemonApplication) getContext().getApplicationContext()).getMetadataDBHandler();
-        sharedStorageManager = new SharedStorageManager(getContext());
+        fileTable = dbHandler.getTableManager(FileTable.TABLE_NAME);
+        sharedStorageManager = new SharedStorageManager(getContext(), (FileTable) fileTable);
         return true;
     }
 
@@ -93,6 +97,7 @@ public class MetadataProvider extends ContentProvider {
 
             // Collections
             case Matcher.PACKAGES:
+            case Matcher.FILES:
             case Matcher.API_SYNC_STATES:
             case Matcher.SUBJECTS:
             case Matcher.COURSES:
@@ -176,9 +181,38 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.API_SYNC_STATES:
             case Matcher.PACKAGES:
                 return table.insert(uri, values);
+            case Matcher.FILES:
+                return insertFilePath(values);
             default:
                 throw new IllegalArgumentException();
         }
+    }
+
+    private Uri insertFilePath(ContentValues values) {
+        String uriPath, fileName, fileExtension, filePath;
+        uriPath = values.getAsString(MetadataContract.Files._URI_PATH);
+        fileName = values.getAsString(MetadataContract.Files._FILE_PATH);
+
+        if (!uriPath.startsWith("/") || fileName.lastIndexOf(".") < 0) {
+            return null;
+        }
+
+        fileExtension = fileName.substring(fileName.lastIndexOf("."));
+        fileName = uriPath.substring(1).replace("/", "_");
+
+        filePath = sharedStorageManager.moveFile(uriPath, fileName + fileExtension);
+        values.put(MetadataContract.Files._FILE_PATH, filePath);
+
+        Cursor cursor = fileTable.query(MetadataContract.Files.CONTENT_URI, null,
+                MetadataContract.Files._URI_PATH + "='" + uriPath + "'", null, null);
+        if (cursor.moveToFirst()) {
+            fileTable.update(MetadataContract.Files.CONTENT_URI, values,
+                    MetadataContract.Files._URI_PATH + "='" + uriPath + "'", null);
+        } else {
+            fileTable.insert(MetadataContract.Files.CONTENT_URI, values);
+        }
+        cursor.close();
+        return null;
     }
 
     @Override
@@ -237,6 +271,11 @@ public class MetadataProvider extends ContentProvider {
                     packageTable = dbHandler.getTableManager(PackageTable.TABLE_NAME);
                 }
                 return packageTable;
+            case Matcher.FILES:
+                if (fileTable == null) {
+                    fileTable = dbHandler.getTableManager(FileTable.TABLE_NAME);
+                }
+                return fileTable;
             case Matcher.API_SYNC_STATES:
                 if (apiSyncStateTable == null) {
                     apiSyncStateTable = dbHandler.getTableManager(APISyncStateTable.TABLE_NAME);
@@ -355,7 +394,6 @@ public class MetadataProvider extends ContentProvider {
             default:
             	return null;
         }
-
     }
 
     private TableView getViewForMatch(int match) {
