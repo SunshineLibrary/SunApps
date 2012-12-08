@@ -24,6 +24,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EntranceActivity extends Activity implements OnItemClickListener {
 	
@@ -66,6 +67,8 @@ public class EntranceActivity extends Activity implements OnItemClickListener {
 			Context otherAppContext = createPackageContext("com.ssl.support.daemon", Context.CONTEXT_IGNORE_SECURITY);
 			SharedPreferences sharedPreferences = otherAppContext.getSharedPreferences("studentName", Context.MODE_WORLD_READABLE);
 			String name = sharedPreferences.getString("name", "你好");
+System.out.println("name:"+name);
+Toast.makeText(this, "name:"+name, 0).show();
 			tv_student_name.setText(name);
 		} catch (NameNotFoundException e) {
 			// TODO Auto-generated catch block

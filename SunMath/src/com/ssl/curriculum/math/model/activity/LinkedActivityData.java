@@ -20,6 +20,16 @@ public class LinkedActivityData extends DomainActivityData {
     public LinkedActivityData currentPreviousActivityData;
     private Map<String, LinkedActivityData> conditionalNextActivities;
     private EdgeConditionMatcher edgeConditionMatcher;
+    
+    private int quiz_num;
+    
+    public void setQuizNum(int quiz_num){
+    	this.quiz_num = quiz_num;
+    }
+    
+    public int getQuizNum(){
+    	return this.quiz_num;
+    }
 
     public LinkedActivityData(int type) {
         super(type);

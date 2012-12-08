@@ -25,7 +25,9 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/title_main_activity"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+             >
         </activity>
         <activity
             android:name=".activity.GalleryFlipperActivity"

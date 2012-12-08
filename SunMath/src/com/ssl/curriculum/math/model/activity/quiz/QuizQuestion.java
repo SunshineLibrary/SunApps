@@ -7,6 +7,7 @@ public class QuizQuestion {
     private String answer;
     private boolean isPass = false;
     private String quizContent;
+    private int quiz_num;
 
     public QuizQuestion(String quizContent, String answer, int id, int type) {
         this.quizContent = quizContent;
@@ -14,9 +15,14 @@ public class QuizQuestion {
         this.id = id;
         this.type = type;
     }
-
+    
+    public QuizQuestion(String quizContent, String answer, int id, int type, int quiz_num) {
+        this(quizContent,answer,id,type);
+        this.quiz_num = quiz_num;
+    }
+    
     public QuizQuestion(QuizQuestion quizQuestion) {
-        this(quizQuestion.getQuizContent(), quizQuestion.getAnswer(), quizQuestion.id, quizQuestion.getType());
+        this(quizQuestion.getQuizContent(), quizQuestion.getAnswer(), quizQuestion.id, quizQuestion.getType(), quizQuestion.getQuizNum());
     }
 
     public int getType() {
@@ -41,6 +47,14 @@ public class QuizQuestion {
 
     public boolean isPass() {
         return isPass;
+    }
+    
+    public void setQuizNum(int quiz_num){
+    	this.quiz_num = quiz_num;
+    }
+    
+    public int getQuizNum(){
+    	return quiz_num;
     }
 
     @Override

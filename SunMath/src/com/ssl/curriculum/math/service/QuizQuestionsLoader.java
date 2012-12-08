@@ -36,7 +36,8 @@ public class QuizQuestionsLoader {
                 int type = cursor.getInt(cursor.getColumnIndex(Problems._TYPE));
                 String body = cursor.getString(cursor.getColumnIndex(Problems._BODY));
                 String answer = cursor.getString(cursor.getColumnIndex(Problems._ANSWER));
-                questions.add(createNewQuizQuestion(body, answer, id, type));
+                int quiz_num = quizData.getQuizNum();
+                questions.add(createNewQuizQuestion(body, answer, id, type, quiz_num));
             }
             loadMultiChoices(questions);
 
@@ -46,8 +47,8 @@ public class QuizQuestionsLoader {
         }
     }
 
-    private QuizQuestion createNewQuizQuestion(String body, String answer, int id, int type) {
-        QuizQuestion question = new QuizQuestion(body, answer, id, type);
+    private QuizQuestion createNewQuizQuestion(String body, String answer, int id, int type, int quiz_num) {
+        QuizQuestion question = new QuizQuestion(body, answer, id, type, quiz_num);
         if (type != Problems.TYPE_FB) {
             question = new QuizChoiceQuestion(question);
         }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,6 +52,10 @@ public class FinishActivityView extends ActivityView implements View.OnClickList
         updateSectionStatus(mActivityViewer.getSectionId());
         mActivityViewer.flipCurrentViewOutToRight();
         mActivityViewer.finish();
+       
+        //send the broadcast
+        //Intent intent = new Intent("com.liucong.start");
+        //context.sendBroadcast(intent);
 	}
 
     private void updateSectionStatus(int id) {

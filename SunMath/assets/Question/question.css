@@ -5,9 +5,10 @@ body {
 
 label {
     display: inline;
-    min-height: 30pt;
-    line-height: 30pt;
+    min-height: 36pt;
+    line-height: 36pt;
     vertical-align: middle;
+	padding:0px 5px 9px 2px;
 }
 
 .choice {
@@ -27,13 +28,17 @@ label {
 }
 
 .answered label {
-    background: none;
+     background: url('ic_choice_blank_selection.png') no-repeat;
 }
 
 .answered label.correct {
-    background: #468046;
+    background: #c1d5d0 url('ic_choice_selected.png') no-repeat;
 }
 
 .answered label.incorrect {
-    
+    background: url('ic_choice_selected.png') no-repeat;
+}
+
+.answered label.wrong {
+    background: #c1d5d0 url('ic_choice_blank_selection.png') no-repeat;
 }

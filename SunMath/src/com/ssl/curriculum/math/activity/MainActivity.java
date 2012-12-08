@@ -2,7 +2,10 @@ package com.ssl.curriculum.math.activity;
 
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +27,7 @@ public class MainActivity extends Activity {
 
     private int sectionId;
     private int initActivityId;
+    private int quiz_num;
 
 
     @Override
@@ -43,6 +47,7 @@ public class MainActivity extends Activity {
     private void loadActivity() {
         Log.i("open activities", "sectionId=" + sectionId + "," + "activityId" + initActivityId);
         LinkedActivityData data = mActivitiesLoader.getLoadedActivity(initActivityId);
+        data.setQuizNum(quiz_num);
         mActivityViewer.startActivity(data);
     }
 
@@ -59,6 +64,8 @@ public class MainActivity extends Activity {
         Intent intent = getIntent();
         sectionId = intent.getExtras().getInt("sectionId");
         initActivityId = intent.getExtras().getInt("activityId");
+        quiz_num = intent.getIntExtra("quiz_num", 0);
+System.out.println("Main's quiz_num="+quiz_num);
         mActivitiesLoader = new SectionActivitiesLoader(this, sectionId);
         mActivityViewer.setSectionId(sectionId);
         mActivityViewer.setActivityFinishListener(new ActivityViewer.ActivityFinishListener() {
@@ -95,6 +102,7 @@ public class MainActivity extends Activity {
         mActivityViewer.destroy();
     }
     
+    
     /*@Override
      * Suggest this method ,because it's the method leading to the target 
     protected void onUserLeaveHint() {
@@ -107,5 +115,19 @@ public class MainActivity extends Activity {
     	// TODO Auto-generated method stub
     	super.onPause();
     	mActivityViewer.pause();
+    }
+    
+    @Override
+    protected void onResume() {
+    	// TODO Auto-generated method stub
+    	super.onResume();
+    	this.registerReceiver(new BroadcastReceiver(){
+
+			@Override
+			public void onReceive(Context arg0, Intent arg1) {
+				// TODO Auto-generated method stub
+				System.out.println("收到广播");
+				mActivityViewer.onNextBtnClicked(rightBtn);
+			}}, new IntentFilter("com.liucong.next"));
     }
 }

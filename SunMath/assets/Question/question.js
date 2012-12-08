@@ -27,7 +27,11 @@ window.onload = function() {
                     if (element != null) {
                         answer = element.getAttribute("value");
                         if (Question.isCorrectAnswer(answer)) {
-                            label.className = "correct"
+                            if(element.checked){
+								label.className = "correct"
+							}else{
+								label.className = "wrong"
+							}
                         } else if (element.checked) {
                             label.className = "incorrect"
                         }
