@@ -9,6 +9,8 @@ import com.ssl.metadata.provider.MetadataContract.BookCategories;
 import com.ssl.metadata.provider.MetadataContract.BookCollections;
 import com.ssl.metadata.provider.MetadataContract.BookLists;
 import com.ssl.metadata.provider.MetadataContract.Books;
+import com.ssl.resourcecenter.model.ItemBookCollectionCover;
+import com.ssl.resourcecenter.model.ItemCover;
 import com.ssl.resourcecenter.model.ResourceGridItem;
 import com.ssl.resourcecenter.model.ResourceListGridItem;
 import com.ssl.resourcecenter.R;
@@ -66,7 +68,7 @@ public class ResourceContentResolver {
 			int i = 0;
 			while (cur.moveToNext() && i < itemPerPage) {
 				try {
-					bm = getBitmap(cur.getString(idCol), resolver);
+					bm = getBookCollectionCoverBitmap(cur.getString(idCol), resolver);
 				} catch (IOException e) {
 					//default image
 					bm = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
@@ -139,7 +141,7 @@ public class ResourceContentResolver {
 			int i = 0;
 			while (cur.moveToNext() && i < itemPerPage) {
 				try {
-					bm = getBitmap(cur.getString(idCol), resolver);
+					bm = getBookCoverBitmap(cur.getString(idCol), resolver);
 				} catch (IOException e) {
 					//default image
 					bm = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
@@ -182,8 +184,18 @@ public class ResourceContentResolver {
 		return resolver.query(MetadataContract.BookLists.CONTENT_URI, projection, selection, null, null);
 	}
 	
-	public static Bitmap getBitmap(String bookId, ContentResolver resolver) throws IOException {
+	public static Bitmap getBookCoverBitmap(String bookId, ContentResolver resolver) throws IOException {
 		ItemBookCover cover = new ItemBookCover(bookId);
+		return getBitmap(cover, resolver);
+	}
+	
+	public Bitmap getBookCollectionCoverBitmap(String bookCollectionId, ContentResolver resolver) throws IOException {
+		ItemBookCollectionCover cover = new ItemBookCollectionCover(bookCollectionId);
+		
+		return getBitmap(cover, resolver);
+	}
+	
+	public static Bitmap getBitmap(ItemCover cover, ContentResolver resolver) throws IOException {
 		ParcelFileDescriptor pfdInput = resolver.openFileDescriptor(cover.getThumbnailUri(), "r");
 		if (pfdInput == null)
 			return null;
