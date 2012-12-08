@@ -55,6 +55,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void initUI() {
     	String studentName = AccessToken.getUserName(getApplicationContext());
+System.out.println("MainActivity sutdentName："+studentName);
     	tv_student_name = (TextView) findViewById(R.id.tv_student_name);
     	
     	sp = getSharedPreferences("studentName", Context.MODE_WORLD_READABLE);

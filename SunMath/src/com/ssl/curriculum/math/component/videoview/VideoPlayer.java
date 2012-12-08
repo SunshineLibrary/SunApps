@@ -46,7 +46,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     private int height;
     private long lastActionTime = 0L;
 
-    private boolean isPaused;
+    private boolean isPaused = false;
     private boolean toFullScreen = false;
 
     private Runnable progressRunnable;
@@ -56,7 +56,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     
     private boolean isFirst = false;
     private ActivityView videoView;
-    private boolean isDone = false;
+   // private boolean isDone = false;
 
     public VideoPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -65,7 +65,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         initUI();
         initListener();
         initRunnable();
-        postDelayed(progressRunnable, 100);
+        //postDelayed(progressRunnable, 100);
         
     }
     
@@ -150,10 +150,10 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     private void initRunnable() {
         progressRunnable = new Runnable() {
             public void run() {
-            	if(isFirst){
+            	/*if(isFirst){
                 	play();
                 	isFirst = false;
-                }
+                }*/
             	
                 if (lastActionTime > 0 && SystemClock.elapsedRealtime() - lastActionTime > 3000) {
                     hideControlPanel();
@@ -163,7 +163,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
                     playerProgress.setProgress(player.getCurrentPosition());
                 }
 
-                if (!isPaused) {
+                if (!isPaused) {//!isPaused && player != null
                     surface.postDelayed(progressRunnable, 1000);
                 }
                 
@@ -193,11 +193,11 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     private void play() {
         playVideo();
         hideControlPanel();
-        onStart();
+        //onStart();
     }
 
     public void pause() {
-        if (player == null) return;
+        if (player == null) return;//can delete
         playButton.setImageResource(R.drawable.ic_media_play);
         player.pause();
         isPaused = true;
@@ -218,7 +218,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         if (player != null) {
             player.release();
             player = null;
-            isDone = false;
+           // isDone = false;
         }
     }
 
@@ -313,17 +313,17 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     }
     
     private void playVedioFromPosition(int position){
-    	if(isDone){
+    	/*if(isDone){
     		return;
-    	}
+    	}*/
     	try {
             player.reset();
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.setDataSource(getVideoFileDescriptor(activityId));
             player.setDisplay(holder);
-            player.prepare();
+            //player.prepare();
+            player.prepareAsync();
             player.seekTo(position);
-            System.out.println("回来了4");
             player.start();
         } catch (IOException e) {
            Log.e(TAG, "when switch to different screen, recreate the media player error!");

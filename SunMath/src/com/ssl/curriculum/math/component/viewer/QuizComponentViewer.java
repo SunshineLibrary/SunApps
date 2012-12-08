@@ -47,6 +47,10 @@ public class QuizComponentViewer extends FrameLayout implements View.OnClickList
     private ActivityViewer mActivityViewer;
 
     private long componentStartTime;
+    
+    private static final int ANSWER_TEXT_ID = 1000;
+    private static final int IMAGE_RESULT_ID = 2000;
+    private static final int ANSWER_STRING_ID = 3000;
 
     public QuizComponentViewer(Context context) {
         super(context);
@@ -248,37 +252,53 @@ System.out.println("isCorrected:"+isCorrected+"  answer:"+answer);
     	rv_result_answer.removeAllViews();
     	android.view.ViewGroup.LayoutParams basic_params = new android.view.ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
     	
-    	TextView t1 = new TextView(rv_result_answer.getContext());
-    	t1.setText("回答");
-    	t1.setTextSize(20);
+    	TextView answerText = new TextView(rv_result_answer.getContext());
+    	answerText.setId(ANSWER_TEXT_ID);
+    	answerText.setText("回答");
+    	answerText.setTextSize(20);
     	android.widget.RelativeLayout.LayoutParams tv_answerText_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
-    	tv_answerText_layoutParams.setMargins(10, 10, 1, 2);
-    	rv_result_answer.addView(t1, 0, tv_answerText_layoutParams);
+    	tv_answerText_layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+    	tv_answerText_layoutParams.leftMargin = 10;
+    	//tv_answerText_layoutParams.setMargins(10, 10, 1, 2);
+    	//tv_answerText_layoutParams.addRule(verb);
+    	rv_result_answer.addView(answerText, 0, tv_answerText_layoutParams);
     	
-    	ImageView iv = new ImageView(rv_result_answer.getContext());
+    	ImageView iv_result = new ImageView(rv_result_answer.getContext());
+    	iv_result.setId(IMAGE_RESULT_ID);
     	if(isCorrected){
-    		iv.setImageResource(R.drawable.ic_choice_correct);
+    		iv_result.setImageResource(R.drawable.ic_choice_correct);
     	}else{
-    		iv.setImageResource(R.drawable.ic_choice_incorrect);
+    		iv_result.setImageResource(R.drawable.ic_choice_incorrect);
     	}
     	android.widget.RelativeLayout.LayoutParams iv_result_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
-    	iv_result_layoutParams.setMargins(60, 10, 10, 2);
-    	rv_result_answer.addView(iv, 1, iv_result_layoutParams);
+    	iv_result_layoutParams.addRule(RelativeLayout.RIGHT_OF, answerText.getId());
+    	iv_result_layoutParams.leftMargin = 2;
+    	//iv_result_layoutParams.setMargins(60, 10, 10, 2);
+    	rv_result_answer.addView(iv_result, 1, iv_result_layoutParams);
     	
-    	TextView t2 = new TextView(rv_result_answer.getContext());
-    	t2.setText("正确答案是:");
-    	t2.setTextSize(20);
+    	TextView answerString = new TextView(rv_result_answer.getContext());
+    	answerString.setId(ANSWER_STRING_ID);
+    	answerString.setText("正确答案是:");
+    	answerString.setTextSize(20);
     	android.widget.RelativeLayout.LayoutParams tv_answerString_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
-    	tv_answerString_layoutParams.setMargins(550, 10, 1, 1);
-    	rv_result_answer.addView(t2, 2, tv_answerString_layoutParams);
+    	tv_answerString_layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+    	tv_answerString_layoutParams.leftMargin = 10;
+    	tv_answerString_layoutParams.addRule(RelativeLayout.BELOW, answerText.getId());
+    	tv_answerString_layoutParams.topMargin = 10;
+    	//tv_answerString_layoutParams.setMargins(550, 10, 1, 1);
+    	rv_result_answer.addView(answerString, 2, tv_answerString_layoutParams);
     	
-    	TextView t3 = new TextView(rv_result_answer.getContext());
-    	t3.setText(answer);
-    	t3.setTextSize(25);
-    	t3.setTextColor(R.color.answer);
+    	TextView answerView = new TextView(rv_result_answer.getContext());
+    	answerView.setText(answer);
+    	answerView.setTextSize(25);
+    	answerView.setTextColor(R.color.answer);
     	android.widget.RelativeLayout.LayoutParams tv_answer_layoutParams = new android.widget.RelativeLayout.LayoutParams(basic_params);
-    	tv_answer_layoutParams.setMargins(650, 10, 10, 3);
-    	rv_result_answer.addView(t3, 3, tv_answer_layoutParams);
+    	tv_answer_layoutParams.addRule(RelativeLayout.RIGHT_OF, answerString.getId());
+    	tv_answer_layoutParams.leftMargin = 2;
+    	tv_answer_layoutParams.addRule(RelativeLayout.BELOW, iv_result.getId());
+    	tv_answer_layoutParams.topMargin = 1;
+    	//tv_answer_layoutParams.setMargins(650, 10, 10, 3);
+    	rv_result_answer.addView(answerView, 3, tv_answer_layoutParams);
     	
     	rv_result_answer.setVisibility(VISIBLE);
     }
