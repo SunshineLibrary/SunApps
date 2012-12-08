@@ -38,6 +38,7 @@ public class ActivityListAdapter extends CursorAdapter {
         long id = cursor.getLong(cursor.getColumnIndex(Activities._ID));
         int type = cursor.getInt(cursor.getColumnIndex(Activities._TYPE));
         String title = cursor.getString(cursor.getColumnIndex(Activities._NAME));
+        
 
         tv_title.setText(title);
         switch (type) {
@@ -81,6 +82,7 @@ public class ActivityListAdapter extends CursorAdapter {
                 v_mask.setVisibility(View.INVISIBLE);
                 break;
         }
+        
     }
 
     public void notifyContentChange() {

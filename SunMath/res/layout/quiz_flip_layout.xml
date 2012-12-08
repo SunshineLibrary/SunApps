@@ -46,28 +46,32 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_toRightOf="@id/tv_answerText"
-	            android:layout_marginRight="3dp"
+	            android:layout_marginLeft="2dp"
 	            android:src="@drawable/ic_choice_correct"
-	            />
-	        <TextView 
-	            android:id="@+id/tv_answer"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_alignParentRight="true"
-	            android:layout_marginRight="8dp"
-	            android:text="A;B;C"
-	            android:textSize="23dp"
-	            android:textColor="#028102"
-	            android:textStyle="bold"
 	            />
 	        <TextView 
 	            android:id="@+id/tv_answerString"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_toLeftOf="@id/tv_answer"
+	            android:layout_alignParentLeft="true"
+	            android:layout_marginLeft="8dp"
+	            android:layout_below="@id/tv_answerText"
+	            android:layout_marginTop="10dp"
 	            android:text="正确答案是："
-	            android:layout_marginLeft="3dp"
 	            android:textSize="20sp"
+	            />
+	        <TextView 
+	            android:id="@+id/tv_answer"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_toRightOf="@id/tv_answerString"
+	            android:layout_marginLeft="2dp"
+	            android:layout_below="@id/iv_result"
+	            android:layout_marginTop="1dp"
+	            android:text="A;B;C"
+	            android:textSize="23dp"
+	            android:textColor="#028102"
+	            android:textStyle="bold"
 	            />
 	    </RelativeLayout>
 

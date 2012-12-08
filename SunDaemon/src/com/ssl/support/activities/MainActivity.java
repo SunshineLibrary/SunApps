@@ -48,11 +48,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SIGN_IN_REQUEST && resultCode != RESULT_OK) {
             finish();
+        }else if(data.getStringExtra("name")!=null){
+        	tv_student_name.setText(data.getStringExtra("name"));
         }
     }
 
     private void initUI() {
     	String studentName = AccessToken.getUserName(getApplicationContext());
+System.out.println("MainActivity sutdentName："+studentName);
     	tv_student_name = (TextView) findViewById(R.id.tv_student_name);
     	
     	sp = getSharedPreferences("studentName", Context.MODE_WORLD_READABLE);
