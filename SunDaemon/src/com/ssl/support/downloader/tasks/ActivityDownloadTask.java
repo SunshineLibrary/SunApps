@@ -104,7 +104,7 @@ public class ActivityDownloadTask extends DownloadTask implements JSONSerializab
 
     @Override
     protected int getType() {
-        return 0;
+        return TYPE_ACTIVITY;
     }
 
     private void loadActivityInfo() {
