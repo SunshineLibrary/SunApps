@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+>
+	<ImageButton
+        android:id="@+id/bookmark_back" 
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/icon_toc_back"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:onClick="backToMain"
+        />
+
+     <TextView
+         android:id="@+id/bookmark_subtitle"
+         android:layout_width="fill_parent"
+         android:layout_height="50dp"
+         android:background="#76C6CD"
+         android:gravity="bottom|center_horizontal"
+         android:layout_alignParentTop="true"
+         android:layout_marginTop="35dp"
+         android:text="@string/bookmark_title"
+         android:textColor="#FEFEFE"
+         android:textSize="35dp" />
+	<ListView
+		android:id="@+id/this_book"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:scrollbars="none"
+	    android:layout_below="@+id/bookmark_subtitle"
+	    android:background="@color/mywhite"
+	    android:divider="@drawable/mygradientline"
+	/>
+
+</RelativeLayout>

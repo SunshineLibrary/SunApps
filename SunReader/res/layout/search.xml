@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:background="@drawable/read_full_backdrop">
+	<Button android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:background="@drawable/search_directory"
+		android:layout_marginLeft="10dip" android:layout_gravity="top"
+		android:layout_marginTop="20dip"></Button>
+	<Button android:layout_alignParentLeft="true"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:background="@drawable/search_encyclopedia"
+		android:layout_gravity="top" android:layout_marginTop="130dip"
+		android:layout_marginLeft="10dip"></Button>
+	<Button android:layout_alignParentLeft="true"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_gravity="top" android:layout_marginTop="185dip"
+		android:background="@drawable/search_note" android:layout_marginLeft="10dip"></Button>
+	<Button android:layout_alignParentLeft="true"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:background="@drawable/search_settings" android:layout_gravity="top"
+		android:layout_marginTop="240dip" android:layout_marginLeft="10dip"></Button>
+
+	<RelativeLayout android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_gravity="left|top"
+		android:layout_marginTop="340dip" android:layout_marginLeft="5dip">
+		<Button android:id="@+id/btSearchCancel"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:background="@drawable/reading_x"></Button>
+		<Button android:id="@+id/btSearchBack"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:background="@drawable/search_back" android:layout_below="@+id/btSearchCancel"
+			android:layout_marginTop="20dip"></Button>
+	</RelativeLayout>
+
+	<RelativeLayout android:layout_height="fill_parent"
+		android:layout_width="wrap_content" android:background="@drawable/read_full_background"
+		android:layout_gravity="center_horizontal">
+
+		<RelativeLayout android:layout_width="360dip"
+			android:layout_height="fill_parent" android:layout_centerHorizontal="true">
+			<RelativeLayout android:layout_height="wrap_content"
+				android:layout_centerHorizontal="true" android:layout_width="wrap_content"
+				android:layout_alignParentTop="true" android:layout_marginTop="25dip">
+				<EditText android:id="@+id/etSearch" android:layout_height="wrap_content"
+					android:layout_alignParentLeft="true" android:background="@drawable/read_full_etbackground"
+					android:singleLine="true" android:paddingLeft="7dip"
+					android:paddingRight="7dip" android:layout_width="265dip"></EditText>
+				<Button android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:id="@+id/btSearch"
+					android:layout_toRightOf="@+id/etSearch" android:background="@drawable/read_full_search"
+					android:layout_centerVertical="true" android:layout_marginLeft="10dip"></Button>
+			</RelativeLayout>
+			<ScrollView android:layout_width="fill_parent"
+				android:layout_height="fill_parent" android:orientation="vertical"
+				android:layout_marginTop="80dip">
+				<LinearLayout android:layout_width="fill_parent"
+					android:layout_height="fill_parent" android:orientation="vertical">
+					<TextView android:text="" android:layout_height="wrap_content"
+						android:layout_width="wrap_content" android:id="@+id/tvSearchDictionaryName"
+						android:textSize="18sp" android:textColor="@color/gray"
+						android:paddingRight="5dip"></TextView>
+					<TextView android:layout_below="@+id/tvSearchDictionaryName"
+						android:text="" android:layout_height="wrap_content"
+						android:layout_width="wrap_content" android:id="@+id/tvSearchDictionaryExplanation"
+						android:textSize="18sp" android:textColor="@color/gray"
+						android:paddingRight="5dip"></TextView>
+				</LinearLayout>
+			</ScrollView>
+		</RelativeLayout>
+
+	</RelativeLayout>
+	<Button android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_gravity="top"
+		android:layout_marginTop="67dip" android:background="@drawable/read_full_dictionary_pressed"></Button>
+</FrameLayout>

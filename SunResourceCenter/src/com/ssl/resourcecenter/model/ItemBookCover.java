@@ -4,7 +4,7 @@ import android.net.Uri;
 
 import com.ssl.metadata.provider.MetadataContract;
 
-public class ItemBookCover {
+public class ItemBookCover extends ItemCover{
 	private Uri imageUri;
 	private Uri thumbnailUri;
 

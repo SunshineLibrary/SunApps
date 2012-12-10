@@ -14,6 +14,7 @@ import com.ssl.resourcecenter.enums.ResourceType;
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -167,10 +168,10 @@ public class ResourceInfoActivity extends Activity implements View.OnClickListen
     			while (cur.moveToNext()) {
     				cover.setImageResource(R.drawable.ic_launcher);
     				try {
-    					bm = ResourceContentResolver.getBitmap(cur.getString(idCol), resolver);
+    					bm = ResourceContentResolver.getBookCoverBitmap(cur.getString(idCol), resolver);
     				} catch (IOException e) {
     					//default image
-    					bm = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_launcher);
+    					bm = BitmapFactory.decodeResource(this.getResources(), R.drawable.default_cover);
     				}
     				cover.setImageBitmap(bm);
     				
@@ -225,9 +226,11 @@ public class ResourceInfoActivity extends Activity implements View.OnClickListen
 				
                 Log.i("test", selection.toString());
                 resolver.update(Books.CONTENT_URI, cv, selection.toString(), null);
-                
-                startActivity(openResIntent);
-				
+                try{
+                	startActivity(openResIntent);
+                }catch(ActivityNotFoundException e){
+                	Toast.makeText(this, R.string.reader_not_found, Toast.LENGTH_SHORT).show();
+                }
 			}catch(Exception e){
 				Log.e("Exception calling SunReader", e.getMessage());
 			}

@@ -1,0 +1,88 @@
+org.geometerplus.android.fbreader.BookmarkAddActivity
+org.geometerplus.android.fbreader.BookmarkAddActivity: BookmarkAddActivity()
+org.geometerplus.android.fbreader.BookmarkEditActivity
+org.geometerplus.android.fbreader.BookmarkEditActivity: BookmarkEditActivity()
+org.geometerplus.android.fbreader.BookmarksActivity
+org.geometerplus.android.fbreader.BookmarksActivity: BookmarksActivity()
+org.geometerplus.android.fbreader.BookmarksActivity: void backToMain(android.view.View)
+org.geometerplus.android.fbreader.CancelActivity
+org.geometerplus.android.fbreader.CancelActivity: CancelActivity()
+org.geometerplus.android.fbreader.FBReader
+org.geometerplus.android.fbreader.FBReader: FBReader()
+org.geometerplus.android.fbreader.SunReaderApplication
+org.geometerplus.android.fbreader.SunReaderApplication: SunReaderApplication()
+org.geometerplus.android.fbreader.TOCActivity
+org.geometerplus.android.fbreader.TOCActivity: TOCActivity()
+org.geometerplus.android.fbreader.TOCActivity: void gotoSelectedPage(android.view.View)
+org.geometerplus.android.fbreader.TOCActivity: void backToMain(android.view.View)
+org.geometerplus.android.fbreader.api.ApiService
+org.geometerplus.android.fbreader.api.ApiService: ApiService()
+org.geometerplus.android.fbreader.crash.FixBooksDirectoryActivity
+org.geometerplus.android.fbreader.crash.FixBooksDirectoryActivity: FixBooksDirectoryActivity()
+org.geometerplus.android.fbreader.crash.MissingNativeLibraryActivity
+org.geometerplus.android.fbreader.crash.MissingNativeLibraryActivity: MissingNativeLibraryActivity()
+org.geometerplus.android.fbreader.error.BookReadingErrorActivity
+org.geometerplus.android.fbreader.error.BookReadingErrorActivity: BookReadingErrorActivity()
+org.geometerplus.android.fbreader.image.ImageViewActivity
+org.geometerplus.android.fbreader.image.ImageViewActivity: ImageViewActivity()
+org.geometerplus.android.fbreader.library.BookInfoActivity
+org.geometerplus.android.fbreader.library.BookInfoActivity: BookInfoActivity()
+org.geometerplus.android.fbreader.library.KillerCallback
+org.geometerplus.android.fbreader.library.KillerCallback: KillerCallback()
+org.geometerplus.android.fbreader.library.LibraryActivity
+org.geometerplus.android.fbreader.library.LibraryActivity: LibraryActivity()
+org.geometerplus.android.fbreader.library.LibrarySearchActivity
+org.geometerplus.android.fbreader.library.LibrarySearchActivity: LibrarySearchActivity()
+org.geometerplus.android.fbreader.libraryService.LibraryService
+org.geometerplus.android.fbreader.libraryService.LibraryService: LibraryService()
+org.geometerplus.android.fbreader.network.AddCatalogMenuActivity
+org.geometerplus.android.fbreader.network.AddCatalogMenuActivity: AddCatalogMenuActivity()
+org.geometerplus.android.fbreader.network.AddCustomCatalogActivity
+org.geometerplus.android.fbreader.network.AddCustomCatalogActivity: AddCustomCatalogActivity()
+org.geometerplus.android.fbreader.network.AuthenticationActivity
+org.geometerplus.android.fbreader.network.AuthenticationActivity: AuthenticationActivity()
+org.geometerplus.android.fbreader.network.AuthorizationMenuActivity
+org.geometerplus.android.fbreader.network.AuthorizationMenuActivity: AuthorizationMenuActivity()
+org.geometerplus.android.fbreader.network.BookDownloader
+org.geometerplus.android.fbreader.network.BookDownloader: BookDownloader()
+org.geometerplus.android.fbreader.network.BookDownloaderService
+org.geometerplus.android.fbreader.network.BookDownloaderService: BookDownloaderService()
+org.geometerplus.android.fbreader.network.BuyBooksActivity
+org.geometerplus.android.fbreader.network.BuyBooksActivity: BuyBooksActivity()
+org.geometerplus.android.fbreader.network.ListenerCallback
+org.geometerplus.android.fbreader.network.ListenerCallback: ListenerCallback()
+org.geometerplus.android.fbreader.network.MenuActivity: MenuActivity()
+org.geometerplus.android.fbreader.network.NetworkBookInfoActivity
+org.geometerplus.android.fbreader.network.NetworkBookInfoActivity: NetworkBookInfoActivity()
+org.geometerplus.android.fbreader.network.NetworkLibraryActivity: NetworkLibraryActivity()
+org.geometerplus.android.fbreader.network.NetworkLibraryPrimaryActivity
+org.geometerplus.android.fbreader.network.NetworkLibraryPrimaryActivity: NetworkLibraryPrimaryActivity()
+org.geometerplus.android.fbreader.network.NetworkLibrarySecondaryActivity
+org.geometerplus.android.fbreader.network.NetworkLibrarySecondaryActivity: NetworkLibrarySecondaryActivity()
+org.geometerplus.android.fbreader.network.NetworkSearchActivity
+org.geometerplus.android.fbreader.network.NetworkSearchActivity: NetworkSearchActivity()
+org.geometerplus.android.fbreader.network.TopupMenuActivity
+org.geometerplus.android.fbreader.network.TopupMenuActivity: TopupMenuActivity()
+org.geometerplus.android.fbreader.preferences.EditBookInfoActivity
+org.geometerplus.android.fbreader.preferences.EditBookInfoActivity: EditBookInfoActivity()
+org.geometerplus.android.fbreader.preferences.SunReaderPreference
+org.geometerplus.android.fbreader.preferences.SunReaderPreference: SunReaderPreference()
+org.geometerplus.android.fbreader.preferences.SunReaderPreference: void onDefaultFontsize(android.view.View)
+org.geometerplus.android.fbreader.preferences.SunReaderPreference: void onFontsizeSmaller(android.view.View)
+org.geometerplus.android.fbreader.preferences.SunReaderPreference: void onFontsizeLarger(android.view.View)
+org.geometerplus.android.fbreader.preferences.SunReaderPreference: void onSepiaSelected(android.view.View)
+org.geometerplus.android.fbreader.preferences.SunReaderPreference: void onStyleDefaultSelected(android.view.View)
+org.geometerplus.android.fbreader.preferences.SunReaderPreference: void onWarmyellowSelected(android.view.View)
+org.geometerplus.android.fbreader.preferences.SunReaderPreference: void onGraygreenSelected(android.view.View)
+org.geometerplus.android.fbreader.preferences.SunReaderPreference: void backToMain(android.view.View)
+org.geometerplus.android.fbreader.preferences.SunReaderPreference: void gotoSelectedPage(android.view.View)
+org.geometerplus.android.fbreader.preferences.ZLPreferenceActivity: ZLPreferenceActivity(java.lang.String)
+org.geometerplus.android.fbreader.tips.TipsActivity
+org.geometerplus.android.fbreader.tips.TipsActivity: TipsActivity()
+org.geometerplus.android.fbreader.tree.TreeActivity: TreeActivity()
+org.geometerplus.zlibrary.ui.android.library.ZLAndroidActivity: ZLAndroidActivity()
+org.geometerplus.zlibrary.ui.android.library.ZLAndroidApplication: ZLAndroidApplication()
+org.geometerplus.zlibrary.ui.android.view.ZLAndroidWidget
+org.geometerplus.zlibrary.ui.android.view.ZLAndroidWidget: ZLAndroidWidget(android.content.Context,android.util.AttributeSet,int)
+org.geometerplus.zlibrary.ui.android.view.ZLAndroidWidget: ZLAndroidWidget(android.content.Context,android.util.AttributeSet)
+org.geometerplus.zlibrary.ui.android.view.ZLAndroidWidget: ZLAndroidWidget(android.content.Context)

@@ -114,6 +114,7 @@ public class MainActivity extends Activity {
 				case RES_READED:
 				case RES_READ_HISTORY:
 				case COLLECTION:
+				
 					//book
 					intent = new Intent();
 					intent.putExtra("bookId", gridItems.get(position).toString());
@@ -127,6 +128,7 @@ public class MainActivity extends Activity {
 				case DOWN_LIKE:
 				case DOWN_LIST_RES:
 				case DOWN_CATEGORY_RES:
+				case SEARCH:
 					
 					ResourceGridItem item = (ResourceGridItem)gridItems.get(position);
 					
