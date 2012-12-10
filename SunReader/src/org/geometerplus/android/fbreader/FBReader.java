@@ -77,6 +77,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.ssl.metadata.provider.MetadataContract.Books;
+import com.ssl.metadata.provider.MetadataContract.Files;
 
 public final class FBReader extends ZLAndroidActivity {
 	public static final String BOOK_PATH_KEY = "BookPath";
@@ -127,11 +128,20 @@ public final class FBReader extends ZLAndroidActivity {
 	protected ZLFile fileFromIntent(Intent intent) {
 		int id = intent.getIntExtra("bookId",-1);
 		this.bookId = id;
+		
 		if(id!=-1){			
 //			Log.i("Open book", "id:"+id);
 //			Log.i("Open book", Books.getBookUri(id).getEncodedPath());
 //			/mnt/sdcard/Books/8
-			return ZLFile.createFileByPath(Books.getBookUri(id).getPath()+".epub");
+			ContentResolver c = getContentResolver();
+			String path = Books.getBookUri(id).getPath();
+			Cursor cur = c.query(Files.CONTENT_URI, null, Files._URI_PATH +"=\""+path+"\"", null, null);
+			if(cur.moveToFirst()){
+				return ZLFile.createFileByPath(cur.getString(cur.getColumnIndex(Files._FILE_PATH)));
+			}else{
+				return null;
+			}
+			
 		}
 		String filePath = intent.getStringExtra(BOOK_PATH_KEY);
 		if (filePath == null) {
