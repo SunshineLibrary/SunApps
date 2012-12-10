@@ -171,7 +171,7 @@ public class ResourceInfoActivity extends Activity implements View.OnClickListen
     					bm = ResourceContentResolver.getBookCoverBitmap(cur.getString(idCol), resolver);
     				} catch (IOException e) {
     					//default image
-    					bm = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_launcher);
+    					bm = BitmapFactory.decodeResource(this.getResources(), R.drawable.default_cover);
     				}
     				cover.setImageBitmap(bm);
     				

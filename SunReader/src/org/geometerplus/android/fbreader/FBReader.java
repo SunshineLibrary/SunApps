@@ -135,11 +135,16 @@ public final class FBReader extends ZLAndroidActivity {
 //			/mnt/sdcard/Books/8
 			ContentResolver c = getContentResolver();
 			String path = Books.getBookUri(id).getPath();
-			Cursor cur = c.query(Files.CONTENT_URI, null, Files._URI_PATH +"=\""+path+"\"", null, null);
-			if(cur.moveToFirst()){
-				return ZLFile.createFileByPath(cur.getString(cur.getColumnIndex(Files._FILE_PATH)));
-			}else{
-				return null;
+			Cursor cur = null;
+			try{
+				cur = c.query(Files.CONTENT_URI, null, Files._URI_PATH +"=\""+path+"\"", null, null);
+				if(cur.moveToFirst()){
+					return ZLFile.createFileByPath(cur.getString(cur.getColumnIndex(Files._FILE_PATH)));
+				}else{
+					return null;
+				}
+			}finally{
+				if(cur!=null)cur.close();
 			}
 			
 		}
