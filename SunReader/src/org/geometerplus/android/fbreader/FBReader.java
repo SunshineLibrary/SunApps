@@ -131,7 +131,7 @@ public final class FBReader extends ZLAndroidActivity {
 //			Log.i("Open book", "id:"+id);
 //			Log.i("Open book", Books.getBookUri(id).getEncodedPath());
 //			/mnt/sdcard/Books/8
-			return ZLFile.createFileByPath(Books.getBookUri(id).getEncodedPath()+".epub");
+			return ZLFile.createFileByPath(Books.getBookUri(id).getPath()+".epub");
 		}
 		String filePath = intent.getStringExtra(BOOK_PATH_KEY);
 		if (filePath == null) {
