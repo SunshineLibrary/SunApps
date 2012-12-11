@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<style name="SunDialog"  parent="Theme.Sherlock.Light.Dialog">
+<item name="android:windowBackground">@color/mywhite</item>
+<item name="android:popupBackground">@color/mywhite</item>
+</style> 
+<!-- <style name="MyDropDownNav" parent="android:style/Widget.Holo.Light.Spinner">
+    <item name="android:background">@color/mywhite</item>
+    <item name="android:popupBackground">@color/mywhite</item>
+    <item name="android:dropDownSelector">@color/light_blue</item>
+</style> -->
+<!-- style the items within the overflow menu -->
+<style name="MyDropDownListView" parent="Widget.Sherlock.ListView.DropDown">
+    <item name="android:listSelector">@color/light_blue</item>
+    <item name="android:textColor">@drawable/submenu_font_style</item>
+    <item name="android:divider">@color/light_blue</item>
+</style>
+<style name="SunReader"  parent="Theme.Sherlock.Light">
+<item name="android:windowBackground">@color/mywhite</item>
+<item name="android:popupBackground">@color/mywhite</item>
+<item name="android:listSelector">@color/light_blue</item>
+<item name="android:textColor">@drawable/submenu_font_style</item>
+<item name="android:textColorHighlight">@color/mywhite</item>
+<item name="android:textAppearance">?android:attr/textAppearanceLargeInverse</item>
+<item name="android:cacheColorHint">@android:color/transparent</item>
+<item name="android:childDivider">#FF76c6cd</item>
+<item name="android:divider">@color/light_blue</item>
+<item name="android:selectableItemBackground">@color/light_blue</item>
+<item name="android:dropDownListViewStyle">@style/MyDropDownListView</item>
+</style>  
+<style name="ButtonStyle">
+    <item name="android:background">@color/light_blue</item>
+    <item name="android:textColor">@color/mywhite</item>
+    <item name="android:layout_width">97dp</item>
+    <item name="android:layout_height">60dp</item>
+</style>
+</resources>

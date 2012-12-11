@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="empty_string"></string>
+	<string name="bookmark">书签</string>
+	<string name="add_bookmark">添加书签</string>
+	<string name="show_bookmark">查看书签</string>
+	<string name="toc_title">目录</string>
+	<string name="bookmark_title">书签</string>
+	<string name="add_bookmark_success">添加书签成功</string>
+	<string name="add_bookmark_fail">添加书签失败</string>
+	<string name="toc_goto">转至</string>
+	<string name="toc_page">页</string>
+	<string name="preference_title">设置</string>
+	<string name="fontsize_text">字体大小</string>
+	<string name="enlarge">变大</string>
+	<string name="smaller">变小</string>
+	<string name="defaultsize">常规</string>
+	<string name="others">自定义</string>
+	<string name="light_text">亮度调节</string> 
+	<string name="background_text">阅读风格</string>
+	<string name="bgstyle_default">默认</string>
+	<string name="bgstyle_warmyellow">暖黄</string>
+	<string name="bgstyle_graygreen">灰绿</string>
+	<string name="bgstyle_sheet">羊皮纸</string>
+	<string name="jump_text">跳转阅读</string>
+</resources>

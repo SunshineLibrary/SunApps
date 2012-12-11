@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background = "@color/mywhite" >
+
+    <ImageButton
+        android:id="@+id/toc_back" 
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/icon_toc_back"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:onClick="backToMain"
+        />
+
+     <TextView
+         android:id="@+id/toc_subtitle"
+         android:layout_width="fill_parent"
+         android:layout_height="50dp"
+         android:background="#76C6CD"
+         android:gravity="bottom|center_horizontal"
+         android:layout_alignParentTop="true"
+         android:layout_marginTop="35dp"
+         android:text="@string/toc_title"
+         android:textColor="#FEFEFE"
+         android:textSize="35dp" />
+
+     <ListView
+	    android:id="@+id/toc_list"
+	    android:layout_width="fill_parent"
+	    android:layout_height="280dp"
+	    android:scrollbars="none"
+	    android:layout_below="@+id/toc_subtitle"
+	    android:background="@color/mywhite"
+	    android:divider="@drawable/mygradientline"/>
+	
+	
+    <EditText
+        android:id = "@+id/toc_pagenum"
+        android:inputType="number"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/toc_list"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="140dp"
+        android:paddingTop="5dp"
+      	android:textSize="25dp"   
+      	android:gravity="right"
+      	android:paddingRight="12dp"   
+        android:singleLine="true"
+        android:textColor="#ff76c6cd"
+        android:background="#fffefefe"/>
+    
+    <TextView 
+        android:id = "@+id/toc_goto"
+        android:layout_width = "60dp"
+        android:layout_toLeftOf="@+id/toc_pagenum"
+        android:layout_below="@+id/toc_list"
+        android:layout_height = "wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="right"
+        android:textSize="20dp"
+        android:textColor="#ff8f9191" 
+        android:text="@string/toc_goto"
+        />
+            
+    <TextView 
+        android:id = "@+id/toc_page"
+        android:layout_width = "105dp"
+		android:layout_alignParentRight="true"
+		android:layout_marginRight="23dp"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@+id/toc_list"
+        android:layout_height = "wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:textColor="#ff8f9191" 
+        android:text="@string/toc_page"
+        />
+    
+    <ImageButton 
+        android:id = "@+id/bt_toc_goto"
+        android:layout_width="45dp"
+        android:layout_height="30dp"
+        android:background="@drawable/icon_toc_go"
+        android:layout_below="@+id/toc_list"
+      	android:layout_alignParentRight="true"
+		android:layout_marginRight="36dp"
+        android:layout_marginTop="20dp"
+        android:onClick="gotoSelectedPage"
+        />
+</RelativeLayout>
