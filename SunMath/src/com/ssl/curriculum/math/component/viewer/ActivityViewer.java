@@ -64,6 +64,7 @@ public class ActivityViewer extends FrameLayout{
         }
 
         setActivity(activityData);
+System.out.println("ActivityViewer's quiz_num="+activityData.getQuizNum());
 
         mCurrentView.setVisibility(View.VISIBLE);
         mCurrentView.onAfterFlippingIn();

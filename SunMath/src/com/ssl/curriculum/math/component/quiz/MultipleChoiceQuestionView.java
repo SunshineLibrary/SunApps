@@ -47,17 +47,25 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
         mQuestion = (QuizChoiceQuestion) question;
         mPresenter.setQuestion(question);
         resetView();
-        loadQuizHtml(getQuizContent(),positionNum);
+        int quiz_num = question.getQuizNum();
+        String quizType = "";
         questionWebView.addJavascriptInterface(mPresenter.getJSInterface(), "Question");
         
+        //这里已经给出选择题类型的描述了
         switch (mQuestion.getType()) {
             case TYPE_MA://多项选择的判断方式可能没有改，因此找到哪里是对答案的对错做出判断的地方
                 questionTitle.setText(R.string.multiple_answer_multiple_choice);
+                quizType = questionTitle.getText().toString();
                 break;
             case TYPE_SA:
                 questionTitle.setText(R.string.single_answer_multiple_choice);
+                quizType = questionTitle.getText().toString();
                 break;
         }
+        
+        String questionNum = quiz_num+"."+positionNum+"("+quizType+")";
+        //hereLiu:你这里面现在没有选项！在loadquestion的时候对于选择题单独load的有选项的
+        loadQuizHtml(getQuizContent(), questionNum);
     }
 
     @Override

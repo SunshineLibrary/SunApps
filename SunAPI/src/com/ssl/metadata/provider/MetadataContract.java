@@ -244,14 +244,14 @@ public final class MetadataContract {
      */
     public static final class BookCollectionInfo{
     	public static final String _ID = BaseColumns._ID;
-    	public static final String _BOOK_COLLECTION_ID = "book_collection_id";
-        public static final String _TITLE = "title";
-        public static final String _AUTHOR = "author";
-        public static final String _INTRO = "intro";
-        public static final String _PUBLISHER = "publisher";
+    	//public static final String _BOOK_COLLECTION_ID = "book_collection_id";
+        public static final String _TITLE = BookCollections._TITLE;
+        public static final String _AUTHOR = BookCollections._AUTHOR;
+        public static final String _INTRO = BookCollections._INTRO;
+        public static final String _PUBLISHER = BookCollections._PUBLISHER;
         public static final String _TAGS = "tags";
         public static final String _COUNT = "count";
-        public static final String _DOWNLOAD_STATUS = "download_status";
+        public static final String _DOWNLOAD_STATUS = BookCollections._DOWNLOAD_STATUS;
         
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_collection_info").build();
     }

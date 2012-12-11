@@ -37,8 +37,12 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
         mQuestion = question;
         mPresenter.setQuestion(question);
         resetView();
+        int quiz_num = question.getQuizNum();
+        /*String quizType = "";
+        int type = question.getType();填空题暂不需要标明类型的标题*/
+        String questionNum = quiz_num+"."+positionNum;
         //hereLiu:
-        loadQuizHtml(question.getQuizContent(), positionNum);
+        loadQuizHtml(getQuizContent(), questionNum);
     }
 
     @Override

@@ -43,6 +43,7 @@ public class QuizActivityView extends ActivityView {
         super.setActivity(activityData);
         mQuizComponentViewer.reset();
         mQuizComponentViewer.setActivityData(activityData);
+System.out.println("QuizActivityView's quiz_num="+activityData.getQuizNum());
         new LoadQuestionsTask(activityData).execute();
     }
 
