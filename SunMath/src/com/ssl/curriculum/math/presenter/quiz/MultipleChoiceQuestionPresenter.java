@@ -63,7 +63,7 @@ public class MultipleChoiceQuestionPresenter {
                 break;
             case MetadataContract.Problems.TYPE_MA:
                 if (userAnswer.contains(answer)) {
-                    userAnswer.replace(answer + ";", "");
+                	userAnswer = userAnswer.replace(answer + ";", "");
                     if (userAnswer.equals("")) {
                         mQuestionView.onAnswerEmpty();
                     }
