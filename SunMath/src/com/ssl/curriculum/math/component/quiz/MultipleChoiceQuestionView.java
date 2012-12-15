@@ -12,6 +12,7 @@ import com.ssl.curriculum.math.component.viewer.QuizComponentViewer;
 import com.ssl.curriculum.math.model.activity.quiz.QuizChoiceQuestion;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 import com.ssl.curriculum.math.presenter.quiz.MultipleChoiceQuestionPresenter;
+import com.ssl.curriculum.math.utils.StringUtils;
 
 import java.util.List;
 
@@ -109,7 +110,8 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
     }
 
     private String getBodyHtml() {
-        return String.format(DIV_FORMAT, "question", mQuestion.getQuizContent());
+    	String quizContent = StringUtils.Transcoding2Html(mQuestion.getQuizContent());
+        return String.format(DIV_FORMAT, "question", quizContent);
     }
 
     private String getChoicesHtml() {
@@ -125,11 +127,12 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
     }
 
     private String getChoiceHtml(Choice choice, String htmlId, int type) {
+    	String choiceBody = StringUtils.Transcoding2Html(choice.body);
         switch (type) {
             case TYPE_SA:
-                return String.format(RADIO_FORMAT, htmlId, choice.choice, htmlId, choice.choice, choice.body);
+                return String.format(RADIO_FORMAT, htmlId, choice.choice, htmlId, choice.choice, choiceBody);
             case TYPE_MA:
-                return String.format(CHECKBOX_FORMAT, htmlId, choice.choice, htmlId, choice.choice, choice.body);
+                return String.format(CHECKBOX_FORMAT, htmlId, choice.choice, htmlId, choice.choice, choiceBody);
             default:
                 return "";
         }
