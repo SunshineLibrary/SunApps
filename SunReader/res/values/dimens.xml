@@ -1,0 +1,3 @@
+<resources>
+    <dimen name="actionbar_height">?android:attr/actionBarSize</dimen>
+</resources>
