@@ -2,7 +2,6 @@ package com.ssl.metadata.provider;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
-
 import java.io.File;
 
 public final class MetadataContract {

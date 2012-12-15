@@ -3,7 +3,6 @@ package com.ssl.curriculum.math.component.videoview;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.ParcelFileDescriptor;
@@ -16,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import com.ssl.curriculum.math.R;
-import com.ssl.curriculum.math.component.activity.ActivityView;
 import com.ssl.curriculum.math.listener.TapListener;
 import com.ssl.metadata.provider.MetadataContract;
 
@@ -46,17 +44,13 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     private int height;
     private long lastActionTime = 0L;
 
-    private boolean isPaused = false;
+    private boolean isPaused;
     private boolean toFullScreen = false;
 
     private Runnable progressRunnable;
     private Thread.UncaughtExceptionHandler uncaughtExceptionHandler;
     private int savedPlayedPosition;
     private int activityId;
-    
-    private boolean isFirst = false;
-    private ActivityView videoView;
-   // private boolean isDone = false;
 
     public VideoPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -65,12 +59,6 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         initUI();
         initListener();
         initRunnable();
-        //postDelayed(progressRunnable, 100);
-        
-    }
-    
-    public void setVideoView(ActivityView videoView){
-    	this.videoView = videoView;
     }
 
     private void uncaughtException() {
@@ -99,7 +87,6 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         fullScreenButton = (ImageButton) findViewById(R.id.video_player_full_screen_btn);
 
         mFullScreenLayout = (ViewGroup) inflater.inflate(R.layout.video_player_full_screen, null);
-       
     }
 
     private void initListener() {
@@ -110,7 +97,8 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
                     controlPanel.setVisibility(View.VISIBLE);
 //                else
 //                    controlPanel.setVisibility(View.GONE);
-                if(player!=null){
+
+				if(player!=null){
                 	if(player.isPlaying()){
                 		playButton.setImageResource(R.drawable.ic_media_play);
                         player.pause();
@@ -143,30 +131,22 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
                 handleFullScreenBtnClick();
             }
         });
-        
-        isFirst = true;
     }
 
     private void initRunnable() {
         progressRunnable = new Runnable() {
             public void run() {
-            	/*if(isFirst){
-                	play();
-                	isFirst = false;
-                }*/
-            	
                 if (lastActionTime > 0 && SystemClock.elapsedRealtime() - lastActionTime > 3000) {
                     hideControlPanel();
-                }      
+                }
 
                 if (player != null) {
                     playerProgress.setProgress(player.getCurrentPosition());
                 }
 
-                if (!isPaused) {//!isPaused && player != null
+                if (!isPaused) {
                     surface.postDelayed(progressRunnable, 1000);
                 }
-                
             }
         };
     }
@@ -193,11 +173,12 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     private void play() {
         playVideo();
         hideControlPanel();
-        //onStart();
+        onStart();
+        
     }
 
     public void pause() {
-        if (player == null) return;//can delete
+        if (player == null) return;
         playButton.setImageResource(R.drawable.ic_media_play);
         player.pause();
         isPaused = true;
@@ -218,7 +199,6 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         if (player != null) {
             player.release();
             player = null;
-           // isDone = false;
         }
     }
 
@@ -230,11 +210,10 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
             player.setDisplay(holder);
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.prepareAsync();
-            player.setOnPreparedListener(this);
+			player.setOnPreparedListener(this);
+            
             player.setOnCompletionListener(this);
             
-            toFullScreen = true;
-            setToFullScreen(toFullScreen);
         } catch (Exception t) {
             t.printStackTrace();
             showErrorDialog(t);
@@ -257,18 +236,10 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         activity.setContentView(savedContentView);
         container = (RelativeLayout) activity.findViewById(R.id.content_screen_video_frame);
         container.addView(this);
-        
-        onStart();
     }
 
     private void toFullScreen() {
-        toFullScreenView();
-        
-        onStart();
-    }
-
-	private void toFullScreenView() {
-		Activity activity = (Activity) getContext();
+        Activity activity = (Activity) getContext();
         activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         savedContentView = ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
         ViewGroup container = (ViewGroup) getParent();
@@ -276,7 +247,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         activity.setContentView(mFullScreenLayout);
         container = (FrameLayout) activity.findViewById(R.id.video_player_full_screen_container);
         container.addView(this);
-	}
+    }
 
     private void hideControlPanel() {
         lastActionTime = 0;
@@ -286,7 +257,6 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     @Override
     public void onCompletion(MediaPlayer arg0) {
         playButton.setEnabled(false);
-        
     }
 
     @Override
@@ -296,15 +266,14 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
         if (width == 0 || height == 0) return;
 
         holder.setFixedSize(width, height);
-        //playerProgress.setProgress(0);
+        playerProgress.setProgress(0);
         playerProgress.setMax(player.getDuration());
         player.start();
+        Log.i("mediaplayer", "player prepared");
         playButton.setEnabled(true);
+					
         rollbackButton.setEnabled(true);
-        onStart();
-        /*toFullScreen = true;
-        setToFullScreen(toFullScreen);*/
-        System.out.println("begin play!!!");
+		
     }
 
     private void showErrorDialog(Throwable t) {
@@ -313,20 +282,16 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
     }
     
     private void playVedioFromPosition(int position){
-    	/*if(isDone){
-    		return;
-    	}*/
     	try {
             player.reset();
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.setDataSource(getVideoFileDescriptor(activityId));
             player.setDisplay(holder);
-            //player.prepare();
-            player.prepareAsync();
+            player.prepare();
             player.seekTo(position);
             player.start();
         } catch (IOException e) {
-           Log.e(TAG, "when switch to different screen, recreate the media player error!");
+            Log.e(TAG, "when switch to different screen, recreate the media player error!");
         }
     }
 
@@ -373,6 +338,7 @@ public class VideoPlayer extends RelativeLayout implements MediaPlayer.OnComplet
             Log.e(TAG, "when switch to different screen, recreate the media player error!");
         }
     }
-    
-    
 }
+
+
+

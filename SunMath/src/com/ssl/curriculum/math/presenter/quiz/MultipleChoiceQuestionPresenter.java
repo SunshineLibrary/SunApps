@@ -63,10 +63,11 @@ public class MultipleChoiceQuestionPresenter {
                 break;
             case MetadataContract.Problems.TYPE_MA:
                 if (userAnswer.contains(answer)) {
-                    userAnswer.replace(answer + ";", "");
+                    userAnswer = userAnswer.replace(answer + ";", "");
                     if (userAnswer.equals("")) {
                         mQuestionView.onAnswerEmpty();
                     }
+                }else{
                 }
                 break;
             default:
@@ -86,6 +87,7 @@ public class MultipleChoiceQuestionPresenter {
     public boolean isCorrect() {
         String[] answers = mQuestion.getAnswer().split(";");
         String[] userAnswers = userAnswer.split(";");
+System.out.println("最终："+userAnswer);
         if(answers.length == userAnswers.length){
         	for (String answer : answers) {
                 if (!userAnswer.contains(answer)) {
