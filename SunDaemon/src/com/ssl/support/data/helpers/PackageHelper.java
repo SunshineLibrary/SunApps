@@ -8,12 +8,14 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.text.TextUtils;
 import android.util.Log;
 import com.ssl.support.data.models.Package;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
@@ -30,12 +32,16 @@ public class PackageHelper {
     public static List<Package> pickOutInstalledPackages(Context context, List<Package> packages) {
         List<Package> installed = new LinkedList<Package>();
         PackageManager pm = context.getPackageManager();
+        HashSet<String> installedNames = new HashSet<String>();
         for (Package pkg : packages) {
             try {
                 PackageInfo info = pm.getPackageInfo(pkg.name, 0);
                 if (info.versionCode >= pkg.version) {
                     pkg.version = info.versionCode;
-                    installed.add(pkg);
+                    if (!installedNames.contains(pkg.name)) {
+                        installedNames.add(pkg.name);
+                        installed.add(pkg);
+                    }
                 }
             } catch (PackageManager.NameNotFoundException e) {}
         }
@@ -77,7 +83,7 @@ public class PackageHelper {
         ContentResolver contentResolver = context.getContentResolver();
         if (isExistingPackage(contentResolver, pkg.id)) {
             contentResolver.update(Packages.CONTENT_URI, getUpdateRecordContentValues(pkg),
-                    BaseColumns._ID + "=" + pkg.id, null);
+                    Packages._NAME + "='" + pkg.name + "'", null);
         } else {
             contentResolver.insert(Packages.CONTENT_URI, getNewRecordContentValues(pkg));
         }
