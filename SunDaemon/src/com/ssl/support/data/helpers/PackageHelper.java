@@ -83,7 +83,7 @@ public class PackageHelper {
         ContentResolver contentResolver = context.getContentResolver();
         if (isExistingPackage(contentResolver, pkg.id)) {
             contentResolver.update(Packages.CONTENT_URI, getUpdateRecordContentValues(pkg),
-                    Packages._NAME + "=" + pkg.name, null);
+                    Packages._NAME + "='" + pkg.name + "'", null);
         } else {
             contentResolver.insert(Packages.CONTENT_URI, getNewRecordContentValues(pkg));
         }
