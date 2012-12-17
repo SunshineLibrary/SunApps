@@ -52,5 +52,6 @@ public class SectionTable extends MenuWithForeignKeyTable {
     @Override
     public void upgradeTableInSteps(SQLiteDatabase db, int oldVersion, int newVersion) {
         addColumn(db, oldVersion, 114, Sections._STATUS, "TEXT");
+        addColumn(db, oldVersion, 117, Sections._SEQUENCE, "INTEGER");
     }
 }
