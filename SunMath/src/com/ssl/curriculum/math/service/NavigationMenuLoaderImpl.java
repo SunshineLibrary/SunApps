@@ -41,7 +41,12 @@ public class NavigationMenuLoaderImpl implements NavigationMenuLoader {
 
     private void fetchChildMenuItem(HashMap<Integer, Menu> parentMenu, Uri childContentUri, String parentIdColumnName, String nameColumnName, String idColumnName) {
         String[] columns = {idColumnName, parentIdColumnName, nameColumnName};
-        Cursor cursor = contentResolver.query(childContentUri, columns, null, null, null);
+        Cursor cursor;
+        if (childContentUri == Sections.CONTENT_URI) {
+            cursor = contentResolver.query(childContentUri, columns, null, null, Sections._SEQUENCE);
+        } else {
+            cursor = contentResolver.query(childContentUri, columns, null, null, null);
+        }
         if (cursor.moveToFirst()) {
             int parentIdIndex = cursor.getColumnIndex(parentIdColumnName);
             int nameIndex = cursor.getColumnIndex(nameColumnName);
