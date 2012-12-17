@@ -49,6 +49,7 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
         loadQuizHtml(getQuizContent(), questionNum);
         
         answerEditText.setEnabled(true);
+        answerEditText.setFocusable(true);
         answerEditText.setTextColor(Color.BLACK);
     }
 
@@ -151,6 +152,7 @@ System.out.println("HelloWorld");
         mQuizComponentViewer.showNextButton();
         
         answerEditText.setEnabled(false);
+        answerEditText.setFocusable(false);
         answerEditText.setTextColor(Color.GRAY);
     }
 
