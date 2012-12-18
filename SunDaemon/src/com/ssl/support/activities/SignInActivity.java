@@ -21,6 +21,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -80,6 +81,9 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
         spAccountType = (Spinner) findViewById(R.id.account_type_spinner);
         spGrade = (Spinner) findViewById(R.id.grade_spinner);
         spClass = (Spinner) findViewById(R.id.class_spinner);
+        
+        //forbid ime full screen when the screen orientation is "landscape" 
+        etName.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         
         // get the default display date (2000-1-1)
         mYear = 2000;

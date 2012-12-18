@@ -16,7 +16,8 @@ public class SectionTable extends MenuWithForeignKeyTable {
             Sections._PARENT_ID,
             Sections._DESCRIPTION,
             Sections._DOWNLOAD_STATUS,
-            Sections._STATUS
+            Sections._STATUS,
+            Sections._SEQUENCE,
     };
 
     private static final String[][] COLUMN_DEFINITIONS = {
@@ -26,6 +27,7 @@ public class SectionTable extends MenuWithForeignKeyTable {
             {Sections._DESCRIPTION, "TEXT"},
             {Sections._DOWNLOAD_STATUS, "INTEGER"},
             {Sections._STATUS, "TEXT"},
+            {Sections._SEQUENCE, "INTEGER"},
     };
 
     public SectionTable(DBHandler handler) {
@@ -50,5 +52,6 @@ public class SectionTable extends MenuWithForeignKeyTable {
     @Override
     public void upgradeTableInSteps(SQLiteDatabase db, int oldVersion, int newVersion) {
         addColumn(db, oldVersion, 114, Sections._STATUS, "TEXT");
+        addColumn(db, oldVersion, 117, Sections._SEQUENCE, "INTEGER");
     }
 }
