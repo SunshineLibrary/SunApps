@@ -20,6 +20,7 @@ import com.ssl.curriculum.math.presenter.quiz.FillBlankQuestionPresenter;
 
 public class FillBlankQuestionView extends QuizQuestionView implements QuestionResultListener {
     private TextView showAnswerField;
+    private TextView answerStr;
     private EditText answerEditText;
     private QuizQuestion mQuestion;
     //private QuizComponentViewer mQuizViewer;
@@ -56,6 +57,7 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
         addView(viewGroup);
         questionWebView = (WebView) findViewById(R.id.quiz_fill_in_flipper_child_question);
         showAnswerField = (TextView) findViewById(R.id.quiz_fill_in_showAnswerField);
+        answerStr = (TextView) findViewById(R.id.quiz_fill_in_flipper_child_str);
         answerEditText = (EditText) findViewById(R.id.quiz_fill_in_flipper_child_answer);
         progressBar = (ProgressBar) findViewById(R.id.quiz_fill_in_progress_bar);
         questionTitle = (TextView) findViewById(R.id.quiz_fill_in_flipper_child_title);
@@ -104,7 +106,8 @@ System.out.println("HelloWorld");
     }
 
     public void setShowAnswerText(String text) {
-        showAnswerField.setText(text);
+       showAnswerField.setText(text);
+    	answerStr.setVisibility(View.INVISIBLE);
     }
 
     @Override

@@ -117,17 +117,4 @@ System.out.println("Main's quiz_num="+quiz_num);
     	mActivityViewer.pause();
     }
     
-    @Override
-    protected void onResume() {
-    	// TODO Auto-generated method stub
-    	super.onResume();
-    	this.registerReceiver(new BroadcastReceiver(){
-
-			@Override
-			public void onReceive(Context arg0, Intent arg1) {
-				// TODO Auto-generated method stub
-				System.out.println("收到广播");
-				mActivityViewer.onNextBtnClicked(rightBtn);
-			}}, new IntentFilter("com.liucong.next"));
-    }
 }
