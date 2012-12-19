@@ -133,6 +133,7 @@ public final class MetadataContract {
         public static final String _NAME = "name";
         public static final String _DESCRIPTION = "description";
         public static final String _STATUS = "status";
+        public static final String _SEQUENCE = "seq";
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("sections").build();
 
         public static Uri getSectionUri(int id) {
