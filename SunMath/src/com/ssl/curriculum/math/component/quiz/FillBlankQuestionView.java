@@ -1,17 +1,21 @@
 package com.ssl.curriculum.math.component.quiz;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.ssl.curriculum.math.R;
 import com.ssl.curriculum.math.component.viewer.QuizComponentViewer;
 import com.ssl.curriculum.math.listener.QuestionResultListener;
@@ -43,6 +47,9 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
         String questionNum = quiz_num+"."+positionNum;
         //hereLiu:
         loadQuizHtml(getQuizContent(), questionNum);
+        
+        answerEditText.setEnabled(true);
+        answerEditText.setTextColor(Color.BLACK);
     }
 
     @Override
@@ -63,6 +70,8 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
         
         //mQuizViewer = new QuizComponentViewer(getContext());
         
+        //forbid ime full screen when the screen orientation is "landscape" 
+        answerEditText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         answerEditText.setOnKeyListener(new OnKeyListener() {
 
 			@Override
@@ -140,6 +149,9 @@ System.out.println("HelloWorld");
         mQuizComponentViewer.onQuestionResult(question, answer, isCorrect);
         //hereLiu
         mQuizComponentViewer.showNextButton();
+        
+        answerEditText.setEnabled(false);
+        answerEditText.setTextColor(Color.GRAY);
     }
 
     @Override
