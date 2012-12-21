@@ -43,8 +43,8 @@ public class SunReaderPreference extends Activity{
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.preference);
 		WindowManager.LayoutParams windowParams = getWindow().getAttributes();
-        windowParams.height = 760;
-        windowParams.width = 712;
+		windowParams.height = this.getResources().getDimensionPixelSize(R.dimen.preference_window_height);
+        windowParams.width = this.getResources().getDimensionPixelSize(R.dimen.preference_window_width);
         getWindow().setAttributes(windowParams);
 		lightText=(TextView)findViewById(R.id.tv_lightseek);
 		tvLight=new StringBuilder();
@@ -55,22 +55,22 @@ public class SunReaderPreference extends Activity{
         lightText.setText(tvLight);
         lightSeek.setOnSeekBarChangeListener(sbLis);
         
-        pageText=(TextView)findViewById(R.id.tv_pgseek);
-        tvPage = new StringBuilder();
-        pageSeek = (SeekBar)findViewById(R.id.page_seek);
-        tvPage.append(pagePosition.Current);
-        pageEdit = (EditText)findViewById(R.id.jump_pagenum);
-        pageEdit.setText(tvPage);
-        pageEdit.clearFocus();
-        
-        pageSeek.setMax(pagePosition.Total - 1);
-		pageSeek.setProgress(pagePosition.Current - 1);
-		int PecentInt = (pagePosition.Current-1)*100/(pagePosition.Total-1);
-		int PecentDeci = (pagePosition.Current-1)*1000/(pagePosition.Total-1)-PecentInt*10;
-		tvPage = new StringBuilder();
-		tvPage.append(PecentInt).append('.').append(PecentDeci).append('%');
-		pageText.setText(tvPage);
-		pageSeek.setOnSeekBarChangeListener(sbLis2);
+//        pageText=(TextView)findViewById(R.id.tv_pgseek);
+//        tvPage = new StringBuilder();
+//        pageSeek = (SeekBar)findViewById(R.id.page_seek);
+//        tvPage.append(pagePosition.Current);
+//        pageEdit = (EditText)findViewById(R.id.jump_pagenum);
+//        pageEdit.setText(tvPage);
+//        pageEdit.clearFocus();
+//        
+//        pageSeek.setMax(pagePosition.Total - 1);
+//		pageSeek.setProgress(pagePosition.Current - 1);
+//		int PecentInt = (pagePosition.Current-1)*100/(pagePosition.Total-1);
+//		int PecentDeci = (pagePosition.Current-1)*1000/(pagePosition.Total-1)-PecentInt*10;
+//		tvPage = new StringBuilder();
+//		tvPage.append(PecentInt).append('.').append(PecentDeci).append('%');
+//		pageText.setText(tvPage);
+//		pageSeek.setOnSeekBarChangeListener(sbLis2);
 	
 	}
 	
@@ -81,7 +81,7 @@ public class SunReaderPreference extends Activity{
 				boolean fromUser) {
 			// TODO Auto-generated method stub
 			tvLight=new StringBuilder();
-			int bright = lightSeek.getProgress()+20;
+			int bright = lightSeek.getProgress()+50;
 			tvLight.append(bright).append('%');
 			lightText.setText(tvLight);
 			ZLibrary.Instance().setScreenBrightness(bright);

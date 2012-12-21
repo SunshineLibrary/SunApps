@@ -38,7 +38,7 @@ public abstract class ZLTextTraverser {
 			ZLTextParagraphCursor.cursor(myView.getModel(), fromParagraph);
 		for (int i = fromParagraph; i <= toParagraph; ++i) {
 			final int fromElement = i == fromParagraph ? from.getElementIndex() : 0;
-			final int toElement = i == toParagraph ? to.getElementIndex() : cursor.getParagraphLength() - 1;
+			final int toElement = i == toParagraph ? to.getElementIndex()+5 : cursor.getParagraphLength() - 1;
 
 			for (int j = fromElement; j <= toElement; j++) {
 				final ZLTextElement element = cursor.getElement(j);

@@ -37,6 +37,7 @@ import org.geometerplus.fbreader.bookmodel.BookModel;
 import org.geometerplus.fbreader.bookmodel.FBHyperlinkType;
 import org.geometerplus.fbreader.bookmodel.TOCTree;
 
+
 import android.content.Intent;
 
 public final class FBView extends ZLTextView {
