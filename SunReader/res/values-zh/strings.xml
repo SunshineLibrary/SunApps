@@ -23,4 +23,12 @@
 	<string name="bgstyle_graygreen">灰绿</string>
 	<string name="bgstyle_sheet">羊皮纸</string>
 	<string name="jump_text">跳转阅读</string>
+	<string name="no_explaination">没有查询到对应的解释!</string>
+	<string name="BS">部首</string>
+	<string name="BH">笔画</string>
+	<string name="SingleSelection">单选框</string>
+	<string name="BiaoDian">\\“\\”，。、？（）；‘</string>
+	<string name="Cancel">取消</string>
+	<string name="back">返回</string>
+	<string name="Pinyin">拼音</string>
 </resources>

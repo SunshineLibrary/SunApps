@@ -17,6 +17,8 @@
 </style>
 <style name="SunReader"  parent="Theme.Sherlock.Light">
 <item name="android:windowBackground">@color/mywhite</item>
+<item name="android:windowActionBarOverlay">true</item>
+<item name="windowActionBarOverlay">true</item>
 <item name="android:popupBackground">@color/mywhite</item>
 <item name="android:listSelector">@color/light_blue</item>
 <item name="android:textColor">@drawable/submenu_font_style</item>
@@ -31,7 +33,8 @@
 <style name="ButtonStyle">
     <item name="android:background">@color/light_blue</item>
     <item name="android:textColor">@color/mywhite</item>
-    <item name="android:layout_width">97dp</item>
+    <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    <item name="android:layout_width">107dp</item>
     <item name="android:layout_height">60dp</item>
 </style>
 </resources>

@@ -6,8 +6,8 @@
 
     <ImageButton
         android:id="@+id/preference_back" 
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:background="@drawable/icon_toc_back"
         android:layout_alignParentRight="true"
         android:layout_marginRight="5dp"
@@ -17,55 +17,55 @@
      <TextView
          android:id="@+id/preference_subtitle"
          android:layout_width="fill_parent"
-         android:layout_height="50dp"
+         android:layout_height="@dimen/preference_subtitle_height"
          android:background="#76C6CD"
          android:gravity="bottom|center_horizontal"
          android:layout_alignParentTop="true"
-         android:layout_marginTop="35dp"
+         android:layout_marginTop="25dp"
          android:text="@string/preference_title"
          android:textColor="#FEFEFE"
-         android:textSize="35dp" />
+         android:textSize="@dimen/preference_subtitle_textSize" />
 
     <RelativeLayout 
         android:id= "@+id/preference_fontsize"
         android:layout_below="@+id/preference_subtitle"
         android:layout_width="fill_parent"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="3dp"
         android:background="@color/bg_gray"
-        android:layout_height="126dp">
+        android:layout_height="@dimen/preference_item_height">
         
         <ImageView 
          	android:id="@+id/fontsize_logo"
          	android:src="@drawable/icon_fontsize_logo"
-         	android:layout_width="97dp"
+         	android:layout_width="@dimen/preference_icon_width"
          	android:layout_height="fill_parent"
             />
         
         <TextView 
             android:id="@+id/fontsize_text"
-            android:layout_marginLeft="97dp"
+            android:layout_marginLeft="@dimen/preference_icon_width"
             android:layout_width="fill_parent"
-            android:layout_height="50dp" 
+            android:layout_height="@dimen/preference_text_height" 
             android:text="@string/fontsize_text"
             android:gravity="center_vertical"
             android:textColor="#ff8f9191" 
-            android:textSize="20dp"           
+            android:textSize="@dimen/preference_text_size"           
             />
         
-        <Button style="@style/ButtonStyle"
+        <Button
             android:id="@+id/fontsize_enlarge"
+            style="@style/ButtonStyle"
             android:layout_below="@+id/fontsize_text"
-            android:layout_marginLeft="97dp"
-			android:text="@string/enlarge"
-			android:onClick="onFontsizeLarger"
-			android:focusableInTouchMode="true"
-            />
+            android:layout_marginLeft="@dimen/preference_icon_width"
+            android:focusableInTouchMode="true"
+            android:onClick="onFontsizeLarger"
+            android:text="@string/enlarge" />
         
         <Button style="@style/ButtonStyle"
             android:id="@+id/fontsize_smaller"
             android:layout_below="@+id/fontsize_text"
             android:layout_toRightOf="@+id/fontsize_enlarge"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/preference_icon_width"
 			android:text="@string/smaller"
 			android:onClick="onFontsizeSmaller"
             />
@@ -74,18 +74,18 @@
             android:id="@+id/fontsize_default"
             android:layout_below="@+id/fontsize_text"
             android:layout_toRightOf="@+id/fontsize_smaller"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/preference_icon_width"
 			android:text="@string/defaultsize"
 			android:onClick="onDefaultFontsize"
             />
         
-        <Button style="@style/ButtonStyle"
+     <!--    <Button style="@style/ButtonStyle"
             android:id="@+id/fontsize_others"
             android:layout_toRightOf="@+id/fontsize_default"
             android:layout_below="@+id/fontsize_text"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
 			android:text="@string/others"
-            />
+            /> -->
     </RelativeLayout>
 	
 	<RelativeLayout 
@@ -94,40 +94,43 @@
         android:layout_width="fill_parent"
         android:layout_marginTop="0dp"
         android:background="@color/mywhite"
-        android:layout_height="100dp">
+        android:layout_height="@dimen/preference_item_height">
         <ImageView 
          	android:id="@+id/light_logo"
          	android:src="@drawable/icon_light_logo"
          	android:layout_centerVertical="true"
-         	android:layout_marginLeft="19dp"
-         	android:layout_width="60dp"
-         	android:layout_height="60dp"
+         	android:layout_marginLeft="10dp"
+         	android:layout_width="@dimen/preference_light_logoSize"
+         	android:layout_height="@dimen/preference_light_logoSize"
             />
 	    <TextView 
             android:id="@+id/light_text"
-            android:layout_marginLeft="97dp"
+            android:layout_marginLeft="@dimen/preference_icon_width"
             android:layout_width="fill_parent"
-            android:layout_height="50dp" 
+            android:layout_height="@dimen/preference_text_height" 
             android:text="@string/light_text"
             android:gravity="center_vertical"
             android:textColor="#ff8f9191" 
-            android:textSize="20dp"           
+            android:textSize="@dimen/preference_text_size"           
             />
 	    <SeekBar
 	        android:id="@+id/light_seek"
-	        android:layout_marginLeft="97dp"
+	        android:layout_marginLeft="@dimen/preference_icon_width"
 	        android:layout_below="@+id/light_text"
-	        android:layout_marginTop="10dp"
-	        android:layout_width="450dp"
-	        android:layout_height="40dp"
-	        android:max="80"
-	        android:padding="4dp"
+	        android:layout_marginTop="5dp"
+	        android:layout_width="@dimen/preference_seekbar_width"
+	        android:layout_height="wrap_content"
+	        android:thumbOffset="0dp"
+	        android:minHeight="@dimen/preference_seekbar_height"
+	        android:maxHeight="@dimen/preference_seekbar_height"
+	        android:max="50"
+	        android:padding="0dp"
 	        />
 	    <TextView
         android:id="@+id/tv_lightseek"
         android:layout_toRightOf="@+id/light_seek"
         android:layout_below="@+id/light_text"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 	</RelativeLayout>
@@ -138,47 +141,48 @@
         android:layout_width="fill_parent"
         android:layout_marginTop="0dp"
         android:background="@color/bg_gray"
-        android:layout_height="126dp">
+        android:layout_height="@dimen/preference_item_height">
         
         <ImageView 
          	android:id="@+id/background_logo"
          	android:src="@drawable/icon_background_logo"
-         	android:layout_width="97dp"
+         	android:layout_width="@dimen/preference_icon_width"
          	android:layout_height="fill_parent"
             />
         <TextView 
             android:id="@+id/background_text"
-            android:layout_marginLeft="97dp"
+            android:layout_marginLeft="@dimen/preference_icon_width"
             android:layout_width="fill_parent"
-            android:layout_height="50dp" 
+            android:layout_height="@dimen/preference_light_text_height" 
             android:text="@string/background_text"
             android:gravity="center_vertical"
             android:textColor="#ff8f9191" 
-            android:textSize="20dp"           
+            android:textSize="@dimen/preference_light_text_size"           
             />
         
         <Button style="@style/ButtonStyle"
             android:id="@+id/bgstyle_default"
             android:layout_below="@+id/background_text"
-            android:layout_marginLeft="97dp"
+            android:layout_marginLeft="@dimen/preference_icon_width"
 			android:text="@string/bgstyle_default"
 			android:onClick="onStyleDefaultSelected"
             />
         
-        <Button style="@style/ButtonStyle"
+        <!-- <Button style="@style/ButtonStyle"
             android:id="@+id/bgstyle_warmyellow"
+            android:layout_width="80dp"
             android:layout_below="@+id/background_text"
             android:layout_toRightOf="@+id/bgstyle_default"
             android:layout_marginLeft="10dp"
 			android:text="@string/bgstyle_warmyellow"
 			android:onClick="onWarmyellowSelected"
-            />
+            /> -->
         
         <Button style="@style/ButtonStyle"
             android:id="@+id/bgstyle_sheet"
             android:layout_below="@+id/background_text"
-            android:layout_toRightOf="@+id/bgstyle_warmyellow"
-            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/bgstyle_default"
+            android:layout_marginLeft="@dimen/preference_icon_width"
 			android:text="@string/bgstyle_sheet"
 			android:onClick="onSepiaSelected"
             />
@@ -187,103 +191,9 @@
             android:id="@+id/bgstyle_graygreen"
             android:layout_toRightOf="@+id/bgstyle_sheet"
             android:layout_below="@+id/background_text"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/preference_icon_width"
 			android:text="@string/bgstyle_graygreen"
 			android:onClick="onGraygreenSelected"
             />
      </RelativeLayout>
-      
-	 <RelativeLayout 
-	      android:id= "@+id/preference_jump"
-        android:layout_below="@+id/preference_background"
-        android:layout_width="fill_parent"
-        android:layout_marginTop="0dp"
-        android:background="@color/mywhite"
-        android:layout_height="126dp">
-        
-	      <TextView 
-            android:id="@+id/jump_text"
-            android:layout_marginLeft="97dp"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp" 
-            android:text="@string/jump_text"
-            android:gravity="center_vertical"
-            android:textColor="#ff8f9191" 
-            android:textSize="20dp"           
-            />
-	     <TextView 
-      	  android:id = "@+id/jump_goto"
-     	  android:layout_width = "50dp"
-     	  android:layout_below="@+id/jump_text"
-    	  android:layout_height = "wrap_content"
-    	  android:layout_marginLeft="20dp"
-    	  android:textSize="20dp"
-          android:textColor="#ff8f9191" 
-          android:text="@string/toc_goto"
-          android:layout_marginTop="20dp"
-        />
-	     
-	     <EditText
-        android:id = "@+id/jump_pagenum"
-        android:inputType="number"
-        android:layout_width="80dp"
-        android:layout_height="35dp"
-        android:layout_below="@+id/jump_text"
-        android:layout_marginTop="14dp"
-        android:layout_toRightOf="@+id/jump_goto"
-        android:paddingTop="5dp"
-      	android:textSize="20dp"      
-        android:singleLine="true"
-        android:textColor="#fffefefe"
-        android:background="#ff76c6cd"/>
-	     
-	   
-	       
-    <TextView 
-        android:id = "@+id/jump_page"
-        android:layout_width = "wrap_content"
-		android:layout_toRightOf="@+id/jump_pagenum"
-        android:layout_marginLeft="5dp"
-        android:layout_below="@+id/jump_text"
-        android:layout_height = "wrap_content"
-        android:textSize="20dp"
-        android:textColor="#ff8f9191" 
-        android:text="@string/toc_page"
-        android:layout_marginTop="20dp"
-        android:focusableInTouchMode="true"
-        />
-    
-    <ImageButton 
-        android:id = "@+id/bt_jump_goto"
-        android:layout_width="44dp"
-        android:layout_height="32dp"
-        android:background="@drawable/icon_toc_go"
-        android:layout_below="@+id/jump_text"
-   		android:layout_toRightOf="@+id/jump_page"
-   		android:layout_marginLeft="0dp"
-   		android:layout_marginTop="18dp"
-   		android:onClick="gotoSelectedPage"
-        />
-	     
-    <SeekBar
-        android:id="@+id/page_seek"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/jump_text"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="14dp"
-        android:padding="4dp"
-        android:max="100"
-        android:layout_toRightOf="@+id/bt_jump_goto" />
-
-    <TextView
-        android:id="@+id/tv_pgseek"
-        android:layout_toRightOf="@+id/page_seek"
-        android:layout_below="@+id/jump_text"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    
-	 </RelativeLayout>
-    
 </RelativeLayout>

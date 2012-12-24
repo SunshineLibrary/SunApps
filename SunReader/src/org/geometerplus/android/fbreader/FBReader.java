@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.*;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.*;
 import android.content.res.AssetFileDescriptor;
@@ -40,6 +41,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import org.geometerplus.zlibrary.core.application.ZLApplication;
 import org.geometerplus.zlibrary.core.filesystem.ZLFile;
@@ -158,6 +160,7 @@ public final class FBReader extends ZLAndroidActivity {
 		return filePath != null ? ZLFile.createFileByPath(filePath) : null;
 	}
 
+
 	@Override
 	protected Runnable getPostponedInitAction() {
 		return new Runnable() {
@@ -239,8 +242,24 @@ public final class FBReader extends ZLAndroidActivity {
 			fbReader.addAction(ActionCode.SET_SCREEN_ORIENTATION_REVERSE_PORTRAIT, new SetScreenOrientationAction(this, fbReader, ZLibrary.SCREEN_ORIENTATION_REVERSE_PORTRAIT));
 			fbReader.addAction(ActionCode.SET_SCREEN_ORIENTATION_REVERSE_LANDSCAPE, new SetScreenOrientationAction(this, fbReader, ZLibrary.SCREEN_ORIENTATION_REVERSE_LANDSCAPE));
 		}
-		 
+		
+		CopyAndLoadDB(); 
 	}
+	
+	 private void CopyAndLoadDB() {
+	        // 第一次运行应用程序时，加载数据库到data/data/当前包的名称/database/<db_name>
+	        File dir = new File("data/data/" + getPackageName() + "/databases");
+	        if (!dir.exists() || !dir.isDirectory()) {
+	            dir.mkdir();
+	        }
+	        File file = new File(dir, DBFILE);
+	        if (!file.exists()) {
+	            FileUtils.loadDbFile(R.raw.xiandaihanyucidian, file,
+	                    getResources(), getPackageName());
+	            Log.d("WineStock", "DataBase Load Successfully");
+
+	        }
+	    }
 
  	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
@@ -623,19 +642,21 @@ public final class FBReader extends ZLAndroidActivity {
 			}
 		}
 		if (flag == false || textArr[0].replaceAll("\\p{Punct}", "").length() <= 1) {
-			for (int i = 0; i < 2; i++) {
+			for (int i = 0; i < textArr.length; i++) {
 				if(flag == false){
 					String resultText = getChineseByHanzi(newText[0].replaceAll("\\p{Punct}", ""));
 //					tvDictionaryName.setText(newText[0].replaceAll("\\p{Punct}", ""));
 //					tvDictionaryExplanation.setText(resultText);
 					String name = newText[0].replaceAll("\\p{Punct}", "");
-					Toast.makeText(this, name + ": " +resultText, Toast.LENGTH_LONG).show();
+					showDictionary(name,resultText);
+//					Toast.makeText(this, name + ": " +resultText, Toast.LENGTH_LONG).show();
 				}
 				Log.e("dictionarySearch", "newText.size():" + newText.length);
 				if (newText.length >= 2) {
 					String resultText = getChineseByHanzi(newText[i]
 							.replaceAll("\\p{Punct}", ""));
-					if (!(resultText.equals("没有查询到对应的解释!"))) {
+					Log.e("Result Text",resultText);
+					if (!(resultText.equals(getString(R.string.no_explaination)))) {
 						exsitBuilder.append(newText[i].replaceAll("\\p{Punct}",
 								""));
 						exsitBuilder.append("@");
@@ -657,12 +678,12 @@ public final class FBReader extends ZLAndroidActivity {
 					&& textArr[0].replaceAll("\\p{Punct}", "").length() <= 2) {
 				resultText = getChineseByHanzi(textArr[0].replaceAll(
 						"\\p{Punct}", ""));
-				String name = textArr[0].replaceAll("\\p{Punct}", "");
-				Toast.makeText(this, name + ": " +resultText, Toast.LENGTH_LONG).show();
+//				String name = textArr[0].replaceAll("\\p{Punct}", "");
+//				Toast.makeText(this, name + ": " +resultText, Toast.LENGTH_LONG).show();
 			} else {
-				resultText = "没有查询到对应的解释!";
+				resultText = getString(R.string.no_explaination);
 			}
-//			if (!(resultText.equals("没有查询到对应的解释!"))) {
+//			if (!(resultText.equals("Ê≤°ÊúâÊü•ËØ¢Âà∞ÂØπÂ∫îÁöÑËß£Èáä!"))) {
 //				NewWord newWord = new NewWord(getApplicationContext());
 //				if (!(newWord.isExistInNewWord(mySelectText))) {
 //					NewWordEntity newWordEntity = new NewWordEntity();
@@ -670,10 +691,10 @@ public final class FBReader extends ZLAndroidActivity {
 //							""));
 //					newWordEntity.setContent(resultText);
 //					newWord.insertNewWord(newWordEntity);
-//					Toast.makeText(getApplicationContext(), "生词添加成功...",
+//					Toast.makeText(getApplicationContext(), "ÁîüËØçÊ∑ªÂä†ÊàêÂäü...",
 //							Toast.LENGTH_LONG).show();
 //				} else {
-//					Toast.makeText(getApplicationContext(), "该单词已经存在于生词中...",
+//					Toast.makeText(getApplicationContext(), "ËØ•ÂçïËØçÂ∑≤ÁªèÂ≠òÂú®‰∫éÁîüËØç‰∏≠...",
 //							Toast.LENGTH_LONG).show();
 //				}
 //			}
@@ -681,34 +702,19 @@ public final class FBReader extends ZLAndroidActivity {
 		} else {
 			String myDefaultStr = getChineseByHanzi(textArr[0].replaceAll(
 					"\\p{Punct}", ""));
-			if (exsitText.length == 1) {
-				if (!(myDefaultStr.equals("没有查询到对应的解释!"))) {
-//					NewWord newWord = new NewWord(getApplicationContext());
-//					if (!(newWord.isExistInNewWord(mySelectText))) {
-//						NewWordEntity newWordEntity = new NewWordEntity();
-//						newWordEntity.setTitle(textArr[0].replaceAll("\\p{Punct}",
-//								""));
-//						newWordEntity.setContent(myDefaultStr);
-//						newWord.insertNewWord(newWordEntity);
-//						Toast.makeText(getApplicationContext(), "生词添加成功...",
-//								Toast.LENGTH_LONG).show();
-//					} else {
-//						Toast.makeText(getApplicationContext(), "该单词已经存在于生词中...",
-//								Toast.LENGTH_LONG).show();
-//					}
-				}				
-			}
-//			tvDictionaryName.setText(newText[0].replaceAll("\\p{Punct}", ""));
-//			tvDictionaryExplanation.setText(myDefaultStr);
 			String name = newText[0].replaceAll("\\p{Punct}", "");
-			Toast.makeText(this, name + ": " + myDefaultStr, Toast.LENGTH_LONG).show();
+			if (exsitText.length == 1) {
+				if (!(myDefaultStr.equals(getString(R.string.no_explaination)))) {
+					showDictionary(name,myDefaultStr);
+				}
+			}
 			Log.e("textArr[0].length():",
 					"L:" + textArr[0].replaceAll("\\p{Punct}", "").length());
 			if (textArr[0].replaceAll("\\p{Punct}", "").length() == 1) {
 				if (exsitText.length > 1) {
 					Log.e("existText","AlertDialog");
 					new AlertDialog.Builder(this)
-							.setTitle("单选框")
+							.setTitle(getString(R.string.SingleSelection))
 							.setIcon(android.R.drawable.ic_dialog_info)
 							.setSingleChoiceItems(exsitText, 0,
 									new DialogInterface.OnClickListener() {
@@ -716,8 +722,8 @@ public final class FBReader extends ZLAndroidActivity {
 												DialogInterface dialog,
 												int which) {
 											dialog.dismiss();
-											String mySelectText = newText[which];
-											String myBiaoDian = "\\“\\”，。、？（）；‘";
+											String mySelectText = exsitText[which];
+											String myBiaoDian = getString(R.string.BiaoDian);
 											int biaoDianSize = 0;
 											for (int i = 0; i < mySelectText
 													.length(); i++) {
@@ -741,9 +747,10 @@ public final class FBReader extends ZLAndroidActivity {
 //												tvDictionaryExplanation
 //														.setText(searchResult);
 												String name = mySelectText;
-												Toast.makeText(FBReader.this, name + ": " + searchResult, Toast.LENGTH_LONG).show();
+												showDictionary(name,searchResult);
+//												Toast.makeText(FBReader.this, name + ": " + searchResult, Toast.LENGTH_LONG).show();
 												if (!(searchResult
-														.equals("没有查询到对应的解释!"))) {
+														.equals(getString(R.string.no_explaination)))) {
 //													NewWord newWord = new NewWord(
 //															getApplicationContext());
 //													if (!(newWord
@@ -756,23 +763,23 @@ public final class FBReader extends ZLAndroidActivity {
 ////														newWord.insertNewWord(newWordEntity);
 //														Toast.makeText(
 //																getApplicationContext(),
-//																"生词添加成功...",
+//																"ÁîüËØçÊ∑ªÂä†ÊàêÂäü...",
 //																Toast.LENGTH_LONG)
 //																.show();
 //													} else {
 //														Toast.makeText(
 //																getApplicationContext(),
-//																"该单词已经存在于生词中...",
+//																"ËØ•ÂçïËØçÂ∑≤ÁªèÂ≠òÂú®‰∫éÁîüËØç‰∏≠...",
 //																Toast.LENGTH_LONG)
 //																.show();
 //													}
 												}
 											}
 											// String searchResult =
-											// getChineseByHanzi("一下");
+											// getChineseByHanzi("‰∏Ä‰∏ã");
 
 										}
-									}).setNegativeButton("取消", null).show();
+									}).setNegativeButton(getString(R.string.Cancel), null).show();
 				}
 
 			} else if (textArr[0].replaceAll("\\p{Punct}", "").length() >= 2
@@ -794,13 +801,12 @@ public final class FBReader extends ZLAndroidActivity {
 
 	}
 
-	// 传入字符串得到改字符串的汉语解释
 	public String getChineseByHanzi(String hanzi) {
 		Log.e("getChineseByHanzi", "hanzi:" + hanzi);
-		File dbFile = new File(getApplicationContext().getFilesDir(), DBFILE);
-//		SQLiteDatabase db = SQLiteDatabase.openDatabase(
-//				dbFile.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
-		SQLiteDatabase db = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory()+"/xiandaihanyucidian.db",null, SQLiteDatabase.OPEN_READONLY);
+		File dbFile = new File("data/data/" + getPackageName() + "/databases", DBFILE);
+		SQLiteDatabase db = SQLiteDatabase.openDatabase(
+				dbFile.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
+//		SQLiteDatabase db = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory()+"/xiandaihanyucidian.db",null, SQLiteDatabase.OPEN_READONLY);
 		Cursor cursor = db.rawQuery(
 				"select definition from dict where term=? limit 1",
 				new String[] { hanzi.replaceAll("\\p{Punct}", "").trim() });
@@ -809,16 +815,32 @@ public final class FBReader extends ZLAndroidActivity {
 				String text = cursor.getString(0);
 				cursor.close();
 				db.close();
-				text = text.replaceAll("BS", "部首：");
-				text = text.replaceAll("BH", "笔划：");
+				text = text.replaceAll("BS", getString(R.string.BS));
+				text = text.replaceAll("BH", getString(R.string.BH));
 				Log.e("getChineseByHanzi->:", text);
 				return text;
 			}
 		}
 		cursor.close();
 		db.close();
-		return "没有查询到对应的解释!";
+		return getString(R.string.no_explaination);
 	}
 	
+	public void showDictionary(String name, String resultText){
+		if(!resultText.equalsIgnoreCase(getString(R.string.no_explaination))){
+			resultText = resultText.substring(9,resultText.length()-3);
+		}
+		Dialog alertDialog = new AlertDialog.Builder(this). 
+                setTitle(name). 
+                setMessage(resultText). 
+                
+                setNegativeButton(getString(R.string.back), new DialogInterface.OnClickListener() { 
+                     
+                    @Override 
+                    public void onClick(DialogInterface dialog, int which) { 
+                        // TODO Auto-generated method stub  
+                    } 
+                }).show();
+	}
 	    
 }
