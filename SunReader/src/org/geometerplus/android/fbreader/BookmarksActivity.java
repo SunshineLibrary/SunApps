@@ -67,8 +67,8 @@ public class BookmarksActivity extends Activity implements MenuItem.OnMenuItemCl
 		setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
 		setContentView(R.layout.bookmarks);
 		WindowManager.LayoutParams windowParams = getWindow().getAttributes();
-        windowParams.height = 612;
-        windowParams.width = 676;
+        windowParams.height = this.getResources().getDimensionPixelSize(R.dimen.popup_height);
+        windowParams.width = this.getResources().getDimensionPixelSize(R.dimen.popup_width);;
         getWindow().setAttributes(windowParams);
         myThisBookView = (ListView)this.findViewById(R.id.this_book);
         

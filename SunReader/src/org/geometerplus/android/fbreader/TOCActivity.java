@@ -55,8 +55,8 @@ public class TOCActivity extends Activity {
 		
         setContentView(R.layout.toc_listview);
         WindowManager.LayoutParams windowParams = getWindow().getAttributes();
-        windowParams.height = 612;
-        windowParams.width = 676;
+    	windowParams.height = this.getResources().getDimensionPixelSize(R.dimen.popup_height);
+        windowParams.width = this.getResources().getDimensionPixelSize(R.dimen.popup_width);
         getWindow().setAttributes(windowParams);
     	gv = (ListView)this.findViewById(R.id.toc_list);
 		Thread.setDefaultUncaughtExceptionHandler(new org.geometerplus.zlibrary.ui.android.library.UncaughtExceptionHandler(this));

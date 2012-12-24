@@ -1,0 +1,23 @@
+<resources>
+    <dimen name="actionbar_height">?android:attr/actionBarSize</dimen>
+    <dimen name="popup_height">612dp</dimen>
+    <dimen name="popup_width">676dp</dimen>
+    <dimen name="preference_window_height">500dp</dimen>
+    <dimen name="preference_window_width">676dp</dimen>
+    <dimen name="title_height">50dp</dimen>
+    <dimen name="preference_subtitle_height">50dp</dimen>
+    <dimen name="toc_marginLeft">97dp</dimen>
+    <dimen name="toc_list_height">400dp</dimen>
+    <dimen name="toc_jump_marginTop">50dp</dimen>
+	<dimen name="bookmark_marginLeft">40dp</dimen>
+	<dimen name="preference_icon_width">97dp</dimen>
+	<dimen name="preference_subtitle_textSize">30dp</dimen>
+	<dimen name="preference_item_height">126dp</dimen>
+	<dimen name="preference_item_jumpHeight">126dp</dimen>
+	<dimen name="preference_button_space">10dp</dimen>
+	<dimen name="preference_text_size">20dp</dimen>
+	<dimen name="preference_text_height">50dp</dimen>
+	<dimen name="preference_light_logoSize">60dp</dimen>
+	<dimen name="preference_seekbar_width">450dp</dimen>
+	<dimen name="preference_seekbar_height">80dp</dimen>
+</resources>

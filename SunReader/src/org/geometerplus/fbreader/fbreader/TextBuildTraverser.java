@@ -31,6 +31,7 @@ class TextBuildTraverser extends ZLTextTraverser {
 	@Override
 	protected void processWord(ZLTextWord word) {
 		myBuffer.append(word.Data, word.Offset, word.Length);
+		myBuffer.append('@');
 	}
 
 	@Override
