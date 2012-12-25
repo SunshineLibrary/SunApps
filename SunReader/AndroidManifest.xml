@@ -37,10 +37,10 @@
 		</service>
 		<activity android:name="org.geometerplus.android.fbreader.FBReader" android:launchMode="singleTask" android:icon="@drawable/fbreader" android:label="SunReader" android:configChanges="orientation|keyboardHidden"
 		    android:theme="@style/SunReader">
-			<intent-filter>
+			<!-- <intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				<category android:name="android.intent.category.LAUNCHER"/>
-			</intent-filter>
+			</intent-filter> -->
 			<intent-filter>
 				<action android:name="android.fbreader.action.VIEW"/>
 				<category android:name="android.intent.category.DEFAULT"/>

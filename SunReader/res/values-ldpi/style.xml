@@ -33,8 +33,7 @@
 <style name="ButtonStyle">
     <item name="android:background">@color/light_blue</item>
     <item name="android:textColor">@color/mywhite</item>
-    <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
-    <item name="android:layout_width">107dp</item>
-    <item name="android:layout_height">60dp</item>
+    <item name="android:layout_width">80dp</item>
+    <item name="android:layout_height">55dp</item>
 </style>
 </resources>

@@ -23,4 +23,12 @@
 	<string name="bgstyle_graygreen">Gray Green</string>
 	<string name="bgstyle_sheet">Sepia</string>
 	<string name="jump_text">Jump To</string>
+	<string name="no_explaination">Cannot find explaination</string>
+	<string name="BS">BS</string>
+	<string name="BH">BH</string>
+	<string name="SingleSelection">Single Choice</string>
+	<string name="BiaoDian">\\“\\”，。、？（）；‘</string>
+	<string name="Cancel">Cancel</string>
+	<string name="back">Back</string>
+	<string name="Pinyin">Pingyin</string>
 </resources>

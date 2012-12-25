@@ -26,7 +26,7 @@ public class MetadataProvider extends ContentProvider {
 
     private static final UriMatcher sUriMatcher = Matcher.Factory.getMatcher();
 
-    private static final String PASSWORD = "lightyear";
+    private static final String PASSWORD = "alife";
 
     private DBHandler dbHandler;
     private SharedStorageManager sharedStorageManager;

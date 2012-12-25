@@ -21,7 +21,7 @@ public class VideoActivityView extends ActivityView {
         initUI();
     }
 
-    @Override
+     @Override
     public void setActivity(LinkedActivityData activityData) {
         super.setActivity(activityData);
         setTitle(activityData.name);
