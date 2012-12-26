@@ -102,7 +102,6 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
         accountTypeStrings = new String[] {
                 getString(R.string.account_type_student),
                 getString(R.string.account_type_teacher),
-                getString(R.string.account_type_staff)
         };
         spAccountType.setAdapter(getAdapterForStrings(accountTypeStrings));
         spAccountType.setOnItemSelectedListener(this);
@@ -219,7 +218,8 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
                     protected void onPostExecute(String accessToken) {
                         super.onPostExecute(accessToken);
                         if (!StringUtils.isEmpty(accessToken)) {
-                            AccessToken.storeAccessToken(SignInActivity.this, mPresenter.getName(), accessToken);
+                            AccessToken.storeAccessToken(SignInActivity.this,
+                                    mPresenter.getName(), mPresenter.getAccountType(), accessToken);
                             //setResult(RESULT_OK);
                            Intent data = new Intent();
                             data.putExtra("name", mPresenter.getName());
@@ -243,11 +243,11 @@ public class SignInActivity extends Activity implements OnItemSelectedListener, 
             mPresenter.setSchool(schoolStrings[position]);
         } else if (parent == spAccountType) {
             if (position == 0) {
-                mPresenter.setAccountType("student");
+                mPresenter.setAccountType(AccessToken.ACCOUNT_TYPE_STUDENT);
                 spGrade.setVisibility(View.VISIBLE);
                 spClass.setVisibility(View.VISIBLE);
             } else {
-                mPresenter.setAccountType((position == 1) ? "teacher" : "staff");
+                mPresenter.setAccountType(AccessToken.ACCOUNT_TYPE_TEACHER);
                 spGrade.setVisibility(View.GONE);
                 spClass.setVisibility(View.GONE);
             }
