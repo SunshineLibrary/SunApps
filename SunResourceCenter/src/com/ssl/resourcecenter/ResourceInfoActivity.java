@@ -215,7 +215,7 @@ public class ResourceInfoActivity extends Activity implements View.OnClickListen
                
                 openResIntent.setAction("android.fbreader.action.VIEW");
                 openResIntent.putExtra("bookId", Integer.valueOf(resId));
-                
+                openResIntent.putExtra("bookTitle", title.getText());
                 SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 String date = "'" + sDateFormat.format(new Date()) + "'";
                 Log.i("test", date);
