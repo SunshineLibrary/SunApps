@@ -83,7 +83,7 @@ import com.ssl.metadata.provider.MetadataContract.Files;
 
 public final class FBReader extends ZLAndroidActivity {
 	public static final String BOOK_PATH_KEY = "BookPath";
-
+	public static final String BOOK_TITLE_KEY = "bookTitle";
 	public static final int REQUEST_PREFERENCES = 1;
 	public static final int REQUEST_BOOK_INFO = 2;
 	public static final int REQUEST_CANCEL_MENU = 3;
@@ -129,6 +129,8 @@ public final class FBReader extends ZLAndroidActivity {
 	@Override
 	protected ZLFile fileFromIntent(Intent intent) {
 		int id = intent.getIntExtra("bookId",-1);
+		String title = intent.getStringExtra(BOOK_TITLE_KEY);
+		bar.setTitle(title);
 		this.bookId = id;
 		
 		if(id!=-1){			
@@ -151,6 +153,8 @@ public final class FBReader extends ZLAndroidActivity {
 			
 		}
 		String filePath = intent.getStringExtra(BOOK_PATH_KEY);
+		
+		
 		if (filePath == null) {
 			final Uri data = intent.getData();
 			if (data != null) {
@@ -191,10 +195,14 @@ public final class FBReader extends ZLAndroidActivity {
 		
 		bar.setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_background));
 		bar.setLogo(R.drawable.back_style);
+		
 		bar.setDisplayUseLogoEnabled(true);
-//		bar.setDisplayHomeAsUpEnabled(true);
-		bar.setTitle(null);
+		bar.setDisplayHomeAsUpEnabled(true);
+		bar.setHomeButtonEnabled(true);
+		bar.setDisplayShowTitleEnabled(true);
+		bar.setTitle(null);		
 		bar.hide();
+		
 	
 		
 //		getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN, WindowManager.LayoutParams. FLAG_FULLSCREEN);  
@@ -281,7 +289,9 @@ public final class FBReader extends ZLAndroidActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if(item.getItemId() == R.id.addBookmark){
+		if(item.getItemId() == android.R.id.home){
+			this.finish();
+		}else if(item.getItemId() == R.id.addBookmark){
 			FBReaderApp fbreader = (FBReaderApp)FBReaderApp.Instance();
 			fbreader.updateAllBookmarksList(fbreader.addBookmark(20, true));	
 			LayoutInflater inflater = getLayoutInflater();

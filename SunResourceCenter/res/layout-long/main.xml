@@ -19,10 +19,8 @@
             android:layout_height="0px"
             android:focusable="true"
             android:focusableInTouchMode="true" >
-
             <requestFocus />
         </LinearLayout>
-
         <EditText
             android:id="@+id/searchbar"
             android:layout_width="wrap_content"
@@ -61,7 +59,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/subnav_height"
         android:background="@color/chrome_background" >
-
         <LinearLayout
             android:id="@+id/resnav"
             android:layout_width="wrap_content"
@@ -70,7 +67,6 @@
             android:layout_alignParentTop="true"
             android:paddingLeft="@dimen/padding_tiny"
             android:visibility="visible" >
-
             <ToggleButton
                 android:id="@+id/resnav_reading"
                 android:layout_width="wrap_content"
@@ -84,7 +80,6 @@
                 android:textOn="@string/res_reading"
                 android:textSize="@dimen/info_text_med" 
                 android:layout_marginLeft="10dp"/>
-
             <ToggleButton
                 android:id="@+id/resnav_all"
                 android:layout_width="wrap_content"
@@ -97,7 +92,6 @@
                 android:textOn="@string/res_all_resources"
                 android:textSize="@dimen/info_text_med"
                 android:layout_marginLeft="10dp" />
-
             <ToggleButton
                 android:id="@+id/resnav_recent_downloaded"
                 android:layout_width="wrap_content"
@@ -110,7 +104,6 @@
                 android:textOn="@string/res_recent_downloaded"
                 android:textSize="@dimen/info_text_med" 
                 android:layout_marginLeft="10dp"/>
-
             <ToggleButton
                 android:id="@+id/resnav_learn_new"
                 android:layout_width="wrap_content"
@@ -124,7 +117,6 @@
                 android:textSize="@dimen/info_text_med" 
                 android:layout_marginLeft="10dp"
                 android:visibility="gone"/>
-
             <ToggleButton
                 android:id="@+id/resnav_readed"
                 android:layout_width="wrap_content"
@@ -138,9 +130,7 @@
                 android:textSize="@dimen/info_text_med" 
                 android:layout_marginLeft="10dp"
                 android:visibility="gone"/>
-
         </LinearLayout>
-
         <LinearLayout
             android:id="@+id/typenav"
             android:layout_width="wrap_content"
@@ -182,7 +172,7 @@
                 android:layout_marginRight="10dp" 
                 android:visibility="gone"/>
         </LinearLayout>
-
+        
         <LinearLayout
             android:id="@+id/downnav"
             android:layout_width="wrap_content"
@@ -191,8 +181,7 @@
             android:layout_alignParentTop="true"
             android:paddingLeft="@dimen/padding_tiny"
             android:visibility="invisible" >
-
-
+
             <ToggleButton
                 android:id="@+id/downnav_hot"
                 android:layout_width="wrap_content"
@@ -206,7 +195,6 @@
                 android:textSize="@dimen/info_text_med" 
                 android:layout_marginLeft="10dp"
                 android:checked="true"/>
-
             <ToggleButton
                 android:id="@+id/downnav_category"
                 android:layout_width="wrap_content"
@@ -218,7 +206,10 @@
                 android:textOff="@string/download_category"
                 android:textOn="@string/download_category"
                 android:textSize="@dimen/info_text_med"
-                android:layout_marginLeft="10dp" />
+                android:layout_marginLeft="10dp" 
+                android:visibility="invisible"
+                /><!-- trello #198 disable category and booklist temporary -->
+                
 			 <ToggleButton
                 android:id="@+id/downnav_list"
                 android:layout_width="wrap_content"
@@ -231,7 +222,9 @@
                 android:textOff="@string/download_list"
                 android:textOn="@string/download_list"
                 android:textSize="@dimen/info_text_med" 
-                android:layout_marginLeft="10dp"/>			
+                android:layout_marginLeft="10dp"
+                android:visibility="invisible"
+                /><!-- trello #198 disable category and booklist temporary -->			
 			 
             <ToggleButton
                 android:id="@+id/downnav_recommend"
@@ -260,7 +253,6 @@
                 android:textSize="@dimen/info_text_med" 
                 android:layout_marginLeft="10dp"
                 android:visibility="gone"/>
-
             <ToggleButton
                 android:id="@+id/downnav_search"
                 android:layout_width="wrap_content"
@@ -275,15 +267,14 @@
                 android:textSize="@dimen/info_text_med"
                 android:layout_marginLeft="10dp"
                 android:visibility="invisible" />
-            	
         </LinearLayout>
-
+        
         <RelativeLayout
             android:id="@+id/collection_back"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:visibility="invisible" >
-
+            
             <TextView
                 android:id="@+id/title_collction"
                 android:layout_width="wrap_content"
