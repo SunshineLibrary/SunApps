@@ -95,6 +95,10 @@ public class SignInPresenter {
         return mName;
     }
 
+    public String getAccountType() {
+        return mAccountType;
+    }
+
     public void setName(String name) {
         mName = name;
     }

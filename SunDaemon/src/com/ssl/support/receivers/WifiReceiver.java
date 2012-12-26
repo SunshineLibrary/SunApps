@@ -9,6 +9,7 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
+import com.ssl.support.config.AccessToken;
 
 import java.util.List;
 
@@ -17,14 +18,18 @@ public class WifiReceiver extends BroadcastReceiver {
     private static final String SUNSHINE_NETWORKS_SSID = "\"Sunshine Networks\"";
     private static final String SUNSHINE_NETWORKS_PASSWORD = "\"yangguang\"";
 
-    public static final String TAG = "WifiReceiver";
+    private static final String TAG = "WifiReceiver";
 
-    public boolean resettingConnection;
+    private static boolean resettingConnection;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         String action = intent.getAction();
+
+        if (AccessToken.getAccountType(context).equals(AccessToken.ACCOUNT_TYPE_TEACHER)) {
+            return;
+        }
 
         if (action.equals("android.net.conn.CONNECTIVITY_CHANGE")) {
             NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
@@ -55,14 +60,23 @@ public class WifiReceiver extends BroadcastReceiver {
     }
 
     private void setupNetwork(WifiManager wifiManager) {
+        removeExistingNetworks(wifiManager);
+        addSunshineNetworks(wifiManager);
+    }
+
+    private void removeExistingNetworks(WifiManager wifiManager) {
         List<WifiConfiguration> configuredNetworks = wifiManager.getConfiguredNetworks();
         Log.d(TAG, "Number of Wifi configurations: " + configuredNetworks.size());
         for (WifiConfiguration config : configuredNetworks) {
-            Log.d(TAG, "Removing network: " + config.SSID);
-            wifiManager.removeNetwork(config.networkId);
+            if(wifiManager.removeNetwork(config.networkId)) {
+                Log.d(TAG, "Removed network: " + config.SSID);
+            }
         }
+        wifiManager.saveConfiguration();
         Log.d(TAG, "Number of Wifi configurations remaining: " + wifiManager.getConfiguredNetworks().size());
+    }
 
+    private void addSunshineNetworks(WifiManager wifiManager) {
         WifiConfiguration config = new WifiConfiguration();
         config.SSID = SUNSHINE_NETWORKS_SSID;
         config.preSharedKey = SUNSHINE_NETWORKS_PASSWORD;
@@ -79,10 +93,12 @@ public class WifiReceiver extends BroadcastReceiver {
             Log.d(TAG, "Network added: " + config.SSID);
             boolean success = wifiManager.enableNetwork(networkId, true);
             Log.d(TAG, "Enabled network: " + success);
+            wifiManager.saveConfiguration();
         } else {
             Log.d(TAG, "Failed to add network: " + config.SSID);
         }
     }
+
 
     private boolean alreadyConnected(WifiInfo connectionInfo) {
         if (connectionInfo == null) {
