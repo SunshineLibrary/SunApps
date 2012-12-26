@@ -7,6 +7,7 @@ import java.util.List;
 import com.ssl.metadata.provider.MetadataContract;
 import com.ssl.metadata.provider.MetadataContract.BookCategories;
 import com.ssl.metadata.provider.MetadataContract.BookCollectionInfo;
+import com.ssl.metadata.provider.MetadataContract.BookCollectionInfoWithTags;
 import com.ssl.metadata.provider.MetadataContract.BookCollections;
 import com.ssl.metadata.provider.MetadataContract.BookLists;
 import com.ssl.metadata.provider.MetadataContract.Books;
@@ -43,7 +44,7 @@ public class ResourceContentResolver {
 
 	public List<Object> getBookCollections(String[] projection,
 			String selection, int itemPerPage, int offset) {
-		ArrayList<ResourceGridItem> resGridItems = new ArrayList<ResourceGridItem>();
+		ArrayList<Object> resGridItems = new ArrayList<Object>();
 
 		try {
 			// real code
@@ -94,9 +95,65 @@ public class ResourceContentResolver {
 
 		}
 
-		return (List) resGridItems;
+		return resGridItems;
 	}
+	
+	public List<Object> getBookCollectionsWithTags(String[] projection,
+			String tagid, int itemPerPage, int offset) {
+		ArrayList<Object> resGridItems = new ArrayList<Object>();
 
+		try {
+			// real code
+			Cursor cur = null;
+			try {
+				cur = resolver.query(
+						MetadataContract.BookCollectionInfoWithTags.getBookCollectionWithTags(tagid),
+						projection, null, null, null);
+
+				int idCol = cur.getColumnIndex(BookCollectionInfoWithTags._ID);
+				int titleCol = cur.getColumnIndex(BookCollectionInfoWithTags._TITLE);
+				int authorCol = cur.getColumnIndex(BookCollectionInfoWithTags._AUTHOR);
+				int descriptionCol = cur
+						.getColumnIndex(BookCollectionInfoWithTags._INTRO);
+				int countCol = cur.getColumnIndex(BookCollectionInfoWithTags._COUNT);
+
+				Bitmap bm = null;
+
+				cur.move(offset);
+				int i = 0;
+				while (cur.moveToNext() && i < itemPerPage) {
+					try {
+						bm = getBookCollectionCoverBitmap(cur.getString(idCol),
+								resolver);
+					} catch (IOException e) {
+						// default image
+						bm = BitmapFactory.decodeResource(res,
+								R.drawable.default_cover);
+					}
+					// select count()
+					int count = cur.getInt(countCol);
+					
+						resGridItems.add(new ResourceGridItem(cur
+								.getString(idCol), cur.getString(titleCol), cur
+								.getString(authorCol), null, bm, 0, cur
+								.getString(descriptionCol), count));
+					
+					i++;
+				}
+			} finally {
+				if (cur != null)
+					cur.close();
+			}
+		}
+		
+		finally {
+
+		}
+
+		return resGridItems;
+	}
+	
+	
 	public String getSingleResIdOfCollection(String ColId) {
 		String ResId = null;
 		// case book:
@@ -125,7 +182,7 @@ public class ResourceContentResolver {
 
 	public List<Object> getBooks(String[] projection, String selection,
 			int itemPerPage, int offset) {
-		ArrayList<ResourceGridItem> resGridItems = new ArrayList<ResourceGridItem>();
+		ArrayList<Object> resGridItems = new ArrayList<Object>();
 		Cursor cur = null;
 		try {
 			// real code
@@ -173,11 +230,11 @@ public class ResourceContentResolver {
 				cur.close();
 		}
 
-		return (List) resGridItems;
+		return resGridItems;
 	}
 
 	public List<Object> getBookCategory() {
-		ArrayList<CategoryGridItem> cateGridItems = new ArrayList<CategoryGridItem>();
+		ArrayList<Object> cateGridItems = new ArrayList<Object>();
 
 		try {
 			Cursor cur = resolver.query(
@@ -196,11 +253,10 @@ public class ResourceContentResolver {
 		} finally {
 
 		}
-		return (List) cateGridItems;
+		return cateGridItems;
 	}
 
 	public Cursor getBookLists(String[] projection, String selection) {
-		ArrayList<ResourceListGridItem> listGridItems = new ArrayList<ResourceListGridItem>();
 		return resolver.query(MetadataContract.BookLists.CONTENT_URI,
 				projection, selection, null, null);
 	}
