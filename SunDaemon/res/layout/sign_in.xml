@@ -40,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/signin_heading"
-                    android:textSize="28dp"
+                    android:textSize="28sp"
                     android:textColor="#55A390"
                     android:textStyle="bold"
                     android:layout_alignParentLeft="true"
@@ -51,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textColor="#C84537"
                     android:layout_alignParentRight="true"
                     />
@@ -64,6 +64,7 @@
                 android:background="@drawable/ic_shadow_divider"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
+                android:contentDescription="@string/signin_heading"
                 />
 
         <LinearLayout
@@ -127,7 +128,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/name_input_legend"
-                        android:textSize="24dp"
+                        android:textSize="24sp"
                         android:textColor="#55A390"
                         android:layout_alignParentLeft="true"
                         />
@@ -136,9 +137,10 @@
                         android:id="@+id/name_input_field"
                         android:layout_width="240dp"
                         android:layout_height="wrap_content"
-                        android:textSize="24dp"
+                        android:textSize="24sp"
                         android:layout_alignParentRight="true"
                         android:singleLine="true"
+                        android:inputType="text"
                         />
             </RelativeLayout>
 
@@ -156,7 +158,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/birthday_input_legend"
-                        android:textSize="24dp"
+                        android:textSize="24sp"
                         android:textColor="#55A390"
                         android:layout_alignParentLeft="true"
                         />
@@ -166,7 +168,7 @@
                     android:layout_height="wrap_content"
                     android:background="#FFFFFF"
                     android:textColor="#55A390"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     android:layout_alignParentRight="true"
                     />
             </RelativeLayout>
@@ -181,7 +183,9 @@
         android:layout_marginTop="15dp"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
-        android:src="@drawable/ic_confirm" />
+        android:src="@drawable/ic_confirm"
+        android:contentDescription="@drawable/ic_confirm"
+        />
 
 </LinearLayout>
 </RelativeLayout>
