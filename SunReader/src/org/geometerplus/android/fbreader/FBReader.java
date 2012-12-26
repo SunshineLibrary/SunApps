@@ -83,7 +83,7 @@ import com.ssl.metadata.provider.MetadataContract.Files;
 
 public final class FBReader extends ZLAndroidActivity {
 	public static final String BOOK_PATH_KEY = "BookPath";
-	public static final String BOOK_TITLE_KEY = "BookTitle";
+	public static final String BOOK_TITLE_KEY = "bookTitle";
 	public static final int REQUEST_PREFERENCES = 1;
 	public static final int REQUEST_BOOK_INFO = 2;
 	public static final int REQUEST_CANCEL_MENU = 3;
@@ -129,6 +129,8 @@ public final class FBReader extends ZLAndroidActivity {
 	@Override
 	protected ZLFile fileFromIntent(Intent intent) {
 		int id = intent.getIntExtra("bookId",-1);
+		String title = intent.getStringExtra(BOOK_TITLE_KEY);
+		bar.setTitle(title);
 		this.bookId = id;
 		
 		if(id!=-1){			
@@ -151,8 +153,8 @@ public final class FBReader extends ZLAndroidActivity {
 			
 		}
 		String filePath = intent.getStringExtra(BOOK_PATH_KEY);
-		String title = intent.getStringExtra(BOOK_TITLE_KEY);
-		bar.setTitle(title);
+		
+		
 		if (filePath == null) {
 			final Uri data = intent.getData();
 			if (data != null) {
