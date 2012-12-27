@@ -48,14 +48,14 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
         String questionNum = quiz_num+"."+positionNum;
         //hereLiu:
         loadQuizHtml(getQuizContent(), questionNum);
-        
+
         answerEditText.setEnabled(true);
         answerEditText.setTextColor(Color.BLACK);
     }
 
     @Override
     protected String getQuizContent() {
-        return mQuestion.getQuizContent();
+        return mQuestion.getQuizContent() + getAttachmentContent();
     }
 
     protected void initUI() {
@@ -69,54 +69,56 @@ public class FillBlankQuestionView extends QuizQuestionView implements QuestionR
         progressBar = (ProgressBar) findViewById(R.id.quiz_fill_in_progress_bar);
         questionTitle = (TextView) findViewById(R.id.quiz_fill_in_flipper_child_title);
         answerContainer = (LinearLayout) findViewById(R.id.quiz_fill_in_answer_container);
-        
+
         //mQuizViewer = new QuizComponentViewer(getContext());
-        
+
         //forbid ime full screen when the screen orientation is "landscape" 
         answerEditText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         answerEditText.setOnKeyListener(new OnKeyListener() {
 
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				// TODO Auto-generated method stub
-				if (keyCode == KeyEvent.KEYCODE_ENTER) {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // TODO Auto-generated method stub
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
                     InputMethodManager imm = (InputMethodManager) v
                             .getContext().getSystemService(
                                     Context.INPUT_METHOD_SERVICE);
                     if (imm.isActive()) {
                         imm.hideSoftInputFromWindow(
-                            v.getApplicationWindowToken(), 0);
+                                v.getApplicationWindowToken(), 0);
                     }
                     onQuestionAnswered();
                     //mQuizViewer.showNextButton();
                     return true;
                 }
-				return false;
-			}
+                return false;
+            }
         });
-        
-        //hereLiu
-        
     }
-    
+
+    @Override
+    public int getQuestionId() {
+        return mQuestion.getId();
+    }
+
     public void closeKeyBoard() {
-    	answerEditText.clearFocus();
+        answerEditText.clearFocus();
         InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(answerEditText.getApplicationWindowToken(), 0);
 
     }
-    
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-    	// TODO Auto-generated method stub
-System.out.println("HelloWorld");
-    	closeKeyBoard();
-    	return super.onTouchEvent(event);
+        // TODO Auto-generated method stub
+        System.out.println("HelloWorld");
+        closeKeyBoard();
+        return super.onTouchEvent(event);
     }
 
     public void setShowAnswerText(String text) {
-       showAnswerField.setText(text);
-    	answerStr.setVisibility(View.INVISIBLE);
+        showAnswerField.setText(text);
+        answerStr.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -152,7 +154,7 @@ System.out.println("HelloWorld");
         mQuizComponentViewer.onQuestionResult(question, answer, isCorrect);
         //hereLiu
         mQuizComponentViewer.showNextButton();
-        
+
         answerEditText.setEnabled(false);
         answerEditText.setTextColor(Color.GRAY);
     }
