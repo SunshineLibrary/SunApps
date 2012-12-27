@@ -60,6 +60,7 @@ public class SharedStorageManager {
             case Matcher.BOOKS_THUMBNAIL:
             case Matcher.BOOK_COLLECTIONS_THUMBNAIL:
                 return getFileDescriptor(uri, mode);
+            case Matcher.PROBLEMS_ID:
             case Matcher.BOOKS_ID:
                 return getExtendedFileDescriptor(uri, mode);
             default:
