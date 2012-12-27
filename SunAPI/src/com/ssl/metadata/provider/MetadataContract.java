@@ -250,6 +250,7 @@ public final class MetadataContract {
         public static final String _INTRO = BookCollections._INTRO;
         public static final String _PUBLISHER = BookCollections._PUBLISHER;
         public static final String _COUNT = "count";
+        public static final String _TAGS = "tags";
         public static final String _DOWNLOAD_STATUS = BookCollections._DOWNLOAD_STATUS;
         
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("book_collection_info").build();
@@ -265,7 +266,10 @@ public final class MetadataContract {
         public static final String _AUTHOR = BookCollectionInfo._AUTHOR;
         public static final String _INTRO = BookCollectionInfo._INTRO;
         public static final String _PUBLISHER = BookCollectionInfo._PUBLISHER;
+        public static final String _TAG_ID = "tag_id";
+        public static final String _TAG_NAME = "tag_name";
         public static final String _TAGS = "tags";
+        public static final String _TAGS_PROJECTION="group_concat(distinct "+_TAG_NAME+") as "+_TAGS;
         public static final String _COUNT = BookCollectionInfo._COUNT;
         public static final String _DOWNLOAD_STATUS = BookCollections._DOWNLOAD_STATUS;
         

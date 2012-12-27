@@ -91,7 +91,7 @@ public class MetadataProvider extends ContentProvider {
                 return view.query(uri, projection,
                         SectionComponents._SECTION_ID + "=?", new String[]{uri.getLastPathSegment()}, sortOrder);
             case Matcher.BOOK_COLLECTION_INFO_WITH_TAGS:
-            	return view.query(uri, projection, BookCollectionInfoWithTags._TAGS+"=?", new String[]{uri.getLastPathSegment()}, sortOrder);
+            	return view.query(uri, projection, BookCollectionInfoWithTagsView.QUERY_TAG, new String[]{uri.getLastPathSegment()}, sortOrder);
             case Matcher.QUIZ_PROBLEMS:
             case Matcher.BOOK_INFO:
             case Matcher.BOOK_COLLECTION_INFO:

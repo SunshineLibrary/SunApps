@@ -59,7 +59,7 @@ public class ResourceContentResolver {
 				int authorCol = cur.getColumnIndex(BookCollectionInfo._AUTHOR);
 				int descriptionCol = cur
 						.getColumnIndex(BookCollectionInfo._INTRO);
-				// int tagCol = cur.getColumnIndex(BookCollectionInfo._TAGS);
+				int tagCol = cur.getColumnIndex(BookCollectionInfo._TAGS);
 				int countCol = cur.getColumnIndex(BookCollectionInfo._COUNT);
 
 				Bitmap bm = null;
@@ -77,12 +77,11 @@ public class ResourceContentResolver {
 					}
 					// select count()
 					int count = cur.getInt(countCol);
-					
-						resGridItems.add(new ResourceGridItem(cur
-								.getString(idCol), cur.getString(titleCol), cur
-								.getString(authorCol), null, bm, 0, cur
-								.getString(descriptionCol), count));
-					
+
+					resGridItems.add(new ResourceGridItem(cur.getString(idCol),
+							cur.getString(titleCol), cur.getString(authorCol),
+							cur.getString(tagCol), bm, 0, cur.getString(descriptionCol), count));
+
 					i++;
 				}
 			} finally {
@@ -90,33 +89,45 @@ public class ResourceContentResolver {
 					cur.close();
 			}
 		}
-		
+
 		finally {
 
 		}
 
 		return resGridItems;
 	}
-	
+
 	public List<Object> getBookCollectionsWithTags(String[] projection,
 			String tagid, int itemPerPage, int offset) {
 		ArrayList<Object> resGridItems = new ArrayList<Object>();
 
+		projection = new String[]{
+					BookCollectionInfoWithTags._ID,
+					BookCollectionInfoWithTags._AUTHOR,
+					BookCollectionInfoWithTags._TITLE,
+					BookCollectionInfoWithTags._INTRO,
+					BookCollectionInfoWithTags._COUNT,
+					BookCollectionInfoWithTags._TAGS_PROJECTION};
+		
 		try {
 			// real code
 			Cursor cur = null;
 			try {
 				cur = resolver.query(
-						MetadataContract.BookCollectionInfoWithTags.getBookCollectionWithTags(tagid),
-						projection, null, null, null);
+						MetadataContract.BookCollectionInfoWithTags
+								.getBookCollectionWithTags(tagid), projection,
+						null, null, null);
 
 				int idCol = cur.getColumnIndex(BookCollectionInfoWithTags._ID);
-				int titleCol = cur.getColumnIndex(BookCollectionInfoWithTags._TITLE);
-				int authorCol = cur.getColumnIndex(BookCollectionInfoWithTags._AUTHOR);
+				int titleCol = cur
+						.getColumnIndex(BookCollectionInfoWithTags._TITLE);
+				int authorCol = cur
+						.getColumnIndex(BookCollectionInfoWithTags._AUTHOR);
 				int descriptionCol = cur
 						.getColumnIndex(BookCollectionInfoWithTags._INTRO);
-				int countCol = cur.getColumnIndex(BookCollectionInfoWithTags._COUNT);
-
+				int countCol = cur
+						.getColumnIndex(BookCollectionInfoWithTags._COUNT);
+				int tagCol=cur.getColumnIndex(BookCollectionInfoWithTags._TAGS);
 				Bitmap bm = null;
 
 				cur.move(offset);
@@ -132,12 +143,11 @@ public class ResourceContentResolver {
 					}
 					// select count()
 					int count = cur.getInt(countCol);
-					
-						resGridItems.add(new ResourceGridItem(cur
-								.getString(idCol), cur.getString(titleCol), cur
-								.getString(authorCol), null, bm, 0, cur
-								.getString(descriptionCol), count));
-					
+
+					resGridItems.add(new ResourceGridItem(cur.getString(idCol),
+							cur.getString(titleCol), cur.getString(authorCol),
+							cur.getString(tagCol), bm, 0, cur.getString(descriptionCol), count));
+
 					i++;
 				}
 			} finally {
@@ -145,15 +155,14 @@ public class ResourceContentResolver {
 					cur.close();
 			}
 		}
-		
+
 		finally {
 
 		}
 
 		return resGridItems;
 	}
-	
-	
+
 	public String getSingleResIdOfCollection(String ColId) {
 		String ResId = null;
 		// case book:
