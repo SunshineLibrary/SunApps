@@ -1,6 +1,8 @@
 package com.ssl.curriculum.math.component.quiz;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -10,12 +12,15 @@ import com.ssl.curriculum.math.component.viewer.QuizComponentViewer;
 import com.ssl.curriculum.math.model.activity.quiz.QuizQuestion;
 import com.ssl.curriculum.math.presenter.quiz.AudioJavascriptInterface;
 import com.ssl.curriculum.math.utils.QuizHtmlLoader;
+import com.ssl.metadata.provider.MetadataContract;
 
 public abstract class QuizQuestionView extends QuizComponentView {
+
+    private static final String ATTACHMENT_FORMAT = "<div style='text-align:center'><img src='%s'/></div>";
+
     protected WebView questionWebView;
     protected ProgressBar progressBar;
     protected TextView  questionTitle;
-    
 
     public QuizQuestionView(Context context, QuizComponentViewer quizComponentViewer) {
         super(context, quizComponentViewer);
@@ -43,6 +48,8 @@ public abstract class QuizQuestionView extends QuizComponentView {
         questionWebView.addJavascriptInterface(new AudioJavascriptInterface(), "audioManager");
     }
 
+    public abstract int getQuestionId();
+
     public abstract boolean onQuestionAnswered();
 
     public abstract void setQuestion(QuizQuestion question, int positionNum);
@@ -67,17 +74,31 @@ public abstract class QuizQuestionView extends QuizComponentView {
         }
     }
 
-    protected void loadQuizHtml(String quizContent, String questionNum) {
-        // 修改一个紧急BUG, 暂时剔除
-//    	String imageStr = "这是个简单的测试，包含图片<IMG src=\"file:///android_asset/ladder-shaped.jpg\"><br>";
-//    	String audioStr1 = "点击我<input type=\"button\" onclick=\"play()\" value=\"播放\" />开始播放";
-//    	String audioStr2 = "点击我<input type=\"button\" onclick=\"pause()\" value=\"暂停\" />暂停播放";
-//    	String audioStr = audioStr1 + "<br>" + audioStr2;
+    protected String getAttachmentContent() {
+        Attachment attachment = getAttachment();
+        if (attachment != null) {
+            if (attachment.isImage()) {
+                return String.format(ATTACHMENT_FORMAT, attachment.filePath);
+            }
+        }
+        return "";
+    }
 
-        // Bowen Edit: 放在这里会好一点
-    	//hereLiu:font-size:30px; 
+    private Attachment getAttachment() {
+        Attachment attachment = null;
+        Cursor cursor = getContext().getContentResolver().query(MetadataContract.Files.CONTENT_URI, null,
+                MetadataContract.Files._URI_PATH + "= ? ",
+                new String[] {MetadataContract.Problems.getProblemUri(getQuestionId()).getPath()}, null);
+        if (cursor.moveToFirst()) {
+            String path = cursor.getString(cursor.getColumnIndex(MetadataContract.Files._FILE_PATH));
+            attachment = new Attachment(path);
+        }
+        cursor.close();
+        return attachment;
+    }
+
+    protected void loadQuizHtml(String quizContent, String questionNum) {
         questionNum = "<p style=\"font-weight:bold;\">"+questionNum+"</p>";
-        //add image or audio or video ,as so on...
         quizContent = questionNum + quizContent;
         final String data = QuizHtmlLoader.getInstance(getContext()).loadQuestionBodyWithNewContent(quizContent);
         
@@ -89,5 +110,22 @@ public abstract class QuizQuestionView extends QuizComponentView {
        *
        * */
         questionWebView.loadDataWithBaseURL("http://test", data, "text/html", "utf-8", null);
+    }
+
+    private static class Attachment {
+        public String filePath;
+        public String extension;
+
+        public Attachment(String path) {
+            filePath = "file://" + path;
+            extension = filePath.substring(filePath.lastIndexOf('.'));
+        }
+
+        public boolean isImage() {
+            return extension.equals(".jpeg") ||
+                    extension.equals(".jpg") ||
+                    extension.equals(".png") ||
+                    extension.equals(".gif");
+        }
     }
 }

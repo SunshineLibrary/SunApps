@@ -9,11 +9,15 @@ import com.ssl.support.api.ApiClient;
 import com.ssl.support.api.ApiClientFactory;
 import com.ssl.support.utils.JSONSerializable;
 
-import static com.ssl.metadata.provider.MetadataContract.Activities;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.ssl.metadata.provider.MetadataContract.*;
 
 public class ActivityDownloadTask extends DownloadTask implements JSONSerializable {
 
-    private static String[] COLUMNS = {Activities._DOWNLOAD_STATUS, Activities._TYPE};
+    private static final String[] COLUMNS = {Activities._DOWNLOAD_STATUS, Activities._TYPE};
+    private static final String[] PROBLEM_COLUMNS = {QuizComponents._PROBLEM_ID};
 
     private static int INVALID_TYPE = -999;
 
@@ -79,7 +83,37 @@ public class ActivityDownloadTask extends DownloadTask implements JSONSerializab
     }
 
     private int downloadQuiz() {
-        return SUCCESS;
+        int status = SUCCESS;
+        Cursor cursor = mContext.getContentResolver().query(QuizComponents.PROBLEMS_URI, PROBLEM_COLUMNS,
+                QuizComponents._QUIZ_ACTIVITY_ID + "=" + mId, null, null);
+        List<Integer> ids = getProblemIds(cursor);
+
+        int size = ids.size();
+        for (int i = 0; i < size; i ++) {
+            int id = ids.get(i);
+            ProblemDownloadTask task = new ProblemDownloadTask(mContext, id);
+            task.run();
+            if (FAILURE == task.getResult()){
+                status = FAILURE;
+                break;
+            }
+            updateProgress((i+1) * 100 / size);
+        }
+
+        return status;
+
+    }
+
+    private List<Integer> getProblemIds(Cursor cursor){
+        List<Integer> idList = new ArrayList<Integer>();
+        if(cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndex(QuizComponents._PROBLEM_ID));
+                idList.add(id);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return idList;
     }
 
     private int getDownloadStatus(int status) {

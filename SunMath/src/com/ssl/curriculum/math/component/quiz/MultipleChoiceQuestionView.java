@@ -71,7 +71,7 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
     @Override
     protected String getQuizContent() {
     	//String imageStr = "这是个简单的测试，包含图片<IMG src=\"file:///android_asset/ladder-shaped.jpg\">";
-        return getBodyHtml() + getChoicesHtml();//between body and choice is the picture
+        return getBodyHtml() + getAttachmentContent() + getChoicesHtml();//between body and choice is the picture
     }
 
     protected void initUI() {
@@ -81,6 +81,11 @@ public class MultipleChoiceQuestionView extends QuizQuestionView {
         questionWebView = (WebView) findViewById(R.id.quiz_choice_flipper_child_question);
         progressBar = (ProgressBar) findViewById(R.id.quiz_choice_progress_bar);
         questionTitle = (TextView) findViewById(R.id.quiz_choice_flipper_child_title);
+    }
+
+    @Override
+    public int getQuestionId() {
+        return mQuestion.getId();
     }
 
     @Override
