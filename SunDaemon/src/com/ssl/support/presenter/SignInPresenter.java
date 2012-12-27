@@ -78,29 +78,49 @@ public class SignInPresenter {
         mSchoolId = (schoolIds != null) ? schoolIds.get(schoolName) : StringUtils.EMPTY_STRING;
         mSchoolId = (mSchoolId != null) ? mSchoolId : StringUtils.EMPTY_STRING;
     }
+    
+    public String getSchool() {
+    	return mSchoolId;
+    }
 
     public void setAccountType(String accountType) {
         mAccountType = accountType;
+    }
+    
+    public String getAccountType() {
+    	return mAccountType;
     }
 
     public void setGrade(String grade) {
         mGrade = grade;
     }
+    
+    public String getGrade() {
+    	return mGrade;
+    }
 
     public void setClass(String cls) {
         mClass = cls;
     }
-
-    public String getName() {
-        return mName;
+    
+    public String getClassName() {
+    	return mClass;
     }
 
     public void setName(String name) {
         mName = name;
     }
+    
+    public String getName() {
+        return mName;
+    }
 
     public void setBirthday(String birthday) {
         mBirthday = birthday;
+    }
+    
+    public String getBirthday() {
+    	return mBirthday;
     }
 
     public String getErrorMessage() {
@@ -123,7 +143,7 @@ public class SignInPresenter {
                     schoolStrings[i] = name;
                 }
             } catch (JSONException e) {
-                Log.e("SignInActivity", "Unable to parse school list: " + jsonArr);
+                Log.e(TAG, "Unable to parse school list: " + jsonArr);
             }
         }
         return schoolStrings;
@@ -149,3 +169,4 @@ public class SignInPresenter {
         return post;
     }
 }
+

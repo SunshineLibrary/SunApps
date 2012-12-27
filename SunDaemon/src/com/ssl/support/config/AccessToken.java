@@ -11,15 +11,26 @@ import java.io.*;
  */
 public class AccessToken {
 
+    public static final String ACCOUNT_TYPE_STUDENT = "student";
+    public static final String ACCOUNT_TYPE_TEACHER = "teacher";
+
     private static final String FILE_NAME = "access_token";
     private static String mAccessToken = StringUtils.EMPTY_STRING;
     private static String mUserName = StringUtils.EMPTY_STRING;
+    private static String mAccountType = StringUtils.EMPTY_STRING;
 
     public static final String getAccessToken(Context context) {
         if (StringUtils.isEmpty(mAccessToken)) {
             retrieveAccessToken(context);
         }
         return mAccessToken;
+    }
+
+    public static final String getAccountType(Context context) {
+        if (StringUtils.isEmpty(mAccountType)) {
+            retrieveAccessToken(context);
+        }
+        return mAccountType;
     }
 
     public static final String getUserName(Context context) {
@@ -29,12 +40,13 @@ public class AccessToken {
         return mUserName;
     }
 
-    public static final void storeAccessToken(Context context, String name, String accessToken) {
+    public static final void storeAccessToken(Context context, String name, String accountType, String accessToken) {
         try {
             FileOutputStream fos = context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
-            fos.write(String.format("%s&%s", name, accessToken).getBytes());
+            fos.write(String.format("%s&%s&%s", name, accountType, accessToken).getBytes());
             fos.close();
             mAccessToken = accessToken;
+            mAccountType = accountType;
             mUserName = name;
         } catch (IOException e) {
             return;
@@ -47,10 +59,11 @@ public class AccessToken {
             BufferedReader reader= new BufferedReader(new InputStreamReader(fis));
             String str = reader.readLine();
             reader.close();
-            int index = str.indexOf("&");
-            if (index >= 0) {
-                mUserName = str.substring(0, index);
-                mAccessToken = str.substring(index + 1);
+            String[] values = str.split("&");
+            if (values.length == 3) {
+                mUserName = values[0];
+                mAccountType = values[1];
+                mAccessToken = values[2];
             }
         } catch (IOException e) {}
     }
