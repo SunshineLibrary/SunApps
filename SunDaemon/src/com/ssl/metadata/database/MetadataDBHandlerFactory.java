@@ -92,5 +92,6 @@ public class MetadataDBHandlerFactory {
         dbHandler.addTableViewManager(BookInfoView.VIEW_NAME, new BookInfoView(dbHandler));
         dbHandler.addTableViewManager(BookCollectionInfoView.VIEW_NAME, new BookCollectionInfoView(dbHandler));
         dbHandler.addTableViewManager(BookCategoryView.VIEW_NAME, new BookCategoryView(dbHandler));
+        dbHandler.addTableViewManager(BookCollectionInfoWithTagsView.VIEW_NAME, new BookCollectionInfoWithTagsView(dbHandler));
     }
 }

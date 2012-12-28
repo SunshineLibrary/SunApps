@@ -3,6 +3,7 @@ package com.ssl.resourcecenter;
 import com.ssl.resourcecenter.util.AutoLoadListener;
 import com.ssl.resourcecenter.util.AutoLoadListener.AutoLoadCallBack;
 import com.ssl.metadata.provider.MetadataContract.BookCollectionInfo;
+import com.ssl.metadata.provider.MetadataContract.BookCollectionTags;
 import com.ssl.metadata.provider.MetadataContract.BookCollections;
 import com.ssl.metadata.provider.MetadataContract.BookInfo;
 import com.ssl.metadata.provider.MetadataContract.Books;
@@ -13,6 +14,7 @@ import com.ssl.resourcecenter.contentresolver.ResourceContentResolver;
 import com.ssl.resourcecenter.enums.GridType;
 import com.ssl.resourcecenter.enums.ResourceType;
 import com.ssl.resourcecenter.enums.ViewType;
+import com.ssl.resourcecenter.model.CategoryGridItem;
 import com.ssl.resourcecenter.model.ResourceGridItem;
 import com.ssl.resourcecenter.R;
 import com.ssl.resourcecenter.adapter.ResourceGridAdapter;
@@ -163,9 +165,10 @@ public class MainActivity extends Activity {
 					downnav.setVisibility(View.INVISIBLE);
 					typenav.setVisibility(View.INVISIBLE);
 					collectionBack.setVisibility(View.VISIBLE);
-					collectionTitle.setText(gridItems.get(position).toString());
+					CategoryGridItem currentItem = (CategoryGridItem) gridItems.get(position);
+					collectionTitle.setText(currentItem.getName());
 					
-					showGridView(currentResType, currentGridType, currentViewType, gridItems.get(position).toString());
+					showGridView(currentResType, currentGridType, currentViewType, currentItem.getId());
 					break;
 					
 				case DOWN_LIST:
@@ -653,8 +656,8 @@ public class MainActivity extends Activity {
 				return resolver.getBookCollections(projection, selection, itemCount, offset);
 			
 			case DOWN_CATEGORY_RES:
-				selection = BookCollectionInfo._TAGS + " like '%" + arg + "%' ";
-				return resolver.getBookCollections(projection, selection, itemCount, offset);
+				
+				return resolver.getBookCollectionsWithTags(projection, arg, itemCount, offset);
 			
 			case DOWN_LIST_RES:
 				//TODO:

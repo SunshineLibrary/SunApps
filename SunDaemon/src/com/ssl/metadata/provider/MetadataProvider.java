@@ -14,6 +14,7 @@ import com.ssl.metadata.database.Table;
 import com.ssl.metadata.database.TableView;
 import com.ssl.metadata.database.tables.*;
 import com.ssl.metadata.database.views.*;
+import com.ssl.metadata.provider.MetadataContract.BookCollectionInfoWithTags;
 import com.ssl.metadata.storage.SharedStorageManager;
 import com.ssl.support.application.DaemonApplication;
 import org.apache.http.impl.auth.DigestSchemeFactory;
@@ -48,6 +49,7 @@ public class MetadataProvider extends ContentProvider {
     private Table bookTable;
     private Table bookCollectionTable;
     private TableView bookCollectionInfoView;
+    private TableView bookCollectionInfoWithTagsView;
     private Table bookListTable;
     private Table tagTable;
     private Table bookListTagTable;
@@ -88,7 +90,8 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.SECTIONS_ACTIVITIES:
                 return view.query(uri, projection,
                         SectionComponents._SECTION_ID + "=?", new String[]{uri.getLastPathSegment()}, sortOrder);
-
+            case Matcher.BOOK_COLLECTION_INFO_WITH_TAGS:
+            	return view.query(uri, projection, BookCollectionInfoWithTagsView.QUERY_TAG, new String[]{uri.getLastPathSegment()}, sortOrder);
             case Matcher.QUIZ_PROBLEMS:
             case Matcher.BOOK_INFO:
             case Matcher.BOOK_COLLECTION_INFO:
@@ -413,6 +416,11 @@ public class MetadataProvider extends ContentProvider {
                     bookCollectionInfoView = dbHandler.getTableViewManager(BookCollectionInfoView.VIEW_NAME);
                 }
                 return bookCollectionInfoView;
+            case Matcher.BOOK_COLLECTION_INFO_WITH_TAGS:
+                if (bookCollectionInfoWithTagsView == null) {
+                	bookCollectionInfoWithTagsView = dbHandler.getTableViewManager(BookCollectionInfoWithTagsView.VIEW_NAME);
+                }
+                return bookCollectionInfoWithTagsView;
             case Matcher.BOOK_CATEGORY:
                 if (bookCategoryView == null) {
                     bookCategoryView = dbHandler.getTableViewManager(BookCategoryView.VIEW_NAME);
