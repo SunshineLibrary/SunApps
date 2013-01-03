@@ -207,8 +207,7 @@
                 android:textOn="@string/download_category"
                 android:textSize="@dimen/info_text_med"
                 android:layout_marginLeft="10dp" 
-                android:visibility="invisible"
-                /><!-- trello #198 disable category and booklist temporary -->
+                android:visibility="visible"/>
                 
 			 <ToggleButton
                 android:id="@+id/downnav_list"
