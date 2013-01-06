@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">更新晓书</string>
-    <string name="default_api_server_address">api.sunshine-library.org</string>
-    <string name="default_upload_server_address">upload.sunshine-library.org</string>
-    <string name="default_log_server_address">log.sunshine-library.org</string>
-
-    <string name="metadata_download_success">同步成功</string>
-    <string name="metadata_download_syncing">正在同步</string>
-    <string name="metadata_download_failure">同步失败</string>
-    <string name="metadata_download_all_success">成功更新数据！</string>
 
     <!-- the string resources for signin activity -->
     <string name="signin_heading">登录晓书</string>
@@ -61,6 +53,10 @@
     <!-- the string resources for system config view -->
     <string name="system_config_local_setting">本地设置</string>
     
+    <string name="default_api_server_address">api.sunshine-library.org</string>
+    <string name="default_upload_server_address">upload.sunshine-library.org</string>
+    <string name="default_log_server_address">log.sunshine-library.org</string>
+    
     <!-- the string resources for apk update table view -->
     <string name="apk_update_table_name">Apk名称</string>
     <string name="apk_update_table_version">版本号</string>
@@ -71,5 +67,21 @@
     <string name="apk_update_item_default_version">1</string>
     <string name="apk_update_item_default_progress">100%</string>
     <string name="apk_update_item_default_status">同步成功</string>
+    
+    <!-- the string resource for metadata update table view -->
+    <string name="metadata_update_table_name">列表名称</string>
+    <string name="metadata_update_table_last_update">最后更改时间</string>
+    <string name="metadata_update_table_last_sync">上次同步时间</string>
+    <string name="metadata_update_table_last_sync_status">同步状态</string>
+    
+    <string name="metadata_update_item_default_name">Activities</string>
+    <string name="metadata_update_item_default_last_update">2010-10-17 23:56:48</string>
+    <string name="metadata_update_item_default_last_sync">2010-10-17 11:42:32</string>
+    <string name="metadata_update_item_default_last_sync_status">同步成功</string>
+    
+    <string name="metadata_download_success">同步成功</string>
+    <string name="metadata_download_syncing">正在同步</string>
+    <string name="metadata_download_failure">同步失败</string>
+    <string name="metadata_download_all_success">成功更新数据！</string>
     
 </resources>

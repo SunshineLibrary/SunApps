@@ -10,28 +10,28 @@
               android:layout_height="fill_parent"
               android:layout_width="fill_parent"
               android:layout_weight="1"
-              android:text="Activities"
+              android:text="@string/metadata_update_item_default_name"
               android:gravity="center"
             />
 
     <TextView android:id="@+id/tv_table_last_update"
               android:layout_height="fill_parent"
               android:layout_width="160dip"
-              android:text="2010-10-17 23:56:48"
+              android:text="@string/metadata_update_item_default_last_update"
               android:gravity="center"
             />
 
     <TextView android:id="@+id/tv_table_last_sync"
               android:layout_height="fill_parent"
               android:layout_width="160dip"
-              android:text="2010-10-17 11:42:32"
+              android:text="@string/metadata_update_item_default_last_sync"
               android:gravity="center"
             />
 
     <TextView android:id="@+id/tv_table_last_sync_status"
               android:layout_height="fill_parent"
               android:layout_width="80dip"
-              android:text="同步成功"
+              android:text="@string/metadata_update_item_default_last_sync_status"
               android:gravity="center"
             />
 
