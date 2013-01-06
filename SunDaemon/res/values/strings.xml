@@ -58,4 +58,7 @@
     <string name="main_btn_update_metadata">同步数据</string>
     <string name="main_btn_update_app">安装/更新应用程序</string>
     
+    <!-- the string resources for system config view -->
+    <string name="system_config_local_setting">本地设置</string>
+    
 </resources>
