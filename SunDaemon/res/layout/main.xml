@@ -3,8 +3,7 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               >
-
-
+              
     <LinearLayout
         android:id="@+id/top"
             android:layout_width="fill_parent"
@@ -16,8 +15,8 @@
         <TextView android:id="@+id/tv_view_metadata_updates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="查看数据"
-                android:textSize="24dp"
+                android:text="@string/main_lb_metadata_updates"
+                android:textSize="24sp"
                 android:paddingTop="24dp"
                 android:paddingBottom="24dp"
                 android:paddingLeft="48dp"
@@ -35,8 +34,8 @@
                 android:paddingTop="24dp"
                 android:paddingBottom="24dp"
                 android:paddingLeft="48dp"
-                android:text="查看应用程序"
-                android:textSize="24dp"
+                android:text="@string/main_lb_app_updates"
+                android:textSize="24sp"
                 android:clickable="true"
                 />
 
@@ -52,8 +51,8 @@
                   android:paddingTop="24dp"
                   android:paddingBottom="24dp"
                   android:paddingLeft="48dp"
-                  android:text="参数设置（请勿随意修改）"
-                  android:textSize="24dp"
+                  android:text="@string/main_lb_system_config"
+                  android:textSize="24sp"
                   android:clickable="true"
                 />
 
@@ -82,8 +81,8 @@
                 android:paddingBottom="20dp"
                 android:paddingLeft="60dp"
                 android:paddingRight="5dp"
-                android:text="刘聪"
-                android:textSize="30dp"
+                android:text="@string/main_lb_username"
+                android:textSize="30sp"
                 android:textStyle="bold"
                 android:clickable="true"
                 />
@@ -93,8 +92,8 @@
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp"
                 android:paddingRight="15dp"
-                android:text="欢迎来到“晓书”"
-                android:textSize="20dp"
+                android:text="@string/main_lb_welcome"
+                android:textSize="20sp"
                 android:clickable="true"
                 />
         
@@ -114,19 +113,19 @@
         <Button android:id="@+id/btn_update_metadata"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:padding="24dp"
-                android:text="同步数据"
+                android:text="@string/main_btn_update_metadata"
                 />
 
         <Button android:id="@+id/btn_update_app"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:layout_marginTop="24dp"
                 android:padding="24dp"
-                android:text="安装/更新应用程序"
+                android:text="@string/main_btn_update_app"
                 />
-
     </LinearLayout>
+    
 </RelativeLayout>

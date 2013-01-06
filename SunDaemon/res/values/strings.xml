@@ -10,6 +10,7 @@
     <string name="metadata_download_failure">同步失败</string>
     <string name="metadata_download_all_success">成功更新数据！</string>
 
+    <!-- the string resources for signin activity -->
     <string name="signin_heading">登录晓书</string>
     <string name="name_input_legend">姓名</string>
     <string name="birthday_input_legend">生日</string>
@@ -20,7 +21,7 @@
     <string name="no_network_try_later">无法连接网络，请稍后再试</string>
     
     <string name="error_login_name_is_empty">姓名不能为空！</string>
-    
+       
     <string-array name="account_type_array">
         <item>学生</item>
         <item>教师</item>
@@ -47,4 +48,14 @@
         <item>5班</item>
         <item>6班</item>
     </string-array>
+    
+    <!-- the string resources for main activity -->
+    <string name="main_lb_metadata_updates">查看数据</string>
+    <string name="main_lb_app_updates">查看应用程序</string>
+    <string name="main_lb_system_config">参数设置（请勿随意更改）</string>
+    <string name="main_lb_username">刘聪</string>
+    <string name="main_lb_welcome">欢迎来到“晓书”</string>
+    <string name="main_btn_update_metadata">同步数据</string>
+    <string name="main_btn_update_app">安装/更新应用程序</string>
+    
 </resources>
