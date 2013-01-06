@@ -53,6 +53,10 @@
     <!-- the string resources for system config view -->
     <string name="system_config_local_setting">本地设置</string>
     
+    <string name="system_config_dialog_label">修改内容</string>
+    <string name="system_config_dialog_btn_submit">修改</string>
+    <string name="system_config_dialog_btn_reset">重置</string>
+    
     <string name="default_api_server_address">api.sunshine-library.org</string>
     <string name="default_upload_server_address">upload.sunshine-library.org</string>
     <string name="default_log_server_address">log.sunshine-library.org</string>
