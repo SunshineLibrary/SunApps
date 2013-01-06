@@ -13,6 +13,8 @@
     <string name="no_network_try_later">无法连接网络，请稍后再试</string>
     
     <string name="error_login_name_is_empty">姓名不能为空！</string>
+    
+    <string name="signin_account_type_spinner_name">学生</string>
        
     <string-array name="account_type_array">
         <item>学生</item>
