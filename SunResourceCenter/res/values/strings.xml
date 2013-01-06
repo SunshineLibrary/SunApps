@@ -7,7 +7,9 @@
     <string name="my_resources">我的资料库</string>
     <string name="search_resources">搜索...</string>
     <string name="res_reading">正在阅读</string>
-    <string name="res_readed">阅读历程</string><string name="res_learn_new">温故知新</string><string name="res_all_resources">全部资料</string>
+    <string name="res_readed">阅读历程</string>
+    <string name="res_learn_new">温故知新</string>
+    <string name="res_all_resources">全部资料</string>
     <string name="res_recent_downloaded">最近下载</string>
     <string name="empty"></string>
 
@@ -22,7 +24,10 @@
     <string name="grid_list_intro">书单简介：</string>
     <string name="download_recommend">阳光推荐</string>
     <string name="download_category">分类浏览</string>
-    <string name="download_hot">热门资源</string><string name="download_like">可能喜欢</string><string name="download_list">阳光书单</string><string name="title_activity_resource_info">ResourceInfo</string>
+    <string name="download_hot">热门资源</string>
+    <string name="download_like">可能喜欢</string>
+    <string name="download_list">阳光书单</string>
+    <string name="title_activity_resource_info">ResourceInfo</string>
     <string name="info_page_name">图书信息</string>
     <string name="info_originname">原作名：</string>
     <string name="info_author">作者：</string>
